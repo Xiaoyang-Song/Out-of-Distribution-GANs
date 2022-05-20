@@ -21,6 +21,7 @@ from geomloss import SamplesLoss
 # Torchvision libraries
 import torchvision
 import torchvision.transforms as transforms
+import torchvision.datasets as datasets
 from torch.utils.data import Dataset, DataLoader
 # Auxiliary libraries
 from icecream import ic
