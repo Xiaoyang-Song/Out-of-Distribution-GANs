@@ -51,6 +51,6 @@ if __name__ == '__main__':
     train_dataset, val_dataset, train_loader_mnist, val_loader_mnist = CIFAR10(
         32, 16)
     ic(train_dataset.__getitem__(0)[0].shape)  # img features
-    cifar_sample_grayscale = train_dataset.__getitem__(0)[0].mean(0)
+    cifar_sample_grayscale = train_dataset.__getitem__(7)[0].mean(0)
     plt.imshow(cifar_sample_grayscale.squeeze(), cmap="gray")
     plt.show()
