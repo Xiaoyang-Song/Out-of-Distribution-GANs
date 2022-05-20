@@ -19,7 +19,8 @@ def MNIST(batch_size, test_batch_size):
 
 def CIFAR10(batch_size, test_batch_size):
     transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+         transforms.Resize(size=28)])
     # normalizer = transforms.Normalize(mean=[x/255.0 for x in [125.3, 123.0, 113.9]],
     # std=[x/255.0 for x in [63.0, 62.1, 66.7]])
     train_dataset = datasets.CIFAR10('./Datasets/CIFAR-10', train=True,
@@ -44,6 +45,12 @@ if __name__ == '__main__':
     ic(train_dataset.__getitem__(0)[1])  # Class label
     mnist_sample = train_dataset.__getitem__(0)[0]
     # Show the sample image
-    plt.imshow(mnist_sample.squeeze(), cmap="gray")
-    plt.show()
+    # plt.imshow(mnist_sample.squeeze(), cmap="gray")
+    # plt.show()
     # ic(mnist_sample)
+    train_dataset, val_dataset, train_loader_mnist, val_loader_mnist = CIFAR10(
+        32, 16)
+    ic(train_dataset.__getitem__(0)[0].shape)  # img features
+    cifar_sample_grayscale = train_dataset.__getitem__(0)[0].mean(0)
+    plt.imshow(cifar_sample_grayscale.squeeze(), cmap="gray")
+    plt.show()
