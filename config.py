@@ -25,6 +25,7 @@ import torchvision.datasets as datasets
 from torch.utils.data import Dataset, DataLoader
 # Auxiliary libraries
 from icecream import ic
+from tqdm import tqdm
 
 # Device Auto-Configuration
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'

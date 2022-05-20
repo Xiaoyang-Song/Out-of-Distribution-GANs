@@ -2,8 +2,6 @@ from config import *
 # Auxiliary imports
 from utils import visualize_img
 
-#
-
 
 def MNIST(batch_size, test_batch_size):
 
