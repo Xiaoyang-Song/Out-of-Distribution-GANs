@@ -26,5 +26,9 @@ from torch.utils.data import Dataset, DataLoader
 # Auxiliary libraries
 from icecream import ic
 
+# Device Auto-Configuration
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 if __name__ == "__main__":
     ic("Hello config.py")
+    ic(f"Device: {DEVICE}")
