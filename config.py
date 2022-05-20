@@ -4,7 +4,7 @@ import time
 import os
 import sys
 # Basic computation libraries
-import pykeops
+# import pykeops
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,8 +16,14 @@ import torch.nn as nn
 from torch.autograd import Variable, Function
 import torch.nn.functional as F
 import geomloss
-from geomloss.geomloss import SamplesLoss
+from geomloss import SamplesLoss
+# from geomloss.geomloss import SamplesLoss # problematic import
 # Torchvision libraries
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
+# Auxiliary libraries
+from icecream import ic
+
+if __name__ == "__main__":
+    ic("Hello config.py")
