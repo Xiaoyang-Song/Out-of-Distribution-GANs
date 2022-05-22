@@ -52,5 +52,7 @@ if __name__ == '__main__':
         32, 16)
     ic(train_dataset.__getitem__(0)[0].shape)  # img features
     cifar_sample_grayscale = train_dataset.__getitem__(7)[0].mean(0)
+    cifar_sample_label = train_dataset.__getitem__(7)[1]
+    ic(cifar_sample_label)  # By manually inspection, this should be a horse
     plt.imshow(cifar_sample_grayscale.squeeze(), cmap="gray")
     plt.show()
