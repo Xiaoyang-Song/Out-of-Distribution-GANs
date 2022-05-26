@@ -3,16 +3,16 @@ from config import *
 from utils import visualize_img
 
 
-def MNIST(batch_size, test_batch_size):
+def MNIST(batch_size, test_batch_size, num_workers=0, shuffle=True):
 
     train_set = torchvision.datasets.MNIST(
         "./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
     val_set = torchvision.datasets.MNIST(
         "./Datasets", download=True, train=False, transform=transforms.Compose([transforms.ToTensor()]))
-    train_loader = torch.utils.data.DataLoader(train_set,
-                                               batch_size=batch_size)
-    test_loader = torch.utils.data.DataLoader(val_set,
-                                              batch_size=test_batch_size)
+    train_loader = torch.utils.data.DataLoader(train_set, shuffle=shuffle,
+                                               batch_size=batch_size, num_workers=num_workers)
+    test_loader = torch.utils.data.DataLoader(val_set, shuffle=shuffle,
+                                              batch_size=test_batch_size,  num_workers=num_workers)
 
     return train_set, val_set, train_loader, test_loader
 
