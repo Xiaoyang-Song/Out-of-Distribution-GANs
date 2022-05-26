@@ -2,6 +2,7 @@
 import time
 import os
 import sys
+import pickle
 # Basic computation libraries
 # import pykeops
 import numpy as np
@@ -22,6 +23,7 @@ import torchvision
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from torch.utils.data import Dataset, DataLoader
+import matplotlib.gridspec as gridspec
 # Auxiliary libraries
 from icecream import ic
 
@@ -29,6 +31,7 @@ from icecream import ic
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 # PATH
 MODEL_SAVE_PATH = "./mnist_cnn.pt"
+GAN_SAVE_PATH = "./gans_imgs"
 
 if __name__ == "__main__":
     ic("Hello config.py")
