@@ -26,6 +26,8 @@ from torch.utils.data import Dataset, DataLoader
 import matplotlib.gridspec as gridspec
 # Auxiliary libraries
 from icecream import ic
+import enum
+from enum import Enum, unique
 
 # Device Auto-Configuration
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
