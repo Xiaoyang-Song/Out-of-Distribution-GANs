@@ -1,4 +1,3 @@
-from torch import cosine_similarity
 from config import *
 
 

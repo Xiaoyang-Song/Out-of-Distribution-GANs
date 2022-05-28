@@ -1,5 +1,6 @@
 from config import *
 from utils import show_images, DIST_TYPE, get_dist_metric
+from wass_loss import ood_wass_loss, ind_wass_loss
 
 
 NOISE_DIM = 96
