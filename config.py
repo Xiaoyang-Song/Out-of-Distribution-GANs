@@ -30,7 +30,7 @@ from icecream import ic
 import enum
 from enum import Enum, unique
 
-# Device Auto-Configuration
+# Device Auto-Configuration (Compatible with Colab)
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 # PATH
 MODEL_SAVE_PATH = "./mnist_cnn.pt"

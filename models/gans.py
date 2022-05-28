@@ -1,9 +1,16 @@
 from config import *
+from dataset import MNIST, CIFAR10
 from utils import show_images, DIST_TYPE, get_dist_metric
 from wass_loss import ood_wass_loss, ind_wass_loss
 
 
 NOISE_DIM = 96
+BATCH_SIZE = 128  # for training
+TEST_BATCH_SIZE = 64  # for testing (not used for now)
+
+
+class GAN_TYPE(Enum):
+    NAIVE, OOD = list(range(2))
 
 
 def sample_noise(batch_size, noise_dim, dtype=torch.float, device=DEVICE):
@@ -64,12 +71,28 @@ def get_optimizer(model):
 
 
 def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
-                generator_loss, save_filename, type='ind', show_every=250,
-                batch_size=128, noise_size=96, num_epochs=10, loader_train_ood=None):
-    # assert type == 'ind' and loader_train_ood != None
+                generator_loss, save_filename=None, gan_type=GAN_TYPE.NAIVE, show_every=250,
+                batch_size=128, noise_size=96, num_epochs=10, ood_img_batch_size=BATCH_SIZE,
+                ood_img_sample=None):
+    # OBTAIN OOD SAMPLES
+    if gan_type == GAN_TYPE.OOD:
+        assert ood_img_sample != None, 'Please specify ood image sample when training OOD GANs.'
+        _, _, ood_tri_loader, _ = ood_img_sample(
+            ood_img_batch_size, TEST_BATCH_SIZE)
+        # sample_idx = torch.randint(0, len(ood_tri_loader), (ood_img_batch_size,))
+        # ic(len(sample_idx))
+        ood_img_batch, ood_img_batch_label = next(iter(ood_tri_loader))
+        assert type(
+            ood_img_batch) == torch.Tensor, 'Expect the image batch to be a torch tensor.'
+        ic(ood_img_batch.shape)  # 128 x 3 x 28 x 28
+        # TODO: This portion of code only works for CIFAR10 and MNIST transformation
+        ood_img_batch = torch.mean(ood_img_batch, dim=1)
+        ic(ood_img_batch.shape)  # 128 x 28 x 28 OR B x H x W
+        return
     iter_count = 0
     for epoch in range(num_epochs):
         for x, y in loader_train:
+            # x: (B, 28, 28)
             # for ind_loader, ood_loader in zip(loader_train, loader_train_ood):
             #     x, y = ind_loader
             #     ood_x, ood_y = ood_loader
@@ -118,9 +141,20 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
             iter_count += 1
         if epoch == num_epochs - 1:
             show_images(imgs_numpy[0:16])
-            plt.savefig(os.path.join(GAN_SAVE_PATH, save_filename))
+            if save_filename is not None:
+                plt.savefig(os.path.join(GAN_SAVE_PATH, save_filename))
 
 
 if __name__ == "__main__":
     ic("Hello gans.py")
     ic(f"Device: {DEVICE}")
+    # TEST GAN TRAINER
+    mnist_tri_set, mnist_val_set, mnist_tri_loader, mnist_val_loader = MNIST(
+        128, 32, 2, True)
+    D = discriminator().to(DEVICE)
+    G = generator().to(DEVICE)
+    D_solver = get_optimizer(D)
+    G_solver = get_optimizer(G)
+    gan_trainer(mnist_tri_loader, D, G, D_solver, G_solver,
+                discriminator_loss, generator_loss, 'fc_gan_results.jpg',
+                gan_type=GAN_TYPE.OOD, ood_img_sample=CIFAR10)
