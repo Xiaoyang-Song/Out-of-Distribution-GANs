@@ -65,7 +65,8 @@ def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
     for b in range(test_batch_size):
         input_b = test_input[b:b+1, :, :].repeat(C, 1, 1)
         # Modified the line below
-        test_loss_values[b] = torch.tensor([test_loss(input_b[c:c+1, :, 0], input_b[c:c+1:, :],
+        test_loss_values[b] = torch.tensor([test_loss(input_b[c:c+1, :, 0],
+                                            input_b[c:c+1:, :],
                                             all_class_onehot[c:c+1, :, 0],
                                             all_class_onehot[c:c+1:, :]) for c in range(C)])
 
@@ -74,3 +75,8 @@ def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
 
 if __name__ == "__main__":
     ic("Hello wass_loss.py")
+    # TEST ood_wass_loss function
+    test_softmax = torch.rand((5, 10))
+    c = 10  # number of classes
+    wass_loss_ood = ood_wass_loss(test_softmax, c)
+    ic(wass_loss_ood.shape)

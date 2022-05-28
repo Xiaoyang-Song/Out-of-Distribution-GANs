@@ -7,6 +7,7 @@ from wass_loss import ood_wass_loss, ind_wass_loss
 NOISE_DIM = 96
 BATCH_SIZE = 128  # for training
 TEST_BATCH_SIZE = 64  # for testing (not used for now)
+NUM_CLASSES = 10  # TODO: This should be done automatically in the future
 
 
 class GAN_TYPE(Enum):
@@ -18,14 +19,23 @@ def sample_noise(batch_size, noise_dim, dtype=torch.float, device=DEVICE):
     return noise
 
 
-def discriminator():
-    model = nn.Sequential(
-        nn.Linear(784, 256),
-        nn.LeakyReLU(0.01),
-        nn.Linear(256, 256),
-        nn.LeakyReLU(0.01),
-        nn.Linear(256, 1)
-    )
+def discriminator(gan_type=GAN_TYPE.NAIVE):
+    if gan_type == GAN_TYPE.NAIVE:
+        model = nn.Sequential(
+            nn.Linear(784, 256),
+            nn.LeakyReLU(0.01),
+            nn.Linear(256, 256),
+            nn.LeakyReLU(0.01),
+            nn.Linear(256, 1)
+        )
+    elif gan_type == GAN_TYPE.OOD:
+        model = nn.Sequential(
+            nn.Linear(784, 256),
+            nn.LeakyReLU(0.01),
+            nn.Linear(256, 256),
+            nn.LeakyReLU(0.01),
+            nn.Linear(256, 10)
+        )
     return model
 
 
@@ -41,8 +51,9 @@ def generator(noise_dim=NOISE_DIM):
     return model
 
 
-def discriminator_loss(logits_real, logits_fake, type='ind'):
-    if type == 'ind':
+def discriminator_loss(logits_real, logits_fake, logits_ood=None,
+                       labels_real=None, gan_type=GAN_TYPE.NAIVE):
+    if gan_type == GAN_TYPE.NAIVE:
         label = torch.ones_like(logits_fake, dtype=logits_real.dtype)
         rl_loss = nn.functional.binary_cross_entropy_with_logits(
             logits_real, label, reduction='none').mean()
@@ -50,8 +61,21 @@ def discriminator_loss(logits_real, logits_fake, type='ind'):
             logits_fake, label - 1, reduction='none').mean()
         loss = rl_loss + fk_loss
         return loss
+    elif gan_type == GAN_TYPE.OOD:
+        assert logits_ood is not None, 'Expect logits_ood to be not None.'
+        assert labels_real is not None, 'Expect labels_real to be not None.'
+        # Compute discriminator loss
+        criterion = nn.CrossEntropyLoss()
+        ind_ce_loss = criterion(logits_real, labels_real)
+        # Compute wass_loss term
+        # TODO: current implementation is not numerically stable; change this later.
+        def zero_softmax_loss(x): return torch.log(ood_wass_loss(
+            torch.softmax(x), NUM_CLASSES)).mean()
+        zsl_ood, zsl_fake = [zero_softmax_loss(
+            logit) for logit in (logits_ood, logits_fake)]
+        return ind_ce_loss + zsl_ood + zsl_fake
     else:
-        return None
+        assert False, 'Unrecognized GAN_TYPE.'
 
 
 def generator_loss(logits_fake, type='ind'):
@@ -84,11 +108,11 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
         ood_img_batch, ood_img_batch_label = next(iter(ood_tri_loader))
         assert type(
             ood_img_batch) == torch.Tensor, 'Expect the image batch to be a torch tensor.'
-        ic(ood_img_batch.shape)  # 128 x 3 x 28 x 28
+        # ic(ood_img_batch.shape)  # 128 x 3 x 28 x 28
         # TODO: This portion of code only works for CIFAR10 and MNIST transformation
         ood_img_batch = torch.mean(ood_img_batch, dim=1)
-        ic(ood_img_batch.shape)  # 128 x 28 x 28 OR B x H x W
-        return
+        # ic(ood_img_batch.shape)  # (128, 28, 28) OR (B, H, W)
+        # ic(ood_img_batch_label.shape)  # (128,) OR (B,)
     iter_count = 0
     for epoch in range(num_epochs):
         for x, y in loader_train:
@@ -101,7 +125,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
 
             # Discriminator Training
             D_solver.zero_grad()
-            real_data = x.view(-1, 784).to(DEVICE)
+            real_data = x.view(-1, 784).to(DEVICE)  # B x 784
             logits_real = D(2 * (real_data - 0.5))
 
             g_fake_seed = sample_noise(
@@ -109,8 +133,13 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
             fake_images = G(g_fake_seed).detach()
             logits_fake = D(fake_images)
 
-            # ood_data = ood_x.view(-1, 784).to(DEVICE)
-            # logits_ood = D(ood_data)
+            ood_imgs = ood_img_batch.view(-1, 784).to(DEVICE)
+            logits_ood = D(ood_imgs)
+
+            test_d_total_error = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
+                                                    labels_real=y, gan_type=GAN_TYPE.OOD)
+            ic(test_d_total_error)
+            return
 
             d_total_error = discriminator_loss(logits_real, logits_fake)
             d_total_error.backward()
@@ -151,7 +180,7 @@ if __name__ == "__main__":
     # TEST GAN TRAINER
     mnist_tri_set, mnist_val_set, mnist_tri_loader, mnist_val_loader = MNIST(
         128, 32, 2, True)
-    D = discriminator().to(DEVICE)
+    D = discriminator(gan_type=GAN_TYPE.OOD).to(DEVICE)
     G = generator().to(DEVICE)
     D_solver = get_optimizer(D)
     G_solver = get_optimizer(G)
