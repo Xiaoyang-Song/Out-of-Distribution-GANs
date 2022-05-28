@@ -54,4 +54,4 @@ def get_criterion():
 
 
 if __name__ == "__main__":
-    pass
+    ic("Hello trainer.py")

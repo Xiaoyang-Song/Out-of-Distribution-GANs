@@ -70,3 +70,7 @@ def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
                                             all_class_onehot[c:c+1:, :]) for c in range(C)])
 
     return test_loss_values.min(dim=1)[0]
+
+
+if __name__ == "__main__":
+    ic("Hello wass_loss.py")
