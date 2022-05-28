@@ -39,6 +39,7 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
         target_mat = torch.cat([img_b1_sub, img_b2_sub])  # 2 x HW
         return torch.corrcoef(target_mat)[0][1]
     elif type == DIST_TYPE.EUC:
+        # Compute sample mean of two sampled batch
         img_b1_sub = torch.mean(img_b1_sub, dim=0).reshape(1, -1)  # 1 x HW
         img_b2_sub = torch.mean(img_b2_sub, dim=0).reshape(1, -1)  # 1 x HW
         l2_euc = torch.sqrt(torch.sum((img_b1_sub - img_b2_sub)**2))
@@ -47,6 +48,8 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
         return None
 
 # VISUALIZATION UTILITY FUNCTIONS
+
+
 def visualize_img(loader: DataLoader):
     # TODO: Finish implementing this utility function and incoporate it in the notebook
     pass

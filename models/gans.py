@@ -1,5 +1,5 @@
 from config import *
-from utils import show_images
+from utils import show_images, DIST_TYPE, get_dist_metric
 
 
 NOISE_DIM = 96
