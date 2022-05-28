@@ -15,6 +15,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable, Function
 import torch.nn.functional as F
+from torch import linalg as LA
 import geomloss
 from geomloss import SamplesLoss
 # from geomloss.geomloss import SamplesLoss # problematic import

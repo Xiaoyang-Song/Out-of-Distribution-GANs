@@ -1,3 +1,4 @@
+from torch import cosine_similarity
 from config import *
 
 
@@ -44,6 +45,13 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
         img_b2_sub = torch.mean(img_b2_sub, dim=0).reshape(1, -1)  # 1 x HW
         l2_euc = torch.sqrt(torch.sum((img_b1_sub - img_b2_sub)**2))
         return l2_euc
+    elif type == DIST_TYPE.COS:
+        img_b1_sub = torch.mean(img_b1_sub, dim=0).reshape(-1,)  # HW
+        img_b2_sub = torch.mean(img_b2_sub, dim=0).reshape(-1,)  # HW
+        # Compute norm
+        norm1, norm2 = LA.norm(img_b1_sub), LA.norm(img_b2_sub)
+        cosine_sim = torch.dot(img_b1_sub, img_b2_sub) / (norm1 * norm2)
+        return cosine_sim
     else:
         return None
 
@@ -81,4 +89,4 @@ if __name__ == '__main__':
     # TEST get_dist_metric()
     img_b1 = torch.rand((3, 28, 28))
     img_b2 = torch.rand((4, 28, 28))
-    ic(get_dist_metric(img_b1, img_b2, 3, DIST_TYPE.EUC))
+    ic(get_dist_metric(img_b1, img_b2, 3, DIST_TYPE.COS))
