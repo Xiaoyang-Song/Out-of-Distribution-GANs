@@ -24,13 +24,22 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
     # Assertion check
     assert len(img_b1.shape) == len(
         img_b2.shape), 'Two input batches should have the same number of dimensions.'
-    assert len(img_b1.shape) == 3, 'Expect input tensors have shape B x H x W.'
-    B1, H, W = img_b1.shape
-    B2, _, _ = img_b2.shape
+    # assert len(img_b1.shape) == 3, 'Expect input tensors have shape B x H x W.'
+    if len(img_b1.shape) == 3:
+        B1, H, W = img_b1.shape
+        B2, _, _ = img_b2.shape
+    elif len(img_b2.shape) == 2:
+        B1, HW = img_b1.shape
+        B2, HW = img_b2.shape
+    else:
+        assert False, 'Expected image batch to have shape of either (B, H, W) or (B, HW)'
     assert B1 >= m and B2 >= m, 'Expect the sample size less or equal than batch sizes.'
     # Sample images from both batches
     idx1, idx2 = torch.randint(0, B1, (m,)), torch.randint(0, B2, (m,))
-    img_b1_sub, img_b2_sub = img_b1[idx1, :, :], img_b2[idx2, :, :]
+    if len(img_b1.shape) == 3:
+        img_b1_sub, img_b2_sub = img_b1[idx1, :, :], img_b2[idx2, :, :]
+    else:
+        img_b1_sub, img_b2_sub = img_b1[idx1, :], img_b2[idx2, :]
     # Compute distances
     if type == DIST_TYPE.COR:
         # Compute sample mean of two sampled batch

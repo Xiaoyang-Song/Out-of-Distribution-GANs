@@ -38,6 +38,7 @@ def label_2_onehot(label, C, device):
 
 def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVICE):
     # TODO: Add assertion check
+    # TODO: Add docstrings for illustration
     test_label_onehot = label_2_onehot(target, C, device)
     test_label_onehot = torch.unsqueeze(test_label_onehot, -1)
     test_input = torch.unsqueeze(input, -1)
