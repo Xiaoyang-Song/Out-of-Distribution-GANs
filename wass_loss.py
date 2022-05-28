@@ -7,11 +7,12 @@ def cost_matrix(X, Y):
         N, D = X.shape
         M, D = Y.shape
         return (1 - torch.eye(N, M)).to(DEVICE)
-
-    if len(X.shape) == 3:
+    elif len(X.shape) == 3:
         B, N, D = X.shape
         B, M, D = Y.shape
         return torch.unsqueeze(1 - torch.eye(N, M), 0).repeat(B, 1, 1).to(DEVICE)
+    else:
+        assert False, 'Unexpected dimension of X or Y. Expect (B, N, D) or (N, D)'
 
 
 def label_2_onehot(label, C, device):

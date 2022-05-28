@@ -112,6 +112,8 @@ def get_optimizer(model):
         model.parameters(), lr=1e-3, betas=(0.5, 0.999))
     return optimizer
 
+# TODO: Add more vectorization and batch processing to make OOD GAN more efficient.
+
 
 def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 generator_loss, save_filename=None, gan_type=GAN_TYPE.NAIVE, show_every=250,
@@ -144,6 +146,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
 
             # Discriminator Training
             D_solver.zero_grad()
+            # TODO: Revise backbone architecture to make sure it works for unflattened images.
             real_data = x.view(-1, 784).to(DEVICE)  # B x 784
             logits_real = D(2 * (real_data - 0.5))
 
