@@ -47,6 +47,7 @@ def discriminator(gan_type=GAN_TYPE.NAIVE):
 
 
 def generator(noise_dim=NOISE_DIM):
+    # TODO: Implement Deep-Convolutional GANs
     model = nn.Sequential(
         nn.Linear(noise_dim, 1024),
         nn.ReLU(),
