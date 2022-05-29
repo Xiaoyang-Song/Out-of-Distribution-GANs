@@ -35,7 +35,8 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 # PATH
 MODEL_SAVE_PATH = "./mnist_cnn.pt"
 GAN_SAVE_PATH = "./gans_imgs"
-
+# GANs constant
+NOISE_DIM = 96
 if __name__ == "__main__":
     ic("Hello config.py")
     ic(f"Device: {DEVICE}")

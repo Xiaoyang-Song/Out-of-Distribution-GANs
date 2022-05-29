@@ -4,7 +4,6 @@ from utils import show_images, DIST_TYPE, get_dist_metric
 from wass_loss import ood_wass_loss, ind_wass_loss
 
 
-NOISE_DIM = 96
 BATCH_SIZE = 128  # for training
 TEST_BATCH_SIZE = 64  # for testing (not used for now)
 NUM_CLASSES = 10  # TODO: This should be done automatically in the future
@@ -12,6 +11,10 @@ NUM_CLASSES = 10  # TODO: This should be done automatically in the future
 
 class GAN_TYPE(Enum):
     NAIVE, OOD = list(range(2))
+
+
+class GAN_BACKBONE(Enum):
+    FC, CONV = list(range(2))
 
 
 def zero_softmax_loss(x): return torch.log(ood_wass_loss(
@@ -77,7 +80,6 @@ def discriminator_loss(logits_real, logits_fake, logits_ood=None,
         ind_ce_loss = criterion(logits_real, labels_real)
         # Compute wass_loss term
         # TODO: current implementation is not numerically stable; change this later.
-
         zsl_ood, zsl_fake = [zero_softmax_loss(
             logit) for logit in (logits_ood, logits_fake)]
         return ind_ce_loss + zsl_ood + zsl_fake
@@ -125,8 +127,6 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
         assert ood_img_sample != None, 'Please specify ood image sample when training OOD GANs.'
         _, _, ood_tri_loader, _ = ood_img_sample(
             ood_img_batch_size, TEST_BATCH_SIZE)
-        # sample_idx = torch.randint(0, len(ood_tri_loader), (ood_img_batch_size,))
-        # ic(len(sample_idx))
         ood_img_batch, ood_img_batch_label = next(iter(ood_tri_loader))
         assert type(
             ood_img_batch) == torch.Tensor, 'Expect the image batch to be a torch tensor.'

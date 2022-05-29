@@ -41,6 +41,7 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
     else:
         img_b1_sub, img_b2_sub = img_b1[idx1, :], img_b2[idx2, :]
     # Compute distances
+    # TODO: Change the following segments for efficiency and elegancy later.
     if type == DIST_TYPE.COR:
         # Compute sample mean of two sampled batch
         img_b1_sub = torch.mean(img_b1_sub, dim=0).reshape(1, -1)  # 1 x HW
