@@ -83,6 +83,7 @@ def discriminator_loss(logits_real, logits_fake, logits_ood=None,
         # TODO: current implementation is NOT numerically stable; change this later.
         zsl_ood, zsl_fake = [zero_softmax_loss(
             logit) for logit in (logits_ood, logits_fake)]
+        # ic('d')
         # ic(zsl_ood)
         # ic(zsl_fake)
         # ic(ind_ce_loss)
@@ -111,6 +112,7 @@ def generator_loss(logits_fake, img_fake=None, img_ind=None,
             img_fake, img_ind, dist_sample_size, DIST_TYPE.COR)
         dist_fake_ood = get_dist_metric(
             img_fake, img_ood, dist_sample_size, DIST_TYPE.COR)
+        # ic('g')
         # ic(-zsl_fake)
         # ic(-dist_fake_ind)
         # ic(dist_fake_ood)

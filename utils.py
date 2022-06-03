@@ -47,7 +47,7 @@ class GDLossTracker():
 
     def ap_g_ls(self, zsl_fake, dist_fake_ind, dist_fake_ood):
         self.g_n_zsl_fake.append(-zsl_fake.detach())
-        self.g_n_dist_fake_ind .append(-dist_fake_ind.detach())
+        self.g_n_dist_fake_ind.append(-dist_fake_ind.detach())
         self.g_dist_fake_ood.append(dist_fake_ood.detach())
 
     def plt_ls(self, save_fname: str, num_iter: int, type: GD, verbose=False):
@@ -75,7 +75,7 @@ class GDLossTracker():
             # TODO: This implementation is silly, change this later.
             plt.xlabel("Number of iterations")
             plt.title("Discriminator Loss vs. Number of iterations")
-            plt.savefig("GDLossTrackerPlot/" + save_fname)
+            plt.savefig("./GDLossTrackerPlot/" + save_fname)
             plt.close()
         elif type == GD.G:
             plt.plot(x_axis, self.g_n_zsl_fake,
@@ -88,7 +88,7 @@ class GDLossTracker():
             plt.legend()
             plt.xlabel("Number of iterations")
             plt.title("Generator Loss vs. Number of iterations")
-            plt.savefig("GDLossTrackerPlot/" + save_fname)
+            plt.savefig("./GDLossTrackerPlot/" + save_fname)
             plt.close()
         else:
             assert False, 'Unrecognized GD type.'
