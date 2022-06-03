@@ -148,7 +148,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
     iter_count = 0
     for epoch in range(num_epochs):
         for x, y in loader_train:
-            # x: (B, 28, 28) for 
+            # x: (B, 28, 28) for
             if len(x) != batch_size:
                 continue
 
@@ -162,6 +162,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 batch_size, noise_size, dtype=real_data.dtype, device=real_data.device)
             fake_images = G(g_fake_seed).detach()
             logits_fake = D(fake_images)
+            # TODO: decouple OOD GANs and the Original GANs in this script
             if gan_type == GAN_TYPE.OOD:
                 ood_imgs = ood_img_batch.view(-1, 784).to(DEVICE)
                 logits_ood = D(ood_imgs)

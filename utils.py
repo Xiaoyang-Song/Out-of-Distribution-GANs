@@ -1,4 +1,10 @@
+from cProfile import label
+from matplotlib import markers
 from config import *
+
+
+class GD(Enum):
+    G, D = list(range(2))
 
 
 class GDLoss():
@@ -11,7 +17,7 @@ class GDLoss():
         Note that in the below declaration:
         - 'n' stands for 'negative'
         - 'd' and 'g' stands for 'discriminator' amd 'generator', respectively
-        - 'zsl' stands for "zero_soft_max loss"
+        - 'zsl' stands for "zero_softmax loss"
         - 'dist' stands for distances
         """
         # General Info'
@@ -20,10 +26,19 @@ class GDLoss():
         self.d_zsl_ood = []
         self.d_zsl_fake = []
         self.d_ind_ce = []
+        self.d_total = None
         # Generator Loss
         self.g_n_zsl_fake = []
         self.g_n_dist_fake_ind = []
         self.g_dist_fake_ood = []
+        self.g_total = None
+
+    def sum_up_gd_ls(self):
+        self.d_total = np.array(self.d_zsl_fake) + \
+            np.array(self.d_zsl_ood) + np.array(self.d_ind_ce)
+        self.g_total = np.array(
+            self.g_dist_fake_ood) + np.array(self.g_n_dist_fake_ind) + np.array(self.g_n_zsl_fake)
+        ic('The total loss of G and D can be accessed now.')
 
     def ap_d_ls(self, ind_ce_loss, zsl_ood, zsl_fake):
         self.d_zsl_ood.append(zsl_ood)
@@ -35,19 +50,56 @@ class GDLoss():
         self.g_n_dist_fake_ind .append(dist_fake_ind)
         self.g_dist_fake_ood.append(dist_fake_ood)
 
-    def plt_d_ls(self, save_addr, num_iter, verbose=False):
+    def plt_ls(self, save_addr: str, num_iter: int, type: GD, verbose=False):
+        # TODO: Change the implementation of this function to make it more elegan later.
         """
         Plot all three terms in the discriminator loss function
 
         Args:
         - save_addr: the saving destination of those plots.
         - num_iter: the number of iterations that are needed to be tracked.
+        - type: either GD.G or GD.D, determines which to plot.
         - verbose (bool, optional): If verbose is True, plot them separately; otherwise,
           plot them in one plot. Defaults to False.
         """
         assert num_iter <= self.max_len, 'Expect num_iter to be less or equal than self.max_len.'
         x_axis = np.arange(num_iter)
-        plt.plot()
+        self.sum_up_gd_ls()
+        if type == GD.D:
+            plt.plot(x_axis, self.d_zsl_ood, marker='o', label='d_zsl_ood_ls')
+            plt.plot(x_axis, self.d_zsl_fake,
+                     marker='s', label='d_zsl_fake_ls')
+            plt.plot(x_axis, self.d_ind_ce, marker='x', label='d_ind_ce_ls')
+            plt.plot(x_axis, self.d_total, marker='^', label='d_total_ls')
+        elif type == GD.G:
+            plt.plot(x_axis, self.g_n_zsl_fake,
+                     marker='o', label='g_n_zsl_fake_ls')
+            plt.plot(x_axis, self.g_n_dist_fake_ind,
+                     marker='o', label='g_n_dist_fake_ind_ls')
+            plt.plot(x_axis, self.g_dist_fake_ood,
+                     marker='o', label='g_dist_fake_ood_ls')
+            plt.plot(x_axis, self.g_total, marker='^', label='g_total_ls')
+        else:
+            assert False, 'Unrecognized GD type.'
+        if verbose:
+            ic("Will be implemented soon.")
+            return
+
+
+def log_gd_loss(out_filename: str, ls1, ls2, ls3, total_ls, type: str):
+    # TODO: Implement this function and complete docstrings.
+    """
+    Log training loss into files.
+
+    Args:
+        out_filename (str): _description_
+        ls1 (_type_): _description_
+        ls2 (_type_): _description_
+        ls3 (_type_): _description_
+        total_ls (_type_): _description_
+        type (str): _description_
+    """
+    pass
 
 
 class DIST_TYPE(Enum):
