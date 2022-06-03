@@ -160,6 +160,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 continue
             # EARLY STOP FOR SAMPLE TRAINING WITH GD_LOSS_TRACKER
             if iter_count >= gd_ls_track_iter:
+                ic('Sample Training with GD_Loss_tracker Finished.')
                 return
             # Discriminator Training
             D_solver.zero_grad()

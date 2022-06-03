@@ -20,7 +20,7 @@ class GDLossTracker():
         - 'zsl' stands for "zero_softmax loss"
         - 'dist' stands for distances
         """
-        # General Info'
+        # General Info
         self.max_len = max_len
         # Discriminator Loss
         self.d_zsl_ood = []
@@ -50,13 +50,13 @@ class GDLossTracker():
         self.g_n_dist_fake_ind .append(-dist_fake_ind)
         self.g_dist_fake_ood.append(dist_fake_ood)
 
-    def plt_ls(self, save_addr: str, num_iter: int, type: GD, verbose=False):
+    def plt_ls(self, save_fname: str, num_iter: int, type: GD, verbose=False):
         # TODO: Change the implementation of this function to make it more elegan later.
         """
         Plot all three terms in the discriminator loss function
 
         Args:
-        - save_addr: the saving destination of those plots.
+        - save_fname: the saving destination of those plots.
         - num_iter: the number of iterations that are needed to be tracked.
         - type: either GD.G or GD.D, determines which to plot.
         - verbose (bool, optional): If verbose is True, plot them separately; otherwise,
@@ -71,6 +71,12 @@ class GDLossTracker():
                      marker='s', label='d_zsl_fake_ls')
             plt.plot(x_axis, self.d_ind_ce, marker='x', label='d_ind_ce_ls')
             plt.plot(x_axis, self.d_total, marker='^', label='d_total_ls')
+            plt.legend()
+            # TODO: This implementation is silly, change this later.
+            plt.xlabel("Number of iterations")
+            plt.title("Discriminator Loss vs. Number of iterations")
+            plt.savefig("GDLossTrackerPlot/" + save_fname)
+            plt.close()
         elif type == GD.G:
             plt.plot(x_axis, self.g_n_zsl_fake,
                      marker='o', label='g_n_zsl_fake_ls')
@@ -79,6 +85,11 @@ class GDLossTracker():
             plt.plot(x_axis, self.g_dist_fake_ood,
                      marker='o', label='g_dist_fake_ood_ls')
             plt.plot(x_axis, self.g_total, marker='^', label='g_total_ls')
+            plt.legend()
+            plt.xlabel("Number of iterations")
+            plt.title("Generator Loss vs. Number of iterations")
+            plt.savefig("GDLossTrackerPlot/" + save_fname)
+            plt.close()
         else:
             assert False, 'Unrecognized GD type.'
         if verbose:
