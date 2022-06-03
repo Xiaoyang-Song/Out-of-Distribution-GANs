@@ -66,16 +66,18 @@ class GDLossTracker():
         x_axis = np.arange(num_iter)
         self.sum_up_gd_ls()
         if type == GD.D:
-            plt.plot(x_axis, self.d_zsl_ood, marker='o', label='d_zsl_ood_ls')
+            plt.plot(x_axis, self.d_zsl_ood, marker='+', label='d_zsl_ood_ls')
             plt.plot(x_axis, self.d_zsl_fake,
                      marker='s', label='d_zsl_fake_ls')
             plt.plot(x_axis, self.d_ind_ce, marker='x', label='d_ind_ce_ls')
             plt.plot(x_axis, self.d_total, marker='^', label='d_total_ls')
             plt.legend()
             # TODO: This implementation is silly, change this later.
+            # plt.figure(dpi=100)
             plt.xlabel("Number of iterations")
             plt.title("Discriminator Loss vs. Number of iterations")
-            plt.savefig("./GDLossTrackerPlot/" + save_fname)
+            plt.savefig("../GDLossTrackerPlot/" + save_fname)
+            plt.show()
             plt.close()
         elif type == GD.G:
             plt.plot(x_axis, self.g_n_zsl_fake,
@@ -86,9 +88,11 @@ class GDLossTracker():
                      marker='o', label='g_dist_fake_ood_ls')
             plt.plot(x_axis, self.g_total, marker='^', label='g_total_ls')
             plt.legend()
+            # plt.figure(dpi=100)
             plt.xlabel("Number of iterations")
             plt.title("Generator Loss vs. Number of iterations")
-            plt.savefig("./GDLossTrackerPlot/" + save_fname)
+            plt.savefig("../GDLossTrackerPlot/" + save_fname)
+            plt.show()
             plt.close()
         else:
             assert False, 'Unrecognized GD type.'
