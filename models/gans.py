@@ -82,6 +82,9 @@ def discriminator_loss(logits_real, logits_fake, logits_ood=None,
         # TODO: current implementation is not numerically stable; change this later.
         zsl_ood, zsl_fake = [zero_softmax_loss(
             logit) for logit in (logits_ood, logits_fake)]
+        ic(zsl_ood)
+        ic(zsl_fake)
+        ic(ind_ce_loss)
         return ind_ce_loss + zsl_ood + zsl_fake
     else:
         assert False, 'Unrecognized GAN_TYPE.'
@@ -104,6 +107,9 @@ def generator_loss(logits_fake, img_fake=None, img_ind=None,
             img_fake, img_ind, dist_sample_size, DIST_TYPE.COR)
         dist_fake_ood = get_dist_metric(
             img_fake, img_ood, dist_sample_size, DIST_TYPE.COR)
+        ic(-zsl_fake)
+        ic(-dist_fake_ind)
+        ic(dist_fake_ood)
         return -zsl_fake - dist_fake_ind + dist_fake_ood
     else:
         assert False, 'Unrecognized GAN_TYPE.'
@@ -121,7 +127,11 @@ def get_optimizer(model):
 def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 generator_loss, save_filename=None, gan_type=GAN_TYPE.NAIVE, show_every=250,
                 batch_size=128, noise_size=96, num_epochs=10, ood_img_batch_size=BATCH_SIZE,
-                ood_img_sample=None):
+                ood_img_sample=None, gd_ls_tracker=None, gd_ls_track_iter=None):
+    # Assertion Check of GD Loss Tracker arguments
+    assert (gd_ls_track_iter is None and gd_ls_tracker is None) or (
+        gd_ls_track_iter is not None and gd_ls_tracker is not None), \
+        'Expect gd_ls_tracker and gd_ls_tracker_iter to be not None or None simultaneously.'
     # OBTAIN OOD SAMPLES
     if gan_type == GAN_TYPE.OOD:
         assert ood_img_sample != None, 'Please specify ood image sample when training OOD GANs.'
@@ -138,10 +148,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
     iter_count = 0
     for epoch in range(num_epochs):
         for x, y in loader_train:
-            # x: (B, 28, 28)
-            # for ind_loader, ood_loader in zip(loader_train, loader_train_ood):
-            #     x, y = ind_loader
-            #     ood_x, ood_y = ood_loader
+            # x: (B, 28, 28) for 
             if len(x) != batch_size:
                 continue
 

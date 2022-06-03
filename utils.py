@@ -1,6 +1,55 @@
 from config import *
 
 
+class GDLoss():
+    """
+    This class is constructed for general debugging and logging purposes for OOD GANs.
+    """
+
+    def __init__(self, max_len=1000):
+        """
+        Note that in the below declaration:
+        - 'n' stands for 'negative'
+        - 'd' and 'g' stands for 'discriminator' amd 'generator', respectively
+        - 'zsl' stands for "zero_soft_max loss"
+        - 'dist' stands for distances
+        """
+        # General Info'
+        self.max_len = max_len
+        # Discriminator Loss
+        self.d_zsl_ood = []
+        self.d_zsl_fake = []
+        self.d_ind_ce = []
+        # Generator Loss
+        self.g_n_zsl_fake = []
+        self.g_n_dist_fake_ind = []
+        self.g_dist_fake_ood = []
+
+    def ap_d_ls(self, ind_ce_loss, zsl_ood, zsl_fake):
+        self.d_zsl_ood.append(zsl_ood)
+        self.d_zsl_fake.append(zsl_fake)
+        self.d_ind_ce.append(ind_ce_loss)
+
+    def ap_g_ls(self, zsl_fake, dist_fake_ind, dist_fake_ood):
+        self.g_n_zsl_fake.append(-zsl_fake)
+        self.g_n_dist_fake_ind .append(dist_fake_ind)
+        self.g_dist_fake_ood.append(dist_fake_ood)
+
+    def plt_d_ls(self, save_addr, num_iter, verbose=False):
+        """
+        Plot all three terms in the discriminator loss function
+
+        Args:
+        - save_addr: the saving destination of those plots.
+        - num_iter: the number of iterations that are needed to be tracked.
+        - verbose (bool, optional): If verbose is True, plot them separately; otherwise,
+          plot them in one plot. Defaults to False.
+        """
+        assert num_iter <= self.max_len, 'Expect num_iter to be less or equal than self.max_len.'
+        x_axis = np.arange(num_iter)
+        plt.plot()
+
+
 class DIST_TYPE(Enum):
     COR = ('Correlation', 0)
     EUC = ('Euclidean', 1)
