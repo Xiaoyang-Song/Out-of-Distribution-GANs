@@ -228,6 +228,7 @@ if __name__ == "__main__":
     G = generator().to(DEVICE)
     D_solver = get_optimizer(D)
     G_solver = get_optimizer(G)
+    # TODO: Maybe a problematic test code depends on machine, Fix this later
     gan_trainer(mnist_tri_loader, D, G, D_solver, G_solver,
                 discriminator_loss, generator_loss, 'fc_gan_results.jpg',
                 gan_type=GAN_TYPE.OOD, ood_img_sample=CIFAR10)

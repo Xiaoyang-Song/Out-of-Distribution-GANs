@@ -41,14 +41,14 @@ class GDLossTracker():
         ic('The total loss of G and D can be accessed now.')
 
     def ap_d_ls(self, ind_ce_loss, zsl_ood, zsl_fake):
-        self.d_zsl_ood.append(zsl_ood)
-        self.d_zsl_fake.append(zsl_fake)
-        self.d_ind_ce.append(ind_ce_loss)
+        self.d_zsl_ood.append(zsl_ood.detach())
+        self.d_zsl_fake.append(zsl_fake.detach())
+        self.d_ind_ce.append(ind_ce_loss.detach())
 
     def ap_g_ls(self, zsl_fake, dist_fake_ind, dist_fake_ood):
-        self.g_n_zsl_fake.append(-zsl_fake)
-        self.g_n_dist_fake_ind .append(-dist_fake_ind)
-        self.g_dist_fake_ood.append(dist_fake_ood)
+        self.g_n_zsl_fake.append(-zsl_fake.detach())
+        self.g_n_dist_fake_ind .append(-dist_fake_ind.detach())
+        self.g_dist_fake_ood.append(dist_fake_ood.detach())
 
     def plt_ls(self, save_fname: str, num_iter: int, type: GD, verbose=False):
         # TODO: Change the implementation of this function to make it more elegan later.
@@ -127,7 +127,7 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
     Calculate the distance between two batches of raw images
     Inputs:
     - img_b1: tensor of shape B1 x H x W
-    - img_b2: tensor of shape B2 x H x W 
+    - img_b2: tensor of shape B2 x H x W
     - m: number of samples from both batches
     - type: distance metric type
     Returns:
