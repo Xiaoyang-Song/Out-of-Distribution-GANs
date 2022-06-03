@@ -1,6 +1,6 @@
 from config import *
 from dataset import MNIST, CIFAR10
-from utils import show_images, DIST_TYPE, get_dist_metric
+from utils import show_images, DIST_TYPE, get_dist_metric, GDLossTracker
 from wass_loss import ood_wass_loss, ind_wass_loss
 
 
@@ -63,7 +63,8 @@ def generator(noise_dim=NOISE_DIM):
 
 
 def discriminator_loss(logits_real, logits_fake, logits_ood=None,
-                       labels_real=None, gan_type=GAN_TYPE.NAIVE):
+                       labels_real=None, gan_type=GAN_TYPE.NAIVE, gd_ls_tracker=None):
+    # TODO: decouple two different GANs
     if gan_type == GAN_TYPE.NAIVE:
         label = torch.ones_like(logits_fake, dtype=logits_real.dtype)
         rl_loss = nn.functional.binary_cross_entropy_with_logits(
@@ -79,19 +80,22 @@ def discriminator_loss(logits_real, logits_fake, logits_ood=None,
         criterion = nn.CrossEntropyLoss()
         ind_ce_loss = criterion(logits_real, labels_real)
         # Compute wass_loss term
-        # TODO: current implementation is not numerically stable; change this later.
+        # TODO: current implementation is NOT numerically stable; change this later.
         zsl_ood, zsl_fake = [zero_softmax_loss(
             logit) for logit in (logits_ood, logits_fake)]
-        ic(zsl_ood)
-        ic(zsl_fake)
-        ic(ind_ce_loss)
+        # ic(zsl_ood)
+        # ic(zsl_fake)
+        # ic(ind_ce_loss)
+        if gd_ls_tracker is not None:
+            gd_ls_tracker.ap_d_ls(ind_ce_loss, zsl_ood, zsl_fake)
         return ind_ce_loss + zsl_ood + zsl_fake
     else:
         assert False, 'Unrecognized GAN_TYPE.'
 
 
 def generator_loss(logits_fake, img_fake=None, img_ind=None,
-                   img_ood=None, dist_sample_size=64, gan_type=GAN_TYPE.NAIVE):
+                   img_ood=None, dist_sample_size=64, gan_type=GAN_TYPE.NAIVE,
+                   gd_ls_tracker=None):
     if gan_type == GAN_TYPE.NAIVE:
         label = torch.ones_like(logits_fake, dtype=logits_fake.dtype)
         loss = nn.functional.binary_cross_entropy_with_logits(
@@ -107,9 +111,11 @@ def generator_loss(logits_fake, img_fake=None, img_ind=None,
             img_fake, img_ind, dist_sample_size, DIST_TYPE.COR)
         dist_fake_ood = get_dist_metric(
             img_fake, img_ood, dist_sample_size, DIST_TYPE.COR)
-        ic(-zsl_fake)
-        ic(-dist_fake_ind)
-        ic(dist_fake_ood)
+        # ic(-zsl_fake)
+        # ic(-dist_fake_ind)
+        # ic(dist_fake_ood)
+        if gd_ls_tracker is not None:
+            gd_ls_tracker.ap_g_ls(zsl_fake, dist_fake_ind, dist_fake_ood)
         return -zsl_fake - dist_fake_ind + dist_fake_ood
     else:
         assert False, 'Unrecognized GAN_TYPE.'
@@ -142,6 +148,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
             ood_img_batch) == torch.Tensor, 'Expect the image batch to be a torch tensor.'
         # ic(ood_img_batch.shape)  # 128 x 3 x 28 x 28
         # TODO: This portion of code only works for CIFAR10 and MNIST transformation
+        # TODO: This portion of code MUST be rewritten in the future.
         ood_img_batch = torch.mean(ood_img_batch, dim=1)
         # ic(ood_img_batch.shape)  # (128, 28, 28) OR (B, H, W)
         # ic(ood_img_batch_label.shape)  # (128,) OR (B,)
@@ -151,7 +158,9 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
             # x: (B, 28, 28) for
             if len(x) != batch_size:
                 continue
-
+            # EARLY STOP FOR SAMPLE TRAINING WITH GD_LOSS_TRACKER
+            if iter_count >= gd_ls_track_iter:
+                return
             # Discriminator Training
             D_solver.zero_grad()
             # TODO: Revise backbone architecture to make sure it works for unflattened images.
@@ -167,7 +176,8 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 ood_imgs = ood_img_batch.view(-1, 784).to(DEVICE)
                 logits_ood = D(ood_imgs)
                 d_total_error = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
-                                                   labels_real=y, gan_type=GAN_TYPE.OOD)
+                                                   labels_real=y, gan_type=GAN_TYPE.OOD,
+                                                   gd_ls_tracker=gd_ls_tracker)
             else:
                 d_total_error = discriminator_loss(logits_real, logits_fake)
             d_total_error.backward()
@@ -186,7 +196,8 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 # ic(ood_imgs.shape)
                 # ic(real_data.shape)
                 g_error = generator_loss(
-                    gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
+                    gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD,
+                    gd_ls_tracker=gd_ls_tracker)
             else:
                 g_error = generator_loss(gen_logits_fake)
             g_error.backward()

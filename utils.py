@@ -7,7 +7,7 @@ class GD(Enum):
     G, D = list(range(2))
 
 
-class GDLoss():
+class GDLossTracker():
     """
     This class is constructed for general debugging and logging purposes for OOD GANs.
     """
@@ -47,7 +47,7 @@ class GDLoss():
 
     def ap_g_ls(self, zsl_fake, dist_fake_ind, dist_fake_ood):
         self.g_n_zsl_fake.append(-zsl_fake)
-        self.g_n_dist_fake_ind .append(dist_fake_ind)
+        self.g_n_dist_fake_ind .append(-dist_fake_ind)
         self.g_dist_fake_ood.append(dist_fake_ood)
 
     def plt_ls(self, save_addr: str, num_iter: int, type: GD, verbose=False):
