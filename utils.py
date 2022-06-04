@@ -2,6 +2,9 @@ from cProfile import label
 from matplotlib import markers
 from config import *
 
+GD_LOSS_PLOT_ADDR = "../GDLossTracker/GDLossTrackerPlot/"
+GD_LOSS_LOG_ADDR = "../GDLossTracker/"
+
 
 class GD(Enum):
     G, D = list(range(2))
@@ -76,7 +79,7 @@ class GDLossTracker():
             # plt.figure(dpi=100)
             plt.xlabel("Number of iterations")
             plt.title("Discriminator Loss vs. Number of iterations")
-            plt.savefig("../GDLossTrackerPlot/" + save_fname)
+            plt.savefig(GD_LOSS_PLOT_ADDR + save_fname)
             plt.show()
             plt.close()
         elif type == GD.G:
@@ -91,7 +94,7 @@ class GDLossTracker():
             # plt.figure(dpi=100)
             plt.xlabel("Number of iterations")
             plt.title("Generator Loss vs. Number of iterations")
-            plt.savefig("../GDLossTrackerPlot/" + save_fname)
+            plt.savefig(GD_LOSS_PLOT_ADDR + save_fname)
             plt.show()
             plt.close()
         else:
@@ -101,13 +104,13 @@ class GDLossTracker():
             return
 
 
-def log_gd_loss(out_filename: str, ls1, ls2, ls3, total_ls, type: str):
+def log_gd_loss(out_filename: str, num_iter: int, ls1, ls2, ls3, total_ls, type: str):
     # TODO: Implement this function and complete docstrings.
     """
     Log training loss into files.
 
     Args:
-        out_filename (str): _description_
+        out_filename (str): name of the destination logging file
         ls1 (_type_): _description_
         ls2 (_type_): _description_
         ls3 (_type_): _description_
