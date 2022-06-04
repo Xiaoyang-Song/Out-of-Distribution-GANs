@@ -1,6 +1,7 @@
+from numpy import append
 from config import *
 from dataset import MNIST, CIFAR10
-from utils import show_images, DIST_TYPE, get_dist_metric, GDLossTracker
+from utils import show_images, DIST_TYPE, Metric, GDLossTracker
 from wass_loss import ood_wass_loss, ind_wass_loss
 
 
@@ -27,26 +28,16 @@ def sample_noise(batch_size, noise_dim, dtype=torch.float, device=DEVICE):
 
 
 def discriminator(gan_type=GAN_TYPE.NAIVE):
-    if gan_type == GAN_TYPE.NAIVE:
-        model = nn.Sequential(
-            nn.Linear(784, 256),
-            nn.LeakyReLU(0.01),
-            nn.Linear(256, 256),
-            nn.LeakyReLU(0.01),
-            nn.Linear(256, 1)
-        )
-        return model
-    elif gan_type == GAN_TYPE.OOD:
-        model = nn.Sequential(
-            nn.Linear(784, 256),
-            nn.LeakyReLU(0.01),
-            nn.Linear(256, 256),
-            nn.LeakyReLU(0.01),
-            nn.Linear(256, 10)
-        )
-        return model
-    else:
-        assert False, 'Unrecognized GAN_TYPE.'
+    assert gan_type is GAN_TYPE.NAIVE or GAN_TYPE.OOD, 'Expect gan_type to be one of GAN_TYPE.'
+    model = nn.Sequential(
+        nn.Linear(784, 256),
+        nn.LeakyReLU(0.01),
+        nn.Linear(256, 256),
+        nn.LeakyReLU(0.01)
+    )
+    out_dim = 10 if gan_type == GAN_TYPE.OOD else 1
+    model = append(model, nn.Linear(256, out_dim))
+    return model
 
 
 def generator(noise_dim=NOISE_DIM):
