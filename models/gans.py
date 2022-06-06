@@ -1,7 +1,7 @@
 from numpy import append
 from config import *
 from dataset import MNIST, CIFAR10
-from utils import show_images, DIST_TYPE, Metric, GDLossTracker
+from utils import show_images, DIST_TYPE, get_dist_metric, GDLossTracker
 from wass_loss import ood_wass_loss, ind_wass_loss
 
 
@@ -29,15 +29,15 @@ def sample_noise(batch_size, noise_dim, dtype=torch.float, device=DEVICE):
 
 def discriminator(gan_type=GAN_TYPE.NAIVE):
     assert gan_type is GAN_TYPE.NAIVE or GAN_TYPE.OOD, 'Expect gan_type to be one of GAN_TYPE.'
-    model = nn.Sequential(
+    model = [
         nn.Linear(784, 256),
         nn.LeakyReLU(0.01),
         nn.Linear(256, 256),
         nn.LeakyReLU(0.01)
-    )
+    ]
     out_dim = 10 if gan_type == GAN_TYPE.OOD else 1
-    model = append(model, nn.Linear(256, out_dim))
-    return model
+    model.append(nn.Linear(256, out_dim))
+    return nn.Sequential(*model)
 
 
 def generator(noise_dim=NOISE_DIM):
@@ -153,7 +153,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 continue
             # EARLY STOP FOR SAMPLE TRAINING WITH GD_LOSS_TRACKER
             if iter_count >= gd_ls_track_iter:
-                ic('Sample Training with GD_Loss_tracker Finished.')
+                print('Sample Training with GD_Loss_tracker Finished.')
                 return
             # Discriminator Training
             D_solver.zero_grad()

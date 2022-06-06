@@ -5,7 +5,7 @@ from models.gans import GAN_TYPE
 
 def dc_discriminator(gan_type=GAN_TYPE.NAIVE):
     assert gan_type is GAN_TYPE.NAIVE or GAN_TYPE.OOD, 'Expect gan_type to be one of GAN_TYPE.'
-    model = nn.Sequential(
+    model = [
         nn.Unflatten(1, (1, 28, 28)),
         nn.Conv2d(1, 32, 5),
         nn.LeakyReLU(0.01),
@@ -16,10 +16,10 @@ def dc_discriminator(gan_type=GAN_TYPE.NAIVE):
         nn.Flatten(1, -1),
         nn.Linear(4 * 4 * 64, 4 * 4 * 64),
         nn.LeakyReLU(0.01)
-    )
+    ]
     out_dim = 10 if gan_type == GAN_TYPE.OOD else 1
-    model = append(model, nn.Linear(4 * 4 * 64, out_dim))
-    return model
+    model.append(nn.Linear(4 * 4 * 64, out_dim))
+    return nn.Sequential(*model)
 
 
 def dc_generator(noise_dim=NOISE_DIM):
@@ -42,5 +42,6 @@ def dc_generator(noise_dim=NOISE_DIM):
 
 
 if __name__ == '__main__':
-    dc_disc = dc_discriminator()
+    # SANITY CHECK
+    dc_disc = dc_discriminator(gan_type=GAN_TYPE.OOD)
     ic(dc_disc)
