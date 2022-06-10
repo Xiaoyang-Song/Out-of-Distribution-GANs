@@ -3,6 +3,14 @@ from config import *
 from utils import visualize_img
 
 
+class CUSTOM_MNIST(Dataset):
+    def __init__(self):
+        pass
+
+    def __getitem__(self, idx: int):
+        pass
+
+
 def MNIST(batch_size, test_batch_size, num_workers=0, shuffle=True):
 
     train_set = torchvision.datasets.MNIST(
@@ -35,14 +43,19 @@ def MNIST_SUB(batch_size: int, val_batch_size: int, idx_ind: list, idx_ood: list
         assert len(label_idx[0]) + len(label_idx[1]
                                        ) <= 10, 'Two lists should be less than length of 10 in total'
         # TODO: Change this to make it more generic later.
-        train_sub, val_sub = [torch.tensor(list(filterfalse(
+        ind_sub_idx, ood_sub_idx = [torch.tensor(list(filterfalse(
             lambda x: dset.targets[x] not in idx, torch.arange(dset.data.shape[0])))) for idx in label_idx]
-        return train_sub, val_sub
+        # ind_sub, ood_sub = [[(dset.data[idx], dset.targets[idx])]
+        #                     for idx in [ind_sub_idx, ood_sub_idx]]
+        ind_sub, ood_sub = [[dset.__getitem__(idx) for idx in idxs]
+                            for idxs in [ind_sub_idx, ood_sub_idx]]
+        return ind_sub, ood_sub
 
     train_set = torchvision.datasets.MNIST(
         "./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
     val_set = torchvision.datasets.MNIST(
         "./Datasets", download=True, train=False, transform=transforms.Compose([transforms.ToTensor()]))
+
     train_sub, val_sub = [get_subsamples([idx_ind, idx_ood], dset) for dset in [
         train_set, val_set]]
     train_set_ind, train_set_ood = train_sub
@@ -121,5 +134,7 @@ if __name__ == '__main__':
     # ic(train_loader)
     dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64, idx_ind=[
                           0, 1, 2], idx_ood=[2], shuffle=True)
-    ic(dset_dict['train_set_ind'].shape)
-    ic(dset_dict['train_set_ood'].shape)
+    ic(len(dset_dict['train_set_ind'][0]))
+    ic(dset_dict['train_set_ind'][0][0].shape)
+    # ic(dset_dict['train_set_ind'][0][1].shape)
+    ic(next(iter(dset_dict['train_set_ind_loader']))[0].shape)

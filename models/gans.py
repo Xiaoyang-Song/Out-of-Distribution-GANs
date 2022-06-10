@@ -125,7 +125,7 @@ def get_optimizer(model):
 
 def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 generator_loss, save_filename=None, gan_type=GAN_TYPE.NAIVE, show_every=250,
-                batch_size=128, noise_size=96, num_epochs=10, ood_img_batch_size=BATCH_SIZE,
+                batch_size=128, noise_size=96, num_epochs=10, ood_loader=None, ood_img_batch_size=BATCH_SIZE,
                 ood_img_sample=None, gd_ls_tracker=None, gd_ls_track_iter=None):
     # Assertion Check of GD Loss Tracker arguments
     assert (gd_ls_track_iter is None and gd_ls_tracker is None) or (
@@ -133,18 +133,22 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
         'Expect gd_ls_tracker and gd_ls_tracker_iter to be not None or None simultaneously.'
     # OBTAIN OOD SAMPLES
     if gan_type == GAN_TYPE.OOD:
-        assert ood_img_sample != None, 'Please specify ood image sample when training OOD GANs.'
-        _, _, ood_tri_loader, _ = ood_img_sample(
-            ood_img_batch_size, TEST_BATCH_SIZE)
-        ood_img_batch, ood_img_batch_label = next(iter(ood_tri_loader))
-        assert type(
-            ood_img_batch) == torch.Tensor, 'Expect the image batch to be a torch tensor.'
-        # ic(ood_img_batch.shape)  # 128 x 3 x 28 x 28
-        # TODO: This portion of code only works for CIFAR10 and MNIST transformation
-        # TODO: This portion of code MUST be rewritten in the future.
-        ood_img_batch = torch.mean(ood_img_batch, dim=1)
-        # ic(ood_img_batch.shape)  # (128, 28, 28) OR (B, H, W)
-        # ic(ood_img_batch_label.shape)  # (128,) OR (B,)
+        if ood_loader != None:
+            ood_img_batch, ood_img_batch_label = next(iter(ood_loader))
+        else:
+            assert ood_img_sample != None, 'Please specify ood image sample when training OOD GANs.'
+            _, _, ood_tri_loader, _ = ood_img_sample(
+                ood_img_batch_size, TEST_BATCH_SIZE)
+            ood_img_batch, ood_img_batch_label = next(iter(ood_tri_loader))
+            ic(ood_img_batch.shape)
+            assert type(
+                ood_img_batch) == torch.Tensor, 'Expect the image batch to be a torch tensor.'
+            # ic(ood_img_batch.shape)  # 128 x 3 x 28 x 28
+            # TODO: This portion of code only works for CIFAR10 and MNIST transformation
+            # TODO: This portion of code MUST be rewritten in the future.
+            ood_img_batch = torch.mean(ood_img_batch, dim=1)
+            # ic(ood_img_batch.shape)  # (128, 28, 28) OR (B, H, W)
+            # ic(ood_img_batch_label.shape)  # (128,) OR (B,)
     iter_count = 0
     for epoch in range(num_epochs):
         for x, y in loader_train:
