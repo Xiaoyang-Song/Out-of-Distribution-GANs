@@ -19,8 +19,8 @@ def MNIST(batch_size, test_batch_size, num_workers=0, shuffle=True):
 
 def MNIST_SUB(batch_size: int, val_batch_size: int, idx_ind: list, idx_ood: list, shuffle=True):
     """
-    Helper function to extract subset of the MNIST dataset. In short, return training 
-    and validation sets with labels specified in 'idx_ind' and 'idx_ood', respectively. For 
+    Helper function to extract subset of the MNIST dataset. In short, return training
+    and validation sets with labels specified in 'idx_ind' and 'idx_ood', respectively. For
     samples with other labels, just ignore them.
 
     Args:
@@ -30,12 +30,38 @@ def MNIST_SUB(batch_size: int, val_batch_size: int, idx_ind: list, idx_ood: list
         idx_ood (list): a list of integer from 0-9 (specifying out-of-distribution labels)
         shuffle (bool, optional): whether or not to shuffle the dataset. Defaults to True.
     """
+    def get_subsamples(label_idx: list[list, list], dset):
+        assert len(label_idx) == 2, 'Expect a nested list for label_idx'
+        assert len(label_idx[0]) + len(label_idx[1]
+                                       ) <= 10, 'Two lists should be less than length of 10 in total'
+        # TODO: Change this to make it more generic later.
+        train_sub, val_sub = [torch.tensor(list(filterfalse(
+            lambda x: dset.targets[x] not in idx, torch.arange(dset.data.shape[0])))) for idx in label_idx]
+        return train_sub, val_sub
+
     train_set = torchvision.datasets.MNIST(
         "./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
     val_set = torchvision.datasets.MNIST(
         "./Datasets", download=True, train=False, transform=transforms.Compose([transforms.ToTensor()]))
-    return train_set, val_set
-    # pass
+    train_sub, val_sub = [get_subsamples([idx_ind, idx_ood], dset) for dset in [
+        train_set, val_set]]
+    train_set_ind, train_set_ood = train_sub
+    val_set_ind, val_set_ood = val_sub
+    # Build pytorch dataloaders
+
+    def set_to_loader(dset: torch.tensor, bs: int, sf: bool):
+        return torch.utils.data.DataLoader(dset, batch_size=bs, shuffle=sf)
+    dset_dict = {
+        'train_set_ind': train_set_ind,
+        'train_set_ood': train_set_ood,
+        'val_set_ind': val_set_ind,
+        'val_set_ood': val_set_ood,
+        'train_set_ind_loader': set_to_loader(train_set_ind, batch_size, shuffle),
+        'train_set_ood_loader': set_to_loader(train_set_ood, batch_size, shuffle),
+        'val_set_ind_loader': set_to_loader(val_set_ind, val_batch_size, shuffle),
+        'val_set_ind_loader': set_to_loader(val_set_ind, val_batch_size, shuffle)
+    }
+    return dset_dict
 
 
 def CIFAR10(batch_size, test_batch_size):
@@ -81,11 +107,19 @@ if __name__ == '__main__':
     # plt.show()
 
     # MNIST_SUB Sanity Check
-    train_set, val_set = MNIST_SUB(
-        128, 64, idx_ind=[0, 2, 3, 6, 8], idx_ood=[1, 7])
-    ic(train_set.targets.shape)
-    ic(train_set.data.shape)
-    ic(type(train_set.data))
-    train_loader = torch.utils.data.DataLoader(
-        train_set.data, batch_size=128, shuffle=True)
-    ic(train_loader)
+    # train_set, val_set = MNIST_SUB(
+    #     128, 64, idx_ind=[0, 2, 3, 6, 8], idx_ood=[1, 7])
+    # ic(train_set.targets.shape)
+    # mask = train_set.targets == 0
+    # ic((train_set.targets[mask]).shape)
+    # ic(torch.tensor(list(filterfalse(
+    #     lambda x: train_set.targets[x] in [0, 1], torch.arange(60000)))).shape)
+    # ic(train_set.data.shape)
+    # ic(type(train_set.data))
+    # train_loader = torch.utils.data.DataLoader(
+    #     train_set.data, batch_size=128, shuffle=True)
+    # ic(train_loader)
+    dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64, idx_ind=[
+                          0, 1, 2], idx_ood=[2], shuffle=True)
+    ic(dset_dict['train_set_ind'].shape)
+    ic(dset_dict['train_set_ood'].shape)
