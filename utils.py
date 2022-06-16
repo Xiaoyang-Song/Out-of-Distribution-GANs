@@ -1,7 +1,7 @@
 from cProfile import label
 from matplotlib import markers
 from config import *
-
+# Local saving address (may vary on different machines)
 GD_LOSS_PLOT_ADDR = "../GDLossTracker/GDLossTrackerPlot/"
 GD_LOSS_LOG_ADDR = "../GDLossTracker/"
 
@@ -11,6 +11,7 @@ class GD(Enum):
 
 
 class GDLossTracker():
+    # TODO: Wrap this with logging functions into a new logger class
     """
     This class is constructed for general debugging and logging purposes for OOD GANs.
     """

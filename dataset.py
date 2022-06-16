@@ -4,6 +4,7 @@ from utils import visualize_img
 
 
 class CUSTOM_MNIST(Dataset):
+    #TODO: Wrap MNIST_SUB into this custom dataset class.
     def __init__(self):
         pass
 
