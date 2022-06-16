@@ -10,7 +10,7 @@ class GD(Enum):
     G, D = list(range(2))
 
 
-class GDLossTracker():
+class Logger():
     # TODO: Wrap this with logging functions into a new logger class
     """
     This class is constructed for general debugging and logging purposes for OOD GANs.

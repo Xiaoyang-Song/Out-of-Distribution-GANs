@@ -1,7 +1,7 @@
 from numpy import append
 from config import *
 from dataset import MNIST, CIFAR10
-from utils import show_images, DIST_TYPE, get_dist_metric, GDLossTracker
+from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 
 
