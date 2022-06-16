@@ -1,6 +1,6 @@
 from config import *
 from dataset import MNIST, CIFAR10
-from hparam import *
+from models.hparam import *
 from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 
@@ -183,8 +183,7 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
 
                 if gan_type == GAN_TYPE.OOD:
                     zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
-                        gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD,
-                        logger=logger)
+                        gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
                     g_total_error = - hp.wass * zsl_fake + \
                         hp.dist * (-dist_fake_ind + dist_fake_ood)
                     if logger is not None:

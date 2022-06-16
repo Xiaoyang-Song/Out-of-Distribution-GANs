@@ -4,7 +4,7 @@ from config import *
 class HParam():
     """
     Wrapper of hyperparameter set
-    - Will add more if necessary
+    - Will add more hyperparameters if necessary
     """
 
     def __init__(self, ce=1, dist=1, wass=1):
