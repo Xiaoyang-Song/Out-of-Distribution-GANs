@@ -70,11 +70,18 @@ class Logger():
         x_axis = np.arange(num_iter)
         self.sum_up_gd_ls()
         if type == GD.D:
-            plt.plot(x_axis, self.d_zsl_ood, marker='+', label='d_zsl_ood_ls')
-            plt.plot(x_axis, self.d_zsl_fake,
-                     marker='s', label='d_zsl_fake_ls')
-            plt.plot(x_axis, self.d_ind_ce, marker='x', label='d_ind_ce_ls')
-            plt.plot(x_axis, self.d_total, marker='^', label='d_total_ls')
+            # plt.plot(x_axis, self.d_zsl_fake[0:num_iter],
+            #          marker='s', label='d_zsl_fake_ls')
+            # plt.plot(x_axis, self.d_zsl_ood[0:num_iter],
+            #          marker='+', label='d_zsl_ood_ls')
+            # plt.plot(x_axis, self.d_ind_ce[0:num_iter],
+            #          marker='x', label='d_ind_ce_ls')
+            plt.plot(
+                x_axis, self.d_zsl_fake[0:num_iter], label='d_zsl_fake_ls')
+            plt.plot(x_axis, self.d_zsl_ood[0:num_iter], label='d_zsl_ood_ls')
+            plt.plot(x_axis, self.d_ind_ce[0:num_iter], label='d_ind_ce_ls')
+            # plt.plot(x_axis, self.d_total[0:num_iter],
+            #          marker='^', label='d_total_ls')
             plt.legend()
             # TODO: This implementation is silly, change this later.
             # plt.figure(dpi=100)
@@ -84,13 +91,20 @@ class Logger():
             plt.show()
             plt.close()
         elif type == GD.G:
-            plt.plot(x_axis, self.g_n_zsl_fake,
-                     marker='o', label='g_n_zsl_fake_ls')
-            plt.plot(x_axis, self.g_n_dist_fake_ind,
-                     marker='o', label='g_n_dist_fake_ind_ls')
-            plt.plot(x_axis, self.g_dist_fake_ood,
-                     marker='o', label='g_dist_fake_ood_ls')
-            plt.plot(x_axis, self.g_total, marker='^', label='g_total_ls')
+            # plt.plot(x_axis, self.g_n_zsl_fake[0:num_iter],
+            #          marker='o', label='g_n_zsl_fake_ls')
+            # plt.plot(x_axis, self.g_n_dist_fake_ind[0:num_iter],
+            #          marker='o', label='g_n_dist_fake_ind_ls')
+            # plt.plot(x_axis, self.g_dist_fake_ood[0:num_iter],
+            #          marker='o', label='g_dist_fake_ood_ls')
+            plt.plot(
+                x_axis, self.g_n_zsl_fake[0:num_iter], label='g_n_zsl_fake_ls')
+            plt.plot(
+                x_axis, self.g_n_dist_fake_ind[0:num_iter], label='g_n_dist_fake_ind_ls')
+            plt.plot(
+                x_axis, self.g_dist_fake_ood[0:num_iter], label='g_dist_fake_ood_ls')
+            # plt.plot(x_axis, self.g_total[0:num_iter],
+            #  marker='^', label='g_total_ls')
             plt.legend()
             # plt.figure(dpi=100)
             plt.xlabel("Number of iterations")
@@ -219,6 +233,12 @@ if __name__ == '__main__':
     # img_b1 = torch.rand((3, 28, 28))
     # img_b2 = torch.rand((4, 28, 28))
     # ic(get_dist_metric(img_b1, img_b2, 3, DIST_TYPE.COS))
-    for sample in DIST_TYPE:
-        ic(sample)
-        ic(sample == DIST_TYPE.COR)
+    # for sample in DIST_TYPE:
+    #     ic(sample)
+    #     ic(sample == DIST_TYPE.COR)
+
+    # Test show images
+    sample_imgs = torch.zeros((16, 16, 16))
+    sample_imgs = torch.ones((16, 16, 16)) * 0.1
+    show_images(sample_imgs)
+    plt.show()

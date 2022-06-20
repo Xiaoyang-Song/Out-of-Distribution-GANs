@@ -78,7 +78,15 @@ def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
 if __name__ == "__main__":
     ic("Hello wass_loss.py")
     # TEST ood_wass_loss function
-    test_softmax = torch.rand((5, 10))
-    c = 10  # number of classes
-    wass_loss_ood = ood_wass_loss(test_softmax, c)
-    ic(wass_loss_ood.shape)
+    # test_softmax = torch.rand((5, 10))
+    # c = 10  # number of classes
+    # wass_loss_ood = ood_wass_loss(test_softmax, c)
+    # ic(wass_loss_ood.shape)
+
+    # TEST ood_wass_loss function 2
+    c1 = torch.tensor([[0.99,0,0.01,0,0]])
+    c2 = torch.ones((5)) * 0.2
+    ic(-torch.log(ood_wass_loss(c1, 5)))
+    ic(-torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))
+
+
