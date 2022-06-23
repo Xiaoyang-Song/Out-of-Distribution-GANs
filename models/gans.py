@@ -9,7 +9,6 @@ BATCH_SIZE = 128  # for training
 TEST_BATCH_SIZE = 64  # for testing (not used for now)
 NUM_CLASSES = 10  # TODO: This should be done automatically in the future
 
-
 class GAN_TYPE(Enum):
     NAIVE, OOD = list(range(2))
 
