@@ -11,46 +11,36 @@ NUM_CLASSES = 10  # TODO: This should be done automatically in the future
 
 
 def load_checkpoint():
-    pass
+    return None, None
 
 
 def satisfied():
-    pass
+    return True
 
 
-def ood_gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
-                    generator_loss, img_info, checkpoint=None, checkpoint_save_addr=None, hp=HParam(), g_d_ratio=1, save_filename=None, show_every=250,
-                    batch_size=128, noise_size=96, num_epochs=10, ood_loader=None, ood_img_batch_size=BATCH_SIZE,
-                    ood_img_sample=None, logger=None, logger_max_iter=None):
+def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discriminator_loss,
+                    generator_loss, img_info, backbone=GAN_BACKBONE.FC, checkpoint=None, checkpoint_save_addr=None, hp=HParam(),
+                    g_d_ratio=1, save_filename=None, show_every=250,
+                    batch_size=128, noise_size=96, num_epochs=10, logger=None, logger_max_iter=None):
     # Assertion Check of img_info
     assert img_info is not None, 'Expect img_info to be a dictionary containing H, W, and C.'
     H, W, C = img_info['H'], img_info['W'], img_info['C']
 
     if checkpoint is not None:
         # TODO: Implement this function later
-        load_checkpoint()
+        D, G = load_checkpoint()
 
-    # Assertion Check of GD Loss Tracker arguments
+    # Assertion Check of Logger arguments
     assert (logger_max_iter is None and logger is None) or (
         logger_max_iter is not None and logger is not None), \
         'Expect logger and logger_iter to be not None or None simultaneously.'
     # OBTAIN OOD SAMPLES
-    if ood_loader != None:
-        ood_img_batch, ood_img_batch_label = next(iter(ood_loader))
-    else:
-        assert ood_img_sample != None, 'Please specify ood image sample when training OOD GANs.'
-        _, _, ood_tri_loader, _ = ood_img_sample(
-            ood_img_batch_size, TEST_BATCH_SIZE)
-        ood_img_batch, ood_img_batch_label = next(iter(ood_tri_loader))
-        ic(ood_img_batch.shape)
-        assert type(
-            ood_img_batch) == torch.Tensor, 'Expect the image batch to be a torch tensor.'
-        # TODO: This portion of code only works for CIFAR10 and MNIST transformation
-        # TODO: This portion of code MUST be rewritten in the future.
-        ood_img_batch = torch.mean(ood_img_batch, dim=1)
+    # assert ood_loader is not None, 'Expect ood_loader to be not None.'
+    ood_img_batch, ood_img_batch_label = next(iter(ood_loader))
+
     iter_count = 0
     for epoch in range(num_epochs):
-        for x, y in loader_train:
+        for x, y in ind_loader:
             if len(x) != batch_size:
                 continue
             # EARLY STOP FOR SAMPLE TRAINING WITH Logger
@@ -62,17 +52,22 @@ def ood_gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
             # Discriminator Training
             D_solver.zero_grad()
             # TODO: Revise backbone architecture to make sure it works for unflattened images.
-            real_data = x.view(-1, H*W).to(DEVICE)  # B x 784
+            real_data = x.view(-1, H*W*C).to(DEVICE)  # B x 784
             logits_real = D(2 * (real_data - 0.5))
+
+            num_trial = 0
             while True:
                 g_fake_seed = sample_noise(
                     batch_size, noise_size, dtype=real_data.dtype, device=real_data.device)
                 fake_images = G(g_fake_seed).detach()
                 if satisfied():
+                    print(f'Trial {num_trial} succeeds. Training resumes.')
                     break
+                num_trial += 1
+                print(f'Trial {num_trial} fails. Resampling...')
             logits_fake = D(fake_images)
             # TODO: decouple OOD GANs and the Original GANs in this script
-            ood_imgs = ood_img_batch.view(-1, H*W).to(DEVICE)
+            ood_imgs = ood_img_batch.view(-1, H*W*C).to(DEVICE)
             logits_ood = D(ood_imgs)
             ind_ce_loss, zsl_ood, zsl_fake = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
                                                                 labels_real=y, gan_type=GAN_TYPE.OOD)
