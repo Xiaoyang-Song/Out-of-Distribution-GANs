@@ -84,9 +84,13 @@ if __name__ == "__main__":
     # ic(wass_loss_ood.shape)
 
     # TEST ood_wass_loss function 2
-    c1 = torch.tensor([[0.99,0,0.01,0,0]])
+    c1 = torch.tensor([[0.01,0,0.99,0,0]])
+    c1_5 = torch.tensor([[0.01,0, 0.8, 0.19,0]])
     c2 = torch.ones((5)) * 0.2
-    ic(-torch.log(ood_wass_loss(c1, 5)))
-    ic(-torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))
+    ic(ood_wass_loss(c1, 5))
+    ic(ood_wass_loss(c1_5, 5))
+    ic(ood_wass_loss(c2.unsqueeze(0), 5))
+    ic(torch.log(ood_wass_loss(c1, 5)))
+    ic(torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))
 
 

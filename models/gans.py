@@ -9,6 +9,7 @@ BATCH_SIZE = 128  # for training
 TEST_BATCH_SIZE = 64  # for testing (not used for now)
 NUM_CLASSES = 10  # TODO: This should be done automatically in the future
 
+
 class GAN_TYPE(Enum):
     NAIVE, OOD = list(range(2))
 
@@ -161,10 +162,10 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 logits_ood = D(ood_imgs)
                 ind_ce_loss, zsl_ood, zsl_fake = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
                                                                     labels_real=y, gan_type=GAN_TYPE.OOD)
-                d_total_error = hp.ce * ind_ce_loss + \
+                d_total_error = hp.ce * ind_ce_loss - \
                     hp.wass * (zsl_ood + zsl_fake)
                 if logger is not None:
-                    logger.ap_d_ls(ind_ce_loss, zsl_ood, zsl_fake)
+                    logger.ap_d_ls(ind_ce_loss, -zsl_ood, -zsl_fake)
             else:
                 d_total_error = discriminator_loss(logits_real, logits_fake)
 

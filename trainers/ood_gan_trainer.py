@@ -52,7 +52,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
             # Discriminator Training
             D_solver.zero_grad()
             # TODO: Revise backbone architecture to make sure it works for unflattened images.
-            real_data = x.view(-1, H*W*C).to(DEVICE)  # B x 784
+            real_data = x.view(-1, C*H*W).to(DEVICE)  # B x HWC
             logits_real = D(2 * (real_data - 0.5))
 
             num_trial = 0
@@ -61,7 +61,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                     batch_size, noise_size, dtype=real_data.dtype, device=real_data.device)
                 fake_images = G(g_fake_seed).detach()
                 if satisfied():
-                    print(f'Trial {num_trial} succeeds. Training resumes.')
+                    print(f'[{iter_count}] Trial {num_trial} succeeds. Training resumes.')
                     break
                 num_trial += 1
                 print(f'Trial {num_trial} fails. Resampling...')
