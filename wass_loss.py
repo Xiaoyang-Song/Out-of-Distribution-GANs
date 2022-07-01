@@ -90,7 +90,7 @@ if __name__ == "__main__":
     ic(ood_wass_loss(c1, 5))
     ic(ood_wass_loss(c1_5, 5))
     ic(ood_wass_loss(c2.unsqueeze(0), 5))
-    ic(torch.log(ood_wass_loss(c1, 5)))
-    ic(torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))
+    ic(-torch.log(ood_wass_loss(c1, 5)))
+    ic(-torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))
 
 

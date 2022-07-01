@@ -77,10 +77,10 @@ class Logger():
             # plt.plot(x_axis, self.d_ind_ce[0:num_iter],
             #          marker='x', label='d_ind_ce_ls')
             plt.plot(
-                x_axis, self.d_zsl_fake[0:num_iter], label='d_n_zsl_fake_ls')
+                x_axis, self.d_zsl_fake[0:num_iter], label='W_z')
             plt.plot(
-                x_axis, self.d_zsl_ood[0:num_iter], label='d_n_zsl_ood_ls')
-            plt.plot(x_axis, self.d_ind_ce[0:num_iter], label='d_ind_ce_ls')
+                x_axis, self.d_zsl_ood[0:num_iter], label='W_ood')
+            plt.plot(x_axis, self.d_ind_ce[0:num_iter], label='CE')
             # plt.plot(x_axis, self.d_total[0:num_iter],
             #          marker='^', label='d_total_ls')
             plt.legend()
@@ -99,11 +99,11 @@ class Logger():
             # plt.plot(x_axis, self.g_dist_fake_ood[0:num_iter],
             #          marker='o', label='g_dist_fake_ood_ls')
             plt.plot(
-                x_axis, self.g_n_zsl_fake[0:num_iter], label='g_n_zsl_fake_ls')
+                x_axis, self.g_n_zsl_fake[0:num_iter], label='W_z')
             plt.plot(
-                x_axis, self.g_n_dist_fake_ind[0:num_iter], label='g_dist_fake_ind_ls')
+                x_axis, self.g_n_dist_fake_ind[0:num_iter], label='d_Ind')
             plt.plot(
-                x_axis, self.g_dist_fake_ood[0:num_iter], label='g_n_dist_fake_ood_ls')
+                x_axis, self.g_dist_fake_ood[0:num_iter], label='d_ood^-')
             # plt.plot(x_axis, self.g_total[0:num_iter],
             #  marker='^', label='g_total_ls')
             plt.legend()
