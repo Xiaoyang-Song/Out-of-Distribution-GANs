@@ -61,7 +61,8 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                     batch_size, noise_size, dtype=real_data.dtype, device=real_data.device)
                 fake_images = G(g_fake_seed).detach()
                 if satisfied():
-                    print(f'[{iter_count}] Trial {num_trial} succeeds. Training resumes.')
+                    print(
+                        f'[{iter_count}] Trial {num_trial} succeeds. Training resumes.')
                     break
                 num_trial += 1
                 print(f'Trial {num_trial} fails. Resampling...')
@@ -71,10 +72,15 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
             logits_ood = D(ood_imgs)
             ind_ce_loss, zsl_ood, zsl_fake = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
                                                                 labels_real=y, gan_type=GAN_TYPE.OOD)
+
+            # print("Discriminator Loss Terms:")
+            # ic(ind_ce_loss)
+            # ic(zsl_ood)
+            # ic(zsl_fake)
             d_total_error = hp.ce * ind_ce_loss + \
-                hp.wass * (zsl_ood + zsl_fake)
+                hp.wass * (-zsl_ood - zsl_fake)
             if logger is not None:
-                logger.ap_d_ls(ind_ce_loss, zsl_ood, zsl_fake)
+                logger.ap_d_ls(ind_ce_loss, -zsl_ood, -zsl_fake)
 
             d_total_error.backward()
             D_solver.step()
@@ -89,11 +95,16 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 gen_logits_fake = D(fake_images)
                 zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
                     gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
-                g_total_error = - hp.wass * zsl_fake + \
-                    hp.dist * (-dist_fake_ind + dist_fake_ood)
+                # print("Generator Loss Terms:")
+                # ic(zsl_fake)
+                # ic(dist_fake_ind)
+                # ic(dist_fake_ood)
+
+                g_total_error = -(hp.wass * (-zsl_fake) +
+                                  hp.dist * (dist_fake_ind - dist_fake_ood))
                 if logger is not None:
                     logger.ap_g_ls(
-                        zsl_fake, dist_fake_ind, dist_fake_ood)
+                        -zsl_fake, dist_fake_ind, -dist_fake_ood)
                 g_total_error.backward()
                 G_solver.step()
 

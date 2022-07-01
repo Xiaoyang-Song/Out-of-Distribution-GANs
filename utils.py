@@ -2,7 +2,7 @@ from cProfile import label
 from matplotlib import markers
 from config import *
 # Local saving address (may vary on different machines)
-GD_LOSS_PLOT_ADDR = "../GDLossTracker/GDLossTrackerPlot/"
+GD_LOSS_PLOT_ADDR = "../GDLossTracker/Examples/"
 GD_LOSS_LOG_ADDR = "../GDLossTracker/"
 
 
@@ -50,8 +50,8 @@ class Logger():
         self.d_ind_ce.append(ind_ce_loss.detach())
 
     def ap_g_ls(self, zsl_fake, dist_fake_ind, dist_fake_ood):
-        self.g_n_zsl_fake.append(-zsl_fake.detach())
-        self.g_n_dist_fake_ind.append(-dist_fake_ind.detach())
+        self.g_n_zsl_fake.append(zsl_fake.detach())
+        self.g_n_dist_fake_ind.append(dist_fake_ind.detach())
         self.g_dist_fake_ood.append(dist_fake_ood.detach())
 
     def plt_ls(self, save_fname: str, num_iter: int, type: GD, verbose=False):
@@ -77,8 +77,9 @@ class Logger():
             # plt.plot(x_axis, self.d_ind_ce[0:num_iter],
             #          marker='x', label='d_ind_ce_ls')
             plt.plot(
-                x_axis, self.d_zsl_fake[0:num_iter], label='d_zsl_fake_ls')
-            plt.plot(x_axis, self.d_zsl_ood[0:num_iter], label='d_zsl_ood_ls')
+                x_axis, self.d_zsl_fake[0:num_iter], label='d_n_zsl_fake_ls')
+            plt.plot(
+                x_axis, self.d_zsl_ood[0:num_iter], label='d_n_zsl_ood_ls')
             plt.plot(x_axis, self.d_ind_ce[0:num_iter], label='d_ind_ce_ls')
             # plt.plot(x_axis, self.d_total[0:num_iter],
             #          marker='^', label='d_total_ls')
@@ -100,9 +101,9 @@ class Logger():
             plt.plot(
                 x_axis, self.g_n_zsl_fake[0:num_iter], label='g_n_zsl_fake_ls')
             plt.plot(
-                x_axis, self.g_n_dist_fake_ind[0:num_iter], label='g_n_dist_fake_ind_ls')
+                x_axis, self.g_n_dist_fake_ind[0:num_iter], label='g_dist_fake_ind_ls')
             plt.plot(
-                x_axis, self.g_dist_fake_ood[0:num_iter], label='g_dist_fake_ood_ls')
+                x_axis, self.g_dist_fake_ood[0:num_iter], label='g_n_dist_fake_ood_ls')
             # plt.plot(x_axis, self.g_total[0:num_iter],
             #  marker='^', label='g_total_ls')
             plt.legend()
@@ -180,7 +181,7 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
         img_b1_sub = torch.mean(img_b1_sub, dim=0).reshape(1, -1)  # 1 x HW
         img_b2_sub = torch.mean(img_b2_sub, dim=0).reshape(1, -1)  # 1 x HW
         target_mat = torch.cat([img_b1_sub, img_b2_sub])  # 2 x HW
-        return torch.corrcoef(target_mat)[0][1]
+        return torch.abs(torch.corrcoef(target_mat)[0][1])
     elif type == DIST_TYPE.EUC:
         # Compute sample mean of two sampled batch
         img_b1_sub = torch.mean(img_b1_sub, dim=0).reshape(1, -1)  # 1 x HW
@@ -238,7 +239,7 @@ if __name__ == '__main__':
     #     ic(sample == DIST_TYPE.COR)
 
     # Test show images
-    sample_imgs = torch.zeros((16, 16, 16))
-    sample_imgs = torch.ones((16, 16, 16)) * 0.1
-    show_images(sample_imgs)
-    plt.show()
+    # sample_imgs = torch.zeros((16, 16, 16))
+    # sample_imgs = torch.ones((16, 16, 16)) * 0.1
+    # show_images(sample_imgs)
+    # plt.show()
