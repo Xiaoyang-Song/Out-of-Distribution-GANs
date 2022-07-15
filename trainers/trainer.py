@@ -30,6 +30,9 @@ def train(model, train_loader, val_loader, num_epoch=8):
         # Evaluation
         model.eval()
         with torch.no_grad():
+            if val_loader is None:
+                print(f"No validation now.")
+                break
             # TODO: print more stats for every n epoch: fix this later.
             val_loss, val_acc = [], []
             for idx, (img, label) in enumerate(val_loader):
