@@ -20,12 +20,14 @@ def satisfied():
 
 def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discriminator_loss,
                     generator_loss, img_info, backbone=GAN_BACKBONE.FC, checkpoint=None, checkpoint_save_addr=None, hp=HParam(),
-                    g_d_ratio=1, save_filename=None, show_every=250,
+                    g_d_ratio=1, save_filename=None, show_every=250, pretrained_D=None,
                     batch_size=128, noise_size=96, num_epochs=10, logger=None, logger_max_iter=None):
     # Assertion Check of img_info
     assert img_info is not None, 'Expect img_info to be a dictionary containing H, W, and C.'
     H, W, C = img_info['H'], img_info['W'], img_info['C']
-
+    if pretrained_D is not None:
+        D = torch.load(pretrained_D)
+        print("Pretrained D loaded.")
     if checkpoint is not None:
         # TODO: Implement this function later
         D, G = load_checkpoint()

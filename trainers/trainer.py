@@ -3,7 +3,7 @@ from models.mnist_cnn import MNISTCNN
 from tqdm import tqdm
 
 
-def train(model, train_loader, val_loader, num_epoch=8):
+def train(model, train_loader, val_loader=None, num_epoch=8):
     # TODO: Make it more genetic later.
     # model = MNISTCNN().to(DEVICE)
     optimizer = get_optimizer(model)
@@ -16,7 +16,7 @@ def train(model, train_loader, val_loader, num_epoch=8):
         for idx, (img, label) in enumerate(train_loader):
             optimizer.zero_grad()
             img, label = img.to(DEVICE), label.to(DEVICE)
-            logits = model(img)
+            logits = model(img.reshape((-1, 784)))  # TODO: Change this later
             loss = criterion(logits, label)
             loss.backward()
             optimizer.step()
@@ -37,7 +37,7 @@ def train(model, train_loader, val_loader, num_epoch=8):
             val_loss, val_acc = [], []
             for idx, (img, label) in enumerate(val_loader):
                 img, label = img.to(DEVICE), label.to(DEVICE)
-                logits = model(img)
+                logits = model(img.reshape((-1, 784)))
                 loss = criterion(logits, label)
                 val_acc.append(
                     (torch.argmax(logits, dim=1) == label).sum().item() / label.shape[0])
@@ -48,7 +48,7 @@ def train(model, train_loader, val_loader, num_epoch=8):
 
 def get_optimizer(model):
     # TODO: Make it more generic later.
-    return torch.optim.Adam(model.parameters(), lr=1e-4, betas=(0.9, 0.999))
+    return torch.optim.Adam(model.parameters(), lr=1e-5, betas=(0.9, 0.999))
 
 
 def get_criterion():
