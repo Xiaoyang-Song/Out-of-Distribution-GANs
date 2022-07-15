@@ -26,8 +26,9 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
     assert img_info is not None, 'Expect img_info to be a dictionary containing H, W, and C.'
     H, W, C = img_info['H'], img_info['W'], img_info['C']
     if pretrained_D is not None:
-        D = torch.load(pretrained_D)
-        print("Pretrained D loaded.")
+        pretrain = torch.load(pretrained_D)
+        D.load_state_dict(pretrain['model_state_dict'])
+        print("Pretrained D state is loaded.")
     if checkpoint is not None:
         # TODO: Implement this function later
         D, G = load_checkpoint()
