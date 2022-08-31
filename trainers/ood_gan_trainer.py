@@ -5,6 +5,8 @@ from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 from models.gans import *
 
+from time import gmtime, strftime
+
 BATCH_SIZE = 128  # for training
 TEST_BATCH_SIZE = 64  # for testing (not used for now)
 NUM_CLASSES = 10  # TODO: This should be done automatically in the future
@@ -15,8 +17,8 @@ def tune():
     pass
 
 
-def load_checkpoint():
-    return None, None
+def get_time_signature():
+    return strftime("%Y-%m-%d-%H:%M:%S", gmtime())
 
 
 def satisfied():
@@ -35,8 +37,10 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
         D.load_state_dict(pretrain['model_state_dict'])
         print("Pretrained D state is loaded.")
     if checkpoint is not None:
-        # TODO: Implement this function later
-        D, G = load_checkpoint()
+        chpt = torch.load(checkpoint['addr'])
+        D.load_state_dict(chpt['D-state'])
+        G.load_state_dict(chpt['G-state'])
+        print(f"Checkpoint [{checkpoint['id']} loaded.")
 
     # Assertion Check of Logger arguments
     assert (logger_max_iter is None and logger is None) or (
@@ -129,14 +133,20 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 print()
             iter_count += 1
 
-        # TODO: Checkpointing
-        print(f'Checkpoint created at the end of epoch {epoch}.')
+        if checkpoint_save_addr is not None:
+            print(f'New checkpoint created at the end of epoch {epoch}.')
+            chpt_name = checkpoint_save_addr + get_time_signature() + '.pt'
+            torch.save({
+                'D-state': D.state_dict(),
+                'G-state': G.state_dict(),
+                'logger': logger
+            }, chpt_name)
 
         # TODO: Change GAN_SAVE_PATH
-        if epoch == num_epochs - 1:
-            show_images(imgs_numpy[0:16])
-            if save_filename is not None:
-                plt.savefig(os.path.join(GAN_SAVE_PATH, save_filename))
+        # if epoch == num_epochs - 1:
+        #     show_images(imgs_numpy[0:16])
+        #     if save_filename is not None:
+        #         plt.savefig(os.path.join(GAN_SAVE_PATH, save_filename))
 
 
 if __name__ == '__main__':
