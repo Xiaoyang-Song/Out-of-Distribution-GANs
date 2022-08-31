@@ -10,6 +10,11 @@ TEST_BATCH_SIZE = 64  # for testing (not used for now)
 NUM_CLASSES = 10  # TODO: This should be done automatically in the future
 
 
+def tune():
+    # TODO: How to automatically do tuning?
+    pass
+
+
 def load_checkpoint():
     return None, None
 
@@ -103,11 +108,15 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 # ic(dist_fake_ind)
                 # ic(dist_fake_ood)
 
+                # g_total_error = -(hp.wass * (-zsl_fake) +
+                #                   hp.dist * (-dist_fake_ind + dist_fake_ood))
                 g_total_error = -(hp.wass * (-zsl_fake) +
-                                  hp.dist * (dist_fake_ind - dist_fake_ood))
+                                  hp.dist * (-dist_fake_ind))
                 if logger is not None:
+                    # logger.ap_g_ls(
+                    #     -zsl_fake, dist_fake_ind, -dist_fake_ood)
                     logger.ap_g_ls(
-                        -zsl_fake, dist_fake_ind, -dist_fake_ood)
+                        -zsl_fake, dist_fake_ind, torch.tensor(0))
                 g_total_error.backward()
                 G_solver.step()
 

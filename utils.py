@@ -102,8 +102,8 @@ class Logger():
                 x_axis, self.g_n_zsl_fake[0:num_iter], label='W_z')
             plt.plot(
                 x_axis, self.g_n_dist_fake_ind[0:num_iter], label='d_Ind')
-            plt.plot(
-                x_axis, self.g_dist_fake_ood[0:num_iter], label='d_ood^-')
+            # plt.plot(
+            #     x_axis, self.g_dist_fake_ood[0:num_iter], label='d_ood^-')
             # plt.plot(x_axis, self.g_total[0:num_iter],
             #  marker='^', label='g_total_ls')
             plt.legend()
