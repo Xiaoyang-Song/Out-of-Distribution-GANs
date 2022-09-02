@@ -48,8 +48,8 @@ def train(model, train_loader, val_loader=None, num_epoch=8):
 
 def get_optimizer(model):
     # TODO: Make it more generic later.
-    ic(f"Learning rate = {5e-5}")
-    return torch.optim.Adam(model.parameters(), lr=5e-5, betas=(0.9, 0.999))
+    ic(f"Learning rate = {1e-4}")
+    return torch.optim.Adam(model.parameters(), lr=1e-4, betas=(0.9, 0.999))
 
 
 def get_criterion():
