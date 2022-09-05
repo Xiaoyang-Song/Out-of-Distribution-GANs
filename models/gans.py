@@ -93,7 +93,9 @@ def generator_loss(logits_fake, img_fake=None, img_ind=None,
         assert img_ind is not None, 'Expect img_ind to be not None.'
         # Compute generator loss for OOD GANs
         zsl_fake = zero_softmax_loss(logits_fake)
-        dist_fake_ind = dist(img_ind, img_fake)
+        # x = torch.repeat_interleave(x, 3, 1)
+        dist_fake_ind = dist(torch.repeat_interleave(
+            img_ind, 3, 1), torch.repeat_interleave(img_fake, 3, 1))
         # dist_fake_ood = dist(img_ood, img_fake)
         dist_fake_ood = None
         # dist_fake_ind = get_dist_metric(
