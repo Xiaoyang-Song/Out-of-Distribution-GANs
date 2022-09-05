@@ -12,12 +12,12 @@ class CosSim():
         self.model = model(weights=self.weights)
         self.delete = layer_to_delete
         nodes, _ = get_graph_node_names(self.model)
-        print(nodes)
+        # print(nodes)
         self.preprocess = self.weights.transforms()
         self.feat_extractor = create_feature_extractor(
             self.model, return_nodes=nodes[:-self.delete])
         self.map_idx = nodes[-self.delete-1]
-        print(self.map_idx)
+        # print(self.map_idx)
         self.feat_extractor.requires_grad_(False)
         print('CosSim Metric Created.')
 
@@ -25,14 +25,14 @@ class CosSim():
         assert len(x.shape) == 4 and x.shape[1] == 3, 'Wrong Tensor Dims'
         assert len(y.shape) == 4 and y.shape[1] == 3, 'Wrong Tensor Dims'
         pre_x, pre_y = [self.preprocess(input) for input in (x, y)]
-        print(pre_x.shape)
+        # print(pre_x.shape)
 
         def forward(x): return self.feat_extractor(
             x)[self.map_idx].squeeze().mean(dim=0)
         out_x, out_y = [forward(raw) for raw in (pre_x, pre_y)]
-        print(out_x.shape)
+        # print(out_x.shape)
         norm_x, norm_y = [LA.norm(target) for target in (out_x, out_y)]
-        print(norm_x.shape)
+        # print(norm_x.shape)
         return torch.dot(out_x, out_y) / (norm_x * norm_y)
 
 
@@ -55,7 +55,6 @@ if __name__ == '__main__':
     x1, y1 = next(iter(ood_train_loader))
     # Temporary test
     x1 = torch.repeat_interleave(x1, 3, 1)
-
     print(metric(x0, x1))
 
  #   class Metric():
