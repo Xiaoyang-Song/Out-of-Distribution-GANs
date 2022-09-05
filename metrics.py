@@ -1,5 +1,29 @@
 from config import *
 from utils import DIST_TYPE
+from torchvision.models.feature_extraction import create_feature_extractor
+from torchvision.models.feature_extraction import get_graph_node_names
+from torchvision.models import resnet50, ResNet50_Weights
+
+
+class CosSim():
+    def __init__(self, model, weights, layer_to_delete):
+        self.weights = weights.DEFAULT
+        self.model = model(weights=self.weights)
+        self.delete = layer_to_delete
+        nodes, _ = get_graph_node_names(model)
+        self.preprocess = weights.transforms()
+        self.feat_extractor = create_feature_extractor(
+            self.model, return_nodes=nodes[:-self.delete])
+        self.feat_extractor.requires_grad_(False)
+
+    def __call__(self, x, y):
+        assert len(x.shape) == 4 and x.shape[1] == 3, 'Wrong Tensor Dims'
+        assert len(y.shape) == 4 and y.shape[1] == 3, 'Wrong Tensor Dims'
+        pre_x, pre_y = [self.preprocess(input) for input in (x, y)]
+        def forward(x): return self.feat_extractor(x).squeeze().mean(dim=0)
+        out_x, out_y = [forward(raw) for raw in (pre_x, pre_y)]
+        normx, normy = [LA.norm(target) for target in (out_x, out_y)]
+        return torch.dot(out_x, out_y) / (normx * normy)
 
 
 class Metric():
