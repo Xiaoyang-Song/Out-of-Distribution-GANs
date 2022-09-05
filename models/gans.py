@@ -80,8 +80,8 @@ def discriminator_loss(logits_real, logits_fake, logits_ood=None,
         assert False, 'Unrecognized GAN_TYPE.'
 
 
-def generator_loss(logits_fake, img_fake=None, img_ind=None, dist=None,
-                   img_ood=None, dist_sample_size=64, gan_type=GAN_TYPE.NAIVE):
+def generator_loss(logits_fake, img_fake=None, img_ind=None,
+                   img_ood=None, dist_sample_size=64, dist=None, gan_type=GAN_TYPE.NAIVE):
     if gan_type == GAN_TYPE.NAIVE:
         label = torch.ones_like(logits_fake, dtype=logits_fake.dtype)
         loss = nn.functional.binary_cross_entropy_with_logits(

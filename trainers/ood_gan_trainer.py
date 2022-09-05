@@ -109,7 +109,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 # zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
                 #     gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
                 zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(gen_logits_fake, fake_images.view(
-                    (-1, C, H, W)).to(DEVICE), ood_img_batch, x, dist=metric, gan_type=GAN_TYPE.OOD)
+                    (-1, C, H, W)).to(DEVICE), x, ood_img_batch, dist=metric, gan_type=GAN_TYPE.OOD)
                 # print("Generator Loss Terms:")
                 # ic(zsl_fake)
                 # ic(dist_fake_ind)
