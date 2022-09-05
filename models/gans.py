@@ -3,6 +3,7 @@ from dataset import MNIST, CIFAR10
 from models.hparam import *
 from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
+from metrics import *
 
 
 BATCH_SIZE = 128  # for training
@@ -79,7 +80,7 @@ def discriminator_loss(logits_real, logits_fake, logits_ood=None,
         assert False, 'Unrecognized GAN_TYPE.'
 
 
-def generator_loss(logits_fake, img_fake=None, img_ind=None,
+def generator_loss(logits_fake, img_fake=None, img_ind=None, dist=None,
                    img_ood=None, dist_sample_size=64, gan_type=GAN_TYPE.NAIVE):
     if gan_type == GAN_TYPE.NAIVE:
         label = torch.ones_like(logits_fake, dtype=logits_fake.dtype)
@@ -92,10 +93,13 @@ def generator_loss(logits_fake, img_fake=None, img_ind=None,
         assert img_ind is not None, 'Expect img_ind to be not None.'
         # Compute generator loss for OOD GANs
         zsl_fake = zero_softmax_loss(logits_fake)
-        dist_fake_ind = get_dist_metric(
-            img_fake, img_ind, dist_sample_size, DIST_TYPE.COR)
-        dist_fake_ood = get_dist_metric(
-            img_fake, img_ood, dist_sample_size, DIST_TYPE.COR)
+        dist_fake_ind = dist(img_ind, img_fake)
+        # dist_fake_ood = dist(img_ood, img_fake)
+        dist_fake_ood = None
+        # dist_fake_ind = get_dist_metric(
+        #     img_fake, img_ind, dist_sample_size, DIST_TYPE.COR)
+        # dist_fake_ood = get_dist_metric(
+        #     img_fake, img_ood, dist_sample_size, DIST_TYPE.COR)
         return zsl_fake, dist_fake_ind, dist_fake_ood
     else:
         assert False, 'Unrecognized GAN_TYPE.'

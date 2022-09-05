@@ -4,6 +4,7 @@ from models.hparam import *
 from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 from models.gans import *
+from metrics import *
 
 from time import gmtime, strftime
 
@@ -26,7 +27,7 @@ def satisfied():
 
 
 def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discriminator_loss,
-                    generator_loss, img_info, backbone=GAN_BACKBONE.FC, checkpoint=None, checkpoint_save_addr=None, hp=HParam(),
+                    generator_loss, metric, img_info, backbone=GAN_BACKBONE.FC, checkpoint=None, checkpoint_save_addr=None, hp=HParam(),
                     g_d_ratio=1, save_filename=None, show_every=250, pretrained_D=None,
                     batch_size=128, noise_size=96, num_epochs=10, logger=None, logger_max_iter=None):
     # Assertion Check of img_info
@@ -105,8 +106,10 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 fake_images = G(g_fake_seed)
 
                 gen_logits_fake = D(fake_images)
-                zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
-                    gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
+                # zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
+                #     gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
+                zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(gen_logits_fake, fake_images.view(
+                    (-1, C, H, W)).to(DEVICE), ood_img_batch, x, dist=metric, gan_type=GAN_TYPE.OOD)
                 # print("Generator Loss Terms:")
                 # ic(zsl_fake)
                 # ic(dist_fake_ind)
@@ -115,7 +118,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 # g_total_error = -(hp.wass * (-zsl_fake) +
                 #                   hp.dist * (-dist_fake_ind + dist_fake_ood))
                 g_total_error = -(hp.wass * (-zsl_fake) +
-                                  hp.dist * (-dist_fake_ind))
+                                  hp.dist * (dist_fake_ind))
                 if logger is not None:
                     # logger.ap_g_ls(
                     #     -zsl_fake, dist_fake_ind, -dist_fake_ood)
