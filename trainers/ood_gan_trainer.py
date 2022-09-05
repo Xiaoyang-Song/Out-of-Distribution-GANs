@@ -90,7 +90,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
             # ic(zsl_ood)
             # ic(zsl_fake)
             d_total_error = hp.ce * ind_ce_loss + \
-                hp.wass * (-zsl_ood - zsl_fake)
+                hp.wass * (-zsl_ood - (-zsl_fake))
             if logger is not None:
                 logger.ap_d_ls(ind_ce_loss, -zsl_ood, -zsl_fake)
 
