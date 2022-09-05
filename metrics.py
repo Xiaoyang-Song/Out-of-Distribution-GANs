@@ -22,9 +22,10 @@ class CosSim():
         print('CosSim Metric Created.')
 
     def __call__(self, x, y):
-        assert len(x.shape) == 4 and x.shape[1] == 3, 'Wrong Tensor Dims'
-        assert len(y.shape) == 4 and y.shape[1] == 3, 'Wrong Tensor Dims'
-        pre_x, pre_y = [self.preprocess(input) for input in (x, y)]
+        assert len(x.shape) == 4 and x.shape[1] == 1, 'Wrong Tensor Dims'
+        assert len(y.shape) == 4 and y.shape[1] == 1, 'Wrong Tensor Dims'
+        pre_x, pre_y = x, y
+        # pre_x, pre_y = [self.preprocess(input) for input in (x, y)]
         # print(pre_x.shape)
 
         def forward(x): return self.feat_extractor(
