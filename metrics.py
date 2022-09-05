@@ -52,9 +52,12 @@ if __name__ == '__main__':
     x0, y0 = next(iter(ind_train_loader))
     # Temporary test
     x0 = torch.repeat_interleave(x0, 3, 1)
-    x1, y1 = next(iter(ood_train_loader))
+    x1, y1 = next(iter(ind_val_loader))
     # Temporary test
     x1 = torch.repeat_interleave(x1, 3, 1)
+
+    # 0.9569 for ind_train and ood_train
+    # 0.9931 for ind_train and ind_val
     print(metric(x0, x1))
 
  #   class Metric():
