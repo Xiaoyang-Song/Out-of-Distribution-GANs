@@ -16,7 +16,7 @@ def train(model, train_loader, val_loader=None, num_epoch=8):
         for idx, (img, label) in enumerate(train_loader):
             optimizer.zero_grad()
             img, label = img.to(DEVICE), label.to(DEVICE)
-            logits = model(img.reshape((-1, 784)))  # TODO: Change this later
+            logits = model(img)
             loss = criterion(logits, label)
             loss.backward()
             optimizer.step()
@@ -37,7 +37,7 @@ def train(model, train_loader, val_loader=None, num_epoch=8):
             val_loss, val_acc = [], []
             for idx, (img, label) in enumerate(val_loader):
                 img, label = img.to(DEVICE), label.to(DEVICE)
-                logits = model(img.reshape((-1, 784)))
+                logits = model(img)
                 loss = criterion(logits, label)
                 val_acc.append(
                     (torch.argmax(logits, dim=1) == label).sum().item() / label.shape[0])

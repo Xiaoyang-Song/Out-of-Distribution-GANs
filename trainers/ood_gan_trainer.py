@@ -81,8 +81,8 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 print(f'Trial {num_trial} fails. Resampling...')
             logits_fake = D(fake_images)
             # TODO: decouple OOD GANs and the Original GANs in this script
-            ood_imgs = ood_img_batch.view(-1, H*W*C).to(DEVICE)
-            logits_ood = D(ood_imgs)
+            # ood_imgs = ood_img_batch.view(-1, H*W*C).to(DEVICE)
+            logits_ood = D(ood_img_batch)
             ind_ce_loss, zsl_ood, zsl_fake = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
                                                                 labels_real=y, gan_type=GAN_TYPE.OOD)
 
@@ -103,13 +103,15 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 G_solver.zero_grad()
                 g_fake_seed = sample_noise(
                     batch_size, noise_size, dtype=real_data.dtype, device=real_data.device)
-                fake_images = G(g_fake_seed)
+                # fake_images = G(g_fake_seed).view(
+                #     (-1, C, H, W)).to(DEVICE)
+                fake_images = G(g_fake_seed).to(DEVICE)
 
                 gen_logits_fake = D(fake_images)
                 # zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
                 #     gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
-                zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(gen_logits_fake, fake_images.view(
-                    (-1, C, H, W)).to(DEVICE), x, ood_img_batch, dist=metric, gan_type=GAN_TYPE.OOD)
+                zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
+                    gen_logits_fake, fake_images, x, ood_img_batch, dist=metric, gan_type=GAN_TYPE.OOD)
                 # print("Generator Loss Terms:")
                 # ic(zsl_fake)
                 # ic(dist_fake_ind)

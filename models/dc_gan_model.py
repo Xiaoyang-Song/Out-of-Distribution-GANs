@@ -3,11 +3,11 @@ from config import *
 from models.gans import GAN_TYPE
 
 
-def dc_discriminator(img_info=None, gan_type=GAN_TYPE.NAIVE):
+def dc_discriminator(img_info, gan_type=GAN_TYPE.NAIVE):
     H, W, C = img_info['H'], img_info['W'], img_info['C']
     assert gan_type is GAN_TYPE.NAIVE or GAN_TYPE.OOD, 'Expect gan_type to be one of GAN_TYPE.'
     model = [
-        nn.Unflatten(1, (C, H, W)),
+        # nn.Unflatten(1, (C, H, W)),
         nn.Conv2d(C, 32, 5),
         nn.LeakyReLU(0.01),
         nn.MaxPool2d(2),
@@ -37,7 +37,7 @@ def dc_generator(noise_dim=NOISE_DIM):
         nn.BatchNorm2d(64),
         nn.ConvTranspose2d(64, 1, 4, stride=2, padding=1),
         nn.Tanh(),
-        nn.Flatten(1, -1)
+        # nn.Flatten(1, -1)
     )
     return model
 
