@@ -66,7 +66,8 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
             D_solver.zero_grad()
             # TODO: Revise backbone architecture to make sure it works for unflattened images.
             real_data = x.view(-1, C*H*W).to(DEVICE)  # B x HWC
-            logits_real = D(2 * (real_data - 0.5))
+            # logits_real = D(2 * (real_data - 0.5))
+            logits_real = D(2 * (x - 0.5))
 
             num_trial = 0
             while True:
