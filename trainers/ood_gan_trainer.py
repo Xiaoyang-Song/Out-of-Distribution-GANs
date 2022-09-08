@@ -120,8 +120,11 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
 
                 # g_total_error = -(hp.wass * (-zsl_fake) +
                 #                   hp.dist * (-dist_fake_ind + dist_fake_ood))
+                # Only Ind distance
                 g_total_error = -(hp.wass * (-zsl_fake) +
                                   hp.dist * (dist_fake_ind))
+                # No distance
+                # g_total_error = -(hp.wass * (-zsl_fake))
                 if logger is not None:
                     # logger.ap_g_ls(
                     #     -zsl_fake, dist_fake_ind, -dist_fake_ood)
