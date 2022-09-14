@@ -55,6 +55,7 @@ def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVI
 
 def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
     # TODO: Add assertion check
+    ic(input.requires_grad)
     all_class = torch.LongTensor([i for i in range(C)]).to(device)
     all_class_onehot = label_2_onehot(all_class, C, device)
     # reshape into (B,N,D)
@@ -71,8 +72,9 @@ def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
                                             input_b[c:c+1:, :],
                                             all_class_onehot[c:c+1, :, 0],
                                             all_class_onehot[c:c+1:, :]) for c in range(C)])
-
-    return test_loss_values.min(dim=1)[0]
+    ans = test_loss_values.min(dim=1)[0]
+    ans.requires_grad = True
+    return ans
 
 
 if __name__ == "__main__":
@@ -84,13 +86,11 @@ if __name__ == "__main__":
     # ic(wass_loss_ood.shape)
 
     # TEST ood_wass_loss function 2
-    c1 = torch.tensor([[0.01,0,0.99,0,0]])
-    c1_5 = torch.tensor([[0.01,0, 0.8, 0.19,0]])
+    c1 = torch.tensor([[0.01, 0, 0.99, 0, 0]], requires_grad=True)
+    c1_5 = torch.tensor([[0.01, 0, 0.8, 0.19, 0]])
     c2 = torch.ones((5)) * 0.2
-    ic(ood_wass_loss(c1, 5))
+    ic(ood_wass_loss(c1, 5).requires_grad)
     ic(ood_wass_loss(c1_5, 5))
     ic(ood_wass_loss(c2.unsqueeze(0), 5))
     ic(-torch.log(ood_wass_loss(c1, 5)))
     ic(-torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))
-
-
