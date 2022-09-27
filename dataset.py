@@ -4,7 +4,7 @@ from utils import visualize_img
 
 
 class CUSTOM_MNIST(Dataset):
-    #TODO: Wrap MNIST_SUB into this custom dataset class.
+    # TODO: Wrap MNIST_SUB into this custom dataset class.
     def __init__(self):
         pass
 
@@ -133,9 +133,15 @@ if __name__ == '__main__':
     # train_loader = torch.utils.data.DataLoader(
     #     train_set.data, batch_size=128, shuffle=True)
     # ic(train_loader)
-    dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64, idx_ind=[
-                          0, 1, 2], idx_ood=[2], shuffle=True)
+
+    # Test whether the data loader is randomly shuffled in general.
+    idx_ind = [0, 1, 3, 4, 5]
+    dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
+                          idx_ind=idx_ind, idx_ood=[2], shuffle=True)
     ic(len(dset_dict['train_set_ind'][0]))
     ic(dset_dict['train_set_ind'][0][0].shape)
     # ic(dset_dict['train_set_ind'][0][1].shape)
-    ic(next(iter(dset_dict['train_set_ind_loader']))[0].shape)
+    ic(next(iter(dset_dict['train_set_ind_loader']))[1])
+    batch = next(iter(dset_dict['train_set_ind_loader']))[1]
+    for num in idx_ind:
+        ic(len(batch[batch == num]))
