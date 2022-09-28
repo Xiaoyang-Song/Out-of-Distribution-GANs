@@ -112,7 +112,7 @@ if __name__ == "__main__":
     # ic(ood_wass_loss(c2.unsqueeze(0), 5))
 
     def wass(x, K):
-        return -torch.log(ood_wass_loss(x, K))
+        return -ood_wass_loss(x, K)
 
     # ic(w1)
     # ic("Check Gradient")
@@ -123,6 +123,6 @@ if __name__ == "__main__":
     # W.backward()
     # ic(c1.grad.data)
     # ic(wass(c1, K))
-    ic(wass(c1_5, K))
-    # ic(wass(c0, K))
+    ic(wass(c0, K))
+    ic(wass(c1, K))
     # ic(-torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))

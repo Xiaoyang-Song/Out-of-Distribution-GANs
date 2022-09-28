@@ -4,48 +4,54 @@ from datasets import *
 from utils import *
 from ood_gan_trainer import *
 from models.dc_gan_model import dc_discriminator, dc_generator
+from wasserstein import Wasserstein
 
 
-def grad_asc_w_rej(ind_loader, D, B, M, Wt, device=DEVICE):
+def grad_asc_w_rej(ind_loader, D, B, M, Wt, WLoss, device=DEVICE):
     # D.requires_grad = False
     G_x = []
     for i, (x, y) in enumerate(ind_loader):
-        g_x = [ad_atk(D, img.unsqueeze(0).clone(
-        ).requires_grad_().to(device), Wt) for img in x]
-        G_x.append(g_x)
+
+        for img in x:
+            p = img.clone().unsqueeze(0).to(device)
+            p.requires_grad_()
+            # ic(p.shape)
+            g_x = ad_atk(D, p, Wt, WLoss)
+            G_x.append(g_x)
+
         if i >= M:
             return G_x
 
 
-def ad_atk(D, x, Wt):
+def ad_atk(D, x, Wt, WLoss):
     assert x.requires_grad
-    ic(x.is_leaf)
+    ic(x.shape)
+    x = nn.Parameter(x)
+    optimizer = torch.optim.Adam(
+        [{"params": x}], lr=1e-3)
+
     lr = 1
     i = 1
     while True:
         # Aim to minimize W
-        ic(x.is_leaf)
-        ic(x.data.shape)
+        optimizer.zero_grad()
         logit = D(x)
-        ic(logit.is_leaf)
-        ic(x.requires_grad)
+        # ic(logit.shape)
         # W = neg_zero_softmax_loss(logit)
-        W = torch.mean(logit)
+        W = -WLoss(torch.softmax(logit, dim=-1))
+        ic(W)
         if W < Wt:
             print(f"Adversarial Attack done in {i} iterations")
             return x.detach()
-        ic(W.is_leaf)
-        x.retain_grad()
-        logit.retain_grad()
-        W.retain_grad()
-
+        # x.retain_grad()
         W.backward()
-        grad = x.grad.data
-        ic(grad.shape)
-        # Update
-        dx = lr * grad / grad.norm()  # Normalize
-        x.data -= lr * dx  # Can still do Gradient Dscent
-        x.grad.zero_()
+        optimizer.step()
+        # grad = x.grad.data
+        # ic(grad.shape)
+        # # Update
+        # dx = lr * grad / grad.norm()  # Normalize
+        # x.data -= lr * dx  # Can still do Gradient Dscent
+        # x.grad.zero_()
         i += 1
 
 
@@ -68,17 +74,12 @@ if __name__ == '__main__':
 
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
-    dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
+    dset_dict = MNIST_SUB(batch_size=2, val_batch_size=64,
                           idx_ind=idx_ind, idx_ood=[2], shuffle=True)
     ind_tri_loader = dset_dict['train_set_ind_loader']
-    batch = next(iter(ind_tri_loader))[0]
+    # batch = next(iter(ind_tri_loader))[0]
     # Start Gradient Ascent
-    # Gx = grad_asc_w_rej(ind_tri_loader, D, 2, 1, 1.5)
-    ic(batch.shape)
-    ic(D(batch).shape)
-    ic(batch.requires_grad_)
-    logit = D(batch)
-    ic(logit.requires_grad_)
-    # Test backward pass
-    logit.backward()
-    ic(logit.grad.data.shape)
+    WLoss = Wasserstein.apply
+    G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 1, -0.25, WLoss, device=DEVICE)
+    for img in G_x:
+        ic(-WLoss(torch.softmax(D(img), dim=-1)).log())

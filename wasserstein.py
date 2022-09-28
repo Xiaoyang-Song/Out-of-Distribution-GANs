@@ -19,9 +19,9 @@ class Wasserstein(Function):
         """
         p = input.clone()
         B, C = input.shape
-        ic(B)
-        ic(C)
-        ic(p.requires_grad_)
+        # ic(B)
+        # ic(C)
+        # ic(p.requires_grad_)
         all_class = torch.LongTensor([i for i in range(C)]).to(device)
         all1hot = label_2_onehot(all_class, C, device)
         all1hot = torch.unsqueeze(all1hot, -1)
@@ -68,7 +68,7 @@ class Wasserstein(Function):
             OOD_f[b] = f[idx[b]]
 
         grad = torch.zeros([B, C]).to(DEVICE)
-        grad = OOD_f
+        grad = -OOD_f
         return grad, None, None, None, None
 
 
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     ic(batch.requires_grad_)
     logit = D(batch)
     ic(logit.requires_grad_)
-    W = WLoss(-torch.softmax(logit, dim=-1).log())
+    W = -WLoss(torch.softmax(logit, dim=-1)).log()
     ic(W.requires_grad_)
     batch.retain_grad()
     W.backward()
