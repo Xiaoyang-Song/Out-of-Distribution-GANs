@@ -19,6 +19,10 @@ class GAN_BACKBONE(Enum):
     FC, CONV = list(range(2))
 
 
+def neg_zero_softmax_loss(x): return -torch.log(ood_wass_loss(
+    torch.softmax(x, dim=-1), NUM_CLASSES)).mean()
+
+
 def zero_softmax_loss(x): return torch.log(ood_wass_loss(
     torch.softmax(x, dim=-1), NUM_CLASSES)).mean()
 

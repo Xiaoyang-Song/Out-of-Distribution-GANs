@@ -7,11 +7,11 @@ from models.dc_gan_model import dc_discriminator, dc_generator
 
 
 def grad_asc_w_rej(ind_loader, D, B, M, Wt, device=DEVICE):
-    D.requires_grad = False
+    # D.requires_grad = False
     G_x = []
     for i, (x, y) in enumerate(ind_loader):
-        x_g = x.clone().requires_grad_().to(device)
-        g_x = [ad_atk(D, img, Wt) for img in x_g]
+        g_x = [ad_atk(D, img.unsqueeze(0).clone(
+        ).requires_grad_().to(device), Wt) for img in x]
         G_x.append(g_x)
         if i >= M:
             return G_x
@@ -19,15 +19,26 @@ def grad_asc_w_rej(ind_loader, D, B, M, Wt, device=DEVICE):
 
 def ad_atk(D, x, Wt):
     assert x.requires_grad
-    assert not D.requires_grad
+    ic(x.is_leaf)
     lr = 1
     i = 1
     while True:
         # Aim to minimize W
-        W = -zero_softmax_loss(D(x))
+        ic(x.is_leaf)
+        ic(x.data.shape)
+        logit = D(x)
+        ic(logit.is_leaf)
+        ic(x.requires_grad)
+        # W = neg_zero_softmax_loss(logit)
+        W = torch.mean(logit)
         if W < Wt:
             print(f"Adversarial Attack done in {i} iterations")
             return x.detach()
+        ic(W.is_leaf)
+        x.retain_grad()
+        logit.retain_grad()
+        W.retain_grad()
+
         W.backward()
         grad = x.grad.data
         ic(grad.shape)
@@ -52,6 +63,8 @@ if __name__ == '__main__':
     pretrain = torch.load(path)
     D.load_state_dict(pretrain['model_state_dict'])
     print("Pretrained D state is loaded.")
+    # D.parameters().retain_grad()
+    ic(D[0].weight.is_leaf)
 
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
