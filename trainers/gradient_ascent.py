@@ -64,12 +64,21 @@ if __name__ == '__main__':
     D.load_state_dict(pretrain['model_state_dict'])
     print("Pretrained D state is loaded.")
     # D.parameters().retain_grad()
-    ic(D[0].weight.is_leaf)
+    # ic(D[0].weight.is_leaf)
 
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
     dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
                           idx_ind=idx_ind, idx_ood=[2], shuffle=True)
     ind_tri_loader = dset_dict['train_set_ind_loader']
+    batch = next(iter(ind_tri_loader))[0]
     # Start Gradient Ascent
-    Gx = grad_asc_w_rej(ind_tri_loader, D, 2, 1, 1.5)
+    # Gx = grad_asc_w_rej(ind_tri_loader, D, 2, 1, 1.5)
+    ic(batch.shape)
+    ic(D(batch).shape)
+    ic(batch.requires_grad_)
+    logit = D(batch)
+    ic(logit.requires_grad_)
+    # Test backward pass
+    logit.backward()
+    ic(logit.grad.data.shape)
