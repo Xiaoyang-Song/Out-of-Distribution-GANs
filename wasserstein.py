@@ -32,9 +32,9 @@ class Wasserstein(Function):
         loss = torch.zeros(B, C).to(device)
         for b in range(B):
             p_b = p[b:b+1, :, :].repeat(C, 1, 1)
-            ic(p_b.shape)
-            ic(p_b[:, :, 0].shape)
-            ic(all1hot.shape)
+            # ic(p_b.shape)
+            # ic(p_b[:, :, 0].shape)
+            # ic(all1hot.shape)
             # loss[b] = WASSLOSS(p_b[:, :, 0], p_b, all1hot[:, :, 0], all1hot)
             loss[b] = torch.tensor([WASSLOSS(p_b[c:c+1, :, 0],
                                              p_b[c:c+1:, :],
@@ -85,7 +85,29 @@ if __name__ == '__main__':
     c0 = torch.tensor(
         [[0.01, 0, 0.8, 0.19, 0]], requires_grad=True)
     WLoss = Wasserstein.apply
-    W = WLoss(c0)
+    # W = WLoss(c0)
+    # ic(W.requires_grad_)
+    # W.backward()
+    # ic(c0.grad.data.shape)
+
+    # Load dataset
+    idx_ind = [0, 1, 3, 4, 5]
+    dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
+                          idx_ind=idx_ind, idx_ood=[2], shuffle=True)
+    ind_tri_loader = dset_dict['train_set_ind_loader']
+    batch = next(iter(ind_tri_loader))[0]
+    # Start Gradient Ascent
+    # Gx = grad_asc_w_rej(ind_tri_loader, D, 2, 1, 1.5)
+    batch.requires_grad_()
+    ic(batch.shape)
+    ic(D(batch).shape)
+    ic(batch.requires_grad_)
+    logit = D(batch)
+    ic(logit.requires_grad_)
+    W = WLoss(-torch.softmax(logit, dim=-1).log())
     ic(W.requires_grad_)
+    batch.retain_grad()
     W.backward()
-    ic(c0.grad.data.shape)
+
+    ic(batch.grad.data.shape)
+    # Test backward pass
