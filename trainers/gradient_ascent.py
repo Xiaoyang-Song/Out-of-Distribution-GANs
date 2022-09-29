@@ -38,7 +38,7 @@ def ad_atk(D, x, Wt, WLoss):
         logit = D(x)
         # ic(logit.shape)
         # W = neg_zero_softmax_loss(logit)
-        W = -WLoss(torch.softmax(logit, dim=-1))
+        W = WLoss(torch.softmax(logit, dim=-1))
         ic(W)
         if W < Wt:
             print(f"Adversarial Attack done in {i} iterations")
@@ -82,4 +82,10 @@ if __name__ == '__main__':
     WLoss = Wasserstein.apply
     G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 1, -0.25, WLoss, device=DEVICE)
     for img in G_x:
-        ic(-WLoss(torch.softmax(D(img), dim=-1)).log())
+        ic(img.shape)
+        ic(WLoss(torch.softmax(D(img), dim=-1)))
+        ic((-WLoss(torch.softmax(D(img), dim=-1))).log())
+    img = torch.cat(G_x)
+    ic(img.shape)
+    show_images(img)
+    plt.show()

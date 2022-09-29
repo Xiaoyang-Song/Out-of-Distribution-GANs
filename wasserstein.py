@@ -44,7 +44,7 @@ class Wasserstein(Function):
 
         # Save for backward pass
         ctx.save_for_backward(all1hot, p, idx)
-        return values.mean()
+        return -values.mean()
 
     @staticmethod
     def backward(ctx, upstream_grad):
