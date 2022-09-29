@@ -2,13 +2,16 @@ from config import *
 from dataset import *
 import umap
 import umap.plot
-# from umap import plotpip install umap-learn[plot]
 from sklearn.datasets import load_digits
+
+
+def umap_visualization(x, y):
+    mapper = umap.UMAP().fit(x)
+    p = umap.plot.points(mapper, labels=y)
+    umap.plot.show(p)
 
 
 if __name__ == "__main__":
     ic("umap.py")
     digits = load_digits()
-
-    mapper = umap.UMAP().fit(digits.data)
-    umap.plot.points(mapper, labels=digits.target)
+    umap_visualization(digits.data, digits.target)

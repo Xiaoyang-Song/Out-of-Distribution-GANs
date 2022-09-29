@@ -2,9 +2,10 @@ from config import *
 from wass_loss import *
 from datasets import *
 from utils import *
-from ood_gan_trainer import *
+from trainers.ood_gan_trainer import *
 from models.dc_gan_model import dc_discriminator, dc_generator
 from wasserstein import Wasserstein
+from models.umap_plot import umap_visualization
 
 
 def grad_asc_w_rej(ind_loader, D, B, M, Wt, WLoss, device=DEVICE):
@@ -19,6 +20,7 @@ def grad_asc_w_rej(ind_loader, D, B, M, Wt, WLoss, device=DEVICE):
         if i >= M:
             ic(f"{B * M} adversarial samples are generated.")
             return G_x
+    return G_x
 
 
 def ad_atk(D, x, Wt, WLoss):
@@ -47,7 +49,16 @@ def to_raw(W_t):
 
 
 def find_W_t():
+    # TODO: Implement this function later
     return 1.5
+
+
+def adv_generation(ind_loader, D, B, M, nl_Wt, device=DEVICE):
+    WLoss = Wasserstein.apply
+    Wt = to_raw(nl_Wt)
+    G_x = grad_asc_w_rej(ind_loader, D, B, M, Wt, WLoss, device=device)
+    adv_g_img = torch.cat(G_x)
+    return adv_g_img
 
 
 if __name__ == '__main__':
@@ -63,21 +74,24 @@ if __name__ == '__main__':
 
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
-    dset_dict = MNIST_SUB(batch_size=2, val_batch_size=64,
+    B = 128
+    dset_dict = MNIST_SUB(batch_size=B, val_batch_size=64,
                           idx_ind=idx_ind, idx_ood=[2], shuffle=True)
     ind_tri_loader = dset_dict['train_set_ind_loader']
 
-    # Start Gradient Ascent
-    WLoss = Wasserstein.apply
+    # Start Adversarial Attack Test
+    # WLoss = Wasserstein.apply
+    M = 100
     nl_Wt = 1.50  # 0.08 - 0.80
-    Wt = to_raw(nl_Wt)
-    G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 1,
-                         Wt, WLoss, device=DEVICE)
-    for img in G_x:
-        ic(img.shape)
-        ic(WLoss(torch.softmax(D(img), dim=-1)))
-        ic(-(WLoss(torch.softmax(D(img), dim=-1)).log()))
-    img = torch.cat(G_x)
-    ic(img.shape)
+    # Wt = to_raw(nl_Wt)
+    # G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 1,
+    #                      Wt, WLoss, device=DEVICE)
+    # for img in G_x:
+    #     ic(img.shape)
+    #     ic(WLoss(torch.softmax(D(img), dim=-1)))
+    #     ic(-(WLoss(torch.softmax(D(img), dim=-1)).log()))
+    # img = torch.cat(G_x)
+    # ic(img.shape)
     # show_images(img)
     # plt.show()
+    adv_generation(ind_tri_loader, D, B, M, nl_Wt)
