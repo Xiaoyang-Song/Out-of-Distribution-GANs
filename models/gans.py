@@ -4,7 +4,7 @@ from models.hparam import *
 from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 from metrics import *
-
+from wasserstein import *
 
 BATCH_SIZE = 128  # for training
 TEST_BATCH_SIZE = 64  # for testing (not used for now)
@@ -19,8 +19,9 @@ class GAN_BACKBONE(Enum):
     FC, CONV = list(range(2))
 
 
-def neg_zero_softmax_loss(x): return -torch.log(ood_wass_loss(
-    torch.softmax(x, dim=-1), NUM_CLASSES)).mean()
+def batch_wasserstein(x):
+    WLoss = Wasserstein.apply
+    return torch.mean(-WLoss(torch.softmax(x, dim=-1)))
 
 
 def zero_softmax_loss(x): return torch.log(ood_wass_loss(
@@ -76,10 +77,11 @@ def discriminator_loss(logits_real, logits_fake, logits_ood=None,
         criterion = nn.CrossEntropyLoss()
         ind_ce_loss = criterion(logits_real, labels_real)
         # Compute wass_loss term
-        # TODO: current implementation is NOT numerically stable; change this later.
-        zsl_ood, zsl_fake = [zero_softmax_loss(
-            logit) for logit in (logits_ood, logits_fake)]
-        return ind_ce_loss, zsl_ood, zsl_fake
+        assert logits_ood.requires_grad
+        assert logits_fake.requires_grad
+        w_ood = batch_wasserstein(logits_ood)
+        w_fake = batch_wasserstein(logits_fake)
+        return ind_ce_loss, w_ood, w_fake
     else:
         assert False, 'Unrecognized GAN_TYPE.'
 
@@ -96,7 +98,7 @@ def generator_loss(logits_fake, img_fake=None, img_ind=None,
         assert img_ood is not None, 'Expect img_ood to be not None.'
         assert img_ind is not None, 'Expect img_ind to be not None.'
         # Compute generator loss for OOD GANs
-        zsl_fake = zero_softmax_loss(logits_fake)
+        w_fake_g = batch_wasserstein(logits_fake)
         # x = torch.repeat_interleave(x, 3, 1)
         dist_fake_ind = dist(torch.repeat_interleave(
             img_ind, 3, 1), torch.repeat_interleave(img_fake, 3, 1))
@@ -106,7 +108,7 @@ def generator_loss(logits_fake, img_fake=None, img_ind=None,
         #     img_fake, img_ind, dist_sample_size, DIST_TYPE.COR)
         # dist_fake_ood = get_dist_metric(
         #     img_fake, img_ood, dist_sample_size, DIST_TYPE.COR)
-        return zsl_fake, dist_fake_ind, dist_fake_ood
+        return w_fake_g, dist_fake_ind, dist_fake_ood
     else:
         assert False, 'Unrecognized GAN_TYPE.'
 

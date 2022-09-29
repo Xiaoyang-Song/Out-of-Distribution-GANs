@@ -56,7 +56,7 @@ def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVI
 
 def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
     # TODO: Add assertion check
-    ic(input.is_leaf)
+    # ic(input.is_leaf)
     input.requires_grad_()
     input.retain_grad()
     all_class = torch.LongTensor(
@@ -76,18 +76,18 @@ def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
     for b in range(test_batch_size):
         input_b = test_input[b:b+1, :, :].repeat(C, 1, 1)
         # Modified the line below
-        ic(input_b[0:1, :, 0].shape)
-        ic(all_class_onehot.shape)
-        ic(all_class_onehot[0:0+1:, :].shape)
-        ic(input_b[:, :, 0].shape)
+        # ic(input_b[0:1, :, 0].shape)
+        # ic(all_class_onehot.shape)
+        # ic(all_class_onehot[0:0+1:, :].shape)
+        # ic(input_b[:, :, 0].shape)
         test_loss_values[b] = torch.tensor([test_loss(input_b[c:c+1, :, 0],
                                             input_b[c:c+1:, :],
                                             all_class_onehot[c:c+1, :, 0],
                                             all_class_onehot[c:c+1:, :]) for c in range(C)])
     ans = test_loss_values.min(dim=1)[0].requires_grad_()
-    ic(test_loss_values.shape)
-    ic(ans.shape)
-    ic(ans.is_leaf)
+    # ic(test_loss_values.shape)
+    # ic(ans.shape)
+    # ic(ans.is_leaf)
     return ans
 
 
@@ -101,12 +101,13 @@ if __name__ == "__main__":
 
     # TEST ood_wass_loss function 2
     K = 5
+    c_hot = torch.tensor([[0.00, 0, 1, 0, 0]], requires_grad=True)
     c1 = torch.tensor([[0.01, 0, 0.99, 0, 0]], requires_grad=True)
     c1_5 = torch.tensor([[0.01, 0, 0.8, 0.19, 0], [0.01, 0, 0.8, 0.19, 0]])
     # Examples
     c0 = torch.tensor([[0.01, 0, 0.7, 0.19, 0.1]])
     c0 = torch.tensor([[0.10, 0.1, 0.4, 0.30, 0.1]])
-    c2 = torch.ones((5)) * 0.2
+    c2 = torch.ones((5)).unsqueeze(0) * 0.2
     # ic(ood_wass_loss(c1, 5).requires_grad)
     # ic(ood_wass_loss(c1_5, 5))
     # ic(ood_wass_loss(c2.unsqueeze(0), 5))
@@ -123,6 +124,12 @@ if __name__ == "__main__":
     # W.backward()
     # ic(c1.grad.data)
     # ic(wass(c1, K))
-    ic(wass(c0, K))
-    ic(wass(c1, K))
+    ic(-wass(c0, K))
+    ic(-wass(c1, K))
+    ic(-wass(c_hot, K))
+    ic(-wass(c2, K))
+    ic(-(-wass(c0, K)).log())
+    ic(-(-wass(c1, K)).log())
+    ic(-(-wass(c_hot, K)).log())
+    ic(-(-wass(c2, K)).log())
     # ic(-torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))

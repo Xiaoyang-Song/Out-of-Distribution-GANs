@@ -36,8 +36,10 @@ def ad_atk(D, x, Wt, WLoss):
         # Minimize negative Wasserstein distances to onehot vectors
         W = -WLoss(torch.softmax(logit, dim=-1))
         # ic(W)
+        # TODO: Need to handle the case where there is an explosion
         if W < Wt:
             print(f"Adversarial Attack done in {i} iterations")
+            ic(torch.softmax(logit, dim=-1))
             return x.detach()
         W.backward()
         optimizer.step()
@@ -74,24 +76,25 @@ if __name__ == '__main__':
 
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
-    B = 128
+    B = 2
     dset_dict = MNIST_SUB(batch_size=B, val_batch_size=64,
                           idx_ind=idx_ind, idx_ood=[2], shuffle=True)
     ind_tri_loader = dset_dict['train_set_ind_loader']
 
     # Start Adversarial Attack Test
-    # WLoss = Wasserstein.apply
+    WLoss = Wasserstein.apply
     M = 100
-    nl_Wt = 1.50  # 0.08 - 0.80
-    # Wt = to_raw(nl_Wt)
-    # G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 1,
-    #                      Wt, WLoss, device=DEVICE)
-    # for img in G_x:
-    #     ic(img.shape)
-    #     ic(WLoss(torch.softmax(D(img), dim=-1)))
-    #     ic(-(WLoss(torch.softmax(D(img), dim=-1)).log()))
-    # img = torch.cat(G_x)
-    # ic(img.shape)
+    nl_Wt = 1.25
+    Wt = to_raw(nl_Wt)
+    ic(Wt)
+    G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 1,
+                         Wt, WLoss, device=DEVICE)
+    for img in G_x:
+        ic(img.shape)
+        ic(WLoss(torch.softmax(D(img), dim=-1)))
+        ic(-(WLoss(torch.softmax(D(img), dim=-1)).log()))
+    img = torch.cat(G_x)
+    ic(img.shape)
     # show_images(img)
     # plt.show()
-    adv_generation(ind_tri_loader, D, B, M, nl_Wt)
+    # adv_generation(ind_tri_loader, D, B, M, nl_Wt)

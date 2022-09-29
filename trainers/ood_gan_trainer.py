@@ -5,6 +5,7 @@ from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 from models.gans import *
 from metrics import *
+from wasserstein import *
 
 from time import gmtime, strftime
 
@@ -84,17 +85,17 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
             # TODO: decouple OOD GANs and the Original GANs in this script
             # ood_imgs = ood_img_batch.view(-1, H*W*C).to(DEVICE)
             logits_ood = D(ood_img_batch)
-            ind_ce_loss, zsl_ood, zsl_fake = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
-                                                                labels_real=y, gan_type=GAN_TYPE.OOD)
+            ind_ce_loss, w_ood, w_fake = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
+                                                            labels_real=y, gan_type=GAN_TYPE.OOD)
 
             # print("Discriminator Loss Terms:")
             # ic(ind_ce_loss)
             # ic(zsl_ood)
             # ic(zsl_fake)
             d_total_error = hp.ce * ind_ce_loss + \
-                hp.wass * (-zsl_ood - (-zsl_fake))
+                hp.wass * (w_ood - (w_fake))
             if logger is not None:
-                logger.ap_d_ls(ind_ce_loss, -zsl_ood, -zsl_fake)
+                logger.ap_d_ls(ind_ce_loss, -w_ood, -w_fake)
 
             d_total_error.backward()
             D_solver.step()
@@ -111,7 +112,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 gen_logits_fake = D(fake_images)
                 # zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
                 #     gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
-                zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
+                w_fake_g, dist_fake_ind, dist_fake_ood = generator_loss(
                     gen_logits_fake, fake_images, x, ood_img_batch, dist=metric, gan_type=GAN_TYPE.OOD)
                 # print("Generator Loss Terms:")
                 # ic(zsl_fake)
@@ -121,7 +122,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                 # g_total_error = -(hp.wass * (-zsl_fake) +
                 #                   hp.dist * (-dist_fake_ind + dist_fake_ood))
                 # Only Ind distance
-                g_total_error = -(hp.wass * (-zsl_fake) +
+                g_total_error = -(hp.wass * (w_fake_g) +
                                   hp.dist * (dist_fake_ind))
                 # No distance
                 # g_total_error = -(hp.wass * (-zsl_fake))
@@ -129,7 +130,7 @@ def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discrimina
                     # logger.ap_g_ls(
                     #     -zsl_fake, dist_fake_ind, -dist_fake_ood)
                     logger.ap_g_ls(
-                        -zsl_fake, dist_fake_ind, torch.tensor(0))
+                        -w_fake_g, dist_fake_ind, torch.tensor(0))
                 g_total_error.backward()
                 G_solver.step()
 
