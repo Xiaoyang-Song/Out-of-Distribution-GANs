@@ -1,6 +1,6 @@
 from config import *
 from wass_loss import *
-from datasets import *
+from dataset import *
 from utils import *
 from trainers.ood_gan_trainer import *
 from models.dc_gan_model import dc_discriminator, dc_generator
