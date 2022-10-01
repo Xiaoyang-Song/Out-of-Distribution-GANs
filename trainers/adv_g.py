@@ -95,6 +95,6 @@ if __name__ == '__main__':
         ic(-(WLoss(torch.softmax(D(img), dim=-1)).log()))
     img = torch.cat(G_x)
     ic(img.shape)
-    # show_images(img)
-    # plt.show()
+    show_images(img)
+    plt.show()
     # adv_generation(ind_tri_loader, D, B, M, nl_Wt)

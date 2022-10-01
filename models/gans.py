@@ -4,7 +4,7 @@ from models.hparam import *
 from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 from metrics import *
-from wasserstein import *
+# from wasserstein import *
 
 BATCH_SIZE = 128  # for training
 TEST_BATCH_SIZE = 64  # for testing (not used for now)
