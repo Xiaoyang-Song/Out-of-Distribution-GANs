@@ -12,7 +12,7 @@ class Detector(nn.Module):
         self.pool = nn.MaxPool2d(2, 2)  # 64 x 8 x 8 -> 64 x 4 x 4
         # 64 * 4 * 4 -> 256 units dense layer
         self.fc1 = nn.Linear(64 * 4 * 4, 256)
-        self.fc2 = nn.Linear(256, 2)  # 512 -> 2
+        self.fc2 = nn.Linear(256, 2)  # 256 -> 2
 
     def forward(self, x):
         x = self.pool(self.conv1(x))
@@ -21,6 +21,8 @@ class Detector(nn.Module):
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
+        # out = F.log_softmax(x, dim=-1)
+        # return out
 
 
 if __name__ == '__main__':

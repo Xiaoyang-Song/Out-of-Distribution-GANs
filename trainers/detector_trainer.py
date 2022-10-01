@@ -33,7 +33,7 @@ class BinaryDataset(Dataset):
         self.label = label[rand_idx]
         self.g_ind_img = torch.cat([self.g_img, self.ind_img])
         self.g_ind_img = self.g_ind_img[rand_idx]
-        self.data = [(self.g_ind_img[i], self.label[i])
+        self.data = [(self.g_ind_img[i], self.label[i].to(torch.long))
                      for i in range(self.__len__())]
 
     def sample(self):
@@ -72,9 +72,45 @@ def bdset_to_loader(dset: BinaryDataset, bs_t: int, bs_v: int, sf: bool):
 
 
 def detector_trainer(model, t_loader, v_loader, num_epoch, path, device=DEVICE):
-    trained_model = train(model, t_loader, v_loader, num_epoch, device)
-    torch.save(trained_model, path)
-    ic("Training finished.")
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=1e-3, betas=(0.9, 0.999))
+    # criterion = nn.NLLLoss()
+    criterion = torch.nn.CrossEntropyLoss()
+    for epoch in tqdm(range(num_epoch)):
+        # Training
+        model.train()
+        train_loss, train_acc = [], []
+        for idx, (img, label) in enumerate(t_loader):
+            img, label = img.to(device), label.to(device)
+            optimizer.zero_grad()
+            logits = model(img)
+            loss = criterion(logits, label)
+            loss.backward()
+            optimizer.step()
+            # Append training statistics
+            train_acc.append(
+                (torch.argmax(logits, dim=1) == label).sum().item() / label.shape[0])
+            train_loss.append(loss.detach().item())
+
+        print(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+              | training acc: {np.mean(train_acc)}")
+        # Evaluation
+        model.eval()
+        with torch.no_grad():
+            if v_loader is None:
+                print(f"No validation now.")
+                break
+            val_loss, val_acc = [], []
+            for idx, (img, label) in enumerate(v_loader):
+                img, label = img.to(device), label.to(device)
+                logits = model(img)
+                loss = criterion(logits, label)
+                val_acc.append(
+                    (torch.argmax(logits, dim=1) == label).sum().item() / label.shape[0])
+                val_loss.append(loss.detach().item())
+            print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+              | validation acc: {np.mean(val_acc)}")
+    torch.save(model, path)
 
 
 if __name__ == '__main__':
@@ -112,4 +148,4 @@ if __name__ == '__main__':
     # ic(np.random.choice(10, 10, replace=False))
     model = Detector().to(DEVICE)
     detector_trainer(model, t_loader, v_loader, 3,
-                     "checkpoint/detector.py", DEVICE)
+                     "checkpoint/detector.pt", DEVICE)
