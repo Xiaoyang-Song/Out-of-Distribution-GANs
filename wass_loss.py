@@ -54,28 +54,34 @@ def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVI
     return test_loss_value
 
 
-def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
+def ood_wass_loss(input: torch.Tensor, device=DEVICE):
+    """
+    Test version of Wasserstein distances (no gradient flow)
+    Args:
+        input (torch.Tensor): B x C tensor of probabilities
+        C (int): number of classes
+        device (_type_, optional): device. Defaults to DEVICE.
+
+    Returns: torch.Tensor: A 1D tensor of Wasserstein distances
+    """
     # TODO: Add assertion check
-    all_class = torch.LongTensor(
-        [i for i in range(C)]).to(device)
-    all_class_onehot = label_2_onehot(all_class, C, device).to(
-        torch.float32)
-    # reshape into (B,N,D)
-    all_class_onehot = torch.unsqueeze(all_class_onehot, -1)
-    test_input = torch.unsqueeze(input, -1)
-    test_batch_size = test_input.shape[0]
-    test_loss_values = torch.zeros(
-        test_batch_size, C).to(device)
+    assert len(input.shape) == 2, 'Expect input tensor to have shape (B, C)'
+    B, C = p.shape
+    all_class = torch.LongTensor([i for i in range(C)]).to(device)
+    all1hot = label_2_onehot(all_class, C, device)
+    all1hot = torch.unsqueeze(all1hot, -1)
+    p = torch.unsqueeze(input, -1)
+    loss = torch.zeros(B, C).to(device)
     # Approximate Wasserstein distance
-    test_loss = SamplesLoss("sinkhorn", p=2, blur=1., cost=cost_matrix)
-    for b in range(test_batch_size):
-        input_b = test_input[b:b+1, :, :].repeat(C, 1, 1)
-        test_loss_values[b] = torch.tensor([test_loss(input_b[c:c+1, :, 0],
-                                            input_b[c:c+1:, :],
-                                            all_class_onehot[c:c+1, :, 0],
-                                            all_class_onehot[c:c+1:, :]) for c in range(C)])
-    ans = test_loss_values.min(dim=1)[0]
-    return ans
+    WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1., cost=cost_matrix)
+    for b in range(B):
+        p_b = p[b:b+1, :, :].repeat(C, 1, 1)
+        loss[b] = torch.tensor([WASSLOSS(p_b[c:c+1, :, 0],
+                                         p_b[c:c+1:, :],
+                                         all1hot[c:c+1, :, 0],
+                                         all1hot[c:c+1:, :]) for c in range(C)])
+    wass_dist, _ = loss.min(dim=1)
+    return wass_dist
 
 
 if __name__ == "__main__":
@@ -86,7 +92,7 @@ if __name__ == "__main__":
     # wass_loss_ood = ood_wass_loss(test_softmax, c)
     # ic(wass_loss_ood.shape)
 
-    # TEST ood_wass_loss function 2
+    # TEST ood_wass_loss function
     K = 5
     c_hot = torch.tensor([[0.00, 0, 1, 0, 0]], requires_grad=True)
     c1 = torch.tensor([[0.01, 0, 0.99, 0, 0]], requires_grad=True)
