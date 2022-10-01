@@ -3,7 +3,7 @@ from models.mnist_cnn import MNISTCNN
 from tqdm import tqdm
 
 
-def train(model, train_loader, val_loader=None, num_epoch=8):
+def train(model, train_loader, val_loader=None, num_epoch=8, device=DEVICE):
     # TODO: Make it more genetic later.
     # model = MNISTCNN().to(DEVICE)
     optimizer = get_optimizer(model)
@@ -14,8 +14,9 @@ def train(model, train_loader, val_loader=None, num_epoch=8):
         model.train()
         train_loss, train_acc = [], []
         for idx, (img, label) in enumerate(train_loader):
+            img = img.to(device)
+            label = label.to(device)
             optimizer.zero_grad()
-            img, label = img.to(DEVICE), label.to(DEVICE)
             logits = model(img)
             loss = criterion(logits, label)
             loss.backward()
@@ -44,6 +45,7 @@ def train(model, train_loader, val_loader=None, num_epoch=8):
                 val_loss.append(loss.detach().item())
             print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
               | validation acc: {np.mean(val_acc)}")
+    return model
 
 
 def get_optimizer(model):

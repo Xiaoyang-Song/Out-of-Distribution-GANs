@@ -1,6 +1,7 @@
 from config import *
 from dataset import *
 from trainers.trainer import *
+from models.detector import Detector
 
 
 class BinaryDataset(Dataset):
@@ -70,8 +71,10 @@ def bdset_to_loader(dset: BinaryDataset, bs_t: int, bs_v: int, sf: bool):
     return t_loader, v_loader
 
 
-def detector_trainer(model, t_loader, v_loader, num_epoch, path):
-    model =
+def detector_trainer(model, t_loader, v_loader, num_epoch, path, device=DEVICE):
+    trained_model = train(model, t_loader, v_loader, 2, device)
+    torch.save(trained_model, path)
+    ic("Training finished.")
 
 
 if __name__ == '__main__':
