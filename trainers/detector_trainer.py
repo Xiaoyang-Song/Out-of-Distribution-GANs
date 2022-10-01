@@ -110,7 +110,7 @@ def detector_trainer(model, t_loader, v_loader, num_epoch, path, device=DEVICE):
                 val_loss.append(loss.detach().item())
             print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
               | validation acc: {np.mean(val_acc)}")
-    torch.save(model, path)
+    torch.save(model.state_dict(), path)
 
 
 def test_detector(D, ood_set):
@@ -162,7 +162,9 @@ if __name__ == '__main__':
     detector_trainer(model, t_loader, v_loader, 4,
                      "checkpoint/detector.pt", DEVICE)
     # test detector
-    D = torch.load("checkpoint/detector.pt")
+    D = Detector().to(DEVICE)
+    D.load_state_dict(torch.load("checkpoint/detector.pt"))
+    print("Pretrained detector state is loaded.")
     test_detector(D, ood_set)
     # test_detector(D, g_img)
     err = 0

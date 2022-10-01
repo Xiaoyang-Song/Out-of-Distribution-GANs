@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     # ic(wass(c1, K))
     ic(-wass(c0, K))
-    ic(-wass(c1_5, K))
+    ic(np.array(-wass(c1_5, K)))
     ic(-wass(c_hot, K))
     ic(-wass(c2, K))
     ic(-(-wass(c0, K)).log())
