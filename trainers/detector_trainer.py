@@ -113,12 +113,24 @@ def detector_trainer(model, t_loader, v_loader, num_epoch, path, device=DEVICE):
     torch.save(model, path)
 
 
+def test_detector(D, ood_set):
+    # TODO: Need rewrite and add ind samples
+    err = 0
+    total = len(ood_set)
+    for x, y in ood_set:
+        pred = torch.argmax(D(x))
+        if pred == 1:
+            err += 1
+    ic(f"Prediction accuracy is {err / total:0%}")
+
+
 if __name__ == '__main__':
     ic("Hello detector_trainer.py")
     idx_ind = [0, 1, 3, 4, 5]
     dset_dict = MNIST_SUB(batch_size=2, val_batch_size=64,
                           idx_ind=idx_ind, idx_ood=[2], shuffle=True)
     tri_set = dset_dict['train_set_ind']
+    ood_set = dset_dict['train_set_ood']
     print(len(tri_set))
     print(tri_set[0][0].shape)
     ind_set = torch.stack([xy[0] for xy in tri_set], dim=0)
@@ -147,5 +159,15 @@ if __name__ == '__main__':
     #     ic(y.shape)
     # ic(np.random.choice(10, 10, replace=False))
     model = Detector().to(DEVICE)
-    detector_trainer(model, t_loader, v_loader, 3,
+    detector_trainer(model, t_loader, v_loader, 8,
                      "checkpoint/detector.pt", DEVICE)
+    # test detector
+    D = torch.load("checkpoint/detector.pt")
+    # test_detector(D, ood_set)
+    err = 0
+    total = len(g_img)
+    for x in g_img:
+        pred = torch.argmax(D(x))
+        if pred == 1:
+            err += 1
+    ic(f"Prediction accuracy is {err / total:0%}")
