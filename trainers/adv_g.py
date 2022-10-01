@@ -5,7 +5,7 @@ from utils import *
 from trainers.ood_gan_trainer import *
 from models.dc_gan_model import dc_discriminator, dc_generator
 from wasserstein import Wasserstein
-from models.umap_plot import umap_visualization
+from Visualization.umap_plot import umap_visualization
 
 
 def grad_asc_w_rej(ind_loader, D, B, M, Wt, WLoss, device=DEVICE):

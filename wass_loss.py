@@ -106,7 +106,7 @@ if __name__ == "__main__":
     # ic(ood_wass_loss(c2.unsqueeze(0), 5))
 
     def wass(x, K):
-        return -ood_wass_loss(x, K)
+        return -ood_wass_loss(x)
 
     # ic(wass(c1, K))
     ic(-wass(c0, K))
