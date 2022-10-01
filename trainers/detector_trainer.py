@@ -1,9 +1,10 @@
+from msilib.schema import Binary
 from config import *
 from dataset import *
 
 
 class BinaryDataset(Dataset):
-    def __init__(self, g_img, ind_img, bs_t=64, bs_v=64, sample_ratio=1):
+    def __init__(self, g_img, ind_img, sample_ratio=1):
         assert type(g_img) == torch.Tensor
         # g_img should be a tensor of shape B x C x H x W
         self.g_img = g_img
@@ -17,18 +18,21 @@ class BinaryDataset(Dataset):
         self.R = sample_ratio
         self.sample()
         self.info()
-        ic(self.g_img.shape)
-        ic(self.ind_img.shape)
         # Combine data and assign labels
         self.assign_label()
 
     def assign_label(self):
         # Data should be a list of tuples
         # No need to shuffle, Dataloader will do that for us.
+        # But can shuffle anyway
+        rand_idx = np.random.choice(
+            self.__len__(), self.__len__(), replace=False)
         label = torch.ones(self.n_g * (self.R + 1))
         label[0:self.n_g] = 0
+        self.label = label[rand_idx]
         self.g_ind_img = torch.cat([self.g_img, self.ind_img])
-        self.data = [(label[i], self.g_ind_img[i])
+        self.g_ind_img = self.g_ind_img[rand_idx]
+        self.data = [(self.label[i], self.g_ind_img[i])
                      for i in range(self.__len__())]
 
     def sample(self):
@@ -54,12 +58,16 @@ class BinaryDataset(Dataset):
         return self.data[index]
 
 
-def get_label_ind(ind_tri_set, size):
-    pass
-
-
-def get_binary_dataset(adv_img, ind_img):
-    pass
+def bdset_to_loader(dset: BinaryDataset, bs_t: int, bs_v: int, sf: bool):
+    # split to train and val (8,2) by default. No test set needed.
+    num_t = (int)(len(dset) * 0.8)
+    num_v = len(dset) - num_t
+    t_data, v_data = torch.utils.data.random_split(dset, [num_t, num_v])
+    ic(f"The length of train data is: {len(t_data)}")
+    ic(f"The length of test data is: {len(v_data)}")
+    t_loader = torch.utils.data.DataLoader(t_data, batch_size=bs_t, shuffle=sf)
+    v_loader = torch.utils.data.DataLoader(v_data, batch_size=bs_v, shuffle=sf)
+    return t_loader, v_loader
 
 
 def detector_trainer(dset, B_tri, B_val):
@@ -91,4 +99,6 @@ if __name__ == '__main__':
     g_img = torch.load("checkpoint/adv_g_img(cpu).pt")
     ic(type(g_img))
     ic(g_img.shape)
-    data = BinaryDataset(g_img, tri_set, bs_t=64, bs_v=64, sample_ratio=1)
+    # data = BinaryDataset(g_img, tri_set, bs_t=64, bs_v=64, sample_ratio=1)
+
+    ic(np.random.choice(10, 10, replace=False))
