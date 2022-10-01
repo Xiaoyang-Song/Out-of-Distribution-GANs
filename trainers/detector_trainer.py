@@ -121,7 +121,7 @@ def test_detector(D, ood_set):
         pred = torch.argmax(D(x))
         if pred == 1:
             err += 1
-    ic(f"Prediction accuracy is {err / total:0%}")
+    ic(f"Prediction accuracy is {(total - err) / total:0%}")
 
 
 if __name__ == '__main__':
@@ -159,15 +159,16 @@ if __name__ == '__main__':
     #     ic(y.shape)
     # ic(np.random.choice(10, 10, replace=False))
     model = Detector().to(DEVICE)
-    detector_trainer(model, t_loader, v_loader, 8,
+    detector_trainer(model, t_loader, v_loader, 4,
                      "checkpoint/detector.pt", DEVICE)
     # test detector
     D = torch.load("checkpoint/detector.pt")
-    # test_detector(D, ood_set)
+    test_detector(D, ood_set)
+    # test_detector(D, g_img)
     err = 0
     total = len(g_img)
     for x in g_img:
         pred = torch.argmax(D(x))
         if pred == 1:
             err += 1
-    ic(f"Prediction accuracy is {err / total:0%}")
+    ic(f"Prediction accuracy is {(total - err) / total:0%}")
