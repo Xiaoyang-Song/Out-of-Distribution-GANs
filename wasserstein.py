@@ -92,7 +92,7 @@ if __name__ == '__main__':
     c0 = torch.tensor(
         [[0.01, 0, 0.8, 0.19, 0]], requires_grad=True)
     WLoss = Wasserstein.apply
-
+    ic(WLoss(c0))
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
     dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,

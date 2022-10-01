@@ -56,38 +56,25 @@ def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVI
 
 def ood_wass_loss(input: torch.Tensor, C: int, device=DEVICE):
     # TODO: Add assertion check
-    # ic(input.is_leaf)
-    input.requires_grad_()
-    input.retain_grad()
     all_class = torch.LongTensor(
         [i for i in range(C)]).to(device)
     all_class_onehot = label_2_onehot(all_class, C, device).to(
-        torch.float32).requires_grad_()
+        torch.float32)
     # reshape into (B,N,D)
     all_class_onehot = torch.unsqueeze(all_class_onehot, -1)
     test_input = torch.unsqueeze(input, -1)
-    ic(test_input.shape)
     test_batch_size = test_input.shape[0]
     test_loss_values = torch.zeros(
-        test_batch_size, C).to(torch.float32).to(device)
+        test_batch_size, C).to(device)
     # Approximate Wasserstein distance
-    test_loss = SamplesLoss("sinkhorn", p=2, blur=1.,
-                            cost=cost_matrix)
+    test_loss = SamplesLoss("sinkhorn", p=2, blur=1., cost=cost_matrix)
     for b in range(test_batch_size):
         input_b = test_input[b:b+1, :, :].repeat(C, 1, 1)
-        # Modified the line below
-        # ic(input_b[0:1, :, 0].shape)
-        # ic(all_class_onehot.shape)
-        # ic(all_class_onehot[0:0+1:, :].shape)
-        # ic(input_b[:, :, 0].shape)
         test_loss_values[b] = torch.tensor([test_loss(input_b[c:c+1, :, 0],
                                             input_b[c:c+1:, :],
                                             all_class_onehot[c:c+1, :, 0],
                                             all_class_onehot[c:c+1:, :]) for c in range(C)])
-    ans = test_loss_values.min(dim=1)[0].requires_grad_()
-    # ic(test_loss_values.shape)
-    # ic(ans.shape)
-    # ic(ans.is_leaf)
+    ans = test_loss_values.min(dim=1)[0]
     return ans
 
 
@@ -115,17 +102,9 @@ if __name__ == "__main__":
     def wass(x, K):
         return -ood_wass_loss(x, K)
 
-    # ic(w1)
-    # ic("Check Gradient")
-    # W = wass(c1, K)
-    # ic(W.is_leaf)
-    # W.retain_grad()
-    # c1.retain_grad()
-    # W.backward()
-    # ic(c1.grad.data)
     # ic(wass(c1, K))
     ic(-wass(c0, K))
-    ic(-wass(c1, K))
+    ic(-wass(c1_5, K))
     ic(-wass(c_hot, K))
     ic(-wass(c2, K))
     ic(-(-wass(c0, K)).log())
