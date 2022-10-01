@@ -64,7 +64,7 @@ def adv_generation(ind_loader, D, B, M, nl_Wt, device=DEVICE):
 
 
 if __name__ == '__main__':
-    ic("Hello gradient_ascent.py")
+    ic("Hello adv_g.py")
 
     # Load pretrained_D
     img_info = {'H': 28, 'W': 28, 'C': 1}

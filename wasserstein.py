@@ -1,9 +1,12 @@
 from wass_loss import *
 from torch.autograd import Function
-from models.dc_gan_model import dc_discriminator, dc_generator
-from models.gans import *
 from dataset import *
 from utils import *
+
+
+def batch_wasserstein(x):
+    WLoss = Wasserstein.apply
+    return torch.mean(-WLoss(torch.softmax(x, dim=-1)))
 
 
 class Wasserstein(Function):
@@ -74,7 +77,11 @@ class Wasserstein(Function):
 
 if __name__ == '__main__':
     ic("Hello wasserstein.py")
+    # These imports are only useful for testing
+    from models.dc_gan_model import dc_discriminator, dc_generator
+    from models.gans import *
 
+    # Test Wasserstein.py
     img_info = {'H': 28, 'W': 28, 'C': 1}
     D = dc_discriminator(img_info, GAN_TYPE.OOD).to(DEVICE)
     path = 'checkpoint/pretrained_D_low.pt'
@@ -85,10 +92,6 @@ if __name__ == '__main__':
     c0 = torch.tensor(
         [[0.01, 0, 0.8, 0.19, 0]], requires_grad=True)
     WLoss = Wasserstein.apply
-    # W = WLoss(c0)
-    # ic(W.requires_grad_)
-    # W.backward()
-    # ic(c0.grad.data.shape)
 
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
