@@ -1,6 +1,6 @@
-from msilib.schema import Binary
 from config import *
 from dataset import *
+from trainers.trainer import *
 
 
 class BinaryDataset(Dataset):
@@ -32,7 +32,7 @@ class BinaryDataset(Dataset):
         self.label = label[rand_idx]
         self.g_ind_img = torch.cat([self.g_img, self.ind_img])
         self.g_ind_img = self.g_ind_img[rand_idx]
-        self.data = [(self.label[i], self.g_ind_img[i])
+        self.data = [(self.g_ind_img[i], self.label[i])
                      for i in range(self.__len__())]
 
     def sample(self):
@@ -70,8 +70,8 @@ def bdset_to_loader(dset: BinaryDataset, bs_t: int, bs_v: int, sf: bool):
     return t_loader, v_loader
 
 
-def detector_trainer(dset, B_tri, B_val):
-    pass
+def detector_trainer(model, t_loader, v_loader, num_epoch, path):
+    model =
 
 
 if __name__ == '__main__':
@@ -99,6 +99,11 @@ if __name__ == '__main__':
     g_img = torch.load("checkpoint/adv_g_img(cpu).pt")
     ic(type(g_img))
     ic(g_img.shape)
-    # data = BinaryDataset(g_img, tri_set, bs_t=64, bs_v=64, sample_ratio=1)
-
-    ic(np.random.choice(10, 10, replace=False))
+    data = BinaryDataset(g_img, tri_set, sample_ratio=1)
+    t_loader, v_loader = bdset_to_loader(data, 64, 32, True)
+    # for idx, (x, y) in enumerate(t_loader):
+    #     ic(type(x))
+    #     ic(type(y))
+    #     ic(x.shape)
+    #     ic(y.shape)
+    # ic(np.random.choice(10, 10, replace=False))
