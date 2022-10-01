@@ -66,11 +66,12 @@ def ood_wass_loss(input: torch.Tensor, device=DEVICE):
     """
     # TODO: Add assertion check
     assert len(input.shape) == 2, 'Expect input tensor to have shape (B, C)'
+    p = input.clone()
     B, C = p.shape
     all_class = torch.LongTensor([i for i in range(C)]).to(device)
     all1hot = label_2_onehot(all_class, C, device)
     all1hot = torch.unsqueeze(all1hot, -1)
-    p = torch.unsqueeze(input, -1)
+    p = torch.unsqueeze(p, -1)
     loss = torch.zeros(B, C).to(device)
     # Approximate Wasserstein distance
     WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1., cost=cost_matrix)
