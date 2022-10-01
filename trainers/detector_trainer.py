@@ -72,7 +72,7 @@ def bdset_to_loader(dset: BinaryDataset, bs_t: int, bs_v: int, sf: bool):
 
 
 def detector_trainer(model, t_loader, v_loader, num_epoch, path, device=DEVICE):
-    trained_model = train(model, t_loader, v_loader, 2, device)
+    trained_model = train(model, t_loader, v_loader, num_epoch, device)
     torch.save(trained_model, path)
     ic("Training finished.")
 
@@ -98,10 +98,10 @@ if __name__ == '__main__':
     # cifar, _, _, _ = CIFAR10(64,64)
     # ic(len(cifar))
     # ic(cifar[0][0].shape)
-    ic(torch.unique(ind_y))
+    # ic(torch.unique(ind_y))
     g_img = torch.load("checkpoint/adv_g_img(cpu).pt")
-    ic(type(g_img))
-    ic(g_img.shape)
+    # ic(type(g_img))
+    # ic(g_img.shape)
     data = BinaryDataset(g_img, tri_set, sample_ratio=1)
     t_loader, v_loader = bdset_to_loader(data, 64, 32, True)
     # for idx, (x, y) in enumerate(t_loader):
@@ -110,3 +110,6 @@ if __name__ == '__main__':
     #     ic(x.shape)
     #     ic(y.shape)
     # ic(np.random.choice(10, 10, replace=False))
+    model = Detector().to(DEVICE)
+    detector_trainer(model, t_loader, v_loader, 3,
+                     "checkpoint/detector.py", DEVICE)
