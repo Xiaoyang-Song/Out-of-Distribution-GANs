@@ -12,6 +12,17 @@ class CUSTOM_MNIST(Dataset):
         pass
 
 
+def FashionMNIST(bs_t, bs_v, sf):
+    tset = torchvision.datasets.MNIST(
+        "./Datasets", download=True, train=True, transform=transforms.Compose([transforms.ToTensor()]))
+    vset = torchvision.datasets.MNIST(
+        "./Datasets", download=False, train=False, transform=transforms.Compose([transforms.ToTensor()]))
+    # Get data loader
+    t_loader = torch.utils.data.DataLoader(tset, shuffle=sf, batch_size=bs_t)
+    v_loader = torch.utils.data.DataLoader(vset, shuffle=sf, batch_size=bs_v)
+    return tset, vset, t_loader, v_loader
+
+
 def MNIST(batch_size, test_batch_size, num_workers=0, shuffle=True):
 
     train_set = torchvision.datasets.MNIST(
@@ -135,13 +146,19 @@ if __name__ == '__main__':
     # ic(train_loader)
 
     # Test whether the data loader is randomly shuffled in general.
-    idx_ind = [0, 1, 3, 4, 5]
-    dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
-                          idx_ind=idx_ind, idx_ood=[2], shuffle=True)
-    ic(len(dset_dict['train_set_ind'][0]))
-    ic(dset_dict['train_set_ind'][0][0].shape)
-    # ic(dset_dict['train_set_ind'][0][1].shape)
-    ic(next(iter(dset_dict['train_set_ind_loader']))[1])
-    batch = next(iter(dset_dict['train_set_ind_loader']))[1]
-    for num in idx_ind:
-        ic(len(batch[batch == num]))
+    # idx_ind = [0, 1, 3, 4, 5]
+    # dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
+    #                       idx_ind=idx_ind, idx_ood=[2], shuffle=True)
+    # ic(len(dset_dict['train_set_ind'][0]))
+    # ic(dset_dict['train_set_ind'][0][0].shape)
+    # # ic(dset_dict['train_set_ind'][0][1].shape)
+    # ic(next(iter(dset_dict['train_set_ind_loader']))[1])
+    # batch = next(iter(dset_dict['train_set_ind_loader']))[1]
+    # for num in idx_ind:
+    #     ic(len(batch[batch == num]))
+
+    # Test FashionMNIST
+    tset, vset, t_loader, v_loader = FashionMNIST(128, 64, shuffle=True)
+    ic(len(tset))
+    ic(len(vset))
+    ic(tset[0][0].shape)
