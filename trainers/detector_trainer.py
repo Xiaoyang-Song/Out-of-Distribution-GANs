@@ -28,6 +28,7 @@ class BinaryDataset(Dataset):
         # But can shuffle anyway
         rand_idx = np.random.choice(
             self.__len__(), self.__len__(), replace=False)
+        # InD label: 1; OoD label: 0
         label = torch.ones(self.n_g * (self.R + 1))
         label[0:self.n_g] = 0
         self.label = label[rand_idx]
@@ -113,13 +114,13 @@ def detector_trainer(model, t_loader, v_loader, num_epoch, path, device=DEVICE):
     torch.save(model.state_dict(), path)
 
 
-def test_detector(D, ood_set):
+def test_detector(D, dset, label):
     # TODO: Need rewrite and add ind samples
     err = 0
-    total = len(ood_set)
-    for x, y in ood_set:
+    total = len(dset)
+    for x, y in dset:
         pred = torch.argmax(D(x))
-        if pred == 1:
+        if pred != label:
             err += 1
     ic(f"Prediction accuracy is {(total - err) / total:0%}")
 
@@ -159,14 +160,14 @@ if __name__ == '__main__':
     #     ic(y.shape)
     # ic(np.random.choice(10, 10, replace=False))
     model = Detector().to(DEVICE)
-    detector_trainer(model, t_loader, v_loader, 4,
+    detector_trainer(model, t_loader, v_loader, 8,
                      "checkpoint/detector.pt", DEVICE)
     # test detector
     D = Detector().to(DEVICE)
     D.load_state_dict(torch.load("checkpoint/detector.pt"))
     print("Pretrained detector state is loaded.")
-    test_detector(D, ood_set)
-    # test_detector(D, g_img)
+    test_detector(D, ood_set, 0)
+    test_detector(D, tri_set, 1)
     err = 0
     total = len(g_img)
     for x in g_img:
