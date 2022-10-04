@@ -152,7 +152,7 @@ if __name__ == '__main__':
     # ic(type(g_img))
     # ic(g_img.shape)
     data = BinaryDataset(g_img, tri_set, sample_ratio=1)
-    t_loader, v_loader = bdset_to_loader(data, 64, 32, True)
+    t_loader, v_loader = bdset_to_loader(data, 128, 32, True)
     # for idx, (x, y) in enumerate(t_loader):
     #     ic(type(x))
     #     ic(type(y))
