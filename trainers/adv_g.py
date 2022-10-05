@@ -87,7 +87,7 @@ if __name__ == '__main__':
     nl_Wt = 1.25
     Wt = to_raw(nl_Wt)
     ic(Wt)
-    G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 1,
+    G_x = grad_asc_w_rej(ind_tri_loader, D, 3, 3,
                          Wt, WLoss, device=DEVICE)
     for img in G_x:
         ic(img.shape)
