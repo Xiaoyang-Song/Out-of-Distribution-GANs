@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     # Load dataset
     idx_ind = [0, 1, 3, 4, 5]
-    B = 2
+    B = 3
     dset_dict = MNIST_SUB(batch_size=B, val_batch_size=64,
                           idx_ind=idx_ind, idx_ood=[2], shuffle=True)
     ind_tri_loader = dset_dict['train_set_ind_loader']
