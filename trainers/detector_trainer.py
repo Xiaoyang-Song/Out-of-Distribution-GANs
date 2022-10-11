@@ -124,8 +124,14 @@ def test_detector(D, dset, label):
             err += 1
     ic(f"Prediction accuracy is {(total - err) / total:0%}")
 
-def test_detector_v2(D, dset, label):
-    
+
+def test_detector_v2(D, dset, label, message):
+    if type(dset) == list:
+        dset = torch.stack([x[0] for x in dset], dim=0)
+    # dset: B x C x H x W
+    acc = (torch.argmax(D(dset), dim=1) == label).sum().item()
+    print(f"Detection accuracy on {message} data: {acc:0%}.")
+
 
 def train_mnist_fashionmnist(g_img_path):
     # Load MNIST dataset
@@ -142,43 +148,43 @@ def train_mnist_fashionmnist(g_img_path):
     detector_trainer(model, t_loader, v_loader, 8,
                      "checkpoint/mnist_fashionmnist_detector.pt", DEVICE)
     # Evaluation
-    test_detector(model, ood_set, 0)
-    test_detector(model, tri_set, 1)
-    
+    test_detector_v2(model, tset, 1, "InD")
+    test_detector_v2(model, ood_set, 0, "OoD")
+    test_detector_v2(model, g_img, 0, "Adversarial")
 
 
 if __name__ == '__main__':
     ic("Hello detector_trainer.py")
-    idx_ind = [0, 1, 3, 4, 5]
-    dset_dict = MNIST_SUB(batch_size=2, val_batch_size=64,
-                          idx_ind=idx_ind, idx_ood=[2], shuffle=True)
-    tri_set = dset_dict['train_set_ind']
-    ood_set = dset_dict['train_set_ood']
-    print(len(tri_set))
-    print(tri_set[0][0].shape)
-    ind_set = torch.stack([xy[0] for xy in tri_set], dim=0)
-    ind_y = torch.tensor([xy[1] for xy in tri_set])
-    ic(ind_y.shape)
-    ic(ind_set.shape)
-    ic(ind_y)
-    rand_idx = np.random.choice(30059, 1280, replace=False)
-    print(rand_idx)
-    sample_ind, sample_y = ind_set[rand_idx], ind_y[rand_idx]
-    for x in idx_ind:
-        ic(f"{x}: {len(sample_y[sample_y == x])}")
-    # cifar, _, _, _ = CIFAR10(64,64)
-    # ic(len(cifar))
-    # ic(cifar[0][0].shape)
-    # ic(torch.unique(ind_y))
-    # g_img = torch.load("checkpoint/adv_full_mnist/img_batch_mnist.pt")
-    g_img = torch.load("checkpoint/adv_g_img(cpu)")
-    # ic(type(g_img))
-    # ic(g_img.shape)
-    data = BinaryDataset(g_img, tri_set, sample_ratio=1)
-    t_loader, v_loader = bdset_to_loader(data, 128, 32, True)
-    model = Detector().to(DEVICE)
-    detector_trainer(model, t_loader, v_loader, 8,
-                     "checkpoint/detector.pt", DEVICE)
+    # idx_ind = [0, 1, 3, 4, 5]
+    # dset_dict = MNIST_SUB(batch_size=2, val_batch_size=64,
+    #                       idx_ind=idx_ind, idx_ood=[2], shuffle=True)
+    # tri_set = dset_dict['train_set_ind']
+    # ood_set = dset_dict['train_set_ood']
+    # print(len(tri_set))
+    # print(tri_set[0][0].shape)
+    # ind_set = torch.stack([xy[0] for xy in tri_set], dim=0)
+    # ind_y = torch.tensor([xy[1] for xy in tri_set])
+    # ic(ind_y.shape)
+    # ic(ind_set.shape)
+    # ic(ind_y)
+    # rand_idx = np.random.choice(30059, 1280, replace=False)
+    # print(rand_idx)
+    # sample_ind, sample_y = ind_set[rand_idx], ind_y[rand_idx]
+    # for x in idx_ind:
+    #     ic(f"{x}: {len(sample_y[sample_y == x])}")
+    # # cifar, _, _, _ = CIFAR10(64,64)
+    # # ic(len(cifar))
+    # # ic(cifar[0][0].shape)
+    # # ic(torch.unique(ind_y))
+    # # g_img = torch.load("checkpoint/adv_full_mnist/img_batch_mnist.pt")
+    # g_img = torch.load("checkpoint/adv_g_img(cpu)")
+    # # ic(type(g_img))
+    # # ic(g_img.shape)
+    # data = BinaryDataset(g_img, tri_set, sample_ratio=1)
+    # t_loader, v_loader = bdset_to_loader(data, 128, 32, True)
+    # model = Detector().to(DEVICE)
+    # detector_trainer(model, t_loader, v_loader, 8,
+    #                  "checkpoint/detector.pt", DEVICE)
     # test detector (Partial MNIST)
     # D = Detector().to(DEVICE)
     # D.load_state_dict(torch.load("checkpoint/detector.pt"))
@@ -192,3 +198,4 @@ if __name__ == '__main__':
     #     if pred == 1:
     #         err += 1
     # ic(f"Prediction accuracy is {(total - err) / total:0%}")
+    train_mnist_fashionmnist("checkpoint/adv_full_mnist/img_batch_mnist.pt")
