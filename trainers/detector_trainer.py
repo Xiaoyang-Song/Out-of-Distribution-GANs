@@ -62,7 +62,7 @@ class BinaryDataset(Dataset):
 
 def bdset_to_loader(dset: BinaryDataset, bs_t: int, bs_v: int, sf: bool):
     # split to train and val (8,2) by default. No test set needed.
-    num_t = (int)(len(dset) * 0.8)
+    num_t = (int)(len(dset) * 0.9)
     num_v = len(dset) - num_t
     t_data, v_data = torch.utils.data.random_split(dset, [num_t, num_v])
     ic(f"The length of train data is: {len(t_data)}")
@@ -126,10 +126,9 @@ def test_detector(D, dset, label):
 
 
 def test_detector_v2(D, dset, label, message):
-    if type(dset) == list:
+    if type(dset) != torch.Tensor:
         dset = torch.stack([x[0] for x in dset], dim=0)
     # dset: B x C x H x W
-    print(dset.shape)
     acc = (torch.argmax(D(dset), dim=1) == label).sum().item()
     print(f"Detection accuracy on {message} data: {acc:0%}.")
 
