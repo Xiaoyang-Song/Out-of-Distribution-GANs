@@ -129,7 +129,7 @@ def test_detector_v2(D, dset, label, message):
     if type(dset) != torch.Tensor:
         dset = torch.stack([x[0] for x in dset], dim=0)
     # dset: B x C x H x W
-    acc = (torch.argmax(D(dset), dim=1) == label).sum().item()
+    acc = (torch.argmax(D(dset), dim=1) == label).sum().item() / dset.shape[0]
     print(f"Detection accuracy on {message} data: {acc:0%}.")
 
 
@@ -143,7 +143,7 @@ def train_mnist_fashionmnist(g_img_path):
     t_loader, v_loader = bdset_to_loader(data, 64, 32, True)
     # Load OoD FashionMNIST dataset for evaluation
     ood_set, _, _, _ = FashionMNIST(128, 64, sf=True)
-    # Train model
+    # TODO: If necessary: print relevant statistics
     model = Detector().to(DEVICE)
     detector_trainer(model, t_loader, v_loader, 8,
                      "checkpoint/mnist_fashionmnist_detector.pt", DEVICE)
