@@ -125,6 +125,10 @@ def test_detector(D, dset, label):
     ic(f"Prediction accuracy is {(total - err) / total:0%}")
 
 
+def train_mnist_fashionmnist():
+    pass
+
+
 if __name__ == '__main__':
     ic("Hello detector_trainer.py")
     idx_ind = [0, 1, 3, 4, 5]
@@ -148,30 +152,25 @@ if __name__ == '__main__':
     # ic(len(cifar))
     # ic(cifar[0][0].shape)
     # ic(torch.unique(ind_y))
-    g_img = torch.load("checkpoint/adv_g_img(cpu).pt")
+    # g_img = torch.load("checkpoint/adv_full_mnist/img_batch_mnist.pt")
+    g_img = torch.load("checkpoint/adv_g_img(cpu)")
     # ic(type(g_img))
     # ic(g_img.shape)
     data = BinaryDataset(g_img, tri_set, sample_ratio=1)
     t_loader, v_loader = bdset_to_loader(data, 128, 32, True)
-    # for idx, (x, y) in enumerate(t_loader):
-    #     ic(type(x))
-    #     ic(type(y))
-    #     ic(x.shape)
-    #     ic(y.shape)
-    # ic(np.random.choice(10, 10, replace=False))
     model = Detector().to(DEVICE)
     detector_trainer(model, t_loader, v_loader, 8,
                      "checkpoint/detector.pt", DEVICE)
-    # test detector
-    D = Detector().to(DEVICE)
-    D.load_state_dict(torch.load("checkpoint/detector.pt"))
-    print("Pretrained detector state is loaded.")
-    test_detector(D, ood_set, 0)
-    test_detector(D, tri_set, 1)
-    err = 0
-    total = len(g_img)
-    for x in g_img:
-        pred = torch.argmax(D(x))
-        if pred == 1:
-            err += 1
-    ic(f"Prediction accuracy is {(total - err) / total:0%}")
+    # test detector (Partial MNIST)
+    # D = Detector().to(DEVICE)
+    # D.load_state_dict(torch.load("checkpoint/detector.pt"))
+    # print("Pretrained detector state is loaded.")
+    # test_detector(D, ood_set, 0)
+    # test_detector(D, tri_set, 1)
+    # err = 0
+    # total = len(g_img)
+    # for x in g_img:
+    #     pred = torch.argmax(D(x))
+    #     if pred == 1:
+    #         err += 1
+    # ic(f"Prediction accuracy is {(total - err) / total:0%}")
