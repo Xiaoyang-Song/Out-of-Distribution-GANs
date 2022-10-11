@@ -130,7 +130,7 @@ def test_detector_v2(D, dset, label, message):
         dset = torch.stack([x[0] for x in dset], dim=0)
     # dset: B x C x H x W
     acc = (torch.argmax(D(dset), dim=1) == label).sum().item() / dset.shape[0]
-    print(f"Detection accuracy on {message} data: {acc:0%}.")
+    ic(f"Detection accuracy on {message} data: {acc:0%}.")
 
 
 def train_mnist_fashionmnist(g_img_path):
