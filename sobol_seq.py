@@ -12,7 +12,7 @@ def sobol_seq(d: int, m: int, scramble: bool):
 
 if __name__ == '__main__':
     ic("Hello sobol_seq.py")
-    sobol_img = sobol_seq(d=784, m=12, scramble=False) * 0.1307
+    sobol_img = sobol_seq(d=784, m=11, scramble=False) * 0.1307
     sobol_y = torch.zeros(sobol_img.shape[0])
     # umap_visualization(sobol_img, torch.ones(2**10))
 
