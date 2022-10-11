@@ -124,11 +124,27 @@ def test_detector(D, dset, label):
             err += 1
     ic(f"Prediction accuracy is {(total - err) / total:0%}")
 
+def test_detector_v2(D, dset, label):
+    
 
-def train_mnist_fashionmnist():
-    tset, vset, t_loader, v_loader = MNIST(128, 64, shuffle=True)
-    tset, vset, t_loader, v_loader = FashionMNIST(128, 64, shuffle=True)
-    pass
+def train_mnist_fashionmnist(g_img_path):
+    # Load MNIST dataset
+    tset, _, _, _ = MNIST(128, 64, shuffle=True)
+    # Load adversarial samples
+    g_img = torch.load(g_img_path)
+    # Get training dataset and loaders
+    data = BinaryDataset(g_img, tset, sample_ratio=1)
+    t_loader, v_loader = bdset_to_loader(data, 64, 32, True)
+    # Load OoD FashionMNIST dataset for evaluation
+    ood_set, _, _, _ = FashionMNIST(128, 64, shuffle=True)
+    # Train model
+    model = Detector().to(DEVICE)
+    detector_trainer(model, t_loader, v_loader, 8,
+                     "checkpoint/mnist_fashionmnist_detector.pt", DEVICE)
+    # Evaluation
+    test_detector(model, ood_set, 0)
+    test_detector(model, tri_set, 1)
+    
 
 
 if __name__ == '__main__':
