@@ -5,7 +5,7 @@ import umap.plot
 from sklearn.datasets import load_digits
 
 
-def umap_visualization(x, y, color_key):
+def umap_visualization(x, y, color_key, filename=None):
     mapper = umap.UMAP().fit(x)
     p = umap.plot.points(mapper, labels=y, color_key=color_key)
     umap.plot.show(p)
