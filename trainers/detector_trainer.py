@@ -126,6 +126,8 @@ def test_detector(D, dset, label):
 
 
 def train_mnist_fashionmnist():
+    tset, vset, t_loader, v_loader = MNIST(128, 64, shuffle=True)
+    tset, vset, t_loader, v_loader = FashionMNIST(128, 64, shuffle=True)
     pass
 
 
