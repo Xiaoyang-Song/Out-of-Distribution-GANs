@@ -10,6 +10,10 @@ def sobol_seq(d: int, m: int, scramble: bool):
     return torch.tensor(sample)
 
 
+def visualize_sobol_seq():
+    pass
+
+
 if __name__ == '__main__':
     ic("Hello sobol_seq.py")
     sobol_img = sobol_seq(d=784, m=10, scramble=False)
