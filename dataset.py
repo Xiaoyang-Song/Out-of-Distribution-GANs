@@ -13,9 +13,9 @@ class CUSTOM_MNIST(Dataset):
 
 
 def FashionMNIST(bs_t, bs_v, sf):
-    tset = torchvision.datasets.MNIST(
+    tset = torchvision.datasets.FashionMNIST(
         "./Datasets", download=True, train=True, transform=transforms.Compose([transforms.ToTensor()]))
-    vset = torchvision.datasets.MNIST(
+    vset = torchvision.datasets.FashionMNIST(
         "./Datasets", download=False, train=False, transform=transforms.Compose([transforms.ToTensor()]))
     # Get data loader
     t_loader = torch.utils.data.DataLoader(tset, shuffle=sf, batch_size=bs_t)
@@ -158,7 +158,7 @@ if __name__ == '__main__':
     #     ic(len(batch[batch == num]))
 
     # Test FashionMNIST
-    tset, vset, t_loader, v_loader = FashionMNIST(128, 64, shuffle=True)
+    tset, vset, t_loader, v_loader = FashionMNIST(128, 64, sf=True)
     ic(len(tset))
     ic(len(vset))
     ic(tset[0][0].shape)
