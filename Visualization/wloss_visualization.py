@@ -37,11 +37,11 @@ def plot_w_loss(w_loss: list, color_key: list, path: str):
 
 if __name__ == '__main__':
     ic("Hello wloss_visualization.py")
-    idx_ind = [0, 1, 3, 4, 5]
-    dset_dict = MNIST_SUB(batch_size=2, val_batch_size=64,
-                          idx_ind=idx_ind, idx_ood=[2], shuffle=True)
-    tri_set = dset_dict['train_set_ind']
-    ood_set = dset_dict['train_set_ood']
+    # idx_ind = [0, 1, 3, 4, 5]
+    # dset_dict = MNIST_SUB(batch_size=2, val_batch_size=64,
+    #                       idx_ind=idx_ind, idx_ood=[2], shuffle=True)
+    # tri_set = dset_dict['train_set_ind']
+    # ood_set = dset_dict['train_set_ood']
 
     img_info = {'H': 28, 'W': 28, 'C': 1}
     # Load pretrained discriminator
@@ -51,10 +51,13 @@ if __name__ == '__main__':
     D.load_state_dict(pretrain['model_state_dict'])
     print("Pretrained D state is loaded.")
 
-    g_img = torch.load("checkpoint/adv_g_img(cpu).pt")
-    # Test visualization functionality
-    color = ['#ffbf00', '#00b384']
-    w_pts = [raw_to_nll(img_to_wloss(D, dset)) for dset in (tri_set, ood_set)]
-    plot_w_loss(w_pts, color, "Visualization/w_vis_ood_ind.png")
-    w_pts = [raw_to_nll(img_to_wloss(D, dset)) for dset in (tri_set, g_img)]
-    plot_w_loss(w_pts, color, "Visualization/w_vis_g_ind.png")
+    # g_img = torch.load("checkpoint/adv_g_img(cpu).pt")
+    # # Test visualization functionality
+    # color = ['#ffbf00', '#00b384']
+    # w_pts = [raw_to_nll(img_to_wloss(D, dset)) for dset in (tri_set, ood_set)]
+    # plot_w_loss(w_pts, color, "Visualization/w_vis_ood_ind.png")
+    # w_pts = [raw_to_nll(img_to_wloss(D, dset)) for dset in (tri_set, g_img)]
+    # plot_w_loss(w_pts, color, "Visualization/w_vis_g_ind.png")
+
+    # Visualize MNIST FASHIONMNIST W Loss
+    
