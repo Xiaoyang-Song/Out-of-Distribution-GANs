@@ -136,17 +136,20 @@ def test_detector_v2(D, dset, label, message):
 def train_mnist_fashionmnist(g_img_path):
     # Load MNIST dataset
     tset, _, _, _ = MNIST(128, 64, shuffle=True)
+    # ic(tset[0][0].requires_grad)
     # Load adversarial samples
     g_img = torch.load(g_img_path)
+    g_img = g_img.detach()
+    # ic(g_img.requires_grad)
     # Get training dataset and loaders
     data = BinaryDataset(g_img, tset, sample_ratio=1)
-    t_loader, v_loader = bdset_to_loader(data, 64, 32, True)
+    t_loader, v_loader = bdset_to_loader(data, 128, 32, True)
     # Load OoD FashionMNIST dataset for evaluation
     ood_set, _, _, _ = FashionMNIST(128, 64, sf=True)
     # TODO: If necessary: print relevant statistics
     model = Detector().to(DEVICE)
     detector_trainer(model, t_loader, v_loader, 8,
-                     "checkpoint/mnist_fashionmnist_detector.pt", DEVICE)
+                     "checkpoint/MNIST-FashionMNIST/mnist_fashionmnist_detector.pt", DEVICE)
     # Evaluation
     test_detector_v2(model, tset, 1, "InD")
     test_detector_v2(model, ood_set, 0, "OoD")
@@ -198,4 +201,4 @@ if __name__ == '__main__':
     #     if pred == 1:
     #         err += 1
     # ic(f"Prediction accuracy is {(total - err) / total:0%}")
-    train_mnist_fashionmnist("checkpoint/adv_full_mnist/img_batch_mnist.pt")
+    train_mnist_fashionmnist("checkpoint/MNIST-FashionMNIST/gan_img.pt")
