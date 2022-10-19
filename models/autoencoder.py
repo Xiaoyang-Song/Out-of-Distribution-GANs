@@ -55,5 +55,31 @@ class AutoEncoder(nn.Module):
         return self.decoder(self.encoder(x))
 
 
+def train_autoencoder(model, num_epochs, optimizer, t_loader, device=DEVICE):
+
+    model.train()
+    train_loss_avg = []
+    print('Training ...')
+    for epoch in range(num_epochs):
+        train_loss_avg.append(0)
+        num_batches = 0
+        for image_batch, _ in t_loader:
+            image_batch = image_batch.to(device)
+            # autoencoder reconstruction
+            image_batch_recon = model(image_batch)
+            # reconstruction error
+            loss = F.mse_loss(image_batch_recon, image_batch)
+            # backpropagation
+            optimizer.zero_grad()
+            loss.backward()
+            # one step of the optmizer (using the gradients from backpropagation)
+            optimizer.step()
+            train_loss_avg[-1] += loss.item()
+            num_batches += 1
+        train_loss_avg[-1] /= num_batches
+        print('Epoch [%d / %d] average reconstruction error: %f' %
+              (epoch+1, num_epochs, train_loss_avg[-1]))
+
+
 if __name__ == '__main__':
     ic('Hello autoencoder.py')
