@@ -148,7 +148,7 @@ def train_mnist_fashionmnist(g_img_path):
     ood_set, _, _, _ = FashionMNIST(128, 64, sf=True)
     # TODO: If necessary: print relevant statistics
     model = Detector().to(DEVICE)
-    detector_trainer(model, t_loader, v_loader, 8,
+    detector_trainer(model, t_loader, v_loader, 2,
                      "checkpoint/MNIST-FashionMNIST/mnist_fashionmnist_detector.pt", DEVICE)
     # Evaluation
     test_detector_v2(model, tset, 1, "InD")
@@ -201,4 +201,4 @@ if __name__ == '__main__':
     #     if pred == 1:
     #         err += 1
     # ic(f"Prediction accuracy is {(total - err) / total:0%}")
-    train_mnist_fashionmnist("checkpoint/MNIST-FashionMNIST/gan_img.pt")
+    train_mnist_fashionmnist("checkpoint/MNIST-FashionMNIST/gan_img[EUC].pt")
