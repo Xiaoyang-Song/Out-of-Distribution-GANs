@@ -52,6 +52,7 @@ class Wasserstein(Function):
 
         # Save for backward pass
         ctx.save_for_backward(all1hot, p, idx)
+        ic(values.shape)
         return values.mean()
 
     @staticmethod
