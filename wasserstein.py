@@ -10,8 +10,7 @@ def batch_wasserstein(x):
 
 
 def single_wasserstein(x):
-    def batch_wasserstein(x):
-        WLoss = Wasserstein.apply
+    WLoss = Wasserstein.apply
     return -WLoss(torch.softmax(x, dim=-1))
 
 
