@@ -9,6 +9,12 @@ def batch_wasserstein(x):
     return torch.mean(-WLoss(torch.softmax(x, dim=-1)))
 
 
+def single_wasserstein(x):
+    def batch_wasserstein(x):
+        WLoss = Wasserstein.apply
+    return -WLoss(torch.softmax(x, dim=-1))
+
+
 class Wasserstein(Function):
     @staticmethod
     def forward(ctx, input: torch.tensor, device=DEVICE):

@@ -22,8 +22,8 @@ if __name__ == '__main__':
     ic(sobol_img)
     # umap_visualization(sobol_img, torch.ones(2**10))
     # ic(sobol_img[0])
-    plt.scatter(sobol_img[:,0], sobol_img[:,1])
-    plt.show()
+    # plt.scatter(sobol_img[:,0], sobol_img[:,1])
+    # plt.show()
     # mnist_tri_set, mnist_val_set, mnist_tri_loader, mnist_val_loader = MNIST(
     #     128, 64, 2, True)
     # mnist_tri_img = torch.stack([x[0] / torch.sum(x[0])
