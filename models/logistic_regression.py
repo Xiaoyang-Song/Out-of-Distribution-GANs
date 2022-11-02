@@ -13,6 +13,21 @@ def fit_log_reg(X, y, random_state=0):
 def dset_to_x_y(dset, n):
     return torch.stack([x[0] for x in dset])[0:n], torch.tensor([x[1] for x in dset])[0:n]
 
+
+def plot_lr_result(x, y_m, y_fm):
+    plt.plot(x, y_m, marker='o', label="MNIST")
+    plt.plot(x, y_fm, marker='s', label="FashionMNIST")
+    plt.plot(x, (y_m + y_fm) / 2, marker='x', label="Total")
+    plt.legend()
+    # plt.xlim(xmin=10)
+    # plt.ylim(ymin=0.1, ymax=0.7)
+    plt.xlabel("Number of OoD Samples Seen")
+    plt.xticks(x, x)
+    plt.title("Detection Accuracy vs. Number of OoD Samples")
+    plt.savefig("checkpoint/MNIST-FashionMNIST/lr.png")
+    plt.close()
+
+
 # TODO: refactor this
 # def train_test(num_exposed, n, n_test):
 #     # num_exposed = ['mnist128']
@@ -65,3 +80,7 @@ def dset_to_x_y(dset, n):
 
 if __name__ == '__main__':
     ic("Logistic Regression")
+    n = np.array([8, 16, 32, 64, 128, 256])
+    y_m = np.array([0.96733, 0.9743, 0.9766, 0.967, 0.947, 0.9306])
+    y_fm = np.array([0.93556, 0.9864, 0.9826, 0.9926, 0.9953, 0.9999])
+    plot_lr_result(n, y_m, y_fm)
