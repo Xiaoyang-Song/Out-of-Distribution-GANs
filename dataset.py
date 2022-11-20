@@ -90,6 +90,10 @@ def MNIST_SUB(batch_size: int, val_batch_size: int, idx_ind: list, idx_ood: list
 
 
 def CIFAR10(batch_size, test_batch_size):
+
+    # Ground truth mean & std:
+    # mean = torch.tensor([125.3072, 122.9505, 113.8654])
+    # std = torch.tensor([62.9932, 62.0887, 66.7049])
     normalizer = transforms.Normalize(mean=[x/255.0 for x in [125.3, 123.0, 113.9]],
                                       std=[x/255.0 for x in [63.0, 62.1, 66.7]])
     transform = transforms.Compose([transforms.ToTensor(), normalizer])
@@ -102,6 +106,28 @@ def CIFAR10(batch_size, test_batch_size):
                                    transform=transform)
     val_loader = torch.utils.data.DataLoader(
         val_dataset, batch_size=test_batch_size, shuffle=True)
+
+    return train_dataset, val_dataset, train_loader, val_loader
+
+
+def SVHN(bsz_tri, bsz_val, shuffle=True):
+
+    # Ground truth mean & std
+    # mean = torch.tensor([111.6095, 113.1610, 120.5650])
+    # std = torch.tensor([50.4977, 51.2590, 50.2442])
+    normalizer = transforms.Normalize(mean=[x/255.0 for x in [111.6095, 113.1610, 120.5650]],
+                                      std=[x/255.0 for x in [50.4977, 51.2590, 50.2442]])
+    transform = transforms.Compose([transforms.ToTensor(), normalizer])
+
+    # Load dataset & Loader
+    train_dataset = datasets.SVHN('./Datasets/SVHN', split='train',
+                                  download=True, transform=transform)
+    train_loader = torch.utils.data.DataLoader(
+        train_dataset, batch_size=bsz_tri, shuffle=shuffle)
+    val_dataset = datasets.SVHN('./Datasets/SVHN', split='test', download=True,
+                                transform=transform)
+    val_loader = torch.utils.data.DataLoader(
+        val_dataset, batch_size=bsz_val, shuffle=shuffle)
 
     return train_dataset, val_dataset, train_loader, val_loader
 
