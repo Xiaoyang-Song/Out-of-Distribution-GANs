@@ -5,6 +5,7 @@ from utils import *
 
 
 def batch_wasserstein(x):
+    # Input to this function is a batch of logits
     WLoss = Wasserstein.apply
     return torch.mean(-WLoss(torch.softmax(x, dim=-1)))
 

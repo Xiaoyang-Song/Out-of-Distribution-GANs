@@ -165,6 +165,9 @@ def get_dist_metric(img_b1: torch.Tensor, img_b2: torch.Tensor,
     elif len(img_b2.shape) == 2:
         B1, HW = img_b1.shape
         B2, HW = img_b2.shape
+    elif len(img_b1.shape) == 4:
+        B1, C, H, W = img_b1.shape
+        B2, _, _, _ = img_b2.shape
     else:
         assert False, 'Expected image batch to have shape of either (B, H, W) or (B, HW)'
     assert B1 >= m and B2 >= m, 'Expect the sample size less or equal than batch sizes.'
