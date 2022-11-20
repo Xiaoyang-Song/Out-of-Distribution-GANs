@@ -158,7 +158,8 @@ if __name__ == '__main__':
     #     ic(len(batch[batch == num]))
 
     # Test FashionMNIST
-    tset, vset, t_loader, v_loader = FashionMNIST(128, 64, sf=True)
-    ic(len(tset))
-    ic(len(vset))
-    ic(tset[0][0])
+    # tset, vset, t_loader, v_loader = FashionMNIST(128, 64, sf=True)
+    # ic(len(tset))
+    # ic(len(vset))
+    # ic(tset[0][0])
+    pass
