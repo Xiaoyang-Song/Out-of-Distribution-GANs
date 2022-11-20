@@ -207,6 +207,17 @@ def visualize_img(loader: DataLoader):
     pass
 
 
+def reshape_dset_instance(dset, n=None):
+    # Default dset structure:
+    # list of tuples: 0: images, 1: labels
+    if n is not None:
+        assert n <= len(dset)
+    n = len(dset)
+    x = torch.stack([pts[0] for pts in dset], dim=0)[0:n]
+    y = torch.tensor([pts[1] for pts in dset])[0:n]
+    return x, y
+
+
 def show_images(images):
     images = torch.reshape(
         images, [images.shape[0], -1]

@@ -90,13 +90,12 @@ def MNIST_SUB(batch_size: int, val_batch_size: int, idx_ind: list, idx_ood: list
 
 
 def CIFAR10(batch_size, test_batch_size):
-    transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-         transforms.Resize(size=28)])
-    # normalizer = transforms.Normalize(mean=[x/255.0 for x in [125.3, 123.0, 113.9]],
-    # std=[x/255.0 for x in [63.0, 62.1, 66.7]])
+    normalizer = transforms.Normalize(mean=[x/255.0 for x in [125.3, 123.0, 113.9]],
+                                      std=[x/255.0 for x in [63.0, 62.1, 66.7]])
+    transform = transforms.Compose([transforms.ToTensor(), normalizer])
     train_dataset = datasets.CIFAR10('./Datasets/CIFAR-10', train=True,
                                      download=True, transform=transform)
+    # ic(len(train_dataset))
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True)
     val_dataset = datasets.CIFAR10('./Datasets/CIFAR-10', train=False, download=True,
