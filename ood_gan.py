@@ -6,7 +6,6 @@ from wass_loss import ood_wass_loss, ind_wass_loss
 from models.gans import *
 from metrics import *
 from wasserstein import *
-
 from time import gmtime, strftime
 
 
@@ -24,15 +23,15 @@ def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
 
 
 def ood_gan_g_loss(logits_fake, img_fake=None, img_ind=None,
-                   img_ood=None, dist_sample_size=64):
+                   img_ood=None, ind_fake_sample_size=64):
     # 1. Wasserstein distance of G(z)
-    w_fake_g = batch_wasserstein(logits_fake)
+    w_fake = batch_wasserstein(logits_fake)
     # 2. Distance between X_in and G(z)
     dist_fake_ind = get_dist_metric(
-        img_fake, img_ind, dist_sample_size, DIST_TYPE.EUC)
+        img_fake, img_ind, ind_fake_sample_size, DIST_TYPE.EUC)
     # 3. Distance between X_ood and G(z)
     dist_fake_ood = None
-    return w_fake_g, dist_fake_ind, dist_fake_ood
+    return w_fake, dist_fake_ind, dist_fake_ood
 
 
 class OOD_GAN_TRAINER():
