@@ -50,7 +50,7 @@ class OOD_GAN_TRAINER():
         self.ckpt_dir = ckpt_dir
         # Print statement config
         self.n_steps_show = n_steps_show
-        self.n_steps_log_stats = n_steps_log
+        self.n_steps_log = n_steps_log
         # Backbone models & info
         self.D = D
         self.G = G
@@ -86,7 +86,7 @@ class OOD_GAN_TRAINER():
                 x = x.to(DEVICE)
                 y = y.to(DEVICE)
                 # Manually discard last batch
-                if len(x) != self.batch_size:
+                if len(x) != self.bsz_tri:
                     continue
                 # ---------------------- #
                 # DISCRIMINATOR TRAINING #
@@ -100,7 +100,7 @@ class OOD_GAN_TRAINER():
                 Gz = self.G(seed).detach()
                 logits_fake = self.D(Gz)
                 # Logits for X_ood
-                logits_ood = D(ood_img_batch)
+                logits_ood = self.D(ood_img_batch)
                 # Compute loss
                 ind_ce_loss, w_ood, w_fake = self.dloss(
                     logits_real, logits_fake, logits_ood, y)
@@ -151,7 +151,7 @@ class OOD_GAN_TRAINER():
                     G_solver.step()
 
                 # Print out statistics
-                if (iter_count % self.n_steps_show == 0):
+                if (iter_count % self.n_steps_log == 0):
                     print(
                         f"Step: {steps: < 4} | \
                             D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} |\
