@@ -1,3 +1,4 @@
+from traceback import StackSummary
 from config import *
 from dataset import MNIST, CIFAR10
 from models.hparam import *
@@ -6,6 +7,7 @@ from wass_loss import ood_wass_loss, ind_wass_loss
 from models.gans import *
 from metrics import *
 from wasserstein import *
+from torch.utils.tensorboard import SummaryWriter
 from time import gmtime, strftime
 
 
@@ -35,8 +37,9 @@ def ood_gan_g_loss(logits_fake, img_fake=None, img_ind=None,
 
 
 class OOD_GAN_TRAINER():
-    def __init__(self):
+    def __init__(self, writer_name):
         super().__init__()
+        self.writer = SummaryWriter(writer_name)
 
 
 def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discriminator_loss,
