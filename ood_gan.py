@@ -153,7 +153,7 @@ class OOD_GAN_TRAINER():
                 # Print out statistics
                 if (iter_count % self.n_steps_log == 0):
                     print(
-                        f"Step: {steps: < 4} | \
+                        f"Step: {steps:<4} |\
                             D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} |\
                             G: {g_total.item(): .4f} | d_ind: {dist_fake_ind.item(): .4f} | W_z: {w_z.item(): .4f}")
                 iter_count += 1
