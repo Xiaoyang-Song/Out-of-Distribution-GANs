@@ -37,132 +37,132 @@ def ood_gan_g_loss(logits_fake, img_fake=None, img_ind=None,
 
 
 class OOD_GAN_TRAINER():
-    def __init__(self, writer_name):
+    def __init__(self, D, G, noise_dim,
+                 bsz_tri, gd_steps_ratio, hp,
+                 max_epochs,
+                 writer_name, ckpt_name, ckpt_dir,
+                 n_steps_show=100, n_steps_log=1):
         super().__init__()
+        # Logger information
+        self.writer_name = writer_name
         self.writer = SummaryWriter(writer_name)
+        self.ckpt_name = ckpt_name
+        self.ckpt_dir = ckpt_dir
+        # Print statement config
+        self.n_steps_show = n_steps_show
+        self.n_steps_log_stats = n_steps_log
+        # Backbone models & info
+        self.D = D
+        self.G = G
+        self.noise_dim = noise_dim
+        self.dloss = ood_gan_d_loss
+        self.gloss = ood_gan_g_loss
+        # Training config
+        self.bsz_tri = bsz_tri
+        self.gd_steps_ratio = gd_steps_ratio
+        self.max_epochs = max_epochs
+        self.hp = hp
 
+    def train(self, ind_loader, ood_img_batch, D_solver, G_solver, pretrainedD=None, checkpoint=None):
+        # Load pretrained Discriminator
+        if pretrainedD is not None:
+            pretrain = torch.load(pretrainedD)
+            self.D.load_state_dict(pretrain['model_state_dict'])
+            print("Pretrained D model state is loaded.")
+        # Load checkpoint information
+        if checkpoint is not None:
+            ckpt = torch.load(checkpoint['addr'])
+            self.D.load_state_dict(ckpt['D-state'])
+            self.G.load_state_dict(ckpt['G-state'])
+            self.writer = ckpt['writer']
+            print(f"Checkpoint [{checkpoint['id']} loaded.")
+        # Print out OoD sample statistics
+        ic(f"OoD sample shape: {ood_img_batch.shape}")
 
-def ood_gan_trainer(ind_loader, ood_loader, D, G, D_solver, G_solver, discriminator_loss,
-                    generator_loss, metric, img_info, backbone=GAN_BACKBONE.FC, checkpoint=None, checkpoint_save_addr=None, hp=HParam(),
-                    g_d_ratio=1, save_filename=None, show_every=250, pretrained_D=None,
-                    batch_size=128, noise_size=96, num_epochs=10, logger=None, logger_max_iter=None):
-    # Assertion Check of img_info
-    assert img_info is not None, 'Expect img_info to be a dictionary containing H, W, and C.'
-    H, W, C = img_info['H'], img_info['W'], img_info['C']
-    if pretrained_D is not None:
-        pretrain = torch.load(pretrained_D)
-        D.load_state_dict(pretrain['model_state_dict'])
-        print("Pretrained D state is loaded.")
-    if checkpoint is not None:
-        chpt = torch.load(checkpoint['addr'])
-        D.load_state_dict(chpt['D-state'])
-        G.load_state_dict(chpt['G-state'])
-        print(f"Checkpoint [{checkpoint['id']} loaded.")
+        # Training loop
+        iter_count = 0
+        for epoch in range(self.max_epochs):
+            for steps, (x, y) in enumerate(ind_loader):
+                x = x.to(DEVICE)
+                y = y.to(DEVICE)
+                # Manually discard last batch
+                if len(x) != self.batch_size:
+                    continue
+                # ---------------------- #
+                # DISCRIMINATOR TRAINING #
+                # ---------------------- #
+                D_solver.zero_grad()
+                # Logits for X_in
+                logits_real = self.D(x)
+                # Logits for G(z)
+                seed = torch.rand(
+                    (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE) * 2 - 1
+                Gz = self.G(seed).detach()
+                logits_fake = self.D(Gz)
+                # Logits for X_ood
+                logits_ood = D(ood_img_batch)
+                # Compute loss
+                ind_ce_loss, w_ood, w_fake = self.dloss(
+                    logits_real, logits_fake, logits_ood, y)
+                d_total = self.hp.ce * ind_ce_loss + \
+                    self.hp.wass * (w_ood - (w_fake))
 
-    # Assertion Check of Logger arguments
-    assert (logger_max_iter is None and logger is None) or (
-        logger_max_iter is not None and logger is not None), \
-        'Expect logger and logger_iter to be not None or None simultaneously.'
-    # OBTAIN OOD SAMPLES
-    # assert ood_loader is not None, 'Expect ood_loader to be not None.'
-    ood_img_batch, ood_img_batch_label = next(iter(ood_loader))
+                # Write statistics
+                self.writer.add_scalars("Discriminator Loss/each", {
+                    'CE': ind_ce_loss.detach(),
+                    'W_ood': -torch.log(-w_ood.detach()),
+                    'W_z': -torch.log(-w_fake.detach())
+                }, steps)
+                self.writer.add_scalar(
+                    "Discriminator Loss/total", d_total.detach(), steps)
 
-    iter_count = 0
-    for epoch in range(num_epochs):
-        for x, y in ind_loader:
-            if len(x) != batch_size:
-                continue
-            # EARLY STOP FOR SAMPLE TRAINING WITH Logger
-            if iter_count >= logger_max_iter:
-                print(
-                    f'Sample Training ({iter_count} iterations) with Logger Finished.')
-                return
+                # Update
+                d_total.backward()
+                D_solver.step()
 
-            # Discriminator Training
-            D_solver.zero_grad()
-            # TODO: Revise backbone architecture to make sure it works for unflattened images.
-            real_data = x.view(-1, C*H*W).to(DEVICE)  # B x HWC
-            # logits_real = D(2 * (real_data - 0.5))
-            logits_real = D(2 * (x - 0.5))
+                # ------------------ #
+                # GENERATOR TRAINING #
+                # ------------------ #
+                for g_step in range(self.gd_steps_ratio):
+                    G_solver.zero_grad()
+                    # Logits for G(z)
+                    seed = torch.rand(
+                        (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE) * 2 - 1
+                    Gz = self.G(seed).to(DEVICE).detach()
+                    logits_fake = self.D(Gz)
+                    # Compute loss
+                    w_z, dist_fake_ind, dist_fake_ood = self.gloss(
+                        logits_fake, Gz, x, ood_img_batch)
+                    g_total = -(self.hp.wass * (w_z) -
+                                self.hp.dist * dist_fake_ind)
 
-            num_trial = 0
-            while True:
-                g_fake_seed = sample_noise(
-                    batch_size, noise_size, dtype=real_data.dtype, device=real_data.device)
-                fake_images = G(g_fake_seed).detach()
-                if satisfied():
+                    # Write statistics
+                    global_step = steps*self.gd_steps_ratio+g_step
+                    self.writer.add_scalars("Generator Loss/each", {
+                        'W_z': w_z.detach(),
+                        'd_ind': dist_fake_ind.detach(),
+                        # 'd_ood': dist_fake_ood.detach()
+                    }, global_step)
+                    self.writer.add_scalar(
+                        "Generator Loss/total", g_total.detach(), global_step)
+
+                    # Update
+                    g_total.backward()
+                    G_solver.step()
+
+                # Print out statistics
+                if (iter_count % self.n_steps_show == 0):
                     print(
-                        f'[{iter_count}] Trial {num_trial} succeeds. Training resumes.')
-                    break
-                num_trial += 1
-                print(f'Trial {num_trial} fails. Resampling...')
-            logits_fake = D(fake_images)
-            # TODO: decouple OOD GANs and the Original GANs in this script
-            # ood_imgs = ood_img_batch.view(-1, H*W*C).to(DEVICE)
-            logits_ood = D(ood_img_batch)
-            ind_ce_loss, w_ood, w_fake = discriminator_loss(logits_real, logits_fake, logits_ood=logits_ood,
-                                                            labels_real=y, gan_type=GAN_TYPE.OOD)
+                        f"Step: {steps: < 4} | \
+                            D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} |\
+                            G: {g_total.item(): .4f} | d_ind: {dist_fake_ind.item(): .4f} | W_z: {w_z.item(): .4f}")
+                iter_count += 1
 
-            # print("Discriminator Loss Terms:")
-            # ic(ind_ce_loss)
-            # ic(zsl_ood)
-            # ic(zsl_fake)
-            d_total_error = hp.ce * ind_ce_loss + \
-                hp.wass * (w_ood - (w_fake))
-            if logger is not None:
-                logger.ap_d_ls(ind_ce_loss, -w_ood, -w_fake)
-
-            d_total_error.backward()
-            D_solver.step()
-
-            # Generator Training
-            for num_g_steps in range(g_d_ratio):
-                G_solver.zero_grad()
-                g_fake_seed = sample_noise(
-                    batch_size, noise_size, dtype=real_data.dtype, device=real_data.device)
-                # fake_images = G(g_fake_seed).view(
-                #     (-1, C, H, W)).to(DEVICE)
-                fake_images = G(g_fake_seed).to(DEVICE)
-
-                gen_logits_fake = D(fake_images)
-                # zsl_fake, dist_fake_ind, dist_fake_ood = generator_loss(
-                #     gen_logits_fake, fake_images, ood_imgs, real_data, gan_type=GAN_TYPE.OOD)
-                w_fake_g, dist_fake_ind, dist_fake_ood = generator_loss(
-                    gen_logits_fake, fake_images, x, ood_img_batch, dist=metric, gan_type=GAN_TYPE.OOD)
-                # print("Generator Loss Terms:")
-                # ic(zsl_fake)
-                # ic(dist_fake_ind)
-                # ic(dist_fake_ood)
-
-                # g_total_error = -(hp.wass * (-zsl_fake) +
-                #                   hp.dist * (-dist_fake_ind + dist_fake_ood))
-                # Only Ind distance
-                g_total_error = -(hp.wass * (w_fake_g) +
-                                  hp.dist * (dist_fake_ind))
-                # No distance
-                # g_total_error = -(hp.wass * (-zsl_fake))
-                if logger is not None:
-                    # logger.ap_g_ls(
-                    #     -zsl_fake, dist_fake_ind, -dist_fake_ood)
-                    logger.ap_g_ls(
-                        -w_fake_g, dist_fake_ind, torch.tensor(0))
-                g_total_error.backward()
-                G_solver.step()
-
-            if (iter_count % show_every == 0):
-                print('Iter: {}, D: {:.4}, G:{:.4}'.format(
-                    iter_count, d_total_error.item(), g_total_error.item()))
-                imgs_numpy = fake_images.data.cpu()  # .numpy()
-                show_images(imgs_numpy[0:16])
-                plt.show()
-                print()
-            iter_count += 1
-
-        if checkpoint_save_addr is not None:
-            print(f'New checkpoint created at the end of epoch {epoch}.')
-            chpt_name = checkpoint_save_addr + get_time_signature() + '.pt'
+            # Save checkpoint
+            ckpt_name = f"{self.ckpt_dir}{self.ckpt_name}_[{epoch}].pt"
             torch.save({
-                'D-state': D.state_dict(),
-                'G-state': G.state_dict(),
-                'logger': logger
-            }, chpt_name)
+                'D-state': self.D.state_dict(),
+                'G-state': self.G.state_dict(),
+                'writer': self.writer
+            }, ckpt_name)
+            print(f'New checkpoint created at the end of epoch {epoch}.')
