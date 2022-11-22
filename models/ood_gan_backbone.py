@@ -80,18 +80,21 @@ class Generator(nn.Module):
 
 def test_backbone_D(model, val_loader):
     criterion = nn.CrossEntropyLoss()
-    val_loss, val_acc = [], []
+    val_loss, val_acc, total_acc = [], [], []
     for idx, (img, label) in enumerate(val_loader):
         img, label = img.to(DEVICE), label.to(DEVICE)
         logits = model(img)
         loss = criterion(logits, label)
-        acc = (torch.argmax(logits, dim=1) ==
-               label).sum().item() / label.shape[0]
+        num_correct, num_total = (torch.argmax(logits, dim=1) ==
+                                  label).sum().item(), label.shape[0]
+        acc = num_correct / num_total
         val_acc.append(acc)
+        total_acc.append([num_correct, num_total])
         val_loss.append(loss.detach().item())
-        iter_count_val += 1
-    ic(val_acc.mean())
-    ic(val_loss.mean())
+    ic(np.mean(val_acc))
+    ic(np.mean(val_loss))
+    total_acc = np.array(total_acc)
+    ic(np.sum(total_acc[:, 0] / np.sum(total_acc[:, 1])))
 
 
 if __name__ == '__main__':
