@@ -78,12 +78,28 @@ class Generator(nn.Module):
         return output
 
 
+def test_backbone_D(model, val_loader):
+    criterion = nn.CrossEntropyLoss()
+    val_loss, val_acc = [], []
+    for idx, (img, label) in enumerate(val_loader):
+        img, label = img.to(DEVICE), label.to(DEVICE)
+        logits = model(img)
+        loss = criterion(logits, label)
+        acc = (torch.argmax(logits, dim=1) ==
+               label).sum().item() / label.shape[0]
+        val_acc.append(acc)
+        val_loss.append(loss.detach().item())
+        iter_count_val += 1
+    ic(val_acc.mean())
+    ic(val_loss.mean())
+
+
 if __name__ == '__main__':
     ic("OoD GAN architecture")
     D = Discriminator(cifar_pretrained=True)
     # ic(D.encoder)
     # ic(D.fc_projector)
-    x = torch.zeros((10, 3,32,32))
+    x = torch.zeros((10, 3, 32, 32))
     ic(D(x).shape)
 
     G = Generator(96)
