@@ -1,4 +1,5 @@
 from config import *
+from models.resnet import resnet18
 
 
 def get_resnet(name, weights=None):
@@ -13,9 +14,12 @@ def get_resnet(name, weights=None):
 
 
 class Discriminator(nn.Module):
-    def __init__(self, resnet_version='resnet18', num_channels=3, num_class=10):
+    def __init__(self, cifar_pretrained=False, resnet_version='resnet18', num_channels=3, num_class=10):
         super().__init__()
-
+        self.cifar_pretrained = cifar_pretrained
+        if self.cifar_pretrained:
+            self.model = resnet18(pretrained=True)
+            return
         # Network parameters
         self.num_channels = num_channels
         self.num_class = num_class
@@ -31,6 +35,8 @@ class Discriminator(nn.Module):
         self.fc_projector = nn.Linear(self.n_hidden, self.num_class)
 
     def forward(self, x):
+        if self.cifar_pretrained:
+            return self.model(x)
         out = self.encoder(x)
         out = self.fc_projector(out)
         return out
@@ -42,7 +48,6 @@ class Generator(nn.Module):
         self.latent_dim = latent_dim
         # Following architecture is obtained from:
         # https://learnopencv.com/deep-convolutional-gan-in-pytorch-and-tensorflow/#pytorch
-
 
         self.main = nn.Sequential(
             # Block 1:input is Z, going into a convolution
@@ -75,10 +80,10 @@ class Generator(nn.Module):
 
 if __name__ == '__main__':
     ic("OoD GAN architecture")
-    D = Discriminator(num_channels=1)
-    ic(D.encoder)
-    ic(D.fc_projector)
-    x = torch.zeros((10, 1, 28, 28))
+    D = Discriminator(cifar_pretrained=True)
+    # ic(D.encoder)
+    # ic(D.fc_projector)
+    x = torch.zeros((10, 3,32,32))
     ic(D(x).shape)
 
     G = Generator(96)
