@@ -1,7 +1,9 @@
+from email.policy import default
+from random import sample
 from config import *
 # Auxiliary imports
 from utils import visualize_img
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 class CUSTOM_MNIST(Dataset):
@@ -137,9 +139,47 @@ def MNIST_By_CLASS():
     mnist_tri = torchvision.datasets.MNIST(
         "./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
     ic(len(mnist_tri))
-    lst = defaultdict([])
-    lst[1].append("hellp")
-    ic(lst)
+    img_lst = defaultdict(list)
+    label_lst = defaultdict(list)
+    # Loop through each tuple
+    for item in mnist_tri:
+        img_lst[item[1]].append(item[0])
+        label_lst[item[1]].append(item[1])
+    # Declare a wrapper dictionary
+    mnist = {}
+    for label in np.arange(10):
+        mnist[label] = (img_lst[label], label_lst[label])
+    return mnist
+
+# Specifically for Ind Ood Separation
+
+
+def form_ind_dsets(input_dsets, ind_idx):
+    dset = []
+    for label in ind_idx:
+        dset += list(zip(input_dsets[label][0], input_dsets[label][1]))
+    return dset
+
+
+def sample_from_ood_class(mnist: dict, ood_idx: list, sample_size):
+    samples = []
+    for idx in ood_idx:
+        img, label = mnist[idx]
+        rand_idx = np.random.choice(len(label), sample_size, False)
+        x, y = [img[i] for i in rand_idx], [label[i] for i in rand_idx]
+        samples += list(zip(x, y))
+    return samples
+
+
+def relabel_tuples(dsets, ori, target):
+    transformation = dict(zip(ori, target))
+    for dpts in dsets:
+        dpts = (dpts[0], transformation[dpts[1]])
+    return dsets
+
+
+def check_classes(dset):
+    ic(Counter(list(zip(*dset))[1]))
 
 
 if __name__ == '__main__':
@@ -199,4 +239,16 @@ if __name__ == '__main__':
     # ic(tset[0][0])
 
     # Test MNIST-by-label
-    MNIST_By_CLASS()
+    mnist = MNIST_By_CLASS()
+    # for label in np.arange(10):
+    #     ic(len(mnist[label][0]))
+
+    # Test form ind dsets
+    dset = form_ind_dsets(mnist, [0, 2, 3, 6, 8, 9])
+    ic(len(dset))
+
+    # Test sample from ood class
+    # ood = sample_from_ood_class(mnist, [1,7], 32)
+    # ic(len(ood))
+    dset = relabel_tuples(dset, [0, 2, 3, 6, 8, 9], np.arange(6))
+    check_classes(dset)
