@@ -1,6 +1,7 @@
 from config import *
 # Auxiliary imports
 from utils import visualize_img
+from collections import defaultdict
 
 
 class CUSTOM_MNIST(Dataset):
@@ -132,6 +133,15 @@ def SVHN(bsz_tri, bsz_val, shuffle=True):
     return train_dataset, val_dataset, train_loader, val_loader
 
 
+def MNIST_By_CLASS():
+    mnist_tri = torchvision.datasets.MNIST(
+        "./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
+    ic(len(mnist_tri))
+    lst = defaultdict([])
+    lst[1].append("hellp")
+    ic(lst)
+
+
 if __name__ == '__main__':
     # Test dataset functions
     # train_dataset, val_dataset, train_loader_mnist, val_loader_mnist = MNIST(
@@ -187,4 +197,6 @@ if __name__ == '__main__':
     # ic(len(tset))
     # ic(len(vset))
     # ic(tset[0][0])
-    pass
+
+    # Test MNIST-by-label
+    MNIST_By_CLASS()
