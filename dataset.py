@@ -173,13 +173,20 @@ def sample_from_ood_class(mnist: dict, ood_idx: list, sample_size):
 
 def relabel_tuples(dsets, ori, target):
     transformation = dict(zip(ori, target))
+    transformed = []
     for dpts in dsets:
-        dpts = (dpts[0], transformation[dpts[1]])
-    return dsets
+        transformed.append((dpts[0], transformation[dpts[1]]))
+    return transformed
 
 
 def check_classes(dset):
     ic(Counter(list(zip(*dset))[1]))
+
+
+def tuple_list_to_tensor(dset):
+    x = torch.stack([data[0] for data in dset])
+    y = torch.tensor([data[1] for data in dset])
+    return x, y
 
 
 if __name__ == '__main__':
@@ -250,5 +257,5 @@ if __name__ == '__main__':
     # Test sample from ood class
     # ood = sample_from_ood_class(mnist, [1,7], 32)
     # ic(len(ood))
-    dset = relabel_tuples(dset, [0, 2, 3, 6, 8, 9], np.arange(6))
-    check_classes(dset)
+    # dset = relabel_tuples(dset, [0, 2, 3, 6, 8, 9], np.arange(6))
+    # check_classes(dset)

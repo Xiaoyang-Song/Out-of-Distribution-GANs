@@ -30,7 +30,7 @@ from icecream import ic
 import enum
 from enum import Enum, unique
 import itertools
-from itertools import filterfalse 
+from itertools import filterfalse
 
 # Device Auto-Configuration (Compatible with Colab)
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -39,6 +39,9 @@ MODEL_SAVE_PATH = "./mnist_cnn.pt"
 GAN_SAVE_PATH = "./gans_imgs"
 # GANs constant
 NOISE_DIM = 96
+
+# export PYTHONPATH=$PATHONPATH:`pwd`
+
 if __name__ == "__main__":
     ic("Hello config.py")
     ic(f"Device: {DEVICE}")
