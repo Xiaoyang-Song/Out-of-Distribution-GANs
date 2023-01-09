@@ -171,6 +171,10 @@ def sample_from_ood_class(mnist: dict, ood_idx: list, sample_size):
     return samples
 
 
+def set_to_loader(dset: torch.tensor, bs: int, sf: bool):
+    return torch.utils.data.DataLoader(dset, batch_size=bs, shuffle=sf)
+
+
 def relabel_tuples(dsets, ori, target):
     transformation = dict(zip(ori, target))
     transformed = []
