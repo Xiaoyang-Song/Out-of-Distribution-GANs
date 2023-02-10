@@ -6,3 +6,6 @@ Datasets/
 # Packages.txt
 packages.txt
 todo.md
+
+events.*
+checkpoint/
