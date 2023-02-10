@@ -135,9 +135,9 @@ def SVHN(bsz_tri, bsz_val, shuffle=True):
     return train_dataset, val_dataset, train_loader, val_loader
 
 
-def MNIST_By_CLASS():
+def MNIST_By_CLASS(train):
     mnist_tri = torchvision.datasets.MNIST(
-        "./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
+        "./Datasets", train=train, download=True, transform=transforms.Compose([transforms.ToTensor()]))
     ic(len(mnist_tri))
     img_lst = defaultdict(list)
     label_lst = defaultdict(list)
