@@ -29,24 +29,55 @@ def MNIST_aux_dset(ind, ood, b_ood):
     return xin_t, ood_dset_t, xin_v, xout_v
 
 
+def get_acc(model, dset):
+    xin, yin = tuple_list_to_tensor(dset)
+    logits = model(xin)
+    acc = (torch.argmax(logits, dim=1) == yin).sum().item() / yin.shape[0]
+    return acc
+
+
 ind = [2, 3, 6, 8, 9]
 ood = [1, 7]
-xin_t, ood_dset_t, xin_v, xout_v = MNIST_aux_dset(ind, ood, 32)
-dset_t = xin_t + ood_dset_t
-dset_v = xin_v + xout_v
 
+ood_bsz_lst = [8, 16, 32, 64, 128, 256]
+ind_acc_lst, ood_acc_lst = [], []
+num_epoch = 6
 bsz_tri = 128
 bsz_val = 128
 
-train_loader = set_to_loader(dset_t, bsz_tri, True)
-val_loader = set_to_loader(dset_v, bsz_val, True)
+for ood_bsz in ood_bsz_lst:
+    # ood_bsz = 32
+    xin_t, ood_dset_t, xin_v, xout_v = MNIST_aux_dset(ind, ood, ood_bsz)
+    dset_t = xin_t + ood_dset_t
+    dset_v = xin_v + xout_v
 
-model = MNISTCNN_AUX(len(ind))
-train(model, train_loader, val_loader, 8)
+    train_loader = set_to_loader(dset_t, bsz_tri, True)
+    val_loader = set_to_loader(dset_v, bsz_val, True)
 
-# Evaluation on testing set
-xin, yin = tuple_list_to_tensor(xin_v)
-xout, yout = tuple_list_to_tensor(xout_v)
+    model = MNISTCNN_AUX(len(ind))
+    model = train(model, train_loader, val_loader, num_epoch)
 
-pred = model(xin)
+    # Evaluation on testing set
+    print(f"B_OoD: {ood_bsz}")
+    ind_acc, ood_acc = get_acc(model, xin_v), get_acc(model, xout_v)
+    print(f"InD Acc: {ind_acc}")
+    print(f"OoD Acc: {ood_acc}")
 
+    ind_acc_lst.append(ind_acc)
+    ood_acc_lst.append(ood_acc)
+
+ic(ind_acc_lst)
+ic(ood_acc_lst)
+
+
+plt.plot(ood_bsz_lst, ind_acc_lst, marker='o', label="InD")
+plt.plot(ood_bsz_lst, ood_acc_lst, marker='s', label="OoD")
+# plt.plot(x, (y_m + y_fm) / 2, marker='x', label="Total")
+plt.legend()
+# plt.xlim(xmin=10)
+# plt.ylim(ymin=0.1, ymax=0.7)
+plt.xlabel("Number of OoD Samples Seen")
+plt.xticks(ood_bsz_lst, ood_bsz_lst)
+plt.title("Detection Accuracy vs. Number of OoD Samples")
+plt.savefig("checkpoint/Baseline/mnist.png")
+plt.close()
