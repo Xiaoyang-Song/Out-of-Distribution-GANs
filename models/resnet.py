@@ -1,8 +1,7 @@
 import torch
 import torch.nn as nn
 import os
-# Credit: this code is obtained from:
-# https://github.com/huyvnphan/PyTorch_CIFAR10/blob/master/cifar10_models/resnet.py
+
 __all__ = [
     "ResNet",
     "resnet18",
@@ -306,6 +305,7 @@ def resnet50(pretrained=False, progress=True, device="cpu", **kwargs):
     return _resnet(
         "resnet50", Bottleneck, [3, 4, 6, 3], pretrained, progress, device, **kwargs
     )
+
 
 if __name__ == "__main__":
     resnet = resnet18(pretrained=True)
