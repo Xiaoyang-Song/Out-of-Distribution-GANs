@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=engin1
+#SBATCH --account=sunwbgt0
 #SBATCH --job-name=test
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=END
