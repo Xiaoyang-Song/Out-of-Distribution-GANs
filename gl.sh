@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=10000m
 #SBATCH --time=1:00:00
-#SBATCH --partition=gpu
+#SBATCH --partition=standard
 
 module purge
 pip3 install --user icecream
