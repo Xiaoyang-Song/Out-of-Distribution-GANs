@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#SBATCH --account=sunwbgt0
+#SBATCH --account=engin1
 #SBATCH --job-name=test
 #SBACH --mail-user=xysong@umich.edu
+#SBATCH --mail-type=END
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
@@ -13,6 +14,5 @@
 module purge
 pip3 install --user icecream
 pip3 install --user torch
-
 
 python3 gl.py
