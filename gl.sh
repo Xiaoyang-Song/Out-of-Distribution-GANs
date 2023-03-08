@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #SBATCH --account=sunwbgt0
 #SBATCH --job-name=test
 #SBACH --mail-user=xysong@umich.edu
