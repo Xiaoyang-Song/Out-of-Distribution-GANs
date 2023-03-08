@@ -2,7 +2,7 @@
 
 #SBATCH --account=engin1
 #SBATCH --job-name=test
-#SBACH --mail-user=xysong@umich.edu
+#SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=END
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
