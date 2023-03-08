@@ -39,9 +39,10 @@ def get_acc(model, dset):
 ind = [2, 3, 6, 8, 9]
 ood = [1, 7]
 
-ood_bsz_lst = [8, 16, 32, 64, 128, 256]
+# ood_bsz_lst = [4, 8, 16, 32, 64, 128, 256, 512, 1024]
+ood_bsz_lst = [4, 8]
 ind_acc_lst, ood_acc_lst = [], []
-num_epoch = 6
+num_epoch = 4
 bsz_tri = 128
 bsz_val = 128
 
@@ -79,5 +80,5 @@ plt.legend()
 plt.xlabel("Number of OoD Samples Seen")
 plt.xticks(ood_bsz_lst, ood_bsz_lst)
 plt.title("Detection Accuracy vs. Number of OoD Samples")
-plt.savefig("checkpoint/Baseline/mnist.png")
+plt.savefig("checkpoint/Baseline/mnist_4_8.png")
 plt.close()
