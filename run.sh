@@ -13,6 +13,6 @@
 
 module purge
 pip3 install --user icecream
-pip3 install --user torch
+# pip3 install --user torch
 
 python3 gl.py
