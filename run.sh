@@ -7,7 +7,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
+#SBATCH --mem-per-gpu=1000m
 #SBATCH --time=1:00:00
-#SBATCH --partition=standard
+#SBATCH --partition=gpu
 
 python3 gl.py
