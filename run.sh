@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=1000m
+#SBATCH --mem-per-gpu=10000m
 #SBATCH --time=1:00:00
 #SBATCH --cpus-per-gpu=1
 
