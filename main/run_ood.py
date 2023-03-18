@@ -7,9 +7,9 @@ print("HELLO GL!")
 print(torch.cuda.is_available())
 print(torch.cuda.get_device_name(0))
 
-log_dir = "../checkpoint/log/"
-ckpt_dir = "../checkpoint/"
-pretrained_dir = "../checkpoint/mnist/"
+log_dir = "checkpoint/log/"
+ckpt_dir = "checkpoint/"
+pretrained_dir = "checkpoint/mnist/"
 
 ##### Config #####
 ood_bsz = 32
