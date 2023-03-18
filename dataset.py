@@ -1,18 +1,8 @@
-from email.policy import default
 from random import sample
 from config import *
 # Auxiliary imports
 from utils import visualize_img
 from collections import defaultdict, Counter
-
-
-class CUSTOM_MNIST(Dataset):
-    # TODO: Wrap MNIST_SUB into this custom dataset class.
-    def __init__(self):
-        pass
-
-    def __getitem__(self, idx: int):
-        pass
 
 
 def FashionMNIST(bs_t, bs_v, sf):
@@ -191,6 +181,11 @@ def tuple_list_to_tensor(dset):
     x = torch.stack([data[0] for data in dset])
     y = torch.tensor([data[1] for data in dset])
     return x, y
+
+
+class DSET():
+    def __init__(self):
+        pass
 
 
 if __name__ == '__main__':
