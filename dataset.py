@@ -206,12 +206,12 @@ class DSET():
                 self.ind_val, self.bsz_val, True)
 
     def get_ood_equal(self, n):
-        ood_sample = sample_from_ood_class(self.ind_train, self.ood, n)
+        ood_sample = sample_from_ood_class(self.train, self.ood, n)
         ood_img_batch, ood_img_label = tuple_list_to_tensor(ood_sample)
         return ood_img_batch, ood_img_label
 
     def get_ood_unequal(self, idx, n):  # Note that this function is for MNIST only
-        ood_sample = sample_from_ood_class(self.ind_train, [self.ood[idx]], n)
+        ood_sample = sample_from_ood_class(self.train, [self.ood[idx]], n)
         ood_img_batch, ood_img_label = tuple_list_to_tensor(ood_sample)
         return ood_img_batch, ood_img_label
 
