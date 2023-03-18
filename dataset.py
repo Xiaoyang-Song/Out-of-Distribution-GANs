@@ -184,8 +184,36 @@ def tuple_list_to_tensor(dset):
 
 
 class DSET():
-    def __init__(self):
-        pass
+    def __init__(self, name, bsz_tri, bsz_val, ind=None, ood=None):
+        self.bsz_tri = bsz_tri
+        self.bsz_val = bsz_val
+        self.ind, self.ood = ind, ood
+        if name == 'mnist':
+            assert ind is not None and ood is not None
+            self.train = MNIST_By_CLASS(train=True)
+            self.val = MNIST_By_CLASS(train=False)
+            self.ind_train = form_ind_dsets(self.train, ind)
+            self.ind_val = form_ind_dsets(self.val, ind)
+            self.ood_train = form_ind_dsets(self.train, ood)
+            self.ood_val = form_ind_dsets(self.val, ood)
+            self.ind_train = relabel_tuples(
+                self.ind_train, ind, np.arange(len(ind)))
+            self.ind_val = relabel_tuples(
+                self.ind_val, ind, np.arange(len(ind)))
+            self.ind_train_loader = set_to_loader(
+                self.ind_train, self.bsz_tri, True)
+            self.ind_val_loader = set_to_loader(
+                self.ind_val, self.bsz_val, True)
+
+    def get_ood_equal(self, n):
+        ood_sample = sample_from_ood_class(self.ind_train, self.ood, n)
+        ood_img_batch, ood_img_label = tuple_list_to_tensor(ood_sample)
+        return ood_img_batch, ood_img_label
+
+    def get_ood_unequal(self, idx, n):  # Note that this function is for MNIST only
+        ood_sample = sample_from_ood_class(self.ind_train, [self.ood[idx]], n)
+        ood_img_batch, ood_img_label = tuple_list_to_tensor(ood_sample)
+        return ood_img_batch, ood_img_label
 
 
 if __name__ == '__main__':
