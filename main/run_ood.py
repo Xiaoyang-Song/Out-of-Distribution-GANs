@@ -3,6 +3,10 @@ from models.dc_gan_model import *
 from dataset import *
 from config import *
 
+print("HELLO GL!")
+print(torch.cuda.is_available())
+print(torch.cuda.get_device_name(0))
+
 log_dir = "../checkpoint/log/"
 ckpt_dir = "../checkpoint/"
 pretrained_dir = "../checkpoint/mnist/"
@@ -34,7 +38,7 @@ ind_loader = dset.ind_train_loader
 ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
 ic(ood_img_label)
 
-# Traier
+# Trainer
 trainer = OOD_GAN_TRAINER(D=D, G=G,
                           noise_dim=noise_dim,
                           bsz_tri=50,
