@@ -31,8 +31,8 @@ D.load_state_dict(ckpt['model_state_dict'])
 G = DC_G().to(DEVICE)
 ckpt = torch.load(pretrained_dir + "mnist-[23689]-G.pt")
 G.load_state_dict(ckpt['model_state_dict'])
-D_solver = torch.optim.Adam(D.parameters(), lr=1e-3, betas=(0.9, 0.999))
-G_solver = torch.optim.Adam(G.parameters(), lr=1e-3, betas=(0.9, 0.999))
+D_solver = torch.optim.Adam(D.parameters(), lr=1e-3, betas=(0.5, 0.999))
+G_solver = torch.optim.Adam(G.parameters(), lr=1e-3, betas=(0.5, 0.999))
 # Training dataset
 ind_loader = dset.ind_train_loader
 ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
