@@ -48,6 +48,6 @@ trainer = OOD_GAN_TRAINER(D=D, G=G,
                           writer_name=writer_name,
                           ckpt_name=ckpt_name,
                           ckpt_dir=ckpt_dir,
-                          n_steps_log=50)
+                          n_steps_log=25)
 trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
               D.encoder, pretrainedD=None, checkpoint=None)
