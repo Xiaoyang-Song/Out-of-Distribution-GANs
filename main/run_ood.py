@@ -41,7 +41,7 @@ ic(ood_img_label)
 # Trainer
 trainer = OOD_GAN_TRAINER(D=D, G=G,
                           noise_dim=noise_dim,
-                          bsz_tri=50,
+                          bsz_tri=256,
                           gd_steps_ratio=1,
                           hp=hp,
                           max_epochs=max_epoch,
