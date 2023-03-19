@@ -23,7 +23,7 @@ max_epoch = 2
 writer_name = log_dir + f"MNIST-[{ood_bsz}]"
 ckpt_name = f'MNIST-[{ood_bsz}]-balanced'
 ##### Dataset #####
-dset = DSET('mnist', 256, 128, [2, 3, 6, 8, 9], [1, 7])
+dset = DSET('mnist', 50, 128, [2, 3, 6, 8, 9], [1, 7])
 
 D = DC_D(5, img_info).to(DEVICE)
 ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
@@ -41,7 +41,7 @@ ic(ood_img_label)
 # Trainer
 trainer = OOD_GAN_TRAINER(D=D, G=G,
                           noise_dim=noise_dim,
-                          bsz_tri=256,
+                          bsz_tri=50,
                           gd_steps_ratio=1,
                           hp=hp,
                           max_epochs=max_epoch,
