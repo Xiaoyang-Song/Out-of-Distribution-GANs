@@ -124,6 +124,7 @@ class EVALER():
         if each_class:
             assert cls_idx is not None
             for idx in cls_idx:
+                ic(f"Class: {idx}")
                 mask = yxoutv == cls_idx
                 woutv = woutv[mask]
                 tpr_95, tpr_95_thresh = tpr(winv, woutv, 0.95)
