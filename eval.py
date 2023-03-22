@@ -34,16 +34,18 @@ def tpr(winv, woutv, level=0.95):
     return threshold, tpr
 
 
-def plot_wass_dist_and_thresh(wass_lst, legend_lst, thresh, n_ood, log_dir, bins=50, alpha=0.5):
+def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
+                              thresh_lst=None, thresh_lbl_lst=None, bins=50, alpha=0.5):
     assert len(wass_lst) == len(legend_lst)
     for wass, lbl in zip(wass_lst, legend_lst):
         plt.hist(wass.cpu().numpy(), bins=bins, alpha=alpha, label=lbl)
-    plt.axvline(x=thresh, color='b', label="95% TNR threshold")
+    # for thresh, thresh_lbl in zip(thresh_lst, thresh_lbl_lst):
+    #     plt.axvline(x=thresh, color='b', label=thresh_lbl)
     plt.legend()
     plt.xlabel("Wasserstein Distance")
     plt.ylabel("Number of Samples")
     plt.title(f"Number of observed OoD: {n_ood}")
-    plt.savefig(log_dir + f"wass_plot[{n_ood}].png")
+    plt.savefig(log_dir + f"wass_plot[{n_ood}]-[{tag}].png")
     plt.close()
 
 
@@ -132,7 +134,7 @@ class EVALER():
         # Refer to class_level statistics
         self.cls_stats = defaultdict(list)
 
-    def compute_stats(self, D, G=None, each_class=False, cls_idx=None):
+    def compute_stats(self, D, tag, G=None, each_class=False, cls_idx=None):
         xinv, yxinv = tuple_list_to_tensor(self.xin_v)
         xoutv, yxoutv = tuple_list_to_tensor(self.xout_v)
         winv = ood_wass_loss(torch.softmax(D(xinv.to(DEVICE)), dim=-1))
@@ -153,6 +155,7 @@ class EVALER():
             self.lr_instance.append(lr)
             self.lr_train.append(train_stats)
             self.lr_overall.append(eval_stats)
+        w_lst, legend_lst = [winv], ['InD']
         if each_class:
             assert cls_idx is not None
             for idx in cls_idx:
@@ -162,10 +165,18 @@ class EVALER():
                 tpr_95, tpr_95_thresh = tpr(winv, woutv_idx, 0.95)
                 tpr_99, tpr_99_thresh = tpr(winv, woutv_idx, 0.99)
                 result = [tpr_95, tpr_95_thresh, tpr_99, tpr_99_thresh]
+                # plot
+                w_lst.append(woutv_idx)
+                legend_lst.append(f"OoD-[Class {idx}]")
                 if G is not None:
                     cls_lr_eval = lr.eval(winv, woutv_idx)
                     result += cls_lr_eval
                 self.cls_stats[idx].append(result)
+        else:
+            w_lst.append(woutv)
+            legend_lst.append(f"OoD")
+        plot_wass_dist_and_thresh(
+            w_lst, legend_lst, self.n_ood, self.log_dir, tag)
 
     def display_stats(self):
         # Overall stats
