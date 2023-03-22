@@ -27,10 +27,10 @@ from sklearn.metrics import roc_auc_score
 def tpr(winv, woutv, level=0.95):
     assert level < 1 and level > 0
     threshold = np.quantile(winv.to('cpu'), level)
-    ic(f"{level*100}% TNR Threshold: {threshold}")
+    print(f"{level*100}% TNR Threshold: {threshold}")
     fpr = woutv[woutv <= threshold].shape[0] / float(woutv.shape[0])
     tpr = 1 - fpr
-    ic(f"TPR at {level*100}%  TNR: {tpr}")
+    print(f"TPR at {level*100}%  TNR: {tpr}")
     return threshold, tpr
 
 
@@ -57,6 +57,7 @@ class LR():
         self.train_stats = None
 
     def fit(self):
+        print("Logistic Regression Trainig")
         yin = torch.ones(len(self.xin))
         # Generate OoD images
         g_seed = sample_noise((self.n // self.c) * self.c, 96)
@@ -68,7 +69,7 @@ class LR():
         win = ood_wass_loss(torch.softmax(self.D(self.xin.to(DEVICE)), dim=-1))
         wgz = ood_wass_loss(torch.softmax(self.D(gz.to(DEVICE)), dim=-1))
         mean_win, mean_wgz = torch.mean(wgz), torch.mean(wgz)
-        ic(f"Mean win {mean_win} ; Mean wgz {mean_wgz}")
+        print(f"Mean win {mean_win} ; Mean wgz {mean_wgz}")
         # Training
         x = torch.cat([win, wgz])
         y = torch.ones(len(yz) + len(yin))
@@ -76,27 +77,39 @@ class LR():
         X, Y = x.unsqueeze(-1).data.cpu(), y.data.cpu()
         clf = LogisticRegression(random_state=0).fit(X, Y)
         training_acc = clf.score(X, Y)
-        ic(f"Training accuracy: {training_acc}")
+        print(f"Training accuracy: {training_acc}")
         self.train_stats = [mean_win, mean_wgz, training_acc]
         self.clf = clf
         return [mean_win.cpu(), mean_wgz.cpu(), training_acc]
 
     def eval(self, winv, woutv):
+        print("Logistic Regression Evaluation")
         assert self.clf is not None
         ind_acc = self.clf.score(
             winv.unsqueeze(-1).data.cpu(), np.zeros(len(winv)))
         ood_acc = self.clf.score(
             woutv.unsqueeze(-1).data.cpu(), np.ones(len(woutv)))
-        ic(f"Testing accuracy on InD: {ind_acc}")
-        ic(f"Testing accuracy on OoD: {ood_acc}")
+        print(f"Testing accuracy on InD: {ind_acc}")
+        print(f"Testing accuracy on OoD: {ood_acc}")
         # Calculate AUROC
         in_prob = self.clf.predict_proba(winv.unsqueeze(-1).data.cpu())
         out_prob = self.clf.predict_proba(woutv.unsqueeze(-1).data.cpu())
         auroc = roc_auc_score([1]*len(woutv) + [0]*len(winv),
                               list(out_prob[:, 1])+list(in_prob[:, 1]))
-        ic(f"Testing AUROC: {auroc}")
+        print(f"Testing AUROC: {auroc}")
         self.eval_stats = [ind_acc, ood_acc, auroc]
         return [ind_acc, ood_acc, auroc]
+
+
+def print_stats(stat, name, precision=5):
+    print(f"{name}: {stat}")
+    print(
+        f"mean: {np.round(np.mean(stat), precision)} | std: {np.round(np.std(stat), precision)}")
+
+
+def ic_stats(stat, precision=5):
+    ic(stat)
+    ic(f"mean: {np.round(np.mean(stat), precision)} | std: {np.round(np.std(stat), precision)}")
 
 
 class EVALER():
@@ -156,43 +169,31 @@ class EVALER():
 
     def display_stats(self):
         # Overall stats
-        ic("Overall Statistics")
-        ic(self.tpr95)
-        ic(f"mean: {np.round(np.mean(self.tpr95), 5)} | std: {np.round(np.std(self.tpr95), 5)}")
-        ic(self.tpr99)
-        ic(f"mean: {np.round(np.mean(self.tpr99), 5)} | std: {np.round(np.std(self.tpr99), 5)}")
-        ic(self.tpr95_thresh)
-        ic(f"mean: {np.round(np.mean(self.tpr95_thresh), 5)} | std: {np.round(np.std(self.tpr95_thresh), 5)}")
-        ic(self.tpr99_thresh)
-        ic(f"mean: {np.round(np.mean(self.tpr99_thresh), 5)} | std: {np.round(np.std(self.tpr99_thresh), 5)}")
+        print("Overall Statistics")
+        print_stats(self.tpr95, "TPR@95TNR")
+        print_stats(self.tpr95_thresh, "TPR@95TNR-Threshold")
+        print_stats(self.tpr99, "TPR@99TNR")
+        print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
         if len(self.lr_instance) != 0:
             lr_train = np.array(self.lr_train)
-            ic(f"mean_win: {lr_train[:,0]}")
-            ic(f"mean: {np.round(np.mean(lr_train[:,0]), 5)} | std: {np.round(np.std(lr_train[:,0]), 5)}")
-            ic(f"mean_wgz: {lr_train[:,1]}")
-            ic(f"mean: {np.round(np.mean(lr_train[:,1]), 5)} | std: {np.round(np.std(lr_train[:,1]), 5)}")
-            ic(f"training_acc: {lr_train[:,2]}")
-            ic(f"mean: {np.round(np.mean(lr_train[:,2]), 5)} | std: {np.round(np.std(lr_train[:,2]), 5)}")
+            print("Logistic Regression Statistics")
+            print_stats(lr_train[:, 0], "Mean win")
+            print_stats(lr_train[:, 1], "Mean wgz")
+            print_stats(lr_train[:, 2], "Training Accuracy")
             lr_stats = np.array(self.lr_overall)
-            ic(f"ind_acc: {lr_stats[:,0]}")
-            ic(f"mean: {np.round(np.mean(lr_stats[:,0]), 5)} | std: {np.round(np.std(lr_stats[:,0]), 5)}")
-            ic(f"ood_acc: {lr_stats[:,1]}")
-            ic(f"mean: {np.round(np.mean(lr_stats[:,1]), 5)} | std: {np.round(np.std(lr_stats[:,1]), 5)}")
-            ic(f"auroc: {lr_stats[:,2]}")
-            ic(f"mean: {np.round(np.mean(lr_stats[:,2]), 5)} | std: {np.round(np.std(lr_stats[:,2]), 5)}")
+            print_stats(lr_stats[:, 0], "InD Accuracy")
+            print_stats(lr_stats[:, 1], "OoD Accuracy")
+            print_stats(lr_stats[:, 2], "AUROC")
         if len(self.cls_stats) != 0:
             for key, val in self.cls_stats.items():
                 ic(f"Class: {key}")
                 vals = np.array(val)
-                ic(f"tpr95: {vals[:,0]}")
-                ic(f"mean: {np.round(np.mean(vals[:,0]), 5)} | std: {np.round(np.std(vals[:,0]), 5)}")
-                ic(f"tpr99: {vals[:,2]}")
-                ic(f"mean: {np.round(np.mean(vals[:,2]), 5)} | std: {np.round(np.std(vals[:,2]), 5)}")
+                print_stats(vals[:, 0], "TPR@95TNR")
+                print_stats(vals[:, 1], "TPR@95TNR-Threshold")
+                print_stats(vals[:, 2], "TPR@99TNR")
+                print_stats(vals[:, 3], "TPR@99TNR-Threshold")
                 if len(val) > 4:
                     lr_stats = vals[4:7]
-                    ic(f"ind_acc: {lr_stats[:,0]}")
-                    ic(f"mean: {np.round(np.mean(lr_stats[:,0]), 5)} | std: {np.round(np.std(lr_stats[:,0]), 5)}")
-                    ic(f"ood_acc: {lr_stats[:,1]}")
-                    ic(f"mean: {np.round(np.mean(lr_stats[:,1]), 5)} | std: {np.round(np.std(lr_stats[:,1]), 5)}")
-                    ic(f"auroc: {lr_stats[:,2]}")
-                    ic(f"mean: {np.round(np.mean(lr_stats[:,2]), 5)} | std: {np.round(np.std(lr_stats[:,2]), 5)}")
+                    print_stats(lr_stats[:, 0], "InD Accuracy")
+                    print_stats(lr_stats[:, 1], "OoD Accuracy")
+                    print_stats(lr_stats[:, 2], "AUROC")

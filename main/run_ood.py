@@ -28,7 +28,8 @@ evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 MC_NUM = 3
 
 for mc in range(MC_NUM):
-
+    mc_start = time.time()
+    ic(f"Monte Carlo Iteration {mc}")
     ##### logging information #####
     writer_name = log_dir + f"MNIST-[{ood_bsz}]-[{mc}]"
     ckpt_name = f'MNIST-[{ood_bsz}]-balanced-[{mc}]'
@@ -51,7 +52,7 @@ for mc in range(MC_NUM):
     # Trainer
     trainer = OOD_GAN_TRAINER(D=D, G=G,
                               noise_dim=noise_dim,
-                              bsz_tri=256,
+                              bsz_tri=50,
                               gd_steps_ratio=1,
                               hp=hp,
                               max_epochs=max_epoch,
@@ -63,6 +64,8 @@ for mc in range(MC_NUM):
                   D.encoder, pretrainedD=None, checkpoint=None)
     # Evaluation
     evaler.compute_stats(D, G, True, [1, 7])
+    mc_stop = time.time()
+    ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 
 # Display & save statistics
 evaler.display_stats()
@@ -70,4 +73,4 @@ torch.save(evaler, log_dir + "eval.pt")
 ic("EVALER & Stats saved successfully!")
 
 stop = time.time()
-ic(f"Training time: {stop - start}s | About {(stop-start)/60} mins")
+ic(f"Training time: {np.round(stop - start, 2)}s | About {np.round((stop-start)/60, 1)} mins")
