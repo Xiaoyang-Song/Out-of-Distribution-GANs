@@ -11,7 +11,7 @@ ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
 ##### Config #####
-ood_bsz = 64
+ood_bsz = 1
 log_dir = f"../checkpoint/MNIST/{ood_bsz}/"
 ckpt_dir = f"../checkpoint/MNIST/{ood_bsz}/"
 pretrained_dir = f"../checkpoint/pretrained/mnist/"
@@ -19,13 +19,13 @@ pretrained_dir = f"../checkpoint/pretrained/mnist/"
 hp = HParam(ce=1, wass=0.1, dist=1)
 noise_dim = 96
 img_info = {'H': 28, 'W': 28, 'C': 1}
-max_epoch = 2
+max_epoch = 1
 ##### Dataset #####
 dset = DSET('mnist', 50, 128, [2, 3, 6, 8, 9], [1, 7])
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
 ##### Monte Carlo config #####
-MC_NUM = 5
+MC_NUM = 3
 
 for mc in range(MC_NUM):
     mc_start = time.time()

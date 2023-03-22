@@ -70,7 +70,7 @@ class LR():
         # Form training dataset
         win = ood_wass_loss(torch.softmax(self.D(self.xin.to(DEVICE)), dim=-1))
         wgz = ood_wass_loss(torch.softmax(self.D(gz.to(DEVICE)), dim=-1))
-        mean_win, mean_wgz = torch.mean(wgz), torch.mean(wgz)
+        mean_win, mean_wgz = torch.mean(win), torch.mean(wgz)
         print(f"Mean win {mean_win} ; Mean wgz {mean_wgz}")
         # Training
         x = torch.cat([win, wgz])
