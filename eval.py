@@ -147,7 +147,7 @@ class EVALER():
         ic(self.tpr99_thresh)
         ic(f"mean: {np.round(np.mean(self.tpr99_thresh), 5)} | std: {np.round(np.std(self.tpr99_thresh), 5)}")
         if len(self.lr_instance) != 0:
-            lr_train = np.array(self.lr_train.cpu())
+            lr_train = np.array(self.lr_train)
             ic(f"mean_win: {lr_train[:,0]}")
             ic(f"mean: {np.round(np.mean(lr_train[:,0]), 5)} | std: {np.round(np.std(lr_train[:,0]), 5)}")
             ic(f"mean_wgz: {lr_train[:,1]}")
