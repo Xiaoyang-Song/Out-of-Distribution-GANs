@@ -35,7 +35,7 @@ def tpr(winv, woutv, level=0.95):
 
 
 class LR():
-    def __init__(self, D, G, xin_t, n=2000, C=5):
+    def __init__(self, D, G, xin_t, n=10, C=5):
         self.D, self.G = D, G
         self.xin, _ = tuple_list_to_tensor(xin_t)
         self.xin = self.xin[np.random.choice(len(self.xin), n), :, :, :]
@@ -48,11 +48,12 @@ class LR():
         # Generate OoD images
         g_seed = sample_noise((self.n // self.c) * self.c, 96)
         n_class = self.n // self.c
-        gz = G(g_seed, np.array([[i] * n_class for i in range(5)]).flatten())
+        gz = self.G(g_seed, np.array(
+            [[i] * n_class for i in range(5)]).flatten())
         yz = torch.zeros(n_class * 5)
         # Form training dataset
-        win = ood_wass_loss(torch.softmax(D(self.xin.to(DEVICE)), dim=-1))
-        wgz = ood_wass_loss(torch.softmax(D(gz.to(DEVICE)), dim=-1))
+        win = ood_wass_loss(torch.softmax(self.D(self.xin.to(DEVICE)), dim=-1))
+        wgz = ood_wass_loss(torch.softmax(self.D(gz.to(DEVICE)), dim=-1))
         mean_win, mean_wgz = torch.mean(wgz), torch.mean(wgz)
         ic(f"Mean win {mean_win} ; Mean wgz {mean_wgz}")
         # Training
