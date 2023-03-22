@@ -125,7 +125,7 @@ class EVALER():
             assert cls_idx is not None
             for idx in cls_idx:
                 ic(f"Class: {idx}")
-                mask = yxoutv == cls_idx
+                mask = yxoutv == idx
                 woutv_idx = woutv[mask]
                 tpr_95, tpr_95_thresh = tpr(winv, woutv_idx, 0.95)
                 tpr_99, tpr_99_thresh = tpr(winv, woutv_idx, 0.99)
