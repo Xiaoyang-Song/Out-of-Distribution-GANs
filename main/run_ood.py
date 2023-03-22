@@ -22,7 +22,7 @@ img_info = {'H': 28, 'W': 28, 'C': 1}
 max_epoch = 2
 ##### Dataset #####
 dset = DSET('mnist', 50, 128, [2, 3, 6, 8, 9], [1, 7])
-evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val)
+evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
 ##### Monte Carlo config #####
 MC_NUM = 3
