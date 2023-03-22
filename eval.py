@@ -126,12 +126,12 @@ class EVALER():
             for idx in cls_idx:
                 ic(f"Class: {idx}")
                 mask = yxoutv == cls_idx
-                woutv = woutv[mask]
-                tpr_95, tpr_95_thresh = tpr(winv, woutv, 0.95)
-                tpr_99, tpr_99_thresh = tpr(winv, woutv, 0.99)
+                woutv_idx = woutv[mask]
+                tpr_95, tpr_95_thresh = tpr(winv, woutv_idx, 0.95)
+                tpr_99, tpr_99_thresh = tpr(winv, woutv_idx, 0.99)
                 result = [tpr_95, tpr_95_thresh, tpr_99, tpr_99_thresh]
                 if G is not None:
-                    cls_lr_eval = lr.eval(winv, woutv)
+                    cls_lr_eval = lr.eval(winv, woutv_idx)
                     result += cls_lr_eval
                 self.cls_stats[idx].append(result)
 

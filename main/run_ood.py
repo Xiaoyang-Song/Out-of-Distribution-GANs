@@ -42,9 +42,6 @@ ind_loader = dset.ind_train_loader
 ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
 ic(ood_img_label)
 
-xoutv, yxoutv = tuple_list_to_tensor(dset.ood_val)
-ic(yxoutv)
-ic(yxoutv == 1)
 # Trainer
 trainer = OOD_GAN_TRAINER(D=D, G=G,
                           noise_dim=noise_dim,
