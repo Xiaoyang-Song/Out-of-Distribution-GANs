@@ -3,18 +3,18 @@ from models.dc_gan_model import *
 from dataset import *
 from config import *
 from eval import *
+import time
 
+start = time.time()
 ic("HELLO GL!")
 ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
-
-log_dir = "../checkpoint/MNIST/64/"
-ckpt_dir = "../checkpoint/MNIST/64/"
-pretrained_dir = "../checkpoint/pretrained/mnist/"
-
 ##### Config #####
-ood_bsz = 32
+ood_bsz = 64
+log_dir = f"../checkpoint/MNIST/{ood_bsz}/"
+ckpt_dir = f"../checkpoint/MNIST/{ood_bsz}/"
+pretrained_dir = f"../checkpoint/pretrained/mnist/"
 ##### Hyperparameters #####
 hp = HParam(ce=1, wass=0.1, dist=1)
 noise_dim = 96
@@ -51,7 +51,7 @@ for mc in range(MC_NUM):
     # Trainer
     trainer = OOD_GAN_TRAINER(D=D, G=G,
                               noise_dim=noise_dim,
-                              bsz_tri=50,
+                              bsz_tri=256,
                               gd_steps_ratio=1,
                               hp=hp,
                               max_epochs=max_epoch,
@@ -68,3 +68,6 @@ for mc in range(MC_NUM):
 evaler.display_stats()
 torch.save(evaler, log_dir + "eval.pt")
 ic("EVALER & Stats saved successfully!")
+
+stop = time.time()
+ic(f"Training time: {stop - start}s | About {(stop-start)/60} mins")
