@@ -3,9 +3,10 @@ from models.dc_gan_model import *
 from dataset import *
 from config import *
 
-print("HELLO GL!")
-print(torch.cuda.is_available())
-print(torch.cuda.get_device_name(0))
+ic("HELLO GL!")
+ic(torch.cuda.is_available())
+if torch.cuda.is_available():
+    ic(torch.cuda.get_device_name(0))
 
 log_dir = "../checkpoint/log/"
 ckpt_dir = "../checkpoint/"
