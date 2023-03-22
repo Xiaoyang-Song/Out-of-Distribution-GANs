@@ -34,6 +34,19 @@ def tpr(winv, woutv, level=0.95):
     return threshold, tpr
 
 
+def plot_wass_dist_and_thresh(wass_lst, legend_lst, thresh, n_ood, log_dir, bins=50, alpha=0.5):
+    assert len(wass_lst) == len(legend_lst)
+    for wass, lbl in zip(wass_lst, legend_lst):
+        plt.hist(wass.cpu().numpy(), bins=bins, alpha=alpha, label=lbl)
+    plt.axvline(x=thresh, color='b', label="95% TNR threshold")
+    plt.legend()
+    plt.xlabel("Wasserstein Distance")
+    plt.ylabel("Number of Samples")
+    plt.title(f"Number of observed OoD: {n_ood}")
+    plt.savefig(log_dir + f"wass_plot[{n_ood}].png")
+    plt.close()
+
+
 class LR():
     def __init__(self, D, G, xin_t, n=10, C=5):
         self.D, self.G = D, G
@@ -87,10 +100,14 @@ class LR():
 
 
 class EVALER():
-    def __init__(self, xin_t, xin_v, xout_v):
+    def __init__(self, xin_t, xin_v, xout_v, n_ood, log_dir):
+        self.n_ood = n_ood
+        self.log_dir = log_dir
         self.xin_t = xin_t  # InD training dataset
         self.xin_v = xin_v  # InD Testing dataset
         self.xout_v = xout_v  # OoD Testing dataset
+        # Statistics - wasserstein distance
+        self.winv, self.woutv = [],  []
         # Statistics - TPR at x% TNR
         self.tpr95, self.tpr99 = [], []
         self.tpr95_thresh, self.tpr99_thresh = [], []
@@ -107,6 +124,8 @@ class EVALER():
         xoutv, yxoutv = tuple_list_to_tensor(self.xout_v)
         winv = ood_wass_loss(torch.softmax(D(xinv.to(DEVICE)), dim=-1))
         woutv = ood_wass_loss(torch.softmax(D(xoutv.to(DEVICE)), dim=-1))
+        self.winv.append(winv)
+        self.woutv.append(woutv)
         # Test model performance
         tpr_95, tpr_95_thresh = tpr(winv, woutv, 0.95)
         tpr_99, tpr_99_thresh = tpr(winv, woutv, 0.99)
