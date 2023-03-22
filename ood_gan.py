@@ -98,7 +98,7 @@ class OOD_GAN_TRAINER():
             self.writer = ckpt['writer']
             print(f"Checkpoint [{checkpoint['id']} loaded.")
         # Print out OoD sample statistics
-        ic(f"OoD sample shape: {ood_img_batch.shape}")
+        print(f"OoD sample shape: {ood_img_batch.shape}")
         ood_img_batch = ood_img_batch.to(DEVICE)
         iter_count = 0
         for epoch in range(self.max_epochs):

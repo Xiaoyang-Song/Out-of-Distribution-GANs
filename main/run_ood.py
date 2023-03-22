@@ -25,7 +25,7 @@ dset = DSET('mnist', 50, 128, [2, 3, 6, 8, 9], [1, 7])
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
 ##### Monte Carlo config #####
-MC_NUM = 1
+MC_NUM = 5
 
 for mc in range(MC_NUM):
     mc_start = time.time()
@@ -45,14 +45,14 @@ for mc in range(MC_NUM):
     # Training dataset
     ind_loader = dset.ind_train_loader
     ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
-    ic(ood_img_label)
+    print(ood_img_label)
     torch.save((ood_img_batch, ood_img_label),
                log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
 
     # Trainer
     trainer = OOD_GAN_TRAINER(D=D, G=G,
                               noise_dim=noise_dim,
-                              bsz_tri=256,
+                              bsz_tri=50,
                               gd_steps_ratio=1,
                               hp=hp,
                               max_epochs=max_epoch,
