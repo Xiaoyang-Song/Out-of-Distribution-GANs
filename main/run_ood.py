@@ -25,7 +25,7 @@ dset = DSET('mnist', 50, 128, [2, 3, 6, 8, 9], [1, 7])
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
 ##### Monte Carlo config #####
-MC_NUM = 5
+MC_NUM = 1
 
 for mc in range(MC_NUM):
     mc_start = time.time()
@@ -52,7 +52,7 @@ for mc in range(MC_NUM):
     # Trainer
     trainer = OOD_GAN_TRAINER(D=D, G=G,
                               noise_dim=noise_dim,
-                              bsz_tri=50,
+                              bsz_tri=256,
                               gd_steps_ratio=1,
                               hp=hp,
                               max_epochs=max_epoch,
