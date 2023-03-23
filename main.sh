@@ -13,4 +13,4 @@
 module purge
 conda activate OoD
 
-python3 main_ood.py --mc=3 --num_epochs=1 --balanced=True --n_ood=32
+python3 main/main_ood.py --mc=3 --num_epochs=1 --balanced=True --n_ood=32
