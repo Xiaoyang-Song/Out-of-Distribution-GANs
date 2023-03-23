@@ -21,8 +21,8 @@ if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
 ##### Config #####
 ood_bsz = args.n_ood
-log_dir = f"../checkpoint/MNIST/{ood_bsz}/"
-ckpt_dir = f"../checkpoint/MNIST/{ood_bsz}/"
+log_dir = f"../checkpoint/MNIST/imbalanced/{ood_bsz}/"
+ckpt_dir = f"../checkpoint/MNIST/imbalanced/{ood_bsz}/"
 pretrained_dir = f"../checkpoint/pretrained/mnist/"
 ##### Hyperparameters #####
 hp = HParam(ce=1, wass=0.1, dist=1)
