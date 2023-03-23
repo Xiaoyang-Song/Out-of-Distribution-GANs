@@ -120,6 +120,8 @@ for mc in range(MC_NUM):
             #     | validation acc: {np.mean(val_acc)}")
     # Evaluation
     evaler.compute_stats(model, f'mc={mc}', None,  True, [1, 7])
+    torch.save(model.state_dict(),
+               log_dir + f"model-[{ood_bsz}]-[{mc}].pt")
     mc_stop = time.time()
     ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 
