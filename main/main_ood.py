@@ -54,9 +54,11 @@ for mc in range(MC_NUM):
     # Training dataset
     ind_loader = dset.ind_train_loader
     if args.balanced:
+        ic('Balanced Experiment')
         ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
     else:
-        ood_img_batch, ood_img_label = dset.get_ood_unequal(1, ood_bsz)
+        ic("Imbalanced Experiment")
+        ood_img_batch, ood_img_label = dset.get_ood_unequal(0, ood_bsz)
     ic(ood_img_label)
 
     torch.save((ood_img_batch, ood_img_label),
