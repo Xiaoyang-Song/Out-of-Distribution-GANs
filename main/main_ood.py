@@ -3,7 +3,16 @@ from models.dc_gan_model import *
 from dataset import *
 from config import *
 from eval import *
+import argparse
 import time
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--mc', help='Number of MC')
+parser.add_argument('--num_epochs', help='Number of Epochs')
+parser.add_argument('--balanced', help='Balanced', type=bool, default=True)
+parser.add_argument('--n_ood', help='Number of observed OoD')
+args = parser.parse_args()
 
 start = time.time()
 ic("HELLO GL!")
@@ -11,7 +20,7 @@ ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
 ##### Config #####
-ood_bsz = 8
+ood_bsz = args.n_ood
 log_dir = f"../checkpoint/MNIST/{ood_bsz}/"
 ckpt_dir = f"../checkpoint/MNIST/{ood_bsz}/"
 pretrained_dir = f"../checkpoint/pretrained/mnist/"
@@ -19,13 +28,13 @@ pretrained_dir = f"../checkpoint/pretrained/mnist/"
 hp = HParam(ce=1, wass=0.1, dist=1)
 noise_dim = 96
 img_info = {'H': 28, 'W': 28, 'C': 1}
-max_epoch = 1
+max_epoch = args.num_epochs
 ##### Dataset #####
 dset = DSET('mnist', 50, 128, [2, 3, 6, 8, 9], [1, 7])
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
 ##### Monte Carlo config #####
-MC_NUM = 3
+MC_NUM = args.mc
 
 for mc in range(MC_NUM):
     mc_start = time.time()
@@ -44,8 +53,12 @@ for mc in range(MC_NUM):
     G_solver = torch.optim.Adam(G.parameters(), lr=1e-3, betas=(0.5, 0.999))
     # Training dataset
     ind_loader = dset.ind_train_loader
-    ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
+    if args.balanced:
+        ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
+    else:
+        ood_img_batch, ood_img_label = dset.get_ood_unequal(1, ood_bsz)
     print(ood_img_label)
+
     torch.save((ood_img_batch, ood_img_label),
                log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
 

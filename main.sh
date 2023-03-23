@@ -1,18 +1,16 @@
 #!/bin/bash
 
 #SBATCH --account=sunwbgt0
-#SBATCH --job-name=test
+#SBATCH --job-name=OoD-training
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=10000m
-#SBATCH --time=1:00:00
-#SBATCH --cpus-per-gpu=1
+#SBATCH --mem-per-gpu=16GB
+#SBATCH --time=24:00:00
 
 module purge
-pip3 install torch
-pip3 install icecream
+conda activate OoD
 
-python3 gl.py
+python3 main_ood.py --mc=3 --num_epochs=1 --balanced=True --n_ood=32
