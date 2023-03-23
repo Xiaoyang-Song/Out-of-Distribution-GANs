@@ -118,7 +118,7 @@ for mc in range(MC_NUM):
             # print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
             #     | validation acc: {np.mean(val_acc)}")
     # Evaluation
-    evaler.compute_stats(D, f'mc={mc}', None,  True, [1, 7])
+    evaler.compute_stats(model, f'mc={mc}', None,  True, [1, 7])
     mc_stop = time.time()
     ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 
