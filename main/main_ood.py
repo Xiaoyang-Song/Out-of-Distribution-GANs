@@ -10,7 +10,7 @@ import time
 parser = argparse.ArgumentParser()
 parser.add_argument('--mc', help='Number of MC', type=int)
 parser.add_argument('--num_epochs', help='Number of Epochs', type=int)
-parser.add_argument('--balanced', help='Balanced', type=bool, default=True)
+parser.add_argument('--balanced', help='Balanced', type=bool)
 parser.add_argument('--n_ood', help='Number of observed OoD', type=int)
 args = parser.parse_args()
 ic(args.balanced)
