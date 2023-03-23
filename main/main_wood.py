@@ -66,7 +66,7 @@ for mc in range(MC_NUM):
     iter_count_val = 0
     for epoch in tqdm(range(max_epoch)):
         # Training
-        break
+        # break
         model.train()
         train_loss, train_acc, wass = [], [], []
         for idx, (img, label) in enumerate(ind_tri_loader):
