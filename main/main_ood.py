@@ -13,8 +13,8 @@ parser.add_argument('--num_epochs', help='Number of Epochs', type=int)
 parser.add_argument('--balanced', help='Balanced', type=str)
 parser.add_argument('--n_ood', help='Number of observed OoD', type=int)
 args = parser.parse_args()
-ic(args.balanced)
-assert False
+# ic(args.balanced)
+# assert False
 start = time.time()
 ic("HELLO GL!")
 ic(torch.cuda.is_available())
