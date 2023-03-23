@@ -57,7 +57,7 @@ for mc in range(MC_NUM):
         ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
     else:
         ood_img_batch, ood_img_label = dset.get_ood_unequal(1, ood_bsz)
-    print(ood_img_label)
+    ic(ood_img_label)
 
     torch.save((ood_img_batch, ood_img_label),
                log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
