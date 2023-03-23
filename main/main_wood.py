@@ -43,7 +43,8 @@ for mc in range(MC_NUM):
     ckpt_name = f'MNIST-WOOD-[{ood_bsz}]-balanced-[{mc}]'
 
     model = DC_D(5, img_info).to(DEVICE)
-    optimizer = torch.optim.Adam(D.parameters(), lr=1e-3, betas=(0.5, 0.999))
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=1e-3, betas=(0.5, 0.999))
     # Training dataset
     ind_tri_loader = dset.ind_train_loader
     ind_val_loader = dset.ind_val_loader
@@ -65,6 +66,7 @@ for mc in range(MC_NUM):
     iter_count_val = 0
     for epoch in tqdm(range(max_epoch)):
         # Training
+        break
         model.train()
         train_loss, train_acc, wass = [], [], []
         for idx, (img, label) in enumerate(ind_tri_loader):
