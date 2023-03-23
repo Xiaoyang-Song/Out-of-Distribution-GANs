@@ -14,4 +14,4 @@ module purge
 conda init bash
 conda activate OoD
 
-python3 main_wood.py --mc=3 --num_epochs=1 --balanced=balance --n_ood=1
+python3 main_wood.py --mc=10 --num_epochs=1 --balanced=balance --n_ood=3
