@@ -54,6 +54,7 @@ for mc in range(MC_NUM):
     else:
         ic("Imbalanced Experiment")
         ood_img_batch, ood_img_label = dset.get_ood_unequal(0, ood_bsz)
+    ood_img_batch = ood_img_batch.to(DEVICE)
     ic(ood_img_label)
 
     torch.save((ood_img_batch, ood_img_label),
