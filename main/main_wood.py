@@ -76,7 +76,7 @@ for mc in range(MC_NUM):
             logits = model(img)
             # Sample 10 ood image from the seen OoD set
             ood_idx = np.random.choice(
-                len(ood_img_batch), ood_bsz, replace=False)
+                len(ood_img_batch), 10, replace=False)
             ood_logits = model(ood_img_batch[ood_idx, :, :, :])
             wass_loss = batch_wasserstein(ood_logits)
             loss = criterion(logits, label) + 0.1 * wass_loss
