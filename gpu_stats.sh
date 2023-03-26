@@ -1,3 +1,4 @@
+#!/bin/sh
 gpu_usage() {
     if [ $# -eq 0 ]; then
         echo "The partition name needs to be supplied"
@@ -92,7 +93,4 @@ for node, node_info in sorted(users_by_node.items(), key=lambda t: t[0]):
         echo "$pending_jobs"
     fi
 }
-
-gpu_usage()
-
-# Usage: gpu_usage $PARTITION_NAME
+# gpu_usage $PARTITION_NAME

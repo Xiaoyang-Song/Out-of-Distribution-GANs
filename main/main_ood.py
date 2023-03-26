@@ -22,8 +22,8 @@ if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
 ##### Config #####
 ood_bsz = args.n_ood
-log_dir = f"../checkpoint/MNIST/imbalanced/{ood_bsz}/"
-ckpt_dir = f"../checkpoint/MNIST/imbalanced/{ood_bsz}/"
+log_dir = f"../checkpoint/MNIST/Test/{ood_bsz}/"
+ckpt_dir = f"../checkpoint/MNIST/Test/{ood_bsz}/"
 pretrained_dir = f"../checkpoint/pretrained/mnist/"
 ##### Hyperparameters #####
 hp = HParam(ce=1, wass=0.1, dist=1)
@@ -48,8 +48,8 @@ for mc in range(MC_NUM):
     ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
     D.load_state_dict(ckpt['model_state_dict'])
     G = DC_G().to(DEVICE)
-    ckpt = torch.load(pretrained_dir + "mnist-[23689]-G.pt")
-    G.load_state_dict(ckpt['model_state_dict'])
+    # ckpt = torch.load(pretrained_dir + "mnist-[23689]-G.pt")
+    # G.load_state_dict(ckpt['model_state_dict'])
     D_solver = torch.optim.Adam(D.parameters(), lr=1e-3, betas=(0.5, 0.999))
     G_solver = torch.optim.Adam(G.parameters(), lr=1e-3, betas=(0.5, 0.999))
     # Training dataset
