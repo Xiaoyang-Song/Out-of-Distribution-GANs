@@ -41,7 +41,8 @@ train_config = config['train_config']
 mc_num = train_config['mc']
 max_epoch = train_config['max_epochs']
 bsz_tri, bsz_val = train_config['bsz_tri'], train_config['bsz_val']
-hp = train_config['hp']
+w_ce, w_loss, w_dist = train_config['hp'].values()
+hp = HParam(ce=w_ce, wass=w_loss, dist=w_dist)
 gd_step_ratio = train_config['gd_step_ratio']
 noise_dim = train_config['noise_dim']
 n_steps_log = train_config['logging']['n_steps_log']
@@ -56,6 +57,7 @@ ic("Finished Processing Input Arguments.")
 ########## Experiment Starts Here  ##########
 start = time.time()
 ic("HELLO GL!")
+#---------- GPU information  ----------#
 ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
