@@ -226,11 +226,11 @@ class DSET():
             assert False, 'Unrecognized Dataset Combination.'
 
     def ood_sample(self, n, regime, idx=None):
-        dset = self.train if self.name == 'mnist' else self.ood_train_by_class
-        cls_lst = self.ood if self.name == 'mnist' else np.arange(10)
-        if regime == 'balanced':
+        dset = self.train if self.name == 'MNIST' else self.ood_train_by_class
+        cls_lst = self.ood if self.name == 'MNIST' else np.arange(10)
+        if regime == 'Balanced':
             idx_lst = cls_lst
-        elif regime == 'imbalanced':
+        elif regime == 'Imbalanced':
             assert idx is not None
             idx_lst = cls_lst[idx]
         else:
