@@ -240,6 +240,10 @@ class DSET():
         return ood_img_batch, ood_img_label
 
 
+def line(n=40):
+    return "-"*n
+
+
 if __name__ == '__main__':
     # Test dataset functions
     dset = DSET('mnist-fashionmnist', 50, 128)

@@ -5,77 +5,109 @@ from config import *
 from eval import *
 import argparse
 import time
+import yaml
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--mc', help='Number of MC', type=int)
-parser.add_argument('--num_epochs', help='Number of Epochs', type=int)
-parser.add_argument('--balanced', help='Balanced', type=str)
-parser.add_argument('--n_ood', help='Number of observed OoD', type=int)
+parser.add_argument('--config', help='Training configuration file')
 args = parser.parse_args()
-# ic(args.balanced)
-# assert False
+assert args.config is not None, 'Please specify the config .yml file to proceed.'
+config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
+
+########## Argument Processing  ##########
+#---------- Dataset, Path & Regime  ----------#
+dset, ind, ood = config['dataset']
+ic(f"Experiment: {dset}")
+root_dir, pretrained_dir = config['path']
+regime, observed_cls = config['experiment']
+ic(f"Experiment regime: {regime}")
+print(line())
+if regime == 'Imbalanced':
+    assert observed_cls is not None
+    ic(f"Observed Classes are: {observed_cls}")
+ood_bsz = config['n_ood']
+ic(f"Number of observed OoD samples (class-level): {ood_bsz}")
+log_dir = root_dir + f"{dset}/{regime}/{ood_bsz}/"
+ckpt_dir = root_dir + f"{dset}/{regime}/{ood_bsz}/"
+pretrained_dir = pretrained_dir + f"{dset}/"
+#---------- Training Hyperparameters  ----------#
+###---------- Image Info  ----------###
+img_info, num_classes = config['dset_info']
+H, W, C = img_info
+ic(f"Input Dimension: {H} x {W} x {C}")
+ic(f"Number of InD classes: {num_classes}")
+###---------- Trainer  ----------###
+train_config = config['train_config']
+mc_num = train_config.mc
+max_epoch = train_config.max_epochs
+bsz_tri, bsz_val = train_config.bsz_tri, train_config.bsz_val
+hp = train_config.hp
+gd_step_ratio = train_config.gd_step_ratio
+noise_dim = train_config.noise_dim
+n_steps_log = train_config.logging.n_steps_log
+###---------- Optimizer  ----------###
+lr, beta1, beta2 = train_config['optimizer']
+#---------- Evaluation Configuration  ----------#
+eval_config = config['eval_config']
+each_cls, cls_idx = eval_config
+if each_cls:
+    assert cls_idx is not None
+ic("Finished Processing Input Arguments.")
+########## Experiment Starts Here  ##########
 start = time.time()
 ic("HELLO GL!")
 ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
-##### Config #####
-ood_bsz = args.n_ood
-log_dir = f"../checkpoint/MNIST/Test/{ood_bsz}/"
-ckpt_dir = f"../checkpoint/MNIST/Test/{ood_bsz}/"
-pretrained_dir = f"../checkpoint/pretrained/mnist/"
-##### Hyperparameters #####
-hp = HParam(ce=1, wass=0.1, dist=1)
-noise_dim = 96
-img_info = {'H': 28, 'W': 28, 'C': 1}
-max_epoch = args.num_epochs
-##### Dataset #####
-dset = DSET('mnist', 50, 128, [2, 3, 6, 8, 9], [1, 7])
+#---------- Dataset & Evaler  ----------#
+# note that ind and ood are deprecated for non-mnist experiment
+dset = DSET(dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
-##### Monte Carlo config #####
-MC_NUM = args.mc
-
-for mc in range(MC_NUM):
+#---------- Monte Carlo Simulation  ----------#
+for mc in range(mc_num):
     mc_start = time.time()
     ic(f"Monte Carlo Iteration {mc}")
-    ##### logging information #####
-    writer_name = log_dir + f"MNIST-[{ood_bsz}]-[{mc}]"
-    ckpt_name = f'MNIST-[{ood_bsz}]-balanced-[{mc}]'
-
-    D = DC_D(5, img_info).to(DEVICE)
-    ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
+    ###---------- logging information  ----------###
+    writer_name = log_dir + f"{dset}-[{ood_bsz}]-[{mc}]"
+    ckpt_name = f'{dset}-[{ood_bsz}]-balanced-[{mc}]'
+    ###---------- models  ----------###
+    D = DC_D(num_classes, img_info).to(DEVICE)
+    ckpt = torch.load(pretrained_dir + "D.pt")
     D.load_state_dict(ckpt['model_state_dict'])
-    G = DC_G().to(DEVICE)
-    # ckpt = torch.load(pretrained_dir + "mnist-[23689]-G.pt")
+    ic("Pretrained D states loaded!")
+    G = DC_G(num_classes, noise_dim).to(DEVICE)
+    # ckpt = torch.load(pretrained_dir + "G.pt")
     # G.load_state_dict(ckpt['model_state_dict'])
-    D_solver = torch.optim.Adam(D.parameters(), lr=1e-3, betas=(0.5, 0.999))
-    G_solver = torch.optim.Adam(G.parameters(), lr=1e-3, betas=(0.5, 0.999))
-    # Training dataset
+    ###---------- optimizers  ----------###
+    D_solver = torch.optim.Adam(D.parameters(), lr=lr, betas=(beta1, beta2))
+    G_solver = torch.optim.Adam(G.parameters(), lr=lr, betas=(beta1, beta2))
+    ###---------- dataset  ----------###
     ind_loader = dset.ind_train_loader
-    regime = args.balanced
-    ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime, None)
+    if regime == 'Balanced':
+        ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
+    elif regime == 'Imbalanced':
+        ood_img_batch, ood_img_label = dset.ood_sample(
+            ood_bsz, regime, observed_cls)
     ic(ood_img_label)
-
     torch.save((ood_img_batch, ood_img_label),
                log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
 
-    # Trainer
+    ###---------- trainer  ----------###
     trainer = OOD_GAN_TRAINER(D=D, G=G,
                               noise_dim=noise_dim,
-                              bsz_tri=50,
-                              gd_steps_ratio=1,
+                              bsz_tri=bsz_tri,
+                              gd_steps_ratio=gd_step_ratio,
                               hp=hp,
                               max_epochs=max_epoch,
                               writer_name=writer_name,
                               ckpt_name=ckpt_name,
                               ckpt_dir=ckpt_dir,
-                              n_steps_log=5)
+                              n_steps_log=n_steps_log)
     trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
                   D.encoder, pretrainedD=None, checkpoint=None)
-    # Evaluation
-    evaler.compute_stats(D, f'mc={mc}', G, True, [1, 7])
+    ###---------- evaluation  ----------###
+    evaler.compute_stats(D, f'mc={mc}', G, each_cls, cls_idx)
     mc_stop = time.time()
     ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 

@@ -180,11 +180,13 @@ class EVALER():
 
     def display_stats(self):
         # Overall stats
+        print("\n" + line())
         print("Overall Statistics")
         print_stats(self.tpr95, "TPR@95TNR")
         print_stats(self.tpr95_thresh, "TPR@95TNR-Threshold")
         print_stats(self.tpr99, "TPR@99TNR")
         print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
+        print("\n" + line())
         if len(self.lr_instance) != 0:
             lr_train = np.array(self.lr_train)
             print("Logistic Regression Statistics")
@@ -197,6 +199,7 @@ class EVALER():
             print_stats(lr_stats[:, 2], "AUROC")
         if len(self.cls_stats) != 0:
             for key, val in self.cls_stats.items():
+                print("\n" + line())
                 ic(f"Class: {key}")
                 vals = np.array(val)
                 print_stats(vals[:, 0], "TPR@95TNR")

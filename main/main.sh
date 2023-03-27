@@ -14,4 +14,4 @@ module purge
 conda init bash
 conda activate OoD
 
-python3 main_ood.py --mc=5 --num_epochs=1 --balanced=balance --n_ood=2
+python3 main_ood.py --config=config/GAN/ood_gan.yaml

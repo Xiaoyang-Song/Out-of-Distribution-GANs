@@ -1,0 +1,43 @@
+dataset:
+  dset: MNIST
+  ind: [2, 3, 6, 8, 9]
+  ood: [1, 7]
+
+path:
+  root_dir: ../checkpoint/
+  pretrained_dir: ../checkpoint/pretrained/
+
+experiment:
+  regime: Balanced
+  observed_cls: null
+
+n_ood: 1
+
+dset_info:
+  img_info:
+    H: 28
+    W: 28
+    C: 1
+  num_class: 5
+
+train_config:
+  mc: 3
+  max_epochs: 2
+  bsz_tri: 50
+  bsz_val: 128 # this is not used in general
+  hp:
+    ce: 1
+    wass: 0.1
+    dist: 1
+  gd_step_ratio: 1
+  noise_dim: 96
+  optimizer:
+    lr: 1e-3
+    beta1: 0.5
+    beta2: 0.999
+  logging:
+    n_steps_log: 5
+
+eval_config:
+  each_cls: True
+  cls_idx: [1, 7]
