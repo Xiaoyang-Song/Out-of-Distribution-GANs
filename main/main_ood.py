@@ -38,13 +38,13 @@ ic(f"Input Dimension: {H} x {W} x {C}")
 ic(f"Number of InD classes: {num_classes}")
 ###---------- Trainer  ----------###
 train_config = config['train_config']
-mc_num = train_config.mc
-max_epoch = train_config.max_epochs
-bsz_tri, bsz_val = train_config.bsz_tri, train_config.bsz_val
-hp = train_config.hp
-gd_step_ratio = train_config.gd_step_ratio
-noise_dim = train_config.noise_dim
-n_steps_log = train_config.logging.n_steps_log
+mc_num = train_config['mc']
+max_epoch = train_config['max_epochs']
+bsz_tri, bsz_val = train_config['bsz_tri'], train_config['bsz_val']
+hp = train_config['hp']
+gd_step_ratio = train_config['gd_step_ratio']
+noise_dim = train_config['noise_dim']
+n_steps_log = train_config['logging']['n_steps_log']
 ###---------- Optimizer  ----------###
 lr, beta1, beta2 = train_config['optimizer'].values()
 #---------- Evaluation Configuration  ----------#
