@@ -23,8 +23,8 @@ if torch.cuda.is_available():
 ##### Config #####
 ood_bsz = args.n_ood
 ic(ood_bsz)
-log_dir = f"../checkpoint/MNIST/WOOD/imbalance/{ood_bsz}/"
-ckpt_dir = f"../checkpoint/MNIST/WOOD/imbalance/{ood_bsz}/"
+log_dir = f"../checkpoint/MNIST/WOOD/Test/{ood_bsz}/"
+ckpt_dir = f"../checkpoint/MNIST/WOOD/Test/{ood_bsz}/"
 pretrained_dir = f"../checkpoint/pretrained/mnist/"
 # pretrained_dir = f"../checkpoint/pretrained/mnist/"
 ##### Hyperparameters #####
