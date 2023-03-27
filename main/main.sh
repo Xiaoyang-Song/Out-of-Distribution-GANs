@@ -14,4 +14,4 @@ module purge
 conda init bash
 conda activate OoD
 
-python3 main_ood.py --config=config/GAN/ood_gan.yaml
+python3 main_ood.py --config=../config/GAN/ood_gan.yaml

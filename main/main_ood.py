@@ -16,10 +16,10 @@ config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
 
 ########## Argument Processing  ##########
 #---------- Dataset, Path & Regime  ----------#
-dset, ind, ood = config['dataset']
+dset, ind, ood = config['dataset'].values()
 ic(f"Experiment: {dset}")
-root_dir, pretrained_dir = config['path']
-regime, observed_cls = config['experiment']
+root_dir, pretrained_dir = config['path'].values()
+regime, observed_cls = config['experiment'].values()
 ic(f"Experiment regime: {regime}")
 print(line())
 if regime == 'Imbalanced':
@@ -32,8 +32,8 @@ ckpt_dir = root_dir + f"{dset}/{regime}/{ood_bsz}/"
 pretrained_dir = pretrained_dir + f"{dset}/"
 #---------- Training Hyperparameters  ----------#
 ###---------- Image Info  ----------###
-img_info, num_classes = config['dset_info']
-H, W, C = img_info
+img_info, num_classes = config['dset_info'].values()
+H, W, C = img_info.values()
 ic(f"Input Dimension: {H} x {W} x {C}")
 ic(f"Number of InD classes: {num_classes}")
 ###---------- Trainer  ----------###
@@ -46,9 +46,9 @@ gd_step_ratio = train_config.gd_step_ratio
 noise_dim = train_config.noise_dim
 n_steps_log = train_config.logging.n_steps_log
 ###---------- Optimizer  ----------###
-lr, beta1, beta2 = train_config['optimizer']
+lr, beta1, beta2 = train_config['optimizer'].values()
 #---------- Evaluation Configuration  ----------#
-eval_config = config['eval_config']
+eval_config = config['eval_config'].values()
 each_cls, cls_idx = eval_config
 if each_cls:
     assert cls_idx is not None
