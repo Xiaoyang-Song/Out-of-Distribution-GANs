@@ -54,12 +54,8 @@ for mc in range(MC_NUM):
     G_solver = torch.optim.Adam(G.parameters(), lr=1e-3, betas=(0.5, 0.999))
     # Training dataset
     ind_loader = dset.ind_train_loader
-    if args.balanced == 'balance':
-        ic('Balanced Experiment')
-        ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
-    else:
-        ic("Imbalanced Experiment")
-        ood_img_batch, ood_img_label = dset.get_ood_unequal(0, ood_bsz)
+    regime = args.balanced
+    ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime, None)
     ic(ood_img_label)
 
     torch.save((ood_img_batch, ood_img_label),

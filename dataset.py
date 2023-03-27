@@ -125,21 +125,19 @@ def SVHN(bsz_tri, bsz_val, shuffle=True):
     return train_dataset, val_dataset, train_loader, val_loader
 
 
-def MNIST_By_CLASS(train):
-    mnist_tri = torchvision.datasets.MNIST(
-        "./Datasets", train=train, download=True, transform=transforms.Compose([transforms.ToTensor()]))
-    ic(len(mnist_tri))
+def dset_by_class(dset):
+    ic(len(dset))
     img_lst = defaultdict(list)
     label_lst = defaultdict(list)
     # Loop through each tuple
-    for item in mnist_tri:
+    for item in dset:
         img_lst[item[1]].append(item[0])
         label_lst[item[1]].append(item[1])
     # Declare a wrapper dictionary
-    mnist = {}
+    dset_by_class = {}
     for label in np.arange(10):
-        mnist[label] = (img_lst[label], label_lst[label])
-    return mnist
+        dset_by_class[label] = (img_lst[label], label_lst[label])
+    return dset_by_class
 
 # Specifically for Ind Ood Separation
 
@@ -151,10 +149,10 @@ def form_ind_dsets(input_dsets, ind_idx):
     return dset
 
 
-def sample_from_ood_class(mnist: dict, ood_idx: list, sample_size):
+def sample_from_ood_class(ood_dset: dict, ood_idx: list, sample_size):
     samples = []
     for idx in ood_idx:
-        img, label = mnist[idx]
+        img, label = ood_dset[idx]
         rand_idx = np.random.choice(len(label), sample_size, False)
         x, y = [img[i] for i in rand_idx], [label[i] for i in rand_idx]
         samples += list(zip(x, y))
@@ -184,105 +182,70 @@ def tuple_list_to_tensor(dset):
 
 
 class DSET():
-    def __init__(self, name, bsz_tri, bsz_val, ind=None, ood=None):
+    def __init__(self, dset_name, bsz_tri, bsz_val, ind=None, ood=None):
+        self.name = dset_name
         self.bsz_tri = bsz_tri
         self.bsz_val = bsz_val
         self.ind, self.ood = ind, ood
-        if name == 'mnist':
-            assert ind is not None and ood is not None
-            self.train = MNIST_By_CLASS(train=True)
-            self.val = MNIST_By_CLASS(train=False)
-            self.ind_train = form_ind_dsets(self.train, ind)
-            self.ind_val = form_ind_dsets(self.val, ind)
-            self.ood_train = form_ind_dsets(self.train, ood)
-            self.ood_val = form_ind_dsets(self.val, ood)
+        self.initialize()
+
+    def initialize(self):
+        if self.name == 'mnist':
+            assert self.ind is not None and self.ood is not None
+            mnist_tri, mnist_val, _, _ = MNIST(self.bsz_tri, self.bsz_val)
+            self.train = dset_by_class(mnist_tri)
+            self.val = dset_by_class(mnist_val)
+            # The following code is for within-dataset InD/OoD separation
+            self.ind_train = form_ind_dsets(self.train, self.ind)
+            self.ind_val = form_ind_dsets(self.val, self.ind)
+            self.ood_train = form_ind_dsets(self.train, self.ood)
+            self.ood_val = form_ind_dsets(self.val, self.ood)
             self.ind_train = relabel_tuples(
-                self.ind_train, ind, np.arange(len(ind)))
+                self.ind_train, self.ind, np.arange(len(self.ind)))
             self.ind_val = relabel_tuples(
-                self.ind_val, ind, np.arange(len(ind)))
+                self.ind_val, self.ind, np.arange(len(self.ind)))
             self.ind_train_loader = set_to_loader(
                 self.ind_train, self.bsz_tri, True)
             self.ind_val_loader = set_to_loader(
                 self.ind_val, self.bsz_val, True)
+        elif self.name == 'mnist-fashionmnist':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = MNIST(
+                self.bsz_tri, self.bsz_val)
+            self.ood_train, self.ood_val, _, _ = FashionMNIST(
+                self.bsz_tri, self.bsz_val, True)
+            self.ood_train_by_class = dset_by_class(
+                self.ood_train)  # this is used for sampling
+        elif self.name == 'cifar-svhn':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(
+                self.bsz_tri, self.bsz_val)
+            self.ood_train, self.ood_val, _, _ = SVHN(
+                self.bsz_tri, self.bsz_val)
+            self.ood_train_by_class = dset_by_class(
+                self.ood_train)  # this is used for sampling
+        else:
+            assert False, 'Unrecognized Dataset Combination.'
 
-    def get_ood_equal(self, n):
-        ood_sample = sample_from_ood_class(self.train, self.ood, n)
-        ood_img_batch, ood_img_label = tuple_list_to_tensor(ood_sample)
-        return ood_img_batch, ood_img_label
-
-    def get_ood_unequal(self, idx, n):  # Note that this function is for MNIST only
-        ood_sample = sample_from_ood_class(self.train, [self.ood[idx]], n)
+    def ood_sample(self, n, regime, idx=None):
+        dset = self.train if self.name == 'mnist' else self.ood_train_by_class
+        cls_lst = self.ood if self.name == 'mnist' else np.arange(10)
+        if regime == 'balanced':
+            idx_lst = cls_lst
+        elif regime == 'imbalanced':
+            assert idx is not None
+            idx_lst = cls_lst[idx]
+        else:
+            assert False, 'Unrecognized Experiment Type.'
+        ood_sample = sample_from_ood_class(dset, idx_lst, n)
         ood_img_batch, ood_img_label = tuple_list_to_tensor(ood_sample)
         return ood_img_batch, ood_img_label
 
 
 if __name__ == '__main__':
     # Test dataset functions
-    # train_dataset, val_dataset, train_loader_mnist, val_loader_mnist = MNIST(
-    #     32, 16)
-    # # Test single sample:
-    # ic(len(train_dataset.__getitem__(0)))  # First sample in the loader
-    # ic(train_dataset.__getitem__(0)[0].shape)  # img features
-    # ic(train_dataset.__getitem__(0)[1])  # Class label
-    # mnist_sample = train_dataset.__getitem__(0)[0]
-    # # Show the sample image
-    # # plt.imshow(mnist_sample.squeeze(), cmap="gray")
-    # # plt.show()
-    # # ic(mnist_sample)
-
-    # VISUALIZE CIFAR-10 dataset
-    # train_dataset, val_dataset, train_loader_mnist, val_loader_mnist = CIFAR10(
-    #     32, 16)
-    # ic(train_dataset.__getitem__(0)[0].shape)  # img features
-    # cifar_sample_grayscale = train_dataset.__getitem__(7)[0].mean(0)
-    # cifar_sample_label = train_dataset.__getitem__(7)[1]
-    # ic(cifar_sample_label)  # By manually inspection, this should be a horse
-    # plt.imshow(cifar_sample_grayscale.squeeze(), cmap="gray")
-    # plt.show()
-
-    # MNIST_SUB Sanity Check
-    # train_set, val_set = MNIST_SUB(
-    #     128, 64, idx_ind=[0, 2, 3, 6, 8], idx_ood=[1, 7])
-    # ic(train_set.targets.shape)
-    # mask = train_set.targets == 0
-    # ic((train_set.targets[mask]).shape)
-    # ic(torch.tensor(list(filterfalse(
-    #     lambda x: train_set.targets[x] in [0, 1], torch.arange(60000)))).shape)
-    # ic(train_set.data.shape)
-    # ic(type(train_set.data))
-    # train_loader = torch.utils.data.DataLoader(
-    #     train_set.data, batch_size=128, shuffle=True)
-    # ic(train_loader)
-
-    # Test whether the data loader is randomly shuffled in general.
-    # idx_ind = [0, 1, 3, 4, 5]
-    # dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
-    #                       idx_ind=idx_ind, idx_ood=[2], shuffle=True)
-    # ic(len(dset_dict['train_set_ind'][0]))
-    # ic(dset_dict['train_set_ind'][0][0].shape)
-    # # ic(dset_dict['train_set_ind'][0][1].shape)
-    # ic(next(iter(dset_dict['train_set_ind_loader']))[1])
-    # batch = next(iter(dset_dict['train_set_ind_loader']))[1]
-    # for num in idx_ind:
-    #     ic(len(batch[batch == num]))
-
-    # Test FashionMNIST
-    # tset, vset, t_loader, v_loader = FashionMNIST(128, 64, sf=True)
-    # ic(len(tset))
-    # ic(len(vset))
-    # ic(tset[0][0])
-
-    # Test MNIST-by-label
-    mnist = MNIST_By_CLASS()
-    # for label in np.arange(10):
-    #     ic(len(mnist[label][0]))
-
-    # Test form ind dsets
-    dset = form_ind_dsets(mnist, [0, 2, 3, 6, 8, 9])
-    ic(len(dset))
-
-    # Test sample from ood class
-    # ood = sample_from_ood_class(mnist, [1,7], 32)
-    # ic(len(ood))
-    # dset = relabel_tuples(dset, [0, 2, 3, 6, 8, 9], np.arange(6))
-    # check_classes(dset)
+    dset = DSET('mnist-fashionmnist', 50, 128)
+    ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])
+    ic(ood_img_label)
+    ic(ood_img_batch.shape)
+    for img in ood_img_batch:
+        plt.imshow(img.squeeze())
+        plt.show()
