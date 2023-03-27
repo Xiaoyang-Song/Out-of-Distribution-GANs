@@ -47,6 +47,7 @@ for mc in range(MC_NUM):
     model = DC_D(5, img_info).to(DEVICE)
     ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
     model.load_state_dict(ckpt['model_state_dict'])
+    ic('Checkpoint loaded')
     optimizer = torch.optim.Adam(
         model.parameters(), lr=1e-3, betas=(0.5, 0.999))
     # Training dataset
@@ -121,7 +122,7 @@ for mc in range(MC_NUM):
 
             # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(val_acc), epoch)
             # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(val_loss), epoch)
-            print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+            ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
     # Evaluation
     evaler.compute_stats(model, f'mc={mc}', None,  True, [1, 7])
