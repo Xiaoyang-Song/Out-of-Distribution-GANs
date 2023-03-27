@@ -25,6 +25,7 @@ ood_bsz = args.n_ood
 ic(ood_bsz)
 log_dir = f"../checkpoint/MNIST/WOOD/imbalance/{ood_bsz}/"
 ckpt_dir = f"../checkpoint/MNIST/WOOD/imbalance/{ood_bsz}/"
+pretrained_dir = f"../checkpoint/pretrained/mnist/"
 # pretrained_dir = f"../checkpoint/pretrained/mnist/"
 ##### Hyperparameters #####
 img_info = {'H': 28, 'W': 28, 'C': 1}
@@ -44,6 +45,8 @@ for mc in range(MC_NUM):
     ckpt_name = f'MNIST-WOOD-[{ood_bsz}]-balanced-[{mc}]'
 
     model = DC_D(5, img_info).to(DEVICE)
+    ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
+    model.load_state_dict(ckpt['model_state_dict'])
     optimizer = torch.optim.Adam(
         model.parameters(), lr=1e-3, betas=(0.5, 0.999))
     # Training dataset
@@ -51,10 +54,11 @@ for mc in range(MC_NUM):
     ind_val_loader = dset.ind_val_loader
     if args.balanced == 'balance':
         ic('Balanced Experiment')
-        ood_img_batch, ood_img_label = dset.get_ood_equal(ood_bsz)
+        ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, 'balanced')
     else:
         ic("Imbalanced Experiment")
-        ood_img_batch, ood_img_label = dset.get_ood_unequal(0, ood_bsz)
+        ood_img_batch, ood_img_label = dset.ood_sample(
+            ood_bsz, 'imbalanced', [0])
     ood_img_batch = ood_img_batch.to(DEVICE)
     ic(ood_img_label)
 
@@ -117,8 +121,8 @@ for mc in range(MC_NUM):
 
             # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(val_acc), epoch)
             # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(val_loss), epoch)
-            # print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
-            #     | validation acc: {np.mean(val_acc)}")
+            print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+                | validation acc: {np.mean(val_acc)}")
     # Evaluation
     evaler.compute_stats(model, f'mc={mc}', None,  True, [1, 7])
     torch.save(model.state_dict(),

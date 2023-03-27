@@ -120,23 +120,6 @@ class Logger():
             return
 
 
-def log_gd_loss(out_filename: str, num_iter: int, ls1, ls2, ls3, total_ls, type: str):
-    # TODO: Implement this function and complete docstrings.
-    """
-    Log training loss into files.
-
-    Args:
-        out_filename (str): name of the destination logging file
-        ls1 (_type_): _description_
-        ls2 (_type_): _description_
-        ls3 (_type_): _description_
-        total_ls (_type_): _description_
-        type (str): _description_
-    """
-    pass
-# DISTANCE METRICS FOR OOD GANs
-
-
 class DIST_TYPE(Enum):
     COR = ('Correlation', 0)
     EUC = ('Euclidean', 1)
