@@ -190,7 +190,7 @@ class DSET():
         self.initialize()
 
     def initialize(self):
-        if self.name == 'mnist':
+        if self.name == 'MNIST':
             assert self.ind is not None and self.ood is not None
             mnist_tri, mnist_val, _, _ = MNIST(self.bsz_tri, self.bsz_val)
             self.train = dset_by_class(mnist_tri)
@@ -208,14 +208,14 @@ class DSET():
                 self.ind_train, self.bsz_tri, True)
             self.ind_val_loader = set_to_loader(
                 self.ind_val, self.bsz_val, True)
-        elif self.name == 'mnist-fashionmnist':
+        elif self.name == 'MNIST-FashionMNIST':
             self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = MNIST(
                 self.bsz_tri, self.bsz_val)
             self.ood_train, self.ood_val, _, _ = FashionMNIST(
                 self.bsz_tri, self.bsz_val, True)
             self.ood_train_by_class = dset_by_class(
                 self.ood_train)  # this is used for sampling
-        elif self.name == 'cifar-svhn':
+        elif self.name == 'CIFAR10-SVHN':
             self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(
                 self.bsz_tri, self.bsz_val)
             self.ood_train, self.ood_val, _, _ = SVHN(
