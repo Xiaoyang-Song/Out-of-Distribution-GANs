@@ -29,6 +29,7 @@ ood_bsz = config['n_ood']
 ic(f"Number of observed OoD samples (class-level): {ood_bsz}")
 log_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
 ckpt_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
+os.makedirs(log_dir, exist_ok=True)
 pretrained_dir = pretrained_dir + f"{dset}/"
 #---------- Training Hyperparameters  ----------#
 ###---------- Image Info  ----------###
