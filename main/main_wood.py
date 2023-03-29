@@ -5,64 +5,84 @@ from config import *
 from eval import *
 import argparse
 import time
-
+import yaml
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--mc', help='Number of MC', type=int)
-parser.add_argument('--num_epochs', help='Number of Epochs', type=int)
-parser.add_argument('--balanced', help='Balanced', type=str)
-parser.add_argument('--n_ood', help='Number of observed OoD', type=int)
+parser.add_argument('--config', help='Training configuration file')
 args = parser.parse_args()
-# ic(args.balanced)
-# assert False
+assert args.config is not None, 'Please specify the config .yml file to proceed.'
+config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
+
+########## Argument Processing  ##########
+#---------- Dataset, Path & Regime  ----------#
+dset, ind, ood = config['dataset'].values()
+ic(f"Experiment: {dset}")
+root_dir, pretrained_dir = config['path'].values()
+method, regime, observed_cls = config['experiment'].values()
+ic(f"Experiment regime: {regime}")
+ic(f"Method: {method}")
+print(line())
+if regime == 'Imbalanced':
+    assert observed_cls is not None
+    ic(f"Observed Classes are: {observed_cls}")
+ood_bsz = config['n_ood']
+ic(f"Number of observed OoD samples (class-level): {ood_bsz}")
+log_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
+ckpt_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
+pretrained_dir = pretrained_dir + f"{dset}/"
+#---------- Training Hyperparameters  ----------#
+###---------- Image Info  ----------###
+img_info, num_classes = config['dset_info'].values()
+H, W, C = img_info.values()
+ic(f"Input Dimension: {H} x {W} x {C}")
+ic(f"Number of InD classes: {num_classes}")
+###---------- Trainer  ----------###
+train_config = config['train_config']
+mc_num = train_config['mc']
+max_epoch = train_config['max_epochs']
+bsz_tri, bsz_val = train_config['bsz_tri'], train_config['bsz_val']
+###---------- Optimizer  ----------###
+lr, beta1, beta2 = train_config['optimizer'].values()
+#---------- Evaluation Configuration  ----------#
+eval_config = config['eval_config'].values()
+each_cls, cls_idx = eval_config
+if each_cls:
+    assert cls_idx is not None
+ic("Finished Processing Input Arguments.")
+########## Experiment Starts Here  ##########
 start = time.time()
 ic("HELLO GL!")
+#---------- GPU information  ----------#
 ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
-##### Config #####
-ood_bsz = args.n_ood
-ic(ood_bsz)
-log_dir = f"../checkpoint/MNIST/WOOD/Test/{ood_bsz}/"
-ckpt_dir = f"../checkpoint/MNIST/WOOD/Test/{ood_bsz}/"
-pretrained_dir = f"../checkpoint/pretrained/mnist/"
-# pretrained_dir = f"../checkpoint/pretrained/mnist/"
-##### Hyperparameters #####
-img_info = {'H': 28, 'W': 28, 'C': 1}
-max_epoch = args.num_epochs
-##### Dataset #####
-dset = DSET('mnist', 50, 256, [2, 3, 6, 8, 9], [1, 7])
+#---------- Dataset & Evaler  ----------#
+# note that ind and ood are deprecated for non-mnist experiment
+dset = DSET(dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
-##### Monte Carlo config #####
-MC_NUM = args.mc
-
-for mc in range(MC_NUM):
+for mc in range(mc_num):
     mc_start = time.time()
     ic(f"Monte Carlo Iteration {mc}")
     ##### logging information #####
-    writer_name = log_dir + f"MNIST-WOOD-[{ood_bsz}]-[{mc}]"
-    ckpt_name = f'MNIST-WOOD-[{ood_bsz}]-balanced-[{mc}]'
+    writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
+    ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
 
-    model = DC_D(5, img_info).to(DEVICE)
-    ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
-    model.load_state_dict(ckpt['model_state_dict'])
-    ic('Checkpoint loaded')
+    model = DC_D(num_classes, img_info).to(DEVICE)
+    # ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
+    # model.load_state_dict(ckpt['model_state_dict'])
+    # ic('Checkpoint loaded')
     optimizer = torch.optim.Adam(
-        model.parameters(), lr=1e-3, betas=(0.5, 0.999))
+        model.parameters(), lr=lr, betas=(beta1, beta2))
     # Training dataset
     ind_tri_loader = dset.ind_train_loader
     ind_val_loader = dset.ind_val_loader
-    if args.balanced == 'balance':
-        ic('Balanced Experiment')
-        ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, 'balanced')
-    else:
-        ic("Imbalanced Experiment")
+    if regime == 'Balanced':
+        ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
+    elif regime == 'Imbalanced':
         ood_img_batch, ood_img_label = dset.ood_sample(
-            ood_bsz, 'imbalanced', [0])
-    ood_img_batch = ood_img_batch.to(DEVICE)
+            ood_bsz, regime, observed_cls)
     ic(ood_img_label)
-
     torch.save((ood_img_batch, ood_img_label),
                log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
 

@@ -19,16 +19,17 @@ config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
 dset, ind, ood = config['dataset'].values()
 ic(f"Experiment: {dset}")
 root_dir, pretrained_dir = config['path'].values()
-regime, observed_cls = config['experiment'].values()
+method, regime, observed_cls = config['experiment'].values()
 ic(f"Experiment regime: {regime}")
+ic(f"Method: {method}")
 print(line())
 if regime == 'Imbalanced':
     assert observed_cls is not None
     ic(f"Observed Classes are: {observed_cls}")
 ood_bsz = config['n_ood']
 ic(f"Number of observed OoD samples (class-level): {ood_bsz}")
-log_dir = root_dir + f"{dset}/{regime}/{ood_bsz}/"
-ckpt_dir = root_dir + f"{dset}/{regime}/{ood_bsz}/"
+log_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
+ckpt_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
 pretrained_dir = pretrained_dir + f"{dset}/"
 #---------- Training Hyperparameters  ----------#
 ###---------- Image Info  ----------###
@@ -71,8 +72,8 @@ for mc in range(mc_num):
     mc_start = time.time()
     ic(f"Monte Carlo Iteration {mc}")
     ###---------- logging information  ----------###
-    writer_name = log_dir + f"{dset}-[{ood_bsz}]-[{mc}]"
-    ckpt_name = f'{dset}-[{ood_bsz}]-balanced-[{mc}]'
+    writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
+    ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
     ###---------- models  ----------###
     D = DC_D(num_classes, img_info).to(DEVICE)
     ckpt = torch.load(pretrained_dir + "D.pt")
