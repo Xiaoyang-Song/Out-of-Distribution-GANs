@@ -1,3 +1,4 @@
+#!/bin/sh
 # CREDIT: this code is borrowed from https://github.com/StefanHeng
 join \
 -a 1 \
