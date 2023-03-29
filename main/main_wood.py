@@ -83,6 +83,7 @@ for mc in range(mc_num):
     elif regime == 'Imbalanced':
         ood_img_batch, ood_img_label = dset.ood_sample(
             ood_bsz, regime, observed_cls)
+    ood_img_batch = ood_img_batch.to(DEVICE)
     ic(ood_img_label)
     torch.save((ood_img_batch, ood_img_label),
                log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
@@ -94,7 +95,6 @@ for mc in range(mc_num):
     iter_count_val = 0
     for epoch in tqdm(range(max_epoch)):
         # Training
-        # break
         model.train()
         train_loss, train_acc, wass = [], [], []
         for idx, (img, label) in enumerate(ind_tri_loader):
