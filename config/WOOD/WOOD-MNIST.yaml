@@ -21,6 +21,12 @@ dset_info:
     C: 1
   num_class: 10
 
+model:
+  D: "DC_D"
+  D_config: null
+  G: null
+  G_config: null
+
 train_config:
   mc: 5
   max_epochs: 2

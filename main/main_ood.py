@@ -2,6 +2,7 @@ from ood_gan import *
 from models.dc_gan_model import *
 from dataset import *
 from config import *
+from models.model import *
 from eval import *
 import argparse
 import time
@@ -38,6 +39,10 @@ img_info, num_classes = config['dset_info'].values()
 H, W, C = img_info.values()
 ic(f"Input Dimension: {H} x {W} x {C}")
 ic(f"Number of InD classes: {num_classes}")
+###---------- Models  ----------###
+D_model, D_config, G_model, G_config = config['model'].values()
+model_getter = MODEL_GETTER(num_classes=num_classes,
+                            img_info=img_info, return_DG=True)
 ###---------- Trainer  ----------###
 train_config = config['train_config']
 mc_num = train_config['mc']
@@ -76,11 +81,11 @@ for mc in range(mc_num):
     writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
     ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
     ###---------- models  ----------###
-    D = DC_D(num_classes, img_info).to(DEVICE)
+    D, G = model_getter(D_model, D_config, G_model, G_config)
+    # Load checkpoint if necessary
     ckpt = torch.load(pretrained_dir + "D.pt")
     D.load_state_dict(ckpt['model_state_dict'])
     ic("Pretrained D states loaded!")
-    G = DC_G(num_classes, noise_dim).to(DEVICE)
     # ckpt = torch.load(pretrained_dir + "G.pt")
     # G.load_state_dict(ckpt['model_state_dict'])
     ###---------- optimizers  ----------###

@@ -1,7 +1,7 @@
 from config import *
 
 
-def G(noise_dim=NOISE_DIM):
+def DC_G(noise_dim=NOISE_DIM):
     model = nn.Sequential(
         nn.Linear(noise_dim, 1024),
         nn.ReLU(),
@@ -43,7 +43,7 @@ class DC_D(nn.Module):
         return self.fc(self.encoder(x))
 
 
-class DC_G(nn.Module):
+class DC_CG(nn.Module):
     def __init__(self, C, noise_dim=NOISE_DIM):
         super().__init__()
         self.model = model = nn.Sequential(

@@ -9,11 +9,12 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import torch.nn.functional as F
-
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import confusion_matrix
+from stefutil import mic
+from dc_gan_model import *
 
 
 class BasicBlock(nn.Module):
@@ -150,6 +151,44 @@ class DenseNet3(nn.Module):
         out = self.fc(out)
         out = self.softmax(out)
         return out
+
+
+class MODEL_GETTER():
+    def __init__(self, num_classes, img_info, return_DG):
+        self.num_classes = num_classes
+        self.img_info = img_info
+        self.H, self.W, self.C = self.img_info.values()
+        self.return_DG = return_DG
+
+    def __call__(self, D_model, D_config=None, G_model=None, G_config=None, device=DEVICE):
+        if self.return_DG:
+            assert G_model is not None
+            assert D_config is not None
+            assert 'noise_dim' in D_config and D_config['noise_dim'] is not None
+        # Process DISCRIMINATORS
+        if D_model == 'DC_D':
+            D = DC_D(self.num_classes, self.img_info).to(device)
+        elif D_model == 'DenseNet':
+            # TODO: add depth control argument
+            assert D_config is not None
+            assert 'depth' in D_config and D_config['depth'] is not None
+            D = DenseNet3(depth=D_config['depth'], num_classes=self.num_classes,
+                          input_channel=self.C)
+        else:
+            assert False, 'Unrecognized Discriminator Type.'
+        # Process GENERATORS
+        if G_model is not None:
+            noise_dim = G_config['noise_dim']
+            if G_model == 'DC_CG':
+                G = DC_CG(self.img_info, noise_dim).to(device)
+            elif G_model == 'DC_G':
+                G = DC_G(self.img_info, noise_dim).to(device)
+            else:
+                assert False, 'Unrecognized Generator Type.'
+        if self.return_DG:
+            return D, G
+        else:
+            return D
 
 
 if __name__ == '__main__':

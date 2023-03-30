@@ -1,3 +1,4 @@
+from models.model import MODEL_GETTER
 from ood_gan import *
 from models.dc_gan_model import *
 from dataset import *
@@ -37,6 +38,10 @@ img_info, num_classes = config['dset_info'].values()
 H, W, C = img_info.values()
 ic(f"Input Dimension: {H} x {W} x {C}")
 ic(f"Number of InD classes: {num_classes}")
+###---------- Models  ----------###
+D_model, D_config, G_model, G_config = config['model'].values()
+model_getter = MODEL_GETTER(num_classes=num_classes,
+                            img_info=img_info, return_DG=False)
 ###---------- Trainer  ----------###
 train_config = config['train_config']
 mc_num = train_config['mc']
@@ -69,7 +74,8 @@ for mc in range(mc_num):
     writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
     ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
 
-    model = DC_D(num_classes, img_info).to(DEVICE)
+    model = model_getter(D_model, D_config, G_model, G_config)
+    # Load pretrained checkpoint if necessary
     # ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
     # model.load_state_dict(ckpt['model_state_dict'])
     # ic('Checkpoint loaded')
