@@ -153,7 +153,7 @@ for mc in range(mc_num):
             ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
     # Evaluation
-    evaler.compute_stats(model, f'mc={mc}', None,  True, [1, 7])
+    evaler.compute_stats(model, f'mc={mc}', None,  True, ood)
     torch.save(model.state_dict(),
                log_dir + f"model-[{ood_bsz}]-[{mc}].pt")
     mc_stop = time.time()

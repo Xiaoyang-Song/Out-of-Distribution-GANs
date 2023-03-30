@@ -23,14 +23,15 @@ dset_info:
   num_class: 8
 
 model:
-  D: "DC_D"
-  D_config: null
+  D: "DenseNet"
+  D_config:
+    depth: 100
   G: null
   G_config: null
 
 train_config:
   mc: 5
-  max_epochs: 2
+  max_epochs: 5
   bsz_tri: 50
   bsz_val: 256 # this is not used in general
   optimizer:
