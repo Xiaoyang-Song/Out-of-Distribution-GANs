@@ -158,9 +158,9 @@ for mc in range(mc_num):
                 | validation acc: {np.mean(val_acc)}")
     with torch.no_grad():
         # Evaluation
-        evaler.compute_stats(model, f'mc={mc}', None,  True, ood)
         torch.save(model.state_dict(),
-                   log_dir + f"model-[{ood_bsz}]-[{mc}].pt")
+                   log_dir + f"model-[{ood_bsz}]-[{max_epoch}]-[{mc}].pt")
+        evaler.compute_stats(model, f'mc={mc}', None,  True, ood)
         mc_stop = time.time()
         ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 

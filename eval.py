@@ -138,10 +138,12 @@ class EVALER():
     def compute_stats(self, D, tag, G=None, each_class=False, cls_idx=None):
         xinv, yxinv = tuple_list_to_tensor(self.xin_v)
         xoutv, yxoutv = tuple_list_to_tensor(self.xout_v)
-        rand_idx = np.random.choice(len(xinv), len(xoutv), False)
+        rand_idx = np.random.choice(len(xinv), 5000, False)
         xinv = xinv[rand_idx, :, :, :]
-        winv = ood_wass_loss(torch.softmax(D(xinv.to(DEVICE)), dim=-1))
-        woutv = ood_wass_loss(torch.softmax(D(xoutv.to(DEVICE)), dim=-1))
+        ind_out = D(xinv.to(DEVICE))
+        winv = ood_wass_loss(torch.softmax(ind_out), dim=-1)
+        ood_out = D(xoutv.to(DEVICE))
+        woutv = ood_wass_loss(torch.softmax(ood_out, dim=-1))
         self.winv.append(winv)
         self.woutv.append(woutv)
         # Test model performance
