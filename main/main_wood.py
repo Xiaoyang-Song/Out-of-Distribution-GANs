@@ -152,12 +152,13 @@ for mc in range(mc_num):
             # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(val_loss), epoch)
             ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
-    # Evaluation
-    evaler.compute_stats(model, f'mc={mc}', None,  True, ood)
-    torch.save(model.state_dict(),
-               log_dir + f"model-[{ood_bsz}]-[{mc}].pt")
-    mc_stop = time.time()
-    ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
+    with torch.no_grad():
+        # Evaluation
+        evaler.compute_stats(model, f'mc={mc}', None,  True, ood)
+        torch.save(model.state_dict(),
+                   log_dir + f"model-[{ood_bsz}]-[{mc}].pt")
+        mc_stop = time.time()
+        ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 
 # Display & save statistics
 evaler.display_stats()
