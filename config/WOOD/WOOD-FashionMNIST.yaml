@@ -6,7 +6,7 @@ dataset:
 
 path:
   root_dir: ../checkpoint/
-  # pretrained_dir: ../checkpoint/pretrained/
+  pretrained_dir: ../checkpoint/pretrained/
 
 experiment:
   method: WOOD
