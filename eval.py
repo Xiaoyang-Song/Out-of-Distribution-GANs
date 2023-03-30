@@ -138,6 +138,8 @@ class EVALER():
     def compute_stats(self, D, tag, G=None, each_class=False, cls_idx=None):
         xinv, yxinv = tuple_list_to_tensor(self.xin_v)
         xoutv, yxoutv = tuple_list_to_tensor(self.xout_v)
+        rand_idx = np.random.choice(len(xinv), len(xoutv), False)
+        xinv = xinv[rand_idx, :, :, :]
         winv = ood_wass_loss(torch.softmax(D(xinv.to(DEVICE)), dim=-1))
         woutv = ood_wass_loss(torch.softmax(D(xoutv.to(DEVICE)), dim=-1))
         self.winv.append(winv)

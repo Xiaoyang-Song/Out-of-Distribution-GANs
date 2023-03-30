@@ -33,7 +33,7 @@ import itertools
 from itertools import filterfalse
 
 # Device Auto-Configuration (Compatible with Colab)
-DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # PATH
 MODEL_SAVE_PATH = "./mnist_cnn.pt"
 GAN_SAVE_PATH = "./gans_imgs"

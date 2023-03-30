@@ -59,9 +59,12 @@ ic("Finished Processing Input Arguments.")
 start = time.time()
 ic("HELLO GL!")
 #---------- GPU information  ----------#
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
+    ic("Let's use", torch.cuda.device_count(), "GPUs!")
+
 #---------- Dataset & Evaler  ----------#
 # note that ind and ood are deprecated for non-mnist experiment
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
@@ -76,6 +79,7 @@ for mc in range(mc_num):
     ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
 
     model = model_getter(D_model, D_config, G_model, G_config)
+    # model = nn.DataParallel(model)
     # Load pretrained checkpoint if necessary
     # ckpt = torch.load(pretrained_dir + "mnist-[23689]-D.pt")
     # model.load_state_dict(ckpt['model_state_dict'])
