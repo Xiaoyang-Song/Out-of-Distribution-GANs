@@ -71,7 +71,8 @@ if torch.cuda.is_available():
 #---------- Dataset & Evaler  ----------#
 # note that ind and ood are deprecated for non-mnist experiment
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
-evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
+evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val,
+                ood_bsz, log_dir, method)
 
 #---------- Monte Carlo Simulation  ----------#
 for mc in range(mc_num):

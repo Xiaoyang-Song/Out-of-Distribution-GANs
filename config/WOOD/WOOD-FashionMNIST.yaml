@@ -6,7 +6,7 @@ dataset:
 
 path:
   root_dir: ../checkpoint/
-  pretrained_dir: ../checkpoint/pretrained/
+  # pretrained_dir: ../checkpoint/pretrained/
 
 experiment:
   method: WOOD
@@ -20,7 +20,7 @@ dset_info:
     H: 28
     W: 28
     C: 1
-  num_class: 10
+  num_class: 8
 
 model:
   D: "DC_D"
@@ -39,5 +39,5 @@ train_config:
     beta2: 0.999
 
 eval_config:
-  each_cls: False
+  each_cls: True
   cls_idx: [8, 9]

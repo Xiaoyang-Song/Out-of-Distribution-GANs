@@ -115,12 +115,13 @@ def ic_stats(stat, precision=5):
 
 
 class EVALER():
-    def __init__(self, xin_t, xin_v, xout_v, n_ood, log_dir):
+    def __init__(self, xin_t, xin_v, xout_v, n_ood, log_dir, method):
         self.n_ood = n_ood
         self.log_dir = log_dir
         self.xin_t = xin_t  # InD training dataset
         self.xin_v = xin_v  # InD Testing dataset
         self.xout_v = xout_v  # OoD Testing dataset
+        self.method = method
         # Statistics - wasserstein distance
         self.winv, self.woutv = [],  []
         # Statistics - TPR at x% TNR
@@ -148,7 +149,8 @@ class EVALER():
         self.tpr95_thresh.append(tpr_95_thresh)
         self.tpr99.append(tpr_99)
         self.tpr99_thresh.append(tpr_99_thresh)
-        if G is not None:
+        if self.method == "OOD-GAN":
+            assert G is not None
             lr = LR(D, G, self.xin_t)
             train_stats = lr.fit()
             eval_stats = lr.eval(winv, woutv)
@@ -168,7 +170,7 @@ class EVALER():
                 # plot
                 w_lst.append(woutv_idx)
                 legend_lst.append(f"OoD-[Class {idx}]")
-                if G is not None:
+                if self.method == 'OOD-GAN':
                     cls_lr_eval = lr.eval(winv, woutv_idx)
                     result += cls_lr_eval
                 self.cls_stats[idx].append(result)
@@ -187,7 +189,7 @@ class EVALER():
         print_stats(self.tpr99, "TPR@99TNR")
         print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
         print("\n" + line())
-        if len(self.lr_instance) != 0:
+        if self.method == "OOD-GAN":
             lr_train = np.array(self.lr_train)
             print("Logistic Regression Statistics")
             print_stats(lr_train[:, 0], "Mean win")
