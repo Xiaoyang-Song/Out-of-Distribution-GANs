@@ -173,7 +173,7 @@ class MODEL_GETTER():
             assert D_config is not None
             assert 'depth' in D_config and D_config['depth'] is not None
             D = DenseNet3(depth=D_config['depth'], num_classes=self.num_classes,
-                          input_channel=self.C)
+                          input_channel=self.C).to(device)
         else:
             assert False, 'Unrecognized Discriminator Type.'
         # Process GENERATORS
