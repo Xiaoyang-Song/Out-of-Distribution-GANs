@@ -1,5 +1,6 @@
 dataset:
   dset: MNIST-FashionMNIST
+  is_within_dset: False
   ind: null
   ood: null
 

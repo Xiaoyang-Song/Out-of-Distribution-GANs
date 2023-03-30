@@ -16,7 +16,7 @@ config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
 
 ########## Argument Processing  ##########
 #---------- Dataset, Path & Regime  ----------#
-dset, ind, ood = config['dataset'].values()
+dset, is_within_dset, ind, ood = config['dataset'].values()
 ic(f"Experiment: {dset}")
 root_dir, pretrained_dir = config['path'].values()
 method, regime, observed_cls = config['experiment'].values()
@@ -64,7 +64,7 @@ if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
 #---------- Dataset & Evaler  ----------#
 # note that ind and ood are deprecated for non-mnist experiment
-dset = DSET(dset, bsz_tri, bsz_val, ind, ood)
+dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val, ood_bsz, log_dir)
 
 for mc in range(mc_num):

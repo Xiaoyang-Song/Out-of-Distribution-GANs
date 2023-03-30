@@ -1,8 +1,8 @@
 dataset:
-  dset: MNIST
+  dset: FashionMNIST
   is_within_dset: True
-  ind: [2, 3, 6, 8, 9]
-  ood: [1, 7]
+  ind: [0, 1, 2, 3, 4, 5, 6, 7]
+  ood: [8, 9]
 
 path:
   root_dir: ../checkpoint/
@@ -39,5 +39,5 @@ train_config:
     beta2: 0.999
 
 eval_config:
-  each_cls: True
-  cls_idx: [1, 7]
+  each_cls: False
+  cls_idx: [8, 9]

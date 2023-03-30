@@ -182,7 +182,8 @@ def tuple_list_to_tensor(dset):
 
 
 class DSET():
-    def __init__(self, dset_name, bsz_tri, bsz_val, ind=None, ood=None):
+    def __init__(self, dset_name, is_within_dset, bsz_tri, bsz_val, ind=None, ood=None):
+        self.within_dset = is_within_dset
         self.name = dset_name
         self.bsz_tri = bsz_tri
         self.bsz_val = bsz_val
@@ -190,11 +191,15 @@ class DSET():
         self.initialize()
 
     def initialize(self):
-        if self.name == 'MNIST':
+        if self.name == 'MNIST' or self.name == 'FashionMNIST':
             assert self.ind is not None and self.ood is not None
-            mnist_tri, mnist_val, _, _ = MNIST(self.bsz_tri, self.bsz_val)
-            self.train = dset_by_class(mnist_tri)
-            self.val = dset_by_class(mnist_val)
+            if self.name == 'MNIST':
+                dset_tri, dset_val, _, _ = MNIST(self.bsz_tri, self.bsz_val)
+            else:
+                dset_tri, dset_val, _, _ = FashionMNIST(
+                    self.bsz_tri, self.bsz_val, True)
+            self.train = dset_by_class(dset_tri)
+            self.val = dset_by_class(dset_val)
             # The following code is for within-dataset InD/OoD separation
             self.ind_train = form_ind_dsets(self.train, self.ind)
             self.ind_val = form_ind_dsets(self.val, self.ind)
@@ -226,8 +231,8 @@ class DSET():
             assert False, 'Unrecognized Dataset Combination.'
 
     def ood_sample(self, n, regime, idx=None):
-        dset = self.train if self.name == 'MNIST' else self.ood_train_by_class
-        cls_lst = self.ood if self.name == 'MNIST' else np.arange(10)
+        dset = self.train if self.within_dset else self.ood_train_by_class
+        cls_lst = self.ood if self.within_dset else np.arange(10)
         if regime == 'Balanced':
             idx_lst = cls_lst
         elif regime == 'Imbalanced':
@@ -246,7 +251,7 @@ def line(n=40):
 
 if __name__ == '__main__':
     # Test dataset functions
-    dset = DSET('mnist-fashionmnist', 50, 128)
+    dset = DSET('MNIST-FashionMNSIT', False, 50, 128)
     ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])
     ic(ood_img_label)
     ic(ood_img_batch.shape)
