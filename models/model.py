@@ -14,7 +14,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import confusion_matrix
 from stefutil import mic
-from dc_gan_model import *
+from models.dc_gan_model import *
 
 
 class BasicBlock(nn.Module):
