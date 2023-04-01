@@ -63,8 +63,8 @@ def loader_wass(data_loader, D):
 class LR():
     def __init__(self, D, G, xin_t, C, n):
         self.D, self.G = D, G
-        # self.xin, _ = tuple_list_to_tensor(xin_t)
-        self.xin_t = xin_t
+        self.xin_t, _ = tuple_list_to_tensor(xin_t)
+        # self.xin_t = xin_t
         self.xin_t = self.xin_t[np.random.choice(len(self.xin_t), n), :, :, :]
         self.n, self.c = n, C
         # Statistics
