@@ -51,8 +51,8 @@ def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
 
 def loader_wass(data_loader, D):
     wass_dists = []
-    ic(DEVICE)
-    assert DEVICE == 'cuda'
+    # ic(DEVICE)
+    # assert DEVICE == 'cuda'
     for (img, _) in tqdm(data_loader):
         out = D(img.to(DEVICE))
         wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
