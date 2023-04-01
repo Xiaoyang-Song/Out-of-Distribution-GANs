@@ -160,21 +160,23 @@ class EVALER():
         self.cls_stats = defaultdict(list)
 
     def evaluate(self, D, tag, G=None, each_class=False, cls_idx=None):
-        ic("Computing evaluation statistics...")
-        _, yxoutv = tuple_list_to_tensor(self.xout_v)
-        ic("> Evaluating InD Wasserstein distances...")
-        winv = loader_wass(self.xin_v_loader, D)
-        ic("> Evaluating OoD Wasserstein distances...")
-        woutv = loader_wass(self.xout_v_loader, D)
-        self.winv.append(winv)
-        self.woutv.append(woutv)
-        # Test model performance
-        tpr_95, tpr_95_thresh = tpr(winv, woutv, 0.95)
-        tpr_99, tpr_99_thresh = tpr(winv, woutv, 0.99)
-        self.tpr95.append(tpr_95)
-        self.tpr95_thresh.append(tpr_95_thresh)
-        self.tpr99.append(tpr_99)
-        self.tpr99_thresh.append(tpr_99_thresh)
+        # ic("Computing evaluation statistics...")
+        # _, yxoutv = tuple_list_to_tensor(self.xout_v)
+        # ic("> Evaluating InD Wasserstein distances...")
+        # winv = loader_wass(self.xin_v_loader, D)
+        # ic("> Evaluating OoD Wasserstein distances...")
+        # woutv = loader_wass(self.xout_v_loader, D)
+        # self.winv.append(winv)
+        # self.woutv.append(woutv)
+        # # Test model performance
+        # tpr_95, tpr_95_thresh = tpr(winv, woutv, 0.95)
+        # tpr_99, tpr_99_thresh = tpr(winv, woutv, 0.99)
+        # self.tpr95.append(tpr_95)
+        # self.tpr95_thresh.append(tpr_95_thresh)
+        # self.tpr99.append(tpr_99)
+        # self.tpr99_thresh.append(tpr_99_thresh)
+        yxoutv = None
+        winv, woutv = None, None
         if self.method == "OOD-GAN":
             assert G is not None
             lr = LR(D, G, self.xin_t, self.num_classes, self.n_lr)
