@@ -7,6 +7,7 @@ from wass_loss import ood_wass_loss, ind_wass_loss
 from models.gans import *
 from metrics import *
 from wasserstein import *
+from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 from time import gmtime, strftime
 from sklearn.decomposition import PCA
@@ -58,7 +59,7 @@ def ood_gan_g_loss(logits_fake, img_fake=None, img_ind=None,
 
 
 class OOD_GAN_TRAINER():
-    def __init__(self, D, G, noise_dim,
+    def __init__(self, D, G, noise_dim, num_classes,
                  bsz_tri, gd_steps_ratio, hp,
                  max_epochs,
                  writer_name, ckpt_name, ckpt_dir,
@@ -75,6 +76,7 @@ class OOD_GAN_TRAINER():
         # Backbone models & info
         self.D = D
         self.G = G
+        self.num_classes = num_classes
         self.noise_dim = noise_dim
         self.dloss = ood_gan_d_loss
         self.gloss = ood_gan_g_loss
@@ -102,8 +104,8 @@ class OOD_GAN_TRAINER():
         ood_img_batch = ood_img_batch.to(DEVICE)
         iter_count = 0
         for epoch in range(self.max_epochs):
-            for steps, (x, y) in enumerate(ind_loader):
-                cls = int(iter_count % 5)
+            for steps, (x, y) in tqdm(enumerate(ind_loader)):
+                cls = int(iter_count % self.num_classes)
                 # cls=0
                 x = x.to(DEVICE)
                 y = y.to(DEVICE)

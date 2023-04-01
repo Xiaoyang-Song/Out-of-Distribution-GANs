@@ -107,6 +107,7 @@ for mc in range(mc_num):
     ###---------- trainer  ----------###
     trainer = OOD_GAN_TRAINER(D=D, G=G,
                               noise_dim=noise_dim,
+                              num_classes=num_classes,
                               bsz_tri=bsz_tri,
                               gd_steps_ratio=gd_step_ratio,
                               hp=hp,
