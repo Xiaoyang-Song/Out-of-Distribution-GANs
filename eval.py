@@ -55,7 +55,7 @@ def loader_wass(data_loader, D):
         out = D(img.to(DEVICE))
         wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
         wass_dists.append(wass_dist)
-    return torch.tensor(wass_dist)
+    return torch.cat(wass_dist, dim=0)
 
 
 class LR():
