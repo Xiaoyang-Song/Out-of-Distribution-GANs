@@ -49,27 +49,39 @@ def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
     plt.close()
 
 
+def loader_wass(data_loader, D):
+    wass_dists = []
+    for (img, _) in data_loader:
+        out = D(img.to(DEVICE))
+        wass_dist = list(ood_wass_loss(torch.softmax(out, dim=-1)))
+        wass_dists.append(wass_dist)
+    return torch.tensor(np.array(wass_dist))
+
+
 class LR():
-    def __init__(self, D, G, xin_t, n=10, C=5):
+    def __init__(self, D, G, xin_t, C, n):
         self.D, self.G = D, G
-        self.xin, _ = tuple_list_to_tensor(xin_t)
-        self.xin = self.xin[np.random.choice(len(self.xin), n), :, :, :]
+        # self.xin, _ = tuple_list_to_tensor(xin_t)
+        self.xin_t = xin_t
+        self.xin_t = self.xin_t[np.random.choice(len(self.xin_t), n), :, :, :]
         self.n, self.c = n, C
         # Statistics
         self.train_stats = None
 
     def fit(self):
-        print("Logistic Regression Trainig")
-        yin = torch.ones(len(self.xin))
+        print("Logistic Regression Training Starts...")
+        yin = torch.ones(len(self.xin_t))
+        ind_loader = set_to_loader(zip(self.xin_t, yin), 256)
         # Generate OoD images
         g_seed = sample_noise((self.n // self.c) * self.c, 96)
         n_class = self.n // self.c
         gz = self.G(g_seed, np.array(
-            [[i] * n_class for i in range(5)]).flatten())
-        yz = torch.zeros(n_class * 5)
+            [[i] * n_class for i in range(self.c)]).flatten())
+        yz = torch.zeros(n_class * self.c)
+        gz_loader = set_to_loader(zip(gz, yz), 256)
         # Form training dataset
-        win = ood_wass_loss(torch.softmax(self.D(self.xin.to(DEVICE)), dim=-1))
-        wgz = ood_wass_loss(torch.softmax(self.D(gz.to(DEVICE)), dim=-1))
+        win = loader_wass(ind_loader, self.D)
+        wgz = loader_wass(gz_loader, self.D)
         mean_win, mean_wgz = torch.mean(win), torch.mean(wgz)
         print(f"Mean win {mean_win} ; Mean wgz {mean_wgz}")
         # Training
@@ -115,12 +127,18 @@ def ic_stats(stat, precision=5):
 
 
 class EVALER():
-    def __init__(self, xin_t, xin_v, xout_v, n_ood, log_dir, method, num_classes, n_lr=2000):
+    def __init__(self, xin_t, xin_t_loader, xin_v, xin_v_loader, xout_v, xout_v_loader,
+                 n_ood, log_dir, method, num_classes, n_lr=2000):
         self.n_ood = n_ood
         self.log_dir = log_dir
-        self.xin_t = xin_t  # InD training dataset
-        self.xin_v = xin_v  # InD Testing dataset
-        self.xout_v = xout_v  # OoD Testing dataset
+        # DATASETS
+        self.xin_t = xin_t  # InD training dataset & loader
+        self.xin_t_loader = xin_t_loader
+        self.xin_v = xin_v  # InD Testing dataset & loader
+        self.xin_v_loader = xin_v_loader
+        self.xout_v = xout_v  # OoD Testing dataset & loader
+        self.xout_v_loader = xout_v_loader
+        # METHODOLOGY
         self.method = method
         self.num_classes = num_classes
         self.n_lr = n_lr
@@ -138,14 +156,9 @@ class EVALER():
         self.cls_stats = defaultdict(list)
 
     def compute_stats(self, D, tag, G=None, each_class=False, cls_idx=None):
-        xinv, yxinv = tuple_list_to_tensor(self.xin_v)
-        xoutv, yxoutv = tuple_list_to_tensor(self.xout_v)
-        # rand_idx = np.random.choice(len(xinv), 5000, False)
-        # xinv = xinv[rand_idx, :, :, :]
-        ind_out = D(xinv.to(DEVICE))
-        winv = ood_wass_loss(torch.softmax(ind_out, dim=-1))
-        ood_out = D(xoutv.to(DEVICE))
-        woutv = ood_wass_loss(torch.softmax(ood_out, dim=-1))
+        _, yxoutv = tuple_list_to_tensor(self.xout_v)
+        winv = loader_wass(self.xin_v_loader, D)
+        woutv = loader_wass(self.xout_v_loader, D)
         self.winv.append(winv)
         self.woutv.append(woutv)
         # Test model performance
@@ -157,7 +170,7 @@ class EVALER():
         self.tpr99_thresh.append(tpr_99_thresh)
         if self.method == "OOD-GAN":
             assert G is not None
-            lr = LR(D, G, self.xin_t, self.num_classes, self.n_lr)
+            lr = LR(D, G, self.xin_t_loader, self.num_classes, self.n_lr)
             train_stats = lr.fit()
             eval_stats = lr.eval(winv, woutv)
             self.lr_instance.append(lr)
