@@ -44,7 +44,8 @@ class DC_D(nn.Module):
 
 
 class DC_CG(nn.Module):
-    def __init__(self, C, noise_dim=NOISE_DIM):
+    def __init__(self, img_info, noise_dim=NOISE_DIM):
+        H, W, C = img_info.values()
         super().__init__()
         self.model = model = nn.Sequential(
             nn.Linear(noise_dim+C, 1024),
