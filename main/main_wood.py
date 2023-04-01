@@ -63,12 +63,15 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
+    ic(torch.cuda.get_device_properties(0).total_memory)
+    ic(torch.cuda.getMemoryUsage(0))
     ic("Let's use", torch.cuda.device_count(), "GPUs!")
 
 #---------- Dataset & Evaler  ----------#
 # note that ind and ood are deprecated for non-mnist experiment
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
-evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val,
+evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
+                dset.ood_val, dset.ood_val_loader,
                 ood_bsz, log_dir, method, num_classes, n_lr)
 
 for mc in range(mc_num):

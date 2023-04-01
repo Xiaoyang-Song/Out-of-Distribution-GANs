@@ -127,13 +127,13 @@ def ic_stats(stat, precision=5):
 
 
 class EVALER():
-    def __init__(self, xin_t, xin_t_loader, xin_v, xin_v_loader, xout_v, xout_v_loader,
+    def __init__(self, xin_t, xin_v, xin_v_loader, xout_v, xout_v_loader,
                  n_ood, log_dir, method, num_classes, n_lr=2000):
         self.n_ood = n_ood
         self.log_dir = log_dir
         # DATASETS
         self.xin_t = xin_t  # InD training dataset & loader
-        self.xin_t_loader = xin_t_loader
+        # self.xin_t_loader = xin_t_loader
         self.xin_v = xin_v  # InD Testing dataset & loader
         self.xin_v_loader = xin_v_loader
         self.xout_v = xout_v  # OoD Testing dataset & loader
@@ -170,7 +170,7 @@ class EVALER():
         self.tpr99_thresh.append(tpr_99_thresh)
         if self.method == "OOD-GAN":
             assert G is not None
-            lr = LR(D, G, self.xin_t_loader, self.num_classes, self.n_lr)
+            lr = LR(D, G, self.xin_t, self.num_classes, self.n_lr)
             train_stats = lr.fit()
             eval_stats = lr.eval(winv, woutv)
             self.lr_instance.append(lr)
