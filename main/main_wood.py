@@ -64,7 +64,7 @@ ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
     ic(torch.cuda.get_device_properties(0).total_memory)
-    ic(torch.cuda.getMemoryUsage(0))
+    # ic(torch.cuda.getMemoryUsage(0))
     ic("Let's use", torch.cuda.device_count(), "GPUs!")
 
 #---------- Dataset & Evaler  ----------#
