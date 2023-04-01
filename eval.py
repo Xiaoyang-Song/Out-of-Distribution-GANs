@@ -7,7 +7,7 @@ import torch
 import torch.utils.data
 import torchvision
 from torch.utils.tensorboard import SummaryWriter
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 from collections import Counter, defaultdict
 from config import *
 from dataset import *
@@ -51,11 +51,13 @@ def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
 
 def loader_wass(data_loader, D):
     wass_dists = []
-    for (img, _) in data_loader:
+    ic(DEVICE)
+    assert DEVICE == 'cuda'
+    for (img, _) in tqdm(data_loader):
         out = D(img.to(DEVICE))
         wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
         wass_dists.append(wass_dist)
-    return torch.cat(wass_dist, dim=0)
+    return torch.cat(wass_dists, dim=0)
 
 
 class LR():

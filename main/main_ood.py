@@ -57,7 +57,7 @@ n_steps_log = train_config['logging']['n_steps_log']
 lr, beta1, beta2 = train_config['optimizer'].values()
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
-each_cls, cls_idx = eval_config
+each_cls, cls_idx, n_lr = eval_config
 if each_cls:
     assert cls_idx is not None
 ic("Finished Processing Input Arguments.")
@@ -71,8 +71,9 @@ if torch.cuda.is_available():
 #---------- Dataset & Evaler  ----------#
 # note that ind and ood are deprecated for non-mnist experiment
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
-evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val,
-                ood_bsz, log_dir, method)
+evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
+                dset.ood_val, dset.ood_val_loader,
+                ood_bsz, log_dir, method, num_classes, n_lr)
 
 #---------- Monte Carlo Simulation  ----------#
 for mc in range(mc_num):
@@ -117,7 +118,7 @@ for mc in range(mc_num):
     trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
                   D.encoder, pretrainedD=None, checkpoint=None)
     ###---------- evaluation  ----------###
-    evaler.compute_stats(D, f'mc={mc}', G, each_cls, cls_idx)
+    evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
     mc_stop = time.time()
     ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 
