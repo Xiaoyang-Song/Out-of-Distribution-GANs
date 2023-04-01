@@ -33,8 +33,8 @@ model:
     noise_dim: 96
 
 train_config:
-  mc: 1
-  max_epochs: 0
+  mc: 2
+  max_epochs: 4
   bsz_tri: 50
   bsz_val: 256 # this is used for evaluation
   optimizer:
@@ -48,7 +48,7 @@ train_config:
   gd_step_ratio: 1
   noise_dim: 96
   logging:
-    n_steps_log: 5
+    n_steps_log: 10
 
 eval_config:
   each_cls: True
