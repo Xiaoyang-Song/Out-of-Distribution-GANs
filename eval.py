@@ -176,8 +176,8 @@ class EVALER():
         self.tpr95_thresh.append(tpr_95_thresh)
         self.tpr99.append(tpr_99)
         self.tpr99_thresh.append(tpr_99_thresh)
-        yxoutv = None
-        winv, woutv = None, None
+        # yxoutv = None
+        # winv, woutv = None, None
         if self.method == "OOD-GAN":
             assert G is not None
             lr = LR(D, G, self.xin_t, self.num_classes, self.n_lr)
