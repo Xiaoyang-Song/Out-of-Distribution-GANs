@@ -115,13 +115,15 @@ def ic_stats(stat, precision=5):
 
 
 class EVALER():
-    def __init__(self, xin_t, xin_v, xout_v, n_ood, log_dir, method):
+    def __init__(self, xin_t, xin_v, xout_v, n_ood, log_dir, method, num_classes, n_lr=2000):
         self.n_ood = n_ood
         self.log_dir = log_dir
         self.xin_t = xin_t  # InD training dataset
         self.xin_v = xin_v  # InD Testing dataset
         self.xout_v = xout_v  # OoD Testing dataset
         self.method = method
+        self.num_classes = num_classes
+        self.n_lr = n_lr
         # Statistics - wasserstein distance
         self.winv, self.woutv = [],  []
         # Statistics - TPR at x% TNR
@@ -138,10 +140,10 @@ class EVALER():
     def compute_stats(self, D, tag, G=None, each_class=False, cls_idx=None):
         xinv, yxinv = tuple_list_to_tensor(self.xin_v)
         xoutv, yxoutv = tuple_list_to_tensor(self.xout_v)
-        rand_idx = np.random.choice(len(xinv), 5000, False)
-        xinv = xinv[rand_idx, :, :, :]
+        # rand_idx = np.random.choice(len(xinv), 5000, False)
+        # xinv = xinv[rand_idx, :, :, :]
         ind_out = D(xinv.to(DEVICE))
-        winv = ood_wass_loss(torch.softmax(ind_out), dim=-1)
+        winv = ood_wass_loss(torch.softmax(ind_out, dim=-1))
         ood_out = D(xoutv.to(DEVICE))
         woutv = ood_wass_loss(torch.softmax(ood_out, dim=-1))
         self.winv.append(winv)
@@ -155,7 +157,7 @@ class EVALER():
         self.tpr99_thresh.append(tpr_99_thresh)
         if self.method == "OOD-GAN":
             assert G is not None
-            lr = LR(D, G, self.xin_t)
+            lr = LR(D, G, self.xin_t, self.num_classes, self.n_lr)
             train_stats = lr.fit()
             eval_stats = lr.eval(winv, woutv)
             self.lr_instance.append(lr)

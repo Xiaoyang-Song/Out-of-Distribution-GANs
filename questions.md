@@ -21,6 +21,20 @@
 
 1. Start writing first; setup everything
 2. Think about contributions
-    - Exploit the advantages of limited OoD samples
+
+   - Exploit the advantages of limited OoD samples
 
 3. Design experiments based on purposes
+
+## Contribution
+
+1. Classic approach: no samples
+   - ODIN, MaHa
+2. New: exploit advantanges of few samples
+   - AUX (if necessary)
+   - WOOD
+3. Better within-class generalization
+4. Better separability - (significant improvement at high TNR)
+5. Data augmentation
+
+

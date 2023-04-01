@@ -51,7 +51,7 @@ bsz_tri, bsz_val = train_config['bsz_tri'], train_config['bsz_val']
 lr, beta1, beta2 = train_config['optimizer'].values()
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
-each_cls, cls_idx = eval_config
+each_cls, cls_idx, n_lr = eval_config
 if each_cls:
     assert cls_idx is not None
 ic("Finished Processing Input Arguments.")
@@ -69,7 +69,7 @@ if torch.cuda.is_available():
 # note that ind and ood are deprecated for non-mnist experiment
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ood_val,
-                ood_bsz, log_dir, method)
+                ood_bsz, log_dir, method, num_classes, n_lr)
 
 for mc in range(mc_num):
     mc_start = time.time()
@@ -160,6 +160,7 @@ for mc in range(mc_num):
         # Evaluation
         torch.save(model.state_dict(),
                    log_dir + f"model-[{ood_bsz}]-[{max_epoch}]-[{mc}].pt")
+        ic("Model Checkpoint Saved!")
         evaler.compute_stats(model, f'mc={mc}', None,  True, ood)
         mc_stop = time.time()
         ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")

@@ -34,14 +34,15 @@ model:
 
 train_config:
   mc: 1
-  max_epochs: 50
+  max_epochs: 10
   bsz_tri: 50
   bsz_val: 256 # this is not used in general
   optimizer:
     lr: 0.001
-    beta1: 0.5
+    beta1: 0.9 # this is the default value used in WOOD
     beta2: 0.999
 
 eval_config:
   each_cls: True
   cls_idx: [8, 9]
+  n_lr: null
