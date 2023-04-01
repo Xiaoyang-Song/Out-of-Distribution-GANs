@@ -53,4 +53,4 @@ train_config:
 eval_config:
   each_cls: True
   cls_idx: [8, 9]
-  n_lr: 2000
+  n_lr: 2500

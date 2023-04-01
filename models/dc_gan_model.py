@@ -44,11 +44,10 @@ class DC_D(nn.Module):
 
 
 class DC_CG(nn.Module):
-    def __init__(self, img_info, noise_dim=NOISE_DIM):
-        H, W, C = img_info.values()
+    def __init__(self, num_classes, noise_dim=NOISE_DIM):
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(noise_dim+C, 1024),
+            nn.Linear(noise_dim+num_classes, 1024),
             nn.ReLU(),
             nn.BatchNorm1d(1024),
             nn.Linear(1024, 7 * 7 * 128),
@@ -61,7 +60,7 @@ class DC_CG(nn.Module):
             nn.ConvTranspose2d(64, 1, 4, stride=2, padding=1),
             nn.Tanh()
         )
-        self.emb = nn.Embedding(C, C)
+        self.emb = nn.Embedding(num_classes, num_classes)
 
     def forward(self, z, labels):
         # z = z.view(z.size(0), 100)

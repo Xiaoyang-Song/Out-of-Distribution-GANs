@@ -180,7 +180,7 @@ class MODEL_GETTER():
         if G_model is not None:
             noise_dim = G_config['noise_dim']
             if G_model == 'DC_CG':
-                G = DC_CG(self.img_info, noise_dim).to(device)
+                G = DC_CG(self.num_classes, noise_dim).to(device)
             elif G_model == 'DC_G':
                 G = DC_G(self.img_info, noise_dim).to(device)
             else:
