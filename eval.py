@@ -53,9 +53,9 @@ def loader_wass(data_loader, D):
     wass_dists = []
     for (img, _) in data_loader:
         out = D(img.to(DEVICE))
-        wass_dist = list(ood_wass_loss(torch.softmax(out, dim=-1)))
+        wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
         wass_dists.append(wass_dist)
-    return torch.tensor(np.array(wass_dist))
+    return torch.tensor(wass_dist)
 
 
 class LR():
@@ -80,7 +80,9 @@ class LR():
         yz = torch.zeros(n_class * self.c)
         gz_loader = set_to_loader(zip(gz, yz), 256)
         # Form training dataset
+        ic("> Evaluating InD Wasserstein distances...")
         win = loader_wass(ind_loader, self.D)
+        ic("> Evaluating G(z) Wasserstein distances...")
         wgz = loader_wass(gz_loader, self.D)
         mean_win, mean_wgz = torch.mean(win), torch.mean(wgz)
         print(f"Mean win {mean_win} ; Mean wgz {mean_wgz}")
@@ -155,9 +157,12 @@ class EVALER():
         # Refer to class_level statistics
         self.cls_stats = defaultdict(list)
 
-    def compute_stats(self, D, tag, G=None, each_class=False, cls_idx=None):
+    def evaluate(self, D, tag, G=None, each_class=False, cls_idx=None):
+        ic("Computing evaluation statistics...")
         _, yxoutv = tuple_list_to_tensor(self.xout_v)
+        ic("> Evaluating InD Wasserstein distances...")
         winv = loader_wass(self.xin_v_loader, D)
+        ic("> Evaluating OoD Wasserstein distances...")
         woutv = loader_wass(self.xout_v_loader, D)
         self.winv.append(winv)
         self.woutv.append(woutv)
