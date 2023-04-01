@@ -163,8 +163,8 @@ class MODEL_GETTER():
     def __call__(self, D_model, D_config=None, G_model=None, G_config=None, device=DEVICE):
         if self.return_DG:
             assert G_model is not None
-            assert D_config is not None
-            assert 'noise_dim' in D_config and D_config['noise_dim'] is not None
+            assert G_config is not None
+            assert 'noise_dim' in G_config and G_config['noise_dim'] is not None
         # Process DISCRIMINATORS
         if D_model == 'DC_D':
             D = DC_D(self.num_classes, self.img_info).to(device)
