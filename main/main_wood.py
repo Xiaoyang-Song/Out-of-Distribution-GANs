@@ -157,7 +157,7 @@ for mc in range(mc_num):
 
             # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(val_acc), epoch)
             # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(val_loss), epoch)
-            ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+            print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
     with torch.no_grad():
         # Evaluation
