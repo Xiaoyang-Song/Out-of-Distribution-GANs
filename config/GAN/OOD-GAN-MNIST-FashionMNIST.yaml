@@ -1,0 +1,56 @@
+dataset:
+  dset: MNIST-FashionMNIST
+  is_within_dset: False
+  ind: null
+  ood: null
+
+path:
+  root_dir: ../checkpoint/
+  pretrained_dir: ../checkpoint/pretrained/
+
+experiment:
+  method: OOD-GAN
+  regime: Balanced
+  observed_cls: null
+
+n_ood: 1
+
+dset_info:
+  img_info:
+    H: 28
+    W: 28
+    C: 1
+  num_class: 10
+
+model:
+  # D: "DenseNet"
+  # D_config:
+  #   depth: 100
+  D: "DC_D"
+  D_config: null
+  G: "DC_CG"
+  G_config:
+    noise_dim: 96
+
+train_config:
+  mc: 2
+  max_epochs: 4
+  bsz_tri: 50
+  bsz_val: 512 # this is used for evaluation
+  optimizer:
+    lr: 0.001
+    beta1: 0.5 # this is the default value used in WOOD
+    beta2: 0.999
+  hp:
+    ce: 1
+    wass: 0.1
+    dist: 1
+  gd_step_ratio: 1
+  noise_dim: 96
+  logging:
+    n_steps_log: 10
+
+eval_config:
+  each_cls: False
+  cls_idx: null
+  n_lr: 5000
