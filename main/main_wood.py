@@ -51,7 +51,7 @@ bsz_tri, bsz_val = train_config['bsz_tri'], train_config['bsz_val']
 lr, beta1, beta2 = train_config['optimizer'].values()
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
-each_cls, cls_idx, n_lr = eval_config
+each_cls, cls_idx = eval_config
 if each_cls:
     assert cls_idx is not None
 ic("Finished Processing Input Arguments.")
