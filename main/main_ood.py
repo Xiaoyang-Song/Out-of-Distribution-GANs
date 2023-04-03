@@ -83,6 +83,8 @@ for mc in range(mc_num):
     writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
     ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
     ###---------- models  ----------###
+    ic(D_model)
+    ic(G_model)
     D, G = model_getter(D_model, D_config, G_model, G_config)
     # Load checkpoint if necessary
     # ckpt = torch.load(pretrained_dir + "D.pt")

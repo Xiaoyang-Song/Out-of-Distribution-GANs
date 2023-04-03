@@ -80,7 +80,8 @@ for mc in range(mc_num):
     ##### logging information #####
     writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
     ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
-
+    ic(D_model)
+    ic(G_model)
     model = model_getter(D_model, D_config, G_model, G_config)
     # model = nn.DataParallel(model)
     # Load pretrained checkpoint if necessary

@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 256
+n_ood: 128
 
 dset_info:
   img_info:
@@ -33,10 +33,10 @@ model:
     noise_dim: 96
 
 train_config:
-  mc: 2
+  mc: 3
   max_epochs: 3
   bsz_tri: 50
-  bsz_val: 256 # this is used for evaluation
+  bsz_val: 512 # this is used for evaluation
   optimizer:
     lr: 0.001
     beta1: 0.9 # this is the default value used in WOOD
