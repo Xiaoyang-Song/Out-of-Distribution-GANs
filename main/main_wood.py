@@ -72,7 +72,7 @@ if torch.cuda.is_available():
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
-                ood_bsz, log_dir, method, num_classes, n_lr)
+                ood_bsz, log_dir, method, num_classes)
 
 for mc in range(mc_num):
     mc_start = time.time()
