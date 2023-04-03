@@ -5,7 +5,7 @@ dataset:
   ood: [1, 7]
 
 path:
-  root_dir: ../checkpoint/WOOD-Test
+  root_dir: ../checkpoint/WOOD-Test/
   pretrained_dir: ../checkpoint/pretrained/
 
 experiment:
