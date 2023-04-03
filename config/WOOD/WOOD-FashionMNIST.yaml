@@ -33,7 +33,7 @@ model:
 
 train_config:
   mc: 1
-  max_epochs: 50
+  max_epochs: 25
   bsz_tri: 50
   bsz_val: 256 # this is used for evaluation
   optimizer:
@@ -44,4 +44,3 @@ train_config:
 eval_config:
   each_cls: True
   cls_idx: [8, 9]
-  n_lr: null
