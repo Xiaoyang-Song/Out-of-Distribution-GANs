@@ -85,9 +85,9 @@ for mc in range(mc_num):
     ###---------- models  ----------###
     D, G = model_getter(D_model, D_config, G_model, G_config)
     # Load checkpoint if necessary
-    # ckpt = torch.load(pretrained_dir + "D.pt")
-    # D.load_state_dict(ckpt['model_state_dict'])
-    # ic("Pretrained D states loaded!")
+    ckpt = torch.load(pretrained_dir + "D.pt")
+    D.load_state_dict(ckpt['model_state_dict'])
+    ic("Pretrained D states loaded!")
     # ckpt = torch.load(pretrained_dir + "G.pt")
     # G.load_state_dict(ckpt['model_state_dict'])
     ###---------- optimizers  ----------###

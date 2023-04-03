@@ -31,7 +31,7 @@ def tpr(winv, woutv, level=0.95):
     fpr = woutv[woutv <= threshold].shape[0] / float(woutv.shape[0])
     tpr = 1 - fpr
     print(f"TPR at {level*100}%  TNR: {tpr}")
-    return threshold, tpr
+    return tpr, threshold
 
 
 def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
