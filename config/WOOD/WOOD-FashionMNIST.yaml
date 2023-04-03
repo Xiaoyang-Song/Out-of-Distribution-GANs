@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 4000
+n_ood: 256
 
 dset_info:
   img_info:
@@ -23,12 +23,11 @@ dset_info:
   num_class: 8
 
 model:
-  D: "DenseNet"
-  D_config:
-    depth: 100
-  # D: DC_D
+  # D: "DenseNet"
   # D_config:
   #   depth: 100
+  D: DC_D
+  D_config: null
   G: null
   G_config: null
 
