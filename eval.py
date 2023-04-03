@@ -157,6 +157,7 @@ class EVALER():
         self.lr_instance = []
         self.lr_train = []
         self.lr_overall = []
+        self.lrtpr, self.tpr_lr_thresh = [], []
         # Refer to class_level statistics
         self.cls_stats = defaultdict(list)
 
@@ -183,6 +184,9 @@ class EVALER():
             lr = LR(D, G, self.xin_t, self.num_classes, self.n_lr)
             train_stats = lr.fit()
             eval_stats = lr.eval(winv, woutv)
+            tpr_lr, tpr_lr_thresh = tpr(winv, woutv, eval_stats[0])
+            self.lrtpr.append(tpr_lr)
+            self.tpr_lr_thresh.append(tpr_lr_thresh)
             self.lr_instance.append(lr)
             self.lr_train.append(train_stats)
             self.lr_overall.append(eval_stats)
@@ -228,6 +232,8 @@ class EVALER():
             print_stats(lr_stats[:, 0], "InD Accuracy")
             print_stats(lr_stats[:, 1], "OoD Accuracy")
             print_stats(lr_stats[:, 2], "AUROC")
+            print_stats(self.lrtpr, "TPR@LR-InD-TNR")
+            print_stats(self.tpr_lr_thresh, "TPR@LR-InD-TNR-Threshold")
         if len(self.cls_stats) != 0:
             for key, val in self.cls_stats.items():
                 print("\n" + line())

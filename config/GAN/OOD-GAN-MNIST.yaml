@@ -5,7 +5,7 @@ dataset:
   ood: [1, 7]
 
 path:
-  root_dir: ../checkpoint/
+  root_dir: ../checkpoint/LR-TEST/
   pretrained_dir: ../checkpoint/pretrained/
 
 experiment:
@@ -30,7 +30,7 @@ model:
     noise_dim: 96
 
 train_config:
-  mc: 5
+  mc: 2
   max_epochs: 2
   bsz_tri: 50
   bsz_val: 128 # this is not used in general
@@ -50,3 +50,4 @@ train_config:
 eval_config:
   each_cls: True
   cls_idx: [1, 7]
+  n_lr: 5000
