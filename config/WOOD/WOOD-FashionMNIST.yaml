@@ -33,9 +33,9 @@ model:
 
 train_config:
   mc: 3
-  max_epochs: 15
+  max_epochs: 30
   bsz_tri: 50
-  bsz_val: 512 # this is used for evaluation
+  bsz_val: 1024 # this is used for evaluation
   optimizer:
     lr: 0.001
     beta1: 0.9 # this is the default value used in WOOD
