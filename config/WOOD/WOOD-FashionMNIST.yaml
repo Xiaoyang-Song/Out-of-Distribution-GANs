@@ -23,17 +23,17 @@ dset_info:
   num_class: 8
 
 model:
-  # D: "DenseNet"
-  # D_config:
-  #   depth: 100
-  D: DC_D
-  D_config: null
+  D: "DenseNet"
+  D_config:
+    depth: 100
+  # D: DC_D
+  # D_config: null
   G: null
   G_config: null
 
 train_config:
-  mc: 3
-  max_epochs: 15
+  mc: 1
+  max_epochs: 50
   bsz_tri: 50
   bsz_val: 512 # this is used for evaluation
   optimizer:

@@ -122,6 +122,7 @@ class OOD_GAN_TRAINER():
                 seed = torch.rand(
                     (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
                 Gz = self.G(seed, [cls]*self.bsz_tri).detach()
+                # Gz = self.G(seed).to(DEVICE).detach()
                 logits_fake = self.D(Gz)
                 # Logits for X_ood
                 ood_idx = np.random.choice(len(ood_img_batch), min(
@@ -156,6 +157,7 @@ class OOD_GAN_TRAINER():
                     seed = torch.rand(
                         (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
                     Gz = self.G(seed,  [cls]*self.bsz_tri).to(DEVICE).detach()
+                    # Gz = self.G(seed).to(DEVICE).detach()
                     logits_fake = self.D(Gz)
                     # Compute loss
                     # Minimize ood and gz
