@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 256
+n_ood: 4
 
 dset_info:
   img_info:
@@ -44,7 +44,7 @@ train_config:
   hp:
     ce: 1
     wass: 0.1
-    dist: 0 # Set to zero to check whether this is important
+    dist: 1 # Set to zero to check whether this is important
   gd_step_ratio: 1
   noise_dim: 96
   logging:
