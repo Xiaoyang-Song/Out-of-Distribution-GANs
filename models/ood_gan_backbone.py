@@ -1,5 +1,7 @@
 from config import *
 from models.resnet import resnet18
+from models.model import *
+from tqdm import tqdm
 
 
 def get_resnet(name, weights=None):
@@ -81,13 +83,14 @@ class Generator(nn.Module):
 def test_backbone_D(model, val_loader):
     criterion = nn.CrossEntropyLoss()
     val_loss, val_acc, total_acc = [], [], []
-    for idx, (img, label) in enumerate(val_loader):
+    for idx, (img, label) in tqdm(enumerate(val_loader)):
         img, label = img.to(DEVICE), label.to(DEVICE)
         logits = model(img)
         loss = criterion(logits, label)
         num_correct, num_total = (torch.argmax(logits, dim=1) ==
                                   label).sum().item(), label.shape[0]
         acc = num_correct / num_total
+        print(acc)
         val_acc.append(acc)
         total_acc.append([num_correct, num_total])
         val_loss.append(loss.detach().item())
@@ -98,14 +101,22 @@ def test_backbone_D(model, val_loader):
 
 
 if __name__ == '__main__':
-    ic("OoD GAN architecture")
-    D = Discriminator(cifar_pretrained=True)
-    # ic(D.encoder)
-    # ic(D.fc_projector)
-    x = torch.zeros((10, 3, 32, 32))
-    ic(D(x).shape)
+    pass
+    # ic("OoD GAN architecture")
+    # model = nn.DataParallel(DenseNet3(100, 10, input_channel=1))
+    # state_dict = torch.load("model.t7", map_location=torch.device('cpu'))
+    # model.load_state_dict(state_dict)
 
-    G = Generator(96)
-    ic(G.main)
-    z = torch.zeros((10, 96, 1, 1))
-    ic(G(z).shape)
+    # from dataset import *
+    # _, _, _, val_ldr = FashionMNIST(256, 64, True)
+    # test_backbone_D(model, val_ldr)
+    # 0.9348999999999998
+
+    from dataset import *
+    model = DC_D(8, {'H': 28, 'W': 28, 'C': 1})
+    model.load_state_dict(torch.load(
+        "model-[64]-[15]-[2].pt", map_location=torch.device('cpu')))
+    dset = 'FashionMNIST'
+    dset = DSET(dset, True, 512, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
+    val_ldr = dset.ind_val_loader
+    test_backbone_D(model, val_ldr)

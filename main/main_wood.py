@@ -90,6 +90,8 @@ for mc in range(mc_num):
     # ic('Checkpoint loaded')
     optimizer = torch.optim.Adam(
         model.parameters(), lr=lr, betas=(beta1, beta2))
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        optimizer, step_size=10, gamma=0.1)
     # Training dataset
     ind_tri_loader = dset.ind_train_loader
     ind_val_loader = dset.ind_val_loader
@@ -141,6 +143,7 @@ for mc in range(mc_num):
         # print(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
         #         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
         # Evaluation
+        scheduler.step()
         model.eval()
         with torch.no_grad():
             val_loss, val_acc = [], []
