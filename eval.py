@@ -281,23 +281,24 @@ class UMAPER():
         # torch.save(umap.plot.show(p), "umap.png")
 
 
-# Test visualization script
-dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
-umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
+if __name__ == "__main__":
+    # Test visualization script
+    dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
+    umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
 
-xood = torch.load("other/x_ood-[16]-[2].pt")[0]
-ic(xood.shape)
-G = DC_CG(8,  96)
-G.load_state_dict(torch.load("other/ood-gan-ckpt.pt",
-                  map_location=torch.device('cpu'))['G-state'])
+    xood = torch.load("other/x_ood-[16]-[2].pt")[0]
+    ic(xood.shape)
+    G = DC_CG(8,  96)
+    G.load_state_dict(torch.load("other/ood-gan-ckpt.pt",
+                                 map_location=torch.device('cpu'))['G-state'])
 
-seed = torch.rand(1000, 96, device=DEVICE) * 2 - 1
-cls_label = list(range(8))*125
-ic(len(cls_label))
-gz = G(seed, cls_label)
-ic(gz.shape)
+    seed = torch.rand(1000, 96, device=DEVICE) * 2 - 1
+    cls_label = list(range(8))*125
+    ic(len(cls_label))
+    gz = G(seed, cls_label)
+    ic(gz.shape)
 
-umaper.visualize(xood.detach(), gz.detach(), [
-                 "lightgray", "blue", "lightgreen", "orange"])
-plt.imshow(gz[0].detach().squeeze())
-plt.show()
+    umaper.visualize(xood.detach(), gz.detach(), [
+        "lightgray", "blue", "lightgreen", "orange"])
+    plt.imshow(gz[0].detach().squeeze())
+    plt.show()

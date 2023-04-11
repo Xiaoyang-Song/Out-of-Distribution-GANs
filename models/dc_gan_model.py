@@ -1,22 +1,50 @@
 from config import *
 
 
-def DC_G(noise_dim=NOISE_DIM):
-    model = nn.Sequential(
-        nn.Linear(noise_dim, 1024),
-        nn.ReLU(),
-        nn.BatchNorm1d(1024),
-        nn.Linear(1024, 7 * 7 * 128),
-        nn.ReLU(),
-        nn.BatchNorm1d(7 * 7 * 128),
-        nn.Unflatten(-1, (128, 7, 7)),
-        nn.ConvTranspose2d(128, 64, 4, stride=2, padding=1),
-        nn.ReLU(),
-        nn.BatchNorm2d(64),
-        nn.ConvTranspose2d(64, 1, 4, stride=2, padding=1),
-        nn.Tanh()
-    )
-    return model
+class D(nn.Module):
+    def __init__(self, img_info):
+        super().__init__()
+        H, W, C = img_info['H'], img_info['W'], img_info['C']
+        self.encoder = nn.Sequential(
+            nn.Conv2d(C, 32, 5),
+            nn.LeakyReLU(0.01),
+            nn.MaxPool2d(2),
+            nn.Conv2d(32, 64, 5),
+            nn.LeakyReLU(0.01),
+            nn.MaxPool2d(2),
+            nn.Flatten(1, -1),
+            nn.Linear(4 * 4 * 64, 4 * 4 * 64),
+            nn.LeakyReLU(0.01),
+            nn.Linear(4 * 4 * 64, 128),
+            nn.LeakyReLU(0.01),
+            nn.Linear(128, 1),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        return self.encoder(x)
+
+
+class DC_G(nn.Module):
+    def __init__(self, noise_dim=NOISE_DIM):
+        super().__init__()
+        self.model = nn.Sequential(
+            nn.Linear(noise_dim, 1024),
+            nn.ReLU(),
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024, 7 * 7 * 128),
+            nn.ReLU(),
+            nn.BatchNorm1d(7 * 7 * 128),
+            nn.Unflatten(-1, (128, 7, 7)),
+            nn.ConvTranspose2d(128, 64, 4, stride=2, padding=1),
+            nn.ReLU(),
+            nn.BatchNorm2d(64),
+            nn.ConvTranspose2d(64, 1, 4, stride=2, padding=1),
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        return self.model(x)
 
 
 class DC_D(nn.Module):
