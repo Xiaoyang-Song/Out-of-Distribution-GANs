@@ -11,7 +11,6 @@ from tqdm import tqdm
 from collections import Counter, defaultdict
 from config import *
 from dataset import *
-# from models.mnist_cnn import MNISTCNN
 from models.hparam import HParam
 from models.gans import *
 from models.dc_gan_model import *
@@ -248,3 +247,57 @@ class EVALER():
                     print_stats(lr_stats[:, 0], "InD Accuracy")
                     print_stats(lr_stats[:, 1], "OoD Accuracy")
                     print_stats(lr_stats[:, 2], "AUROC")
+
+
+class UMAPER():
+    def __init__(self, ind_dset, ood_dset, n_ind, n_ood):
+        self.ind_dset = ind_dset
+        # Process
+        self.xin, self.yin = self.process_dset(ind_dset, n_ind, "X_InD")
+        self.xout, self.yout = self.process_dset(ood_dset, n_ood, "X_OoD")
+
+    @staticmethod
+    def process_dset(dset, n, label):
+        x = torch.stack([x[0] for x in dset]).flatten(1, 3)
+        rand_idx = np.random.choice(len(x), n, False)
+        x = x[rand_idx]
+        # y = [label] * x.shape[0]
+        y = torch.tensor([x[1] for x in dset])[rand_idx]
+        return x, y
+
+    def visualize(self, xood, gz, colors):
+        xood = xood.flatten(1, 3)
+        yood = np.array(["Observed OoD"] * xood.shape[0])
+        gz = gz.flatten(1, 3)
+        ygz = np.array(["Generated Img"] * gz.shape[0])
+        # Visualize
+        x_vis = np.concatenate([self.xin, self.xout, xood, gz])
+        y_vis = np.concatenate([self.yin, self.yout, yood, ygz])
+        ic(x_vis.shape)
+        mapper = umap.UMAP().fit(x_vis)
+        # p = umap.plot.points(mapper, labels=y_vis, color_key=colors)
+        p = umap.plot.points(mapper, labels=y_vis)
+        umap.plot.show(p)
+        # torch.save(umap.plot.show(p), "umap.png")
+
+
+# Test visualization script
+dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
+umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
+
+xood = torch.load("other/x_ood-[16]-[2].pt")[0]
+ic(xood.shape)
+G = DC_CG(8,  96)
+G.load_state_dict(torch.load("other/ood-gan-ckpt.pt",
+                  map_location=torch.device('cpu'))['G-state'])
+
+seed = torch.rand(1000, 96, device=DEVICE) * 2 - 1
+cls_label = list(range(8))*125
+ic(len(cls_label))
+gz = G(seed, cls_label)
+ic(gz.shape)
+
+umaper.visualize(xood.detach(), gz.detach(), [
+                 "lightgray", "blue", "lightgreen", "orange"])
+plt.imshow(gz[0].detach().squeeze())
+plt.show()
