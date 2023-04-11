@@ -33,7 +33,7 @@ G_losses = []
 D_losses = []
 iters = 0
 
-num_epochs = 10
+num_epochs = 5
 dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
 train_loader = dset.ind_train_loader
 
@@ -113,3 +113,9 @@ for epoch in range(num_epochs):
                 fake, padding=2, normalize=True))
 
         iters += 1
+torch.save({
+    'D-state': D.state_dict(),
+    'G-state': G.state_dict()
+    # 'writer': self.writer
+}, "Pretrained-FashionMNIST-G")
+print(f"New checkpoint created!")
