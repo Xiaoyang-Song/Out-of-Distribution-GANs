@@ -1,7 +1,7 @@
 from config import *
 
 
-class D(nn.Module):
+class BD(nn.Module):
     def __init__(self, img_info):
         super().__init__()
         H, W, C = img_info['H'], img_info['W'], img_info['C']

@@ -19,10 +19,10 @@ fixed_noise = torch.randn((64, 96), device=DEVICE)
 real_label = 1.
 fake_label = 0.
 
-D = D({'H': 28, 'W': 28, 'C': 1}).to(DEVICE)
+D = BD({'H': 28, 'W': 28, 'C': 1}).to(DEVICE)
 G = DC_G(96).to(DEVICE)
 # Setup Adam optimizers for both G and D
-lr = 1e-3
+lr = 1e-4
 optimizerD = torch.optim.Adam(D.parameters(), lr=lr, betas=(0.9, 0.999))
 optimizerG = torch.optim.Adam(G.parameters(), lr=lr, betas=(0.9, 0.999))
 # Training Loop
@@ -33,7 +33,7 @@ G_losses = []
 D_losses = []
 iters = 0
 
-num_epochs = 5
+num_epochs = 25
 dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
 train_loader = dset.ind_train_loader
 
