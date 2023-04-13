@@ -261,8 +261,8 @@ class UMAPER():
         x = torch.stack([x[0] for x in dset]).flatten(1, 3)
         rand_idx = np.random.choice(len(x), n, False)
         x = x[rand_idx]
-        # y = [label] * x.shape[0]
-        y = torch.tensor([x[1] for x in dset])[rand_idx]
+        y = [label] * x.shape[0]
+        # y = torch.tensor([x[1] for x in dset])[rand_idx]
         return x, y
 
     def visualize(self, xood, gz, colors):
@@ -288,14 +288,17 @@ if __name__ == "__main__":
 
     xood = torch.load("other/x_ood-[16]-[2].pt")[0]
     ic(xood.shape)
-    G = DC_CG(8,  96)
-    G.load_state_dict(torch.load("other/ood-gan-ckpt.pt",
+    # G = DC_CG(8,  96)
+    G = DC_G(96)
+    G.load_state_dict(torch.load("other/Pretrained-FashionMNIST-G.pt",
                                  map_location=torch.device('cpu'))['G-state'])
 
     seed = torch.rand(1000, 96, device=DEVICE) * 2 - 1
-    cls_label = list(range(8))*125
-    ic(len(cls_label))
-    gz = G(seed, cls_label)
+    # cls_label = list(range(8))*125
+    # ic(len(cls_label))
+    # gz = G(seed, cls_label)
+    # ic(gz.shape)
+    gz = G(seed)
     ic(gz.shape)
 
     umaper.visualize(xood.detach(), gz.detach(), [

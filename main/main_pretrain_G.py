@@ -117,5 +117,5 @@ torch.save({
     'D-state': D.state_dict(),
     'G-state': G.state_dict()
     # 'writer': self.writer
-}, "Pretrained-FashionMNIST-G")
+}, "Pretrained-FashionMNIST-G.pt")
 print(f"New checkpoint created!")

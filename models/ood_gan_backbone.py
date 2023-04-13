@@ -81,42 +81,44 @@ class Generator(nn.Module):
 
 
 def test_backbone_D(model, val_loader):
-    criterion = nn.CrossEntropyLoss()
-    val_loss, val_acc, total_acc = [], [], []
-    for idx, (img, label) in tqdm(enumerate(val_loader)):
-        img, label = img.to(DEVICE), label.to(DEVICE)
-        logits = model(img)
-        loss = criterion(logits, label)
-        num_correct, num_total = (torch.argmax(logits, dim=1) ==
-                                  label).sum().item(), label.shape[0]
-        acc = num_correct / num_total
-        print(acc)
-        val_acc.append(acc)
-        total_acc.append([num_correct, num_total])
-        val_loss.append(loss.detach().item())
-    ic(np.mean(val_acc))
-    ic(np.mean(val_loss))
-    total_acc = np.array(total_acc)
-    ic(np.sum(total_acc[:, 0] / np.sum(total_acc[:, 1])))
+    with torch.no_grad():
+        criterion = nn.CrossEntropyLoss()
+        val_loss, val_acc, total_acc = [], [], []
+        for idx, (img, label) in enumerate(tqdm(val_loader)):
+            img, label = img.to(DEVICE), label.to(DEVICE)
+            logits = model(img)
+            loss = criterion(logits, label)
+            num_correct, num_total = (torch.argmax(logits, dim=1) ==
+                                      label).sum().item(), label.shape[0]
+            acc = num_correct / num_total
+            # print(acc)
+            val_acc.append(acc)
+            total_acc.append([num_correct, num_total])
+            val_loss.append(loss.detach().item())
+        ic(np.mean(val_acc))
+        ic(np.mean(val_loss))
+        total_acc = np.array(total_acc)
+        ic(np.sum(total_acc[:, 0] / np.sum(total_acc[:, 1])))
 
 
 if __name__ == '__main__':
-    pass
-    # ic("OoD GAN architecture")
-    # model = nn.DataParallel(DenseNet3(100, 10, input_channel=1))
-    # state_dict = torch.load("model.t7", map_location=torch.device('cpu'))
-    # model.load_state_dict(state_dict)
-
-    # from dataset import *
-    # _, _, _, val_ldr = FashionMNIST(256, 64, True)
-    # test_backbone_D(model, val_ldr)
-    # 0.9348999999999998
+    # pass
+    ic("OoD GAN architecture")
+    model = nn.DataParallel(DenseNet3(100, 10, input_channel=1))
+    state_dict = torch.load("other/model.t7", map_location=torch.device('cpu'))
+    model.load_state_dict(state_dict)
 
     from dataset import *
-    model = DC_D(8, {'H': 28, 'W': 28, 'C': 1})
-    model.load_state_dict(torch.load(
-        "model-[64]-[15]-[2].pt", map_location=torch.device('cpu')))
-    dset = 'FashionMNIST'
-    dset = DSET(dset, True, 512, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
-    val_ldr = dset.ind_val_loader
+    _, _, _, val_ldr = FashionMNIST(256, 64, True)
     test_backbone_D(model, val_ldr)
+    # for Binary WOOD
+    # 0.9348999999999998 for Dynamic WOOD
+
+    # from dataset import *
+    # model = DC_D(8, {'H': 28, 'W': 28, 'C': 1})
+    # model.load_state_dict(torch.load(
+    #     "model-[64]-[15]-[2].pt", map_location=torch.device('cpu')))
+    # dset = 'FashionMNIST'
+    # dset = DSET(dset, True, 512, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
+    # val_ldr = dset.ind_val_loader
+    # test_backbone_D(model, val_ldr)

@@ -33,41 +33,55 @@ log_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
 ckpt_dir = root_dir + f"{method}/{dset}/{regime}/{ood_bsz}/"
 os.makedirs(log_dir, exist_ok=True)
 pretrained_dir = pretrained_dir + f"{dset}/"
+
+
 #---------- Training Hyperparameters  ----------#
+
 ###---------- Image Info  ----------###
 img_info, num_classes = config['dset_info'].values()
 H, W, C = img_info.values()
 ic(f"Input Dimension: {H} x {W} x {C}")
 ic(f"Number of InD classes: {num_classes}")
+
 ###---------- Models  ----------###
 D_model, D_config, G_model, G_config = config['model'].values()
 model_getter = MODEL_GETTER(num_classes=num_classes,
                             img_info=img_info, return_DG=True)
+
 ###---------- Trainer  ----------###
 train_config = config['train_config']
 mc_num = train_config['mc']
 max_epoch = train_config['max_epochs']
 bsz_tri, bsz_val = train_config['bsz_tri'], train_config['bsz_val']
+
 w_ce, w_loss, w_dist = train_config['hp'].values()
 hp = HParam(ce=w_ce, wass=w_loss, dist=w_dist)
 gd_step_ratio = train_config['gd_step_ratio']
 noise_dim = train_config['noise_dim']
 n_steps_log = train_config['logging']['n_steps_log']
+
 ###---------- Optimizer  ----------###
 lr, beta1, beta2 = train_config['optimizer'].values()
+
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
 each_cls, cls_idx, n_lr = eval_config
 if each_cls:
     assert cls_idx is not None
 ic("Finished Processing Input Arguments.")
+
 ########## Experiment Starts Here  ##########
 start = time.time()
 ic("HELLO GL!")
+
 #---------- GPU information  ----------#
-ic(torch.cuda.is_available())
 if torch.cuda.is_available():
-    ic(torch.cuda.get_device_name(0))
+    print(f"-- Current Device: {torch.cuda.get_device_name(0)}")
+    print(
+        f"-- Device Total Memory: {torch.cuda.get_device_properties(0).total_memory / (1024**3):.2f} GB")
+    print("-- Let's use", torch.cuda.device_count(), "GPUs!")
+else:
+    print("-- Unfortunately, we are only using CPUs now.")
 #---------- Dataset & Evaler  ----------#
 # note that ind and ood are deprecated for non-mnist experiment
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
@@ -79,22 +93,27 @@ evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
 for mc in range(mc_num):
     mc_start = time.time()
     ic(f"Monte Carlo Iteration {mc}")
+
     ###---------- logging information  ----------###
     writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
-    ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
+    ckpt_name = f'[{dset.name}]-[{ood_bsz}]-[{regime}]-[{mc}]'
+
     ###---------- models  ----------###
     ic(D_model)
     ic(G_model)
     D, G = model_getter(D_model, D_config, G_model, G_config)
-    # Load checkpoint if necessary
+
+    ###---------- checkpoint loading (if necessary)  ----------###
     # ckpt = torch.load(pretrained_dir + "D.pt")
     # D.load_state_dict(ckpt['model_state_dict'])
     # ic("Pretrained D states loaded!")
     # ckpt = torch.load(pretrained_dir + "G.pt")
     # G.load_state_dict(ckpt['model_state_dict'])
+
     ###---------- optimizers  ----------###
     D_solver = torch.optim.Adam(D.parameters(), lr=lr, betas=(beta1, beta2))
     G_solver = torch.optim.Adam(G.parameters(), lr=lr, betas=(beta1, beta2))
+
     ###---------- dataset  ----------###
     ind_loader = dset.ind_train_loader
     if regime == 'Balanced':
@@ -120,8 +139,10 @@ for mc in range(mc_num):
                               n_steps_log=n_steps_log)
     trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
                   D.encoder, pretrainedD=None, checkpoint=None)
+
     ###---------- evaluation  ----------###
     evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
+    test_backbone_D(D, dset.ind_val_loader)
     mc_stop = time.time()
     ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 

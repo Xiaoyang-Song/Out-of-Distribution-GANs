@@ -104,7 +104,7 @@ class OOD_GAN_TRAINER():
         ood_img_batch = ood_img_batch.to(DEVICE)
         iter_count = 0
         for epoch in range(self.max_epochs):
-            for steps, (x, y) in tqdm(enumerate(ind_loader)):
+            for steps, (x, y) in enumerate(tqdm(ind_loader)):
                 cls = int(iter_count % self.num_classes)
                 # cls=0
                 x = x.to(DEVICE)
@@ -154,9 +154,9 @@ class OOD_GAN_TRAINER():
                 for g_step in range(self.gd_steps_ratio):
                     G_solver.zero_grad()
                     # Logits for G(z)
-                    seed = torch.rand(
-                        (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
-                    Gz = self.G(seed,  [cls]*self.bsz_tri).to(DEVICE).detach()
+                    # seed = torch.rand(
+                    #     (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
+                    # Gz = self.G(seed,  [cls]*self.bsz_tri).to(DEVICE).detach()
                     # Gz = self.G(seed).to(DEVICE).detach()
                     logits_fake = self.D(Gz)
                     # Compute loss
