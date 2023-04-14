@@ -1,0 +1,37 @@
+dataset:
+  dset: FashionMNIST-MNIST
+  is_within_dset: False
+  ind: null
+  ood: null
+
+path:
+  root_dir: ../checkpoint/
+  pretrained_dir: ../checkpoint/pretrained/
+
+experiment:
+  method: WOOD
+  regime: Balanced
+  observed_cls: null
+
+n_ood: 256
+
+dset_info:
+  img_info:
+    H: 28
+    W: 28
+    C: 1
+  num_class: 10
+
+train_config:
+  mc: 5
+  max_epochs: 25
+  bsz_tri: 50
+  bsz_val: 256 # this is not used in general
+  optimizer:
+    lr: 0.001
+    beta1: 0.5
+    beta2: 0.999
+
+eval_config:
+  each_cls: False
+  cls_idx:

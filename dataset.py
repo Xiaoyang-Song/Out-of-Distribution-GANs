@@ -222,6 +222,13 @@ class DSET():
                 self.bsz_tri, self.bsz_val, True)
             self.ood_train_by_class = dset_by_class(
                 self.ood_train)  # this is used for sampling
+        elif self.name == 'FashionMNIST-MNIST':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = FashionMNIST(
+                self.bsz_tri, self.bsz_val, True)
+            self.ood_train, self.ood_val, _, self.ood_val_loader = MNIST(
+                self.bsz_tri, self.bsz_val)
+            self.ood_train_by_class = dset_by_class(
+                self.ood_train)  # this is used for sampling
         elif self.name == 'CIFAR10-SVHN':
             self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(
                 self.bsz_tri, self.bsz_val)

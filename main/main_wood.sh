@@ -14,4 +14,5 @@ module purge
 conda init bash
 conda activate OoD
 
-python3 main_wood.py --config=../config/WOOD/WOOD-FashionMNIST.yaml
+# python3 main_wood.py --config=../config/WOOD/WOOD-FashionMNIST.yaml
+python3 main_wood.py --config=../config/WOOD/WOOD-FashionMNIST-MNIST.yaml

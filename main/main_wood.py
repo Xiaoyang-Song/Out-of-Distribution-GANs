@@ -79,7 +79,7 @@ for mc in range(mc_num):
     ic(f"Monte Carlo Iteration {mc}")
     ##### logging information #####
     writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
-    ckpt_name = f'[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]'
+    ckpt_name = f'[{dset.name}]-[{ood_bsz}]-[{regime}]-[{mc}]'
     ic(D_model)
     ic(G_model)
     model = model_getter(D_model, D_config, G_model, G_config)
@@ -168,7 +168,8 @@ for mc in range(mc_num):
         torch.save(model.state_dict(),
                    log_dir + f"model-[{ood_bsz}]-[{max_epoch}]-[{mc}].pt")
         ic("Model Checkpoint Saved!")
-        evaler.evaluate(model, f'mc={mc}', None,  True, ood)
+        evaler.evaluate(model, f'mc={mc}', None,  False, ood)
+        test_backbone_D(model, dset.ind_val_loader)
         mc_stop = time.time()
         ic(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 
