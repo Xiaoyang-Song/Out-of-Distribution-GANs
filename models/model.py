@@ -4,17 +4,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
-
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import torch.nn.functional as F
-import torchvision
 import torchvision.transforms as transforms
-from torch.utils.data import Dataset, DataLoader
-from sklearn.metrics import confusion_matrix
-from stefutil import mic
 from models.dc_gan_model import *
+from models.ood_gan_backbone import *
 
 
 class BasicBlock(nn.Module):
@@ -182,7 +178,9 @@ class MODEL_GETTER():
             if G_model == 'DC_CG':
                 G = DC_CG(self.num_classes, noise_dim).to(device)
             elif G_model == 'DC_G':
-                G = DC_G(self.img_info, noise_dim).to(device)
+                G = DC_G(noise_dim).to(device)
+            elif G_model == "Deep_G":
+                G = Generator(noise_dim).to(device)
             else:
                 assert False, 'Unrecognized Generator Type.'
         if self.return_DG:

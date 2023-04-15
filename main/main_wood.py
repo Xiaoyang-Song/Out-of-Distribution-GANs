@@ -126,6 +126,7 @@ for mc in range(mc_num):
             wass_loss = batch_wasserstein(ood_logits)
             loss = criterion(logits, label) + 0.1 * wass_loss
             loss.backward()
+            # ic(loss)
             optimizer.step()
             # Append training statistics
             acc = (torch.argmax(logits, dim=1) ==

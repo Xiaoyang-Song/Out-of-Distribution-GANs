@@ -137,9 +137,11 @@ for mc in range(mc_num):
                               ckpt_name=ckpt_name,
                               ckpt_dir=ckpt_dir,
                               n_steps_log=n_steps_log)
+    # trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
+    #               D.encoder, pretrainedD=None, checkpoint=None)
+    # Used for complex dataset
     trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
-                  D.encoder, pretrainedD=None, checkpoint=None)
-
+                  metric=None, pretrainedD=None, checkpoint=None)
     ###---------- evaluation  ----------###
     evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
     test_backbone_D(D, dset.ind_val_loader)
