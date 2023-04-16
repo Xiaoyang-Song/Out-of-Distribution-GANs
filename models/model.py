@@ -194,3 +194,15 @@ if __name__ == '__main__':
     C = 3
     model = DenseNet3(depth=100, num_classes=10, input_channel=C)
     model.to(DEVICE)
+
+    ic("OoD GAN architecture")
+    model = nn.DataParallel(DenseNet3(100, 10, input_channel=1))
+    state_dict = torch.load("other/model.t7", map_location=torch.device('cpu'))
+    model.load_state_dict(state_dict)
+
+    from dataset import *
+    _, _, _, val_ldr = FashionMNIST(256, 64, True)
+    test_backbone_D(model, val_ldr)
+    # for Binary WOOD
+    # 0.9348999999999998 for Dynamic WOOD
+    # 0.8996 for Binary WOOD

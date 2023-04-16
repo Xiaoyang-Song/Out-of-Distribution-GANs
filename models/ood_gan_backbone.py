@@ -1,6 +1,6 @@
 from config import *
 from models.resnet import resnet18
-from models.model import *
+# from models.model import *
 from tqdm import tqdm
 
 
@@ -102,17 +102,7 @@ def test_backbone_D(model, val_loader):
 
 
 if __name__ == '__main__':
-    # pass
-    ic("OoD GAN architecture")
-    model = nn.DataParallel(DenseNet3(100, 10, input_channel=1))
-    state_dict = torch.load("other/model.t7", map_location=torch.device('cpu'))
-    model.load_state_dict(state_dict)
-
-    from dataset import *
-    _, _, _, val_ldr = FashionMNIST(256, 64, True)
-    test_backbone_D(model, val_ldr)
-    # for Binary WOOD
-    # 0.9348999999999998 for Dynamic WOOD
+    pass
 
     # from dataset import *
     # model = DC_D(8, {'H': 28, 'W': 28, 'C': 1})
