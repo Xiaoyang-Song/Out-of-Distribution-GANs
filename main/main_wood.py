@@ -141,7 +141,7 @@ for mc in range(mc_num):
 
         # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(train_acc), epoch)
         # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(train_loss), epoch)
-        print(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+        print(f"\nEpoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
                 | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
         # Evaluation
         scheduler.step()

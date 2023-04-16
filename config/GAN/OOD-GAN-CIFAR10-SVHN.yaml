@@ -33,12 +33,12 @@ model:
     noise_dim: 96
 
 train_config:
-  mc: 3
-  max_epochs: 2
+  mc: 1
+  max_epochs: 6
   bsz_tri: 50
-  bsz_val: 512 # this is used for evaluation
+  bsz_val: 64 # this is used for evaluation
   optimizer:
-    lr: 0.001
+    lr: 0.01
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
