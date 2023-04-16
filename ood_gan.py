@@ -122,11 +122,11 @@ class OOD_GAN_TRAINER():
                 # Logits for X_in
                 logits_real = self.D(x)
                 # Logits for G(z)
-                # seed = torch.rand(
-                #     (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
-
                 seed = torch.rand(
-                    (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE) * 2 - 1
+                    (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
+
+                # seed = torch.rand(
+                #     (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE) * 2 - 1
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
                 Gz = self.G(seed).detach()
