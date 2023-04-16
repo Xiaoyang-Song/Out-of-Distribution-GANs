@@ -28,13 +28,13 @@ model:
   #   depth: 100
   D: "DC_D"
   D_config: null
-  G: "DC_CG"
+  G: "DC_G"
   G_config:
     noise_dim: 96
 
 train_config:
   mc: 3
-  max_epochs: 2
+  max_epochs: 4
   bsz_tri: 50
   bsz_val: 512 # this is used for evaluation
   optimizer:
