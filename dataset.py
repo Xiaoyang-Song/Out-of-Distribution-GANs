@@ -262,7 +262,9 @@ def line(n=40):
 
 if __name__ == '__main__':
     # Test dataset functions
-    dset = DSET('SVHN', True, 50, 128)
+    ind = [0, 1, 2, 3, 4, 5, 6, 7]
+    ood = [8, 9]
+    dset = DSET('SVHN', True, 50, 128, ind, ood)
     # ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])
     # ic(ood_img_label)
     # ic(ood_img_batch.shape)
@@ -271,4 +273,6 @@ if __name__ == '__main__':
     #     plt.show()
     ic(len(dset.ind_train))
     ic(len(dset.ind_val))
-    ic(len(dset.ind))
+    # ic(len(dset.ind))
+    ic(len(dset.ood_val))
+    ic(len(dset.ind_val) + len(dset.ood_val))
