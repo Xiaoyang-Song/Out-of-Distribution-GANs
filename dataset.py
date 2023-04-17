@@ -191,10 +191,12 @@ class DSET():
         self.initialize()
 
     def initialize(self):
-        if self.name == 'MNIST' or self.name == 'FashionMNIST':
+        if self.name in ['MNIST', 'FashionMNIST', 'SVHN']:
             assert self.ind is not None and self.ood is not None
             if self.name == 'MNIST':
                 dset_tri, dset_val, _, _ = MNIST(self.bsz_tri, self.bsz_val)
+            elif self.name == "SVHN":
+                dset_tri, dset_val, _, _ = SVHN(self.bsz_tri, self.bsz_val)
             else:
                 dset_tri, dset_val, _, _ = FashionMNIST(
                     self.bsz_tri, self.bsz_val, True)
@@ -260,10 +262,13 @@ def line(n=40):
 
 if __name__ == '__main__':
     # Test dataset functions
-    dset = DSET('MNIST-FashionMNSIT', False, 50, 128)
-    ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])
-    ic(ood_img_label)
-    ic(ood_img_batch.shape)
-    for img in ood_img_batch:
-        plt.imshow(img.squeeze())
-        plt.show()
+    dset = DSET('SVHN', True, 50, 128)
+    # ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])
+    # ic(ood_img_label)
+    # ic(ood_img_batch.shape)
+    # for img in ood_img_batch:
+    #     plt.imshow(img.squeeze())
+    #     plt.show()
+    ic(len(dset.ind_train))
+    ic(len(dset.ind_val))
+    ic(len(dset.ind))
