@@ -8,9 +8,10 @@ import pickle
 
 
 # REGIME I: Balanced OoD samples
-dset = "FashionMNIST"
-# dset = "MNIST"
-with open("res/regime-I-results.json", 'r') as f:
+# dset = "FashionMNIST"
+dset = "MNIST"
+regime = "II"
+with open(f"res/regime-{regime}-results.json", 'r') as f:
     res_dict = json.load(f)
     # plot Experiment Results
     mnist = res_dict[dset]
@@ -28,9 +29,10 @@ with open("res/regime-I-results.json", 'r') as f:
         #     break
     # plt.grid(color='black', linestyle='-', linewidth=0.5)
     plt.legend(loc=4)
-    plt.xlabel("Number of Observed OoD Samples for Each Class")
+    # plt.xlabel("Number of Observed OoD Samples for Each Class")
+    plt.xlabel("Number of Observed OoD Samples for Selected Classes")
     plt.ylabel("OoD Detection Accuracy (TPR)")
-    plt.title(f"Experimental Results - Regime I - {dset}")
-    plt.savefig(f"res/plot/{dset}-Regime-I.png", dpi=1000)
+    plt.title(f"Experimental Results - Regime {regime} - {dset}")
+    plt.savefig(f"res/plot/{dset}-Regime-{regime}.png", dpi=1000)
     # plt.show()
     plt.close()
