@@ -121,6 +121,9 @@ class DenseNet3(nn.Module):
         # global average pooling and classifier
         self.bn1 = nn.BatchNorm2d(in_planes)
         self.relu = nn.ReLU(inplace=True)
+        # for three channel images: 3 x 32 x 32
+        # self.fc1 = nn.Linear(in_planes, 128)
+        # self.fc2 = nn.Linear(128, num_classes)
         self.fc = nn.Linear(in_planes, num_classes)
         self.in_planes = in_planes
         self.softmax = nn.Softmax(dim=1)
@@ -144,6 +147,7 @@ class DenseNet3(nn.Module):
 
         out = F.avg_pool2d(out, 7)
         out = out.view(-1, self.in_planes)
+        # ic(out.shape)
         out = self.fc(out)
         out = self.softmax(out)
         return out
