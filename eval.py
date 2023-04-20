@@ -74,12 +74,15 @@ class LR():
         yin = torch.ones(len(self.xin_t))
         ind_loader = set_to_loader(list(zip(self.xin_t, yin)), 256, True)
         # Generate OoD images
-        g_seed = sample_noise((self.n // self.c) * self.c, 96)
-        n_class = self.n // self.c
-        # ic(self.c)
-        gz = self.G(g_seed, np.array(
-            [[i] * n_class for i in range(self.c)]).flatten())
-        yz = torch.zeros(n_class * self.c)
+        # g_seed = sample_noise((self.n // self.c) * self.c, 96)
+        # n_class = self.n // self.c
+        # # ic(self.c)
+        # gz = self.G(g_seed, np.array(
+        #     [[i] * n_class for i in range(self.c)]).flatten())
+        g_seed = sample_noise(self.n, 96, extra_dim=True)
+        gz = self.G(g_seed)
+        # yz = torch.zeros(n_class * self.c)
+        yz = torch.zeros(self.n)
         gz_loader = set_to_loader(list(zip(gz, yz)), 256, True)
         # Form training dataset
         ic("> Evaluating InD Wasserstein distances...")
@@ -221,6 +224,7 @@ class EVALER():
         print_stats(self.tpr99, "TPR@99TNR")
         print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
         print("\n" + line())
+        return
         if self.method == "OOD-GAN":
             lr_train = np.array(self.lr_train)
             print("Logistic Regression Statistics")

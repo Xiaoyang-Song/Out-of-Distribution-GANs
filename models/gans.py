@@ -23,9 +23,12 @@ def zero_softmax_loss(x): return torch.log(ood_wass_loss(
     torch.softmax(x, dim=-1), NUM_CLASSES)).mean()
 
 
-def sample_noise(batch_size, noise_dim, dtype=torch.float, device=DEVICE):
-    noise = torch.rand((batch_size, noise_dim), device=device) * 2 - 1
-    return noise
+def sample_noise(batch_size, noise_dim, extra_dim=False, dtype=torch.float, device=DEVICE):
+    if extra_dim:
+        return torch.rand((batch_size, noise_dim, 1, 1), device=device) * 2 - 1
+    else:
+        noise = torch.rand((batch_size, noise_dim), device=device) * 2 - 1
+        return noise
 
 
 def discriminator(gan_type=GAN_TYPE.NAIVE):
