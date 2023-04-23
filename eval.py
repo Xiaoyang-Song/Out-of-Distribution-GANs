@@ -72,7 +72,7 @@ class LR():
     def fit(self):
         print("Logistic Regression Training Starts...")
         yin = torch.ones(len(self.xin_t))
-        ind_loader = set_to_loader(list(zip(self.xin_t, yin)), 256, True)
+        ind_loader = set_to_loader(list(zip(self.xin_t, yin)), 64, True)
         # Generate OoD images
         # g_seed = sample_noise((self.n // self.c) * self.c, 96)
         # n_class = self.n // self.c
@@ -83,7 +83,7 @@ class LR():
         gz = self.G(g_seed)
         # yz = torch.zeros(n_class * self.c)
         yz = torch.zeros(self.n)
-        gz_loader = set_to_loader(list(zip(gz, yz)), 256, True)
+        gz_loader = set_to_loader(list(zip(gz, yz)), 64, True)
         # Form training dataset
         ic("> Evaluating InD Wasserstein distances...")
         win = loader_wass(ind_loader, self.D)
