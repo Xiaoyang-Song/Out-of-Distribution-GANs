@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 64
+n_ood: 32
 
 dset_info:
   img_info:
