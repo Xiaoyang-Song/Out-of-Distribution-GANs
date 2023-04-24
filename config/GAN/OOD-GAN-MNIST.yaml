@@ -25,7 +25,7 @@ dset_info:
 model:
   D: "DC_D"
   D_config: null
-  G: "DC_CG"
+  G: "DC_G"
   G_config:
     noise_dim: 96
 
