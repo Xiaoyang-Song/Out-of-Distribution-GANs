@@ -141,7 +141,7 @@ for mc in range(mc_num):
 
         # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(train_acc), epoch)
         # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(train_loss), epoch)
-        print(f"\nEpoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+        ic(f"\nEpoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
                 | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
         # Evaluation
         scheduler.step()
@@ -162,7 +162,7 @@ for mc in range(mc_num):
 
             # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(val_acc), epoch)
             # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(val_loss), epoch)
-            print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+            ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
     with torch.no_grad():
         # Evaluation
