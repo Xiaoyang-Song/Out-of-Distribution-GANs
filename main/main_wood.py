@@ -90,8 +90,8 @@ for mc in range(mc_num):
     # ic('Checkpoint loaded')
     optimizer = torch.optim.Adam(
         model.parameters(), lr=lr, betas=(beta1, beta2))
-    scheduler = torch.optim.lr_scheduler.StepLR(
-        optimizer, step_size=100, gamma=0.1)  # no scheduler
+    # scheduler = torch.optim.lr_scheduler.StepLR(
+    #     optimizer, step_size=100, gamma=0.1)  # no scheduler
     # Training dataset
     ind_tri_loader = dset.ind_train_loader
     ind_val_loader = dset.ind_val_loader
@@ -114,9 +114,9 @@ for mc in range(mc_num):
         # Training
         model.train()
         train_loss, train_acc, wass = [], [], []
-        for idx, (img, label) in enumerate(ind_tri_loader):
+        for idx, (img, labels) in enumerate(ind_tri_loader):
             img = img.to(DEVICE)
-            label = label.to(DEVICE)
+            labels = labels.to(DEVICE)
             optimizer.zero_grad()
             logits = model(img)
             # Sample 10 ood image from the seen OoD set
@@ -124,13 +124,13 @@ for mc in range(mc_num):
                 len(ood_img_batch), min(len(ood_img_batch), 10), replace=False)
             ood_logits = model(ood_img_batch[ood_idx, :, :, :])
             wass_loss = batch_wasserstein(ood_logits)
-            loss = criterion(logits, label) + 0.1 * wass_loss
+            loss = criterion(logits, labels) + 0.1 * wass_loss
             loss.backward()
             # ic(loss)
             optimizer.step()
             # Append training statistics
             acc = (torch.argmax(logits, dim=1) ==
-                   label).sum().item() / label.shape[0]
+                   labels).sum().item() / labels.shape[0]
             train_acc.append(acc)
             train_loss.append(loss.detach().item())
             wass.append(wass_loss.detach().item())
@@ -144,16 +144,16 @@ for mc in range(mc_num):
         ic(f"\nEpoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
                 | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
         # Evaluation
-        scheduler.step()
+        # scheduler.step()
         model.eval()
         with torch.no_grad():
             val_loss, val_acc = [], []
-            for idx, (img, label) in enumerate(ind_val_loader):
-                img, label = img.to(DEVICE), label.to(DEVICE)
+            for idx, (img, labels) in enumerate(ind_val_loader):
+                img, labels = img.to(DEVICE), labels.to(DEVICE)
                 logits = model(img)
-                loss = criterion(logits, label)
+                loss = criterion(logits, labels)
                 acc = (torch.argmax(logits, dim=1) ==
-                       label).sum().item() / label.shape[0]
+                       labels).sum().item() / labels.shape[0]
                 val_acc.append(acc)
                 val_loss.append(loss.detach().item())
                 # pretrain_writer.add_scalar("Training/Accuracy", acc, iter_count_val)
