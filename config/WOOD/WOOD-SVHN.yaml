@@ -1,0 +1,45 @@
+dataset:
+  dset: SVHN
+  is_within_dset: True
+  ind: [0, 1, 2, 3, 4, 5, 6, 7]
+  ood: [8, 9]
+
+path:
+  root_dir: ../checkpoint/
+  pretrained_dir: ../checkpoint/pretrained/
+
+experiment:
+  method: WOOD
+  regime: Balanced
+  observed_cls: null
+
+n_ood: 32
+model:
+  D: "DenseNet"
+  D_config:
+    depth: 100
+  # D: DC_D
+  # D_config: null
+  G: null
+  G_config: null
+
+dset_info:
+  img_info:
+    H: 32
+    W: 32
+    C: 3
+  num_class: 10
+
+train_config:
+  mc: 3
+  max_epochs: 25
+  bsz_tri: 50
+  bsz_val: 64 # this is not used in general
+  optimizer:
+    lr: 0.001
+    beta1: 0.9
+    beta2: 0.999
+
+eval_config:
+  each_cls: False
+  cls_idx:
