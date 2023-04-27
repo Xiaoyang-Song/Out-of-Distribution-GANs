@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 32
+n_ood: 16
 model:
   D: "DenseNet"
   D_config:
