@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 1
+n_ood: 2048
 model:
   D: "DenseNet"
   D_config:
@@ -32,7 +32,7 @@ dset_info:
 
 train_config:
   mc: 1
-  max_epochs: 100
+  max_epochs: 50
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
   optimizer:
