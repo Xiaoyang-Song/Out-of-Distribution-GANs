@@ -5,7 +5,7 @@ dataset:
   ood: [1, 7]
 
 path:
-  root_dir: ../checkpoint/LR-TEST/Pretrain-D/
+  root_dir: ../checkpoint/
   pretrained_dir: ../checkpoint/pretrained/
 
 experiment:
@@ -22,18 +22,27 @@ dset_info:
     C: 1
   num_class: 5
 
+# model:
+#   D: "DC_D"
+#   D_config: null
+#   G: "DC_G"
+#   G_config:
+#     noise_dim: 96
 model:
-  D: "DC_D"
-  D_config: null
-  G: "DC_G"
+  D: "DenseNet"
+  D_config:
+    depth: 100
+  # D: "DC_D"
+  # D_config: null
+  G: "Deep_G"
   G_config:
     noise_dim: 96
 
 train_config:
   mc: 3
-  max_epochs: 2
+  max_epochs: 4
   bsz_tri: 50
-  bsz_val: 128 # this is not used in general
+  bsz_val: 64 # this is not used in general
   hp:
     ce: 1
     wass: 0.1
@@ -42,12 +51,12 @@ train_config:
   noise_dim: 96
   optimizer:
     lr: 0.001
-    beta1: 0.5
+    beta1: 0.9
     beta2: 0.999
   logging:
     n_steps_log: 5
 
 eval_config:
-  each_cls: True
+  each_cls: False
   cls_idx: [1, 7]
   n_lr: 5000
