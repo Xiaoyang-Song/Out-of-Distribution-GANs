@@ -8,7 +8,7 @@
 #SBATCH --partition=standard
 #SBATCH --mem=16GB
 #SBATCH --cpus-per-task=4
-#SBATCH --time=30:00:00
+#SBATCH --time=36:00:00
 
 module purge
 conda init bash
