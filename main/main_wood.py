@@ -63,7 +63,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 ic(torch.cuda.is_available())
 if torch.cuda.is_available():
     ic(torch.cuda.get_device_name(0))
-    ic(torch.cuda.get_device_properties(0).total_memory)
+    ic(torch.cuda.get_device_properties(0).total_memory / (1024**3))
     # ic(torch.cuda.getMemoryUsage(0))
     ic("Let's use", torch.cuda.device_count(), "GPUs!")
 
@@ -78,7 +78,7 @@ for mc in range(mc_num):
     mc_start = time.time()
     ic(f"Monte Carlo Iteration {mc}")
     ##### logging information #####
-    writer_name = log_dir + f"[{dset}]-[{ood_bsz}]-[{regime}]-[{mc}]"
+    writer_name = log_dir + f"[{dset.name}]-[{ood_bsz}]-[{regime}]-[{mc}]"
     ckpt_name = f'[{dset.name}]-[{ood_bsz}]-[{regime}]-[{mc}]'
     ic(D_model)
     ic(G_model)
