@@ -192,11 +192,14 @@ class DSET():
 
     def initialize(self):
         if self.name in ['MNIST', 'FashionMNIST', 'SVHN']:
+
             assert self.ind is not None and self.ood is not None
             if self.name == 'MNIST':
                 dset_tri, dset_val, _, _ = MNIST(self.bsz_tri, self.bsz_val)
+
             elif self.name == "SVHN":
                 dset_tri, dset_val, _, _ = SVHN(self.bsz_tri, self.bsz_val)
+
             else:
                 dset_tri, dset_val, _, _ = FashionMNIST(
                     self.bsz_tri, self.bsz_val, True)
@@ -217,6 +220,7 @@ class DSET():
                 self.ind_val, self.bsz_val, True)
             self.ood_val_loader = set_to_loader(
                 self.ood_val, self.bsz_val, True)
+
         elif self.name == 'MNIST-FashionMNIST':
             self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = MNIST(
                 self.bsz_tri, self.bsz_val)
@@ -224,6 +228,7 @@ class DSET():
                 self.bsz_tri, self.bsz_val, True)
             self.ood_train_by_class = dset_by_class(
                 self.ood_train)  # this is used for sampling
+
         elif self.name == 'FashionMNIST-MNIST':
             self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = FashionMNIST(
                 self.bsz_tri, self.bsz_val, True)
@@ -231,6 +236,7 @@ class DSET():
                 self.bsz_tri, self.bsz_val)
             self.ood_train_by_class = dset_by_class(
                 self.ood_train)  # this is used for sampling
+
         elif self.name == 'CIFAR10-SVHN':
             self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(
                 self.bsz_tri, self.bsz_val)
@@ -238,6 +244,7 @@ class DSET():
                 self.bsz_tri, self.bsz_val)
             self.ood_train_by_class = dset_by_class(
                 self.ood_train)  # this is used for sampling
+
         else:
             assert False, 'Unrecognized Dataset Combination.'
 
@@ -262,7 +269,7 @@ def line(n=40):
 
 if __name__ == '__main__':
     # Test dataset functions
-    ind = [2,3,6,8,9]
+    ind = [2, 3, 6, 8, 9]
     ood = [1, 7]
     dset = DSET('MNIST', True, 50, 128, ind, ood)
     # ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])

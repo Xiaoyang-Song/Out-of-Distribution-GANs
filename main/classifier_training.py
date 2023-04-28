@@ -48,8 +48,8 @@ for epoch in tqdm(range(max_epoch)):
 
     # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(train_acc), epoch)
     # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(train_loss), epoch)
-    ic(f"\nEpoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
-            | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
+    print(f"\nEpoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+            | training acc: {np.mean(train_acc)}")
     # Evaluation
     # scheduler.step()
     model.eval()
@@ -65,7 +65,7 @@ for epoch in tqdm(range(max_epoch)):
             val_loss.append(loss.detach().item())
             iter_count_val += 1
 
-        ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+        print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
             | validation acc: {np.mean(val_acc)}")
 with torch.no_grad():
     # Evaluation
