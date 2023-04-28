@@ -17,4 +17,5 @@ conda activate OoD
 # python3 main_ood.py --config=../config/GAN/OOD-GAN-FashionMNIST.yaml
 # python3 main_ood.py --config=../config/GAN/OOD-GAN-FashionMNIST-MNIST.yaml
 # python3 main_ood.py --config=../config/GAN/OOD-GAN-CIFAR10-SVHN.yaml
-python3 main_ood.py --config=../config/GAN/OOD-GAN-SVHN.yaml
+# python3 main_ood.py --config=../config/GAN/OOD-GAN-SVHN.yaml
+python3 main_ood.py --config=../config/GAN/OOD-GAN-MNIST.yaml
