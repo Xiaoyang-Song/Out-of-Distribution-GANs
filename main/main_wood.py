@@ -123,6 +123,7 @@ for mc in range(mc_num):
             ood_idx = np.random.choice(
                 len(ood_img_batch), min(len(ood_img_batch), 10), replace=False)
             ood_logits = model(ood_img_batch[ood_idx, :, :, :])
+            ic(ood_logits.shape)
             wass_loss = batch_wasserstein(ood_logits)
             loss = criterion(logits, labels) + 0.1 * wass_loss
             loss.backward()
