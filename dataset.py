@@ -271,7 +271,7 @@ if __name__ == '__main__':
     # Test dataset functions
     ind = [2, 3, 6, 8, 9]
     ood = [1, 7]
-    dset = DSET('MNIST', True, 50, 128, ind, ood)
+    dset = DSET('CIFAR10-SVHN', False, 50, 128, ind, ood)
     # ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])
     # ic(ood_img_label)
     # ic(ood_img_batch.shape)

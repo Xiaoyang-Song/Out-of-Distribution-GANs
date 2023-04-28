@@ -100,7 +100,7 @@ for mc in range(mc_num):
     elif regime == 'Imbalanced':
         ood_img_batch, ood_img_label = dset.ood_sample(
             ood_bsz, regime, observed_cls)
-    ood_img_batch = ood_img_batch.to(DEVICE)
+    # ood_img_batch = ood_img_batch.to(DEVICE)
     ic(ood_img_label)
     torch.save((ood_img_batch, ood_img_label),
                log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
@@ -122,8 +122,9 @@ for mc in range(mc_num):
             # Sample 10 ood image from the seen OoD set
             ood_idx = np.random.choice(
                 len(ood_img_batch), min(len(ood_img_batch), 10), replace=False)
-            ood_logits = model(ood_img_batch[ood_idx, :, :, :])
-            ic(ood_logits.shape)
+            ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
+            ood_logits = model(ood_img)
+            # ic(ood_logits.shape)
             wass_loss = batch_wasserstein(ood_logits)
             loss = criterion(logits, labels) + 0.1 * wass_loss
             loss.backward()
