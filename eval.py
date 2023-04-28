@@ -124,8 +124,9 @@ class LR():
 
 def print_stats(stat, name, precision=5):
     print(f"{name}: {stat}")
+    mad = np.mean(np.abs(np.mean(stat) - stat))
     print(
-        f"mean: {np.round(np.mean(stat), precision)} | std: {np.round(np.std(stat), precision)}")
+        f"mean: {np.round(np.mean(stat), precision)} | std: {np.round(np.std(stat), precision)} | MAD: {np.round(mad, precision)}")
 
 
 def ic_stats(stat, precision=5):
