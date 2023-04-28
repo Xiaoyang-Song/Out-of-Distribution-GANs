@@ -40,7 +40,7 @@ model:
 
 train_config:
   mc: 3
-  max_epochs: 4
+  max_epochs: 8
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
   hp:
