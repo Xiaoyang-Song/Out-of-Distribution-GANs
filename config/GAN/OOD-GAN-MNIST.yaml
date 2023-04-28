@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 1
+n_ood: 2
 
 dset_info:
   img_info:
@@ -51,7 +51,7 @@ train_config:
   noise_dim: 96
   optimizer:
     lr: 0.001
-    beta1: 0.9
+    beta1: 0.5
     beta2: 0.999
   logging:
     n_steps_log: 5
