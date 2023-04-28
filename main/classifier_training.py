@@ -11,7 +11,7 @@ log_dir = "checkpoint/pretrained/"
 os.makedirs(log_dir, exist_ok=True)
 # model = DenseNet3(depth=100, num_classes=10, input_channel=3).to(DEVICE)
 img_info = {'H': 28, 'W': 28, 'C': 1}
-model = DC_D(5, img_info)
+model = DC_D(5, img_info).to(DEVICE)
 
 lr = 1e-3
 optimizer = torch.optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.999))
