@@ -283,3 +283,6 @@ if __name__ == '__main__':
     # ic(len(dset.ind))
     ic(len(dset.ood_val))
     ic(len(dset.ind_val) + len(dset.ood_val))
+
+    for keys in dset.ood_train_by_class:
+        ic(len(dset.ood_train_by_class[keys][0]))
