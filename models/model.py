@@ -184,7 +184,7 @@ class MODEL_GETTER():
             elif G_model == 'DC_G':
                 G = DC_G(noise_dim).to(device)
             elif G_model == "Deep_G":
-                G = Generator(noise_dim).to(device)
+                G = Generator(noise_dim, self.C).to(device)
             else:
                 assert False, 'Unrecognized Generator Type.'
         if self.return_DG:

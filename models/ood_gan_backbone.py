@@ -45,35 +45,62 @@ class Discriminator(nn.Module):
 
 
 class Generator(nn.Module):
-    def __init__(self, latent_dim):
+    def __init__(self, latent_dim, num_channels=3):
         super().__init__()
         self.latent_dim = latent_dim
+        self.num_channels = num_channels
         # Following architecture is obtained from:
         # https://learnopencv.com/deep-convolutional-gan-in-pytorch-and-tensorflow/#pytorch
-
-        self.main = nn.Sequential(
-            # Block 1:input is Z, going into a convolution
-            nn.ConvTranspose2d(self.latent_dim, 64 * 8, 4, 1, 0, bias=False),
-            nn.BatchNorm2d(64 * 8),
-            nn.ReLU(True),
-            # Block 2: input is (64 * 8) x 4 x 4
-            nn.ConvTranspose2d(64 * 8, 64 * 4, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(64 * 4),
-            nn.ReLU(True),
-            # Block 3: input is (64 * 4) x 8 x 8
-            nn.ConvTranspose2d(64 * 4, 64 * 2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(64 * 2),
-            nn.ReLU(True),
-            # Block 4: input is (64 * 2) x 16 x 16
-            nn.ConvTranspose2d(64 * 2, 64, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(64),
-            nn.ReLU(True),
-            # Block 5: input is (64) x 32 x 32
-            nn.ConvTranspose2d(64, 3, 4, 2, 1, bias=False),
-            nn.AvgPool2d(2),
-            nn.Tanh()
-            # Output: output is (3) x 32 x 32
-        )
+        if self.num_channels == 3:
+            self.main = nn.Sequential(
+                # Block 1:input is Z, going into a convolution
+                nn.ConvTranspose2d(self.latent_dim, 64 * \
+                                   8, 4, 1, 0, bias=False),
+                nn.BatchNorm2d(64 * 8),
+                nn.ReLU(True),
+                # Block 2: input is (64 * 8) x 4 x 4
+                nn.ConvTranspose2d(64 * 8, 64 * 4, 4, 2, 1, bias=False),
+                nn.BatchNorm2d(64 * 4),
+                nn.ReLU(True),
+                # Block 3: input is (64 * 4) x 8 x 8
+                nn.ConvTranspose2d(64 * 4, 64 * 2, 4, 2, 1, bias=False),
+                nn.BatchNorm2d(64 * 2),
+                nn.ReLU(True),
+                # Block 4: input is (64 * 2) x 16 x 16
+                nn.ConvTranspose2d(64 * 2, 64, 4, 2, 1, bias=False),
+                nn.BatchNorm2d(64),
+                nn.ReLU(True),
+                # Block 5: input is (64) x 32 x 32
+                nn.ConvTranspose2d(64, 3, 4, 2, 1, bias=False),
+                nn.AvgPool2d(2),
+                nn.Tanh()
+                # Output: output is (3) x 32 x 32
+            )
+        elif self.num_channels == 1:
+            self.main = nn.Sequential(
+                # Block 1:input is Z, going into a convolution
+                nn.ConvTranspose2d(self.latent_dim, 64 * \
+                                   8, 4, 1, 0, bias=False),
+                nn.BatchNorm2d(64 * 8),
+                nn.ReLU(True),
+                # Block 2: input is (64 * 8) x 4 x 4
+                nn.ConvTranspose2d(64 * 8, 64 * 4, 4, 2, 1, bias=False),
+                nn.BatchNorm2d(64 * 4),
+                nn.ReLU(True),
+                # Block 3: input is (64 * 4) x 8 x 8
+                nn.ConvTranspose2d(64 * 4, 64 * 2, 3, 2, 1, bias=False),
+                nn.BatchNorm2d(64 * 2),
+                nn.ReLU(True),
+                # Block 4: input is (64 * 2) x 16 x 16
+                nn.ConvTranspose2d(64 * 2, 64, 3, 2, 1, bias=False),
+                nn.BatchNorm2d(64),
+                nn.ReLU(True),
+                # Block 5: input is (64) x 32 x 32
+                nn.ConvTranspose2d(64, 1, 3, 2, 1, bias=False),
+                nn.AvgPool2d(2),
+                nn.Tanh()
+                # Output: output is (3) x 32 x 32
+            )
 
     def forward(self, input):
         output = self.main(input)
@@ -102,7 +129,10 @@ def test_backbone_D(model, val_loader):
 
 
 if __name__ == '__main__':
-    pass
+    model = Generator(96, 1)
+    noise = torch.ones(1, 96, 1, 1)
+    out = model(noise)
+    ic(out.shape)
 
     # from dataset import *
     # model = DC_D(8, {'H': 28, 'W': 28, 'C': 1})
