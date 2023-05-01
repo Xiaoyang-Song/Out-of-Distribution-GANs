@@ -11,18 +11,18 @@ log_dir = "checkpoint/pretrained/"
 os.makedirs(log_dir, exist_ok=True)
 # model = DenseNet3(depth=100, num_classes=8, input_channel=3).to(DEVICE)
 img_info = {'H': 28, 'W': 28, 'C': 1}
-model = DC_D(8, img_info).to(DEVICE)
+model = DC_D(10, img_info).to(DEVICE)
 
 lr = 1e-3
 optimizer = torch.optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.999))
 # CIFAR10-SVHN
 # dset = DSET("CIFAR10-SVHN", False, 50, 64, None, None)
-# MNIST
+# MNISTß
 # dset = DSET("MNIST", True, 50, 256, [2, 3, 6, 8, 9], [1, 7])
 # SVHN
 # dset = DSET("SVHN", True, 50, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
-dset = DSET("FashionMNIST", True, 50, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
-
+# dset = DSET("FashionMNIST", True, 50, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
+dset = DSET("MNIST-FashionMNIST", False, 256, 256, None, None)
 
 ind_tri_loader = dset.ind_train_loader
 ind_val_loader = dset.ind_val_loader
