@@ -9,13 +9,13 @@ import pickle
 
 # REGIME I: Balanced OoD samples
 # dset = "FashionMNIST"
-dset = "FashionMNIST"
+dset = "MNIST"
 regime = "I"
 with open(f"res/regime-{regime}-results.json", 'r') as f:
     res_dict = json.load(f)
     # plot Experiment Results
     mnist = res_dict[dset]
-    n, result, std, config = mnist.values()
+    n, result, std, odin, maha, config = mnist.values()
     labels, colors, markers, linestyles = config.values()
     # plt.figure(figsize=(8, 6))
     for idx, (item, val) in enumerate(result.items()):
@@ -28,6 +28,9 @@ with open(f"res/regime-{regime}-results.json", 'r') as f:
         # if idx == 1:
         #     break
     # plt.grid(color='black', linestyle='-', linewidth=0.5)
+    # plt.axhline(y=odin['95'], label="ODIN", linestyle="solid", color="")
+    # plt.axhline(y=odin['99'], linestyle="dashed", color="green")
+
     plt.legend(loc=4)
     # plt.xlabel("Number of Observed OoD Samples for Each Class")
     plt.xlabel("Number of Observed OoD Samples for Selected Classes")
