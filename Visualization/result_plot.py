@@ -9,8 +9,8 @@ import pickle
 
 # REGIME I: Balanced OoD samples
 # dset = "FashionMNIST"
-dset = "MNIST"
-regime = "II"
+dset = "FashionMNIST"
+regime = "I"
 with open(f"res/regime-{regime}-results.json", 'r') as f:
     res_dict = json.load(f)
     # plot Experiment Results
@@ -21,8 +21,8 @@ with open(f"res/regime-{regime}-results.json", 'r') as f:
     for idx, (item, val) in enumerate(result.items()):
         plt.plot(n, val, label=labels[idx], linestyle=linestyles[idx],
                  color=colors[idx], marker=markers[idx], markersize=4)
-        plt.fill_between(
-            n, val-np.array(std[item])*100, val+np.array(std[item])*100, alpha=0.10, color=colors[idx])
+        # plt.fill_between(
+        #     n, val-np.array(std[item])*100, val+np.array(std[item])*100, alpha=0.10, color=colors[idx])
         # plt.errorbar(n, val, yerr=np.array(std[item]) * 100, label=item,
         #              color=colors[idx], marker=markers[idx], capsize=3, markersize=4)
         # if idx == 1:
