@@ -15,7 +15,7 @@ with open(f"res/regime-{regime}-results.json", 'r') as f:
     res_dict = json.load(f)
     # plot Experiment Results
     mnist = res_dict[dset]
-    n, result, std, odin, maha, config = mnist.values()
+    n, result, std, config = mnist.values()
     labels, colors, markers, linestyles = config.values()
     # plt.figure(figsize=(8, 6))
     for idx, (item, val) in enumerate(result.items()):

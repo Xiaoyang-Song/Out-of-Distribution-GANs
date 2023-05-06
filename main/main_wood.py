@@ -74,6 +74,16 @@ evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
                 ood_bsz, log_dir, method, num_classes)
 
+if regime == 'Balanced':
+    ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
+elif regime == 'Imbalanced':
+    ood_img_batch, ood_img_label = dset.ood_sample(
+        ood_bsz, regime, observed_cls)
+# ood_img_batch = ood_img_batch.to(DEVICE)
+ic(ood_img_label)
+torch.save((ood_img_batch, ood_img_label),
+           log_dir + f"x_ood-[{ood_bsz}]")
+
 for mc in range(mc_num):
     mc_start = time.time()
     ic(f"Monte Carlo Iteration {mc}")
@@ -95,15 +105,15 @@ for mc in range(mc_num):
     # Training dataset
     ind_tri_loader = dset.ind_train_loader
     ind_val_loader = dset.ind_val_loader
-    if regime == 'Balanced':
-        ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
-    elif regime == 'Imbalanced':
-        ood_img_batch, ood_img_label = dset.ood_sample(
-            ood_bsz, regime, observed_cls)
-    # ood_img_batch = ood_img_batch.to(DEVICE)
-    ic(ood_img_label)
-    torch.save((ood_img_batch, ood_img_label),
-               log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
+    # if regime == 'Balanced':
+    #     ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
+    # elif regime == 'Imbalanced':
+    #     ood_img_batch, ood_img_label = dset.ood_sample(
+    #         ood_bsz, regime, observed_cls)
+    # # ood_img_batch = ood_img_batch.to(DEVICE)
+    # ic(ood_img_label)
+    # torch.save((ood_img_batch, ood_img_label),
+    #            log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
 
     # Trainer
     criterion = nn.CrossEntropyLoss()
