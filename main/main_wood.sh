@@ -16,6 +16,6 @@ conda activate OoD
 
 # python3 main_wood.py --config=../config/WOOD/WOOD-FashionMNIST.yaml
 # python3 main_wood.py --config=../config/WOOD/WOOD-FashionMNIST-MNIST.yaml
-# python3 main_wood.py --config=../config/WOOD/WOOD-CIFAR10-SVHN.yaml
+python3 main_wood.py --config=../config/WOOD/WOOD-CIFAR10-SVHN.yaml
 # python3 main_wood.py --config=../config/WOOD/WOOD-SVHN.yaml > SVHN/WOOD/4-100.txt
-python3 main_wood.py --config=../config/WOOD/WOOD-MNIST.yaml
+# python3 main_wood.py --config=../config/WOOD/WOOD-MNIST.yaml
