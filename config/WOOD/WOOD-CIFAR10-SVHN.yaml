@@ -36,7 +36,7 @@ train_config:
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
   optimizer:
-    lr: 0.0001
+    lr: 0.001
     beta1: 0.9
     beta2: 0.999
 
