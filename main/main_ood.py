@@ -89,6 +89,16 @@ evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
                 ood_bsz, log_dir, method, num_classes, n_lr)
 torch.save(evaler, log_dir + "eval.pt")
+
+if regime == 'Balanced':
+    ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
+elif regime == 'Imbalanced':
+    ood_img_batch, ood_img_label = dset.ood_sample(
+        ood_bsz, regime, observed_cls)
+ic(ood_img_label)
+torch.save((ood_img_batch, ood_img_label),
+            log_dir + f"x_ood-[{ood_bsz}]")
+
 #---------- Monte Carlo Simulation  ----------#
 for mc in range(mc_num):
     mc_start = time.time()
@@ -116,14 +126,14 @@ for mc in range(mc_num):
 
     ###---------- dataset  ----------###
     ind_loader = dset.ind_train_loader
-    if regime == 'Balanced':
-        ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
-    elif regime == 'Imbalanced':
-        ood_img_batch, ood_img_label = dset.ood_sample(
-            ood_bsz, regime, observed_cls)
-    ic(ood_img_label)
-    torch.save((ood_img_batch, ood_img_label),
-               log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
+    # if regime == 'Balanced':
+    #     ood_img_batch, ood_img_label = dset.ood_sample(ood_bsz, regime)
+    # elif regime == 'Imbalanced':
+    #     ood_img_batch, ood_img_label = dset.ood_sample(
+    #         ood_bsz, regime, observed_cls)
+    # ic(ood_img_label)
+    # torch.save((ood_img_batch, ood_img_label),
+    #            log_dir + f"x_ood-[{ood_bsz}]-[{mc}]")
 
     ###---------- trainer  ----------###
     trainer = OOD_GAN_TRAINER(D=D, G=G,

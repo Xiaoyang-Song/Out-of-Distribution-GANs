@@ -8,7 +8,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=14GB
-#SBATCH --time=36:00:00
+#SBATCH --time=72:00:00
 
 module purge
 conda init bash
