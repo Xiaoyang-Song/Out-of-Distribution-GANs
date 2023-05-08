@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 256
+n_ood: 8
 
 dset_info:
   img_info:
@@ -34,7 +34,7 @@ model:
 
 train_config:
   mc: 3
-  max_epochs: 4
+  max_epochs: 10
   bsz_tri: 50
   bsz_val: 64 # this is used for evaluation
   optimizer:
