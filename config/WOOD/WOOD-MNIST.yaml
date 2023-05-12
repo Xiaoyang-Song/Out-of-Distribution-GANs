@@ -13,7 +13,7 @@ experiment:
   regime: Balanced
   observed_cls: null
 
-n_ood: 1
+n_ood: 16
 
 dset_info:
   img_info:
@@ -30,9 +30,9 @@ model:
   G_config: null
 
 train_config:
-  mc: 5
+  mc: 3
   max_epochs: 100
-  bsz_tri: 50
+  bsz_tri: 32
   bsz_val: 64 # this is not used in general
   optimizer:
     lr: 0.001

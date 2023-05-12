@@ -131,7 +131,7 @@ for mc in range(mc_num):
             logits = model(img)
             # Sample 10 ood image from the seen OoD set
             ood_idx = np.random.choice(
-                len(ood_img_batch), min(len(ood_img_batch), 10), replace=False)
+                len(ood_img_batch), min(len(ood_img_batch), 32), replace=False)
             ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
             ood_logits = model(ood_img)
             # ic(ood_logits.shape)
