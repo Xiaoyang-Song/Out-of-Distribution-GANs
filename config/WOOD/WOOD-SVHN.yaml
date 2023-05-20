@@ -28,7 +28,7 @@ dset_info:
     H: 32
     W: 32
     C: 3
-  num_class: 10
+  num_class: 8
 
 train_config:
   mc: 3

@@ -64,6 +64,7 @@ n_steps_log = train_config['logging']['n_steps_log']
 
 ###---------- Optimizer  ----------###
 lr, beta1, beta2 = train_config['optimizer'].values()
+print(f"Hyperparameters: lambda_ce={w_ce} & lambda_w={w_loss} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz}")
 
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()

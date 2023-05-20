@@ -58,7 +58,7 @@ ood_bsz = train_config['ood_bsz']
 
 ###---------- Optimizer  ----------###
 lr, beta1, beta2 = train_config['optimizer'].values()
-print(f"Hyperparameters: beta={beta} & lr={lr}")
+print(f"Hyperparameters: beta={beta} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz}")
 
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
