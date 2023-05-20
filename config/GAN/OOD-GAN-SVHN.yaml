@@ -5,9 +5,9 @@ dataset:
   ood: [8, 9]
 
 path:
-  root_dir: ../checkpoint/
-  pretrained_dir: ../checkpoint/pretrained/
-  sample_dir: ../checkpoint/OOD-Sample/
+  root_dir: checkpoint/
+  pretrained_dir: checkpoint/pretrained/
+  sample_dir: checkpoint/OOD-Sample/
 
 experiment:
   method: OOD-GAN
