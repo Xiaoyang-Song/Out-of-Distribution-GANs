@@ -14,5 +14,15 @@ module purge
 conda init bash
 conda activate OoD
 
-# python3 main_wood.py --config=../config/WOOD/WOOD-FashionMNIST.yaml
-python3 sample_ood.py --config=../config/sample.yaml
+# Run Sampling Script
+
+# SVHN
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=4
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=8
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=16
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=32
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=64
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=128
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=256
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=512
+python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=1024

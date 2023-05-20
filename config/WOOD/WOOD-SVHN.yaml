@@ -7,13 +7,13 @@ dataset:
 path:
   root_dir: ../checkpoint/
   pretrained_dir: ../checkpoint/pretrained/
+  sample_dir: ../checkpoint/OOD-Sample/
 
 experiment:
   method: WOOD
   regime: Balanced
   observed_cls: null
 
-n_ood: 16
 model:
   D: "DenseNet"
   D_config:
@@ -35,6 +35,8 @@ train_config:
   max_epochs: 100
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
+  beta: 0.1
+  ood_bsz: 10
   optimizer:
     lr: 0.001
     beta1: 0.9

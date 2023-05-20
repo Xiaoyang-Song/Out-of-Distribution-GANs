@@ -64,7 +64,7 @@ def ood_gan_g_loss(logits_fake, img_fake=None, img_ind=None,
 class OOD_GAN_TRAINER():
     def __init__(self, D, G, noise_dim, num_classes,
                  bsz_tri, gd_steps_ratio, hp,
-                 max_epochs,
+                 max_epochs, ood_bsz,
                  writer_name, ckpt_name, ckpt_dir,
                  n_steps_show=100, n_steps_log=1):
         super().__init__()
@@ -88,6 +88,7 @@ class OOD_GAN_TRAINER():
         self.gd_steps_ratio = gd_steps_ratio
         self.max_epochs = max_epochs
         self.hp = hp
+        self.ood_bsz = ood_bsz
 
     def train(self, ind_loader, ood_img_batch, D_solver, G_solver, metric=None, pretrainedD=None, checkpoint=None):
         # Load pretrained Discriminator
@@ -135,9 +136,10 @@ class OOD_GAN_TRAINER():
                 logits_fake = self.D(Gz)
                 # Logits for X_ood
                 ood_idx = np.random.choice(len(ood_img_batch), min(
-                    len(ood_img_batch), 10), replace=False)
-                ood_img = ood_img_batch[ood_idx, :, :, :]
+                    len(ood_img_batch), self.ood_bsz), replace=False)
+                ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
                 logits_ood = self.D(ood_img)
+
                 # Compute loss
                 ind_ce_loss, w_ood, w_fake = self.dloss(
                     logits_real, logits_fake, logits_ood, y)
