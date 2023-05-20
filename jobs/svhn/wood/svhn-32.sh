@@ -14,4 +14,4 @@ module purge
 conda init bash
 conda activate OoD
 
-python3 main_wood.py --config=../../../config/WOOD/WOOD-SVHN.yaml --n_ood=32 > SVHN/WOOD/log-32.txt
+python3 main/main_wood.py --config=config/WOOD/WOOD-SVHN.yaml --n_ood=32 > checkpoint/log/SVHN/WOOD/log-32.txt

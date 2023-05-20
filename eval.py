@@ -85,7 +85,7 @@ class LR():
         yz = torch.zeros(self.n)
         gz_loader = set_to_loader(list(zip(gz, yz)), 64, True)
         # Form training dataset
-        ic("> Evaluating InD Wasserstein distances...")
+        print("> Evaluating InD Wasserstein distances...")
         win = loader_wass(ind_loader, self.D)
         ic("> Evaluating G(z) Wasserstein distances...")
         wgz = loader_wass(gz_loader, self.D)
@@ -165,11 +165,11 @@ class EVALER():
         self.cls_stats = defaultdict(list)
 
     def evaluate(self, D, tag, G=None, each_class=False, cls_idx=None):
-        ic("Computing evaluation statistics...")
+        print("Computing evaluation statistics...")
         _, yxoutv = tuple_list_to_tensor(self.xout_v)
-        ic("> Evaluating InD Wasserstein distances...")
+        print("> Evaluating InD Wasserstein distances...")
         winv = loader_wass(self.xin_v_loader, D)
-        ic("> Evaluating OoD Wasserstein distances...")
+        print("> Evaluating OoD Wasserstein distances...")
         woutv = loader_wass(self.xout_v_loader, D)
         self.winv.append(winv)
         self.woutv.append(woutv)
@@ -197,7 +197,7 @@ class EVALER():
         if each_class:
             assert cls_idx is not None
             for idx in cls_idx:
-                ic(f"Class: {idx}")
+                print(f"Class: {idx}")
                 mask = yxoutv == idx
                 woutv_idx = woutv[mask]
                 tpr_95, tpr_95_thresh = tpr(winv, woutv_idx, 0.95)

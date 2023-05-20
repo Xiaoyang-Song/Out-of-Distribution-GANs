@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=alkontar1
+#SBATCH --account=sunwbgt0
 #SBATCH --job-name=OoD-training
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
@@ -14,4 +14,4 @@ module purge
 conda init bash
 conda activate OoD
 
-python3 main_ood.py --config=../../../config/GAN/OOD-GAN-SVHN.yaml --n_ood=8 > SVHN/OOD-GAN/log-8.txt
+python3 main/main_ood.py --config=config/GAN/OOD-GAN-SVHN.yaml --n_ood=8 > checkpoint/log/SVHN/OOD-GAN/log-8.txt
