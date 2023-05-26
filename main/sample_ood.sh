@@ -28,12 +28,12 @@ conda activate OoD
 # python3 sample_ood.py --config=../config/sampling/sample-svhn.yaml --n_ood=1024
 
 #
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=4
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=8
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=16
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnistn.yaml --n_ood=32
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=64
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=128
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=256
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=512
-python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=1024
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=4
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=8
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=16
+python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=32
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=64
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=128
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=256
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=512
+# python3 sample_ood.py --config=../config/sampling/sample-fashionmnist.yaml --n_ood=1024
