@@ -1,0 +1,12 @@
+dataset:
+  dset: FashionMNIST
+  is_within_dset: True
+  ind: [0, 1, 2, 3, 4, 5, 6, 7]
+  ood: [8, 9]
+
+path:
+  sample_dir: ../checkpoint/OOD-Sample/
+
+experiment:
+  regime: Balanced
+  observed_cls: null
