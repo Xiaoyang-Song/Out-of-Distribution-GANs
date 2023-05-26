@@ -84,40 +84,4 @@ class Wasserstein(Function):
 
 if __name__ == '__main__':
     ic("Hello wasserstein.py")
-    # These imports are only useful for testing
-    from models.dc_gan_model import dc_discriminator, dc_generator
-    from models.gans import *
-
-    # Test Wasserstein.py
-    img_info = {'H': 28, 'W': 28, 'C': 1}
-    D = dc_discriminator(img_info, GAN_TYPE.OOD).to(DEVICE)
-    path = 'checkpoint/pretrained_D_low.pt'
-    pretrain = torch.load(path)
-    D.load_state_dict(pretrain['model_state_dict'])
-    print("Pretrained D state is loaded.")
-
-    c0 = torch.tensor(
-        [[0.01, 0, 0.8, 0.19, 0]], requires_grad=True)
-    WLoss = Wasserstein.apply
-    ic(WLoss(c0))
-    # Load dataset
-    idx_ind = [0, 1, 3, 4, 5]
-    dset_dict = MNIST_SUB(batch_size=128, val_batch_size=64,
-                          idx_ind=idx_ind, idx_ood=[2], shuffle=True)
-    ind_tri_loader = dset_dict['train_set_ind_loader']
-    batch = next(iter(ind_tri_loader))[0]
-    # Start Gradient Ascent
-    # Gx = grad_asc_w_rej(ind_tri_loader, D, 2, 1, 1.5)
-    batch.requires_grad_()
-    ic(batch.shape)
-    ic(D(batch).shape)
-    ic(batch.requires_grad_)
-    logit = D(batch)
-    ic(logit.requires_grad_)
-    W = -WLoss(torch.softmax(logit, dim=-1)).log()
-    ic(W.requires_grad_)
-    batch.retain_grad()
-    W.backward()
-
-    ic(batch.grad.data.shape)
-    # Test backward pass
+    # This is not a driver class
