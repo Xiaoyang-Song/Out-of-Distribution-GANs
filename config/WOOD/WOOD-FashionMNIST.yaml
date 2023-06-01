@@ -35,11 +35,11 @@ train_config:
   max_epochs: 100
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
-  beta: 0.1
+  beta: 0.01
   ood_bsz: 10
   optimizer:
     lr: 0.001
-    beta1: 0.9
+    beta1: 0.5
     beta2: 0.999
 
 eval_config:

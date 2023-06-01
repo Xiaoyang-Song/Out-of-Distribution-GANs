@@ -21,8 +21,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.999))
 # dset = DSET("MNIST", True, 50, 256, [2, 3, 6, 8, 9], [1, 7])
 # SVHN
 # dset = DSET("SVHN", True, 50, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
-# dset = DSET("FashionMNIST", True, 50, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
-dset = DSET("MNIST-FashionMNIST", False, 256, 256, None, None)
+dset = DSET("FashionMNIST", True, 50, 64, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
+# dset = DSET("MNIST-FashionMNIST", False, 256, 256, None, None)
 
 ind_tri_loader = dset.ind_train_loader
 ind_val_loader = dset.ind_val_loader
