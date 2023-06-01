@@ -8,8 +8,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=14GB
-#SBATCH --time=96:00:00
-
+#SBATCH --time=90:00:00
 module purge
 conda init bash
 conda activate OoD
