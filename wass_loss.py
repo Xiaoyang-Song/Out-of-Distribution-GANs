@@ -74,7 +74,7 @@ def ood_wass_loss(input: torch.Tensor, device=DEVICE):
     p = torch.unsqueeze(p, -1)
     loss = torch.zeros(B, C).to(device)
     # Approximate Wasserstein distance
-    WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1., cost=cost_matrix)
+    WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1, cost=cost_matrix)
     for b in range(B):
         p_b = p[b:b+1, :, :].repeat(C, 1, 1)
         loss[b] = torch.tensor([WASSLOSS(p_b[c:c+1, :, 0],
@@ -82,6 +82,7 @@ def ood_wass_loss(input: torch.Tensor, device=DEVICE):
                                          all1hot[c:c+1, :, 0],
                                          all1hot[c:c+1:, :]) for c in range(C)])
     wass_dist, _ = loss.min(dim=1)
+    # ic(loss)
     return wass_dist
 
 
@@ -95,27 +96,13 @@ if __name__ == "__main__":
 
     # TEST ood_wass_loss function
     K = 5
-    c_hot = torch.tensor([[0.00, 0, 1, 0, 0]], requires_grad=True)
-    c1 = torch.tensor([[0.01, 0, 0.99, 0, 0]], requires_grad=True)
-    c1_5 = torch.tensor([[0.01, 0, 0.8, 0.19, 0], [0.01, 0, 0.8, 0.19, 0]])
-    # Examples
-    c0 = torch.tensor([[0.01, 0, 0.7, 0.19, 0.1]])
-    c0 = torch.tensor([[0.10, 0.1, 0.4, 0.30, 0.1]])
-    c2 = torch.ones((5)).unsqueeze(0) * 0.2
-    # ic(ood_wass_loss(c1, 5).requires_grad)
-    # ic(ood_wass_loss(c1_5, 5))
-    # ic(ood_wass_loss(c2.unsqueeze(0), 5))
-
-    def wass(x, K):
-        return -ood_wass_loss(x)
-
-    # ic(wass(c1, K))
-    ic(-wass(c0, K))
-    ic(np.array(-wass(c1_5, K)))
-    ic(-wass(c_hot, K))
-    ic(-wass(c2, K))
-    ic(-(-wass(c0, K)).log())
-    ic(-(-wass(c1, K)).log())
-    ic(-(-wass(c_hot, K)).log())
-    ic(-(-wass(c2, K)).log())
-    # ic(-torch.log(ood_wass_loss(c2.unsqueeze(0), 5)))
+    onehot = torch.tensor([[1, 0, 0, 0, 0]])
+    uniform = torch.ones(1, 5) * 0.2
+    uniform_0 = torch.tensor([[0.19, 0.21, 0.2, 0.2, 0.2]])
+    example = torch.tensor([[0, 0.25, 0.25, 0.25, 0.25]])
+    example_2 = torch.tensor([[0.5, 0.5]])
+    print(ood_wass_loss(uniform, 'cpu'))
+    print(ood_wass_loss(uniform_0, 'cpu'))
+    print(ood_wass_loss(example, 'cpu'))
+    print(ood_wass_loss(onehot))
+    print(ood_wass_loss(example_2, 'cpu'))
