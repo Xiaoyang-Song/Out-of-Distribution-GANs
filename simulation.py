@@ -17,9 +17,9 @@ class N():
 
 class GSIM(nn.Module):
     def __init__(self):
-        self.fc1 = nn.Linear(1, 2)
+        self.fc1 = nn.Linear(1, 64)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(2, 2)
+        self.fc2 = nn.Linear(64, 2)
     
     def forward(self, z):
         return self.fc2(self.relu(self.fc1))
@@ -31,7 +31,7 @@ class DSIM(nn.Module):
         self.fc1 = nn.Linear(2, 64)
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(64, 64)
-        self.fc3 = nn.Linear(64,3)
+        self.fc3 = nn.Linear(64, 3)
         # self.fc = nn.Linear(2, 3)
 
     def forward(self, x):
@@ -139,8 +139,9 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
                     | Val accuracy: {np.round(np.mean(val_acc), 4)}")
     return D
 
-def oodgan_training(D,G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, \
-                    criterion, optimizer, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10):
+def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, \
+                    ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10):
+    
     def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
         # 1: CrossEntropy of X_in
         criterion = nn.CrossEntropyLoss()
@@ -161,6 +162,7 @@ def oodgan_training(D,G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, 
     iter_count = 0
     ood_batch = OOD_BATCH.to(DEVICE)
     for epoch in range(max_epoch):
+        D.train()
         for steps, (x, y) in enumerate(tqdm(ind_tri_loader)):
             x,y = x.to(torch.float32), y.to(DEVICE) - 1
             # ---------------------- #
@@ -208,3 +210,16 @@ def oodgan_training(D,G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, 
                 print(
                     f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f}")
             iter_count += 1
+
+        D.eval()
+        with torch.no_grad():
+            val_acc = []
+            for idx, (img, labels) in enumerate(ind_val_loader):
+                img, labels = img.to(torch.float32), labels.to(DEVICE) - 1
+                logits = D(img)
+                acc = (torch.argmax(logits, dim=1) ==
+                    labels).sum().item() / labels.shape[0]
+                val_acc.append(acc)
+                iter_count_val += 1
+            if epoch % n_epoch == 0:
+                print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
