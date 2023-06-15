@@ -3,8 +3,10 @@ import numpy as np
 from numpy.random import multivariate_normal as mn
 import torch.nn as nn
 from tqdm import tqdm
+from matplotlib import pyplot as plt
 from config import DEVICE
-from wasserstein import batch_wasserstein
+from itertools import product
+from wasserstein import batch_wasserstein, ood_wass_loss
 
 
 
@@ -223,3 +225,20 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 val_acc.append(acc)
             if epoch % n_epoch == 0:
                 print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
+
+def plot_heatmap(ind, ood, observed_ood, D):
+    plt.scatter(ind[:,0], ind[:,1], c='orange', label ="InD", alpha=1)
+    plt.scatter(ood[:,0], ood[:,1], c='navy', label="OoD", alpha=0.05)
+    plt.scatter(observed_ood[:,0], observed_ood[:,1], c='navy', label="OoD", alpha=1)
+    xi = np.linspace(0, 8, 50, endpoint=True)
+    yi = np.linspace(0, 8, 50, endpoint=True)
+    xy_pos = np.array(list(product(xi, yi)))
+    zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
+    # print(zi.shape)
+    si = ood_wass_loss(zi)
+    plt.pcolormesh(xi, yi, si.reshape((50,50)).T, shading='auto', alpha=0.8)
+    plt.title("Plot Title")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.legend()
+    plt.show()
