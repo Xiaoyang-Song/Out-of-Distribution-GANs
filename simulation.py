@@ -17,12 +17,13 @@ class N():
 
 class GSIM(nn.Module):
     def __init__(self):
+        super().__init__()
         self.fc1 = nn.Linear(1, 64)
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(64, 2)
     
     def forward(self, z):
-        return self.fc2(self.relu(self.fc1))
+        return self.fc2(self.relu(self.fc1(z)))
         
 
 class DSIM(nn.Module):
@@ -220,6 +221,5 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 acc = (torch.argmax(logits, dim=1) ==
                     labels).sum().item() / labels.shape[0]
                 val_acc.append(acc)
-                iter_count_val += 1
             if epoch % n_epoch == 0:
                 print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
