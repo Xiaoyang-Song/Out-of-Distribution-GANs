@@ -141,7 +141,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
     return D
 
 def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, \
-                    ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10):
+                    ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100):
     
     def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
         # 1: CrossEntropy of X_in
@@ -207,7 +207,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             G_solver.step()
 
             # Print out statistics
-            if (iter_count % n_epoch == 0):
+            if (iter_count % n_step_log == 0):
                 print(
                     f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f}")
             iter_count += 1
