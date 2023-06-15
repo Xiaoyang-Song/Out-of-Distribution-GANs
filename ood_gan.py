@@ -130,9 +130,7 @@ class OOD_GAN_TRAINER():
                     (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE) * 2 - 1
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
-                Gz = self.G(seed).detach()
-
-                # Gz = self.G(seed).to(DEVICE).detach()
+                Gz = self.G(seed)
                 logits_fake = self.D(Gz)
                 # Logits for X_ood
                 ood_idx = np.random.choice(len(ood_img_batch), min(

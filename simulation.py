@@ -22,10 +22,11 @@ class GSIM(nn.Module):
         super().__init__()
         self.fc1 = nn.Linear(1, 64)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(64, 2)
+        self.fc2 = nn.Linear(64, 64)
+        self.fc3 = nn.Linear(64, 2)
     
     def forward(self, z):
-        return self.fc2(self.relu(self.fc1(z)))
+        return self.fc3(self.relu(self.fc2(self.relu(self.fc1(z)))))
         
 
 class DSIM(nn.Module):
@@ -182,16 +183,22 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
         w_fake = batch_wasserstein(logits_fake)
         return ind_ce_loss, w_ood, w_fake
     
-    def ood_gan_g_loss(logits_fake):
+    def ood_gan_g_loss(logits_fake, gz, xood):
         # 1. Wasserstein distance of G(z)
+        assert logits_fake.requires_grad
         w_fake = batch_wasserstein(logits_fake)
-        return w_fake
+        # distance term
+        # print(torch.mean(gz, dim=0) - torch.mean(xood, dim=0))
+        dist = torch.sqrt(torch.sum((torch.mean(gz) - torch.mean(xood))**2))
+        assert dist.requires_grad
+        return w_fake, dist
     
     iter_count = 0
     ood_batch = OOD_BATCH.to(DEVICE)
-    for epoch in range(max_epoch):
+    for epoch in tqdm(range(max_epoch)):
         D.train()
-        for steps, (x, y) in enumerate(tqdm(ind_tri_loader)):
+        G.train()
+        for steps, (x, y) in enumerate(ind_tri_loader):
             x,y = x.to(torch.float32), y.to(DEVICE)
             # ---------------------- #
             # DISCRIMINATOR TRAINING #
@@ -225,18 +232,23 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ------------------ #
             # GENERATOR TRAINING #
             # ------------------ #
-            G_solver.zero_grad()
-            logits_fake = D(Gz)
-            w_z = ood_gan_g_loss(logits_fake)
-            g_total = -w_wass * (w_z)
-            # Update
-            g_total.backward()
-            G_solver.step()
+            for g_step in range(3):
+                seed = torch.rand((bsz_tri, 1), device=DEVICE)
+                # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
+
+                Gz = G(seed)
+                G_solver.zero_grad()
+                logits_fake = D(Gz)
+                w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_sample)
+                g_total = -w_wass * (w_z) + dist
+                # Update
+                g_total.backward()
+                G_solver.step()
 
             # Print out statistics
             if (iter_count % n_step_log == 0):
                 print(
-                    f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f}")
+                    f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f} | dist: {dist:.4f}")
             iter_count += 1
 
         D.eval()
