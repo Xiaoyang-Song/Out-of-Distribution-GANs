@@ -44,6 +44,31 @@ class DSIM(nn.Module):
         return out
         # return self.fc(x)
     
+def get_sampler(mu, cov, n):
+    SAMPLERS = {}
+    for idx in range(n):
+        SAMPLERS[idx] = N(mu[idx], cov[idx])
+    return SAMPLERS
+
+def get_train_test_samples(SAMPLERS, n):
+    X_TRAIN, Y_TRAIN = {}, {}
+    X_TEST, Y_TEST = {}, {}
+
+    for cls in SAMPLERS:
+        X_TRAIN[cls] = SAMPLERS[cls].sample(n)
+        Y_TRAIN[cls] = np.array([cls]*n)
+        X_TEST[cls] = SAMPLERS[cls].sample(n)
+        Y_TEST[cls] = np.array([cls]*n)
+    return X_TRAIN, Y_TRAIN, X_TEST, Y_TEST
+
+def cls_to_dset(idxs, X, Y):
+    x, y = [], []
+    for idx in idxs:
+        x.extend(X[idx])
+        y.extend(Y[idx])
+    x = np.array(x)
+    y = np.array(y)
+    return list(zip(x, y)), x, y
 
 def classifier_training(D, criterion, optimizer, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10):
     # Simple training loop
@@ -55,7 +80,7 @@ def classifier_training(D, criterion, optimizer, ind_tri_loader, ind_val_loader,
         train_loss, train_acc, wass = [], [], []
         for idx, (img, labels) in enumerate(ind_tri_loader):
             img = img.to(torch.float32)
-            labels = labels.to(DEVICE) - 1
+            labels = labels.to(DEVICE)
             optimizer.zero_grad()
             logits = D(img)
             # print(labels)
@@ -77,7 +102,7 @@ def classifier_training(D, criterion, optimizer, ind_tri_loader, ind_val_loader,
         with torch.no_grad():
             val_loss, val_acc = [], []
             for idx, (img, labels) in enumerate(ind_val_loader):
-                img, labels = img.to(torch.float32), labels.to(DEVICE) - 1
+                img, labels = img.to(torch.float32), labels.to(DEVICE)
                 logits = D(img)
                 loss = criterion(logits, labels)
                 acc = (torch.argmax(logits, dim=1) ==
@@ -101,7 +126,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
         train_loss, train_acc, wass = [], [], []
         for idx, (img, labels) in enumerate(ind_tri_loader):
             img = img.to(torch.float32)
-            labels = labels.to(DEVICE) - 1
+            labels = labels.to(DEVICE)
             optimizer.zero_grad()
             logits = D(img)
             # print(labels)
@@ -129,7 +154,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
         with torch.no_grad():
             val_loss, val_acc = [], []
             for idx, (img, labels) in enumerate(ind_val_loader):
-                img, labels = img.to(torch.float32), labels.to(DEVICE) - 1
+                img, labels = img.to(torch.float32), labels.to(DEVICE)
                 logits = D(img)
                 loss = criterion(logits, labels)
                 acc = (torch.argmax(logits, dim=1) ==
@@ -167,7 +192,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
     for epoch in range(max_epoch):
         D.train()
         for steps, (x, y) in enumerate(tqdm(ind_tri_loader)):
-            x,y = x.to(torch.float32), y.to(DEVICE) - 1
+            x,y = x.to(torch.float32), y.to(DEVICE)
             # ---------------------- #
             # DISCRIMINATOR TRAINING #
             # ---------------------- #
@@ -175,7 +200,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # Logits for X_in
             logits_real = D(x)
 
-            seed = torch.rand((bsz_tri, 1), device=DEVICE) * 2 - 1
+            seed = torch.rand((bsz_tri, 1), device=DEVICE)
             # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
             Gz = G(seed).detach()
@@ -218,7 +243,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
         with torch.no_grad():
             val_acc = []
             for idx, (img, labels) in enumerate(ind_val_loader):
-                img, labels = img.to(torch.float32), labels.to(DEVICE) - 1
+                img, labels = img.to(torch.float32), labels.to(DEVICE)
                 logits = D(img)
                 acc = (torch.argmax(logits, dim=1) ==
                     labels).sum().item() / labels.shape[0]
@@ -242,3 +267,9 @@ def plot_heatmap(ind, ood, observed_ood, D):
     plt.ylabel("Y")
     plt.legend()
     plt.show()
+
+def plot_scatter(ind):
+    pass
+
+
+
