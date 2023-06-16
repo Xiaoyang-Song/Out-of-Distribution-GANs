@@ -1,0 +1,12 @@
+dataset:
+  dset: CIFAR10-SVHN
+  is_within_dset: False
+  ind: null
+  ood: null
+
+path:
+  sample_dir: ../checkpoint/OOD-Sample/
+
+experiment:
+  regime: Balanced
+  observed_cls: null

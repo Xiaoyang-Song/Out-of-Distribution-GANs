@@ -7,6 +7,7 @@ dataset:
 path:
   root_dir: ../checkpoint/
   pretrained_dir: ../checkpoint/pretrained/
+  sample_dir: checkpoint/OOD-Sample/
 
 experiment:
   method: WOOD
@@ -31,10 +32,12 @@ dset_info:
   num_class: 10
 
 train_config:
-  mc: 1
-  max_epochs: 50
+  mc: 3
+  max_epochs: 100
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
+  beta: 0.1
+  ood_bsz: 10
   optimizer:
     lr: 0.001
     beta1: 0.9

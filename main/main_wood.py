@@ -161,12 +161,8 @@ for mc in range(mc_num):
                        labels).sum().item() / labels.shape[0]
                 val_acc.append(acc)
                 val_loss.append(loss.detach().item())
-                # pretrain_writer.add_scalar("Training/Accuracy", acc, iter_count_val)
-                # pretrain_writer.add_scalar("Training/Loss", loss.detach().item(), iter_count_val)
                 iter_count_val += 1
 
-            # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(val_acc), epoch)
-            # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(val_loss), epoch)
             print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
     with torch.no_grad():
