@@ -279,19 +279,22 @@ def calculate_accuracy(D, ind, ood, tnr):
     return threshold
 
 
-def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, m=100):
-    xi = np.linspace(0, 8, m, endpoint=True)
-    yi = np.linspace(0, 8, m, endpoint=True)
+def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, m=100, n_ind=25, n_ood=25):
+    xi = np.linspace(0, 6, m, endpoint=True)
+    yi = np.linspace(0, 6, m, endpoint=True)
     xy_pos = np.array(list(product(xi, yi)))
     zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
     print(zi.shape)
     si = ood_wass_loss(zi)
     plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto', alpha=0.8)
     plt.colorbar()
-    plt.scatter(IND_X[:,0], IND_X[:,1], c='orange', label ="InD", sizes=[2]*len(IND_X), alpha=1)
-    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='black', label="OoD", sizes=[2]*len(OOD_X), alpha=1)
-    plt.scatter(IND_X_TEST[:,0], IND_X_TEST[:,1], c='orange', sizes=[2]*len(IND_X), alpha=0.2)
-    plt.scatter(OOD_X[:,0], OOD_X[:,1], c='black', sizes=[2]*len(OOD_X), alpha=0.05)
+    # InD and OoD
+    ind_idx = np.random.choice(len(IND_X), n_ind, replace=False)
+    ood_idx = np.random.choice(len(OOD_X), n_ind, replace=False)
+    plt.scatter(IND_X[:,0][ind_idx], IND_X[:,1][ind_idx], c='orange', label ="InD", sizes=[3]*len(IND_X), alpha=1)
+    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='black', label="OoD", sizes=[3]*len(OOD_X), alpha=1)
+    plt.scatter(IND_X_TEST[:,0][ind_idx], IND_X_TEST[:,1][ind_idx], c='orange', sizes=[3]*len(IND_X), alpha=0.2)
+    plt.scatter(OOD_X[:,0][ood_idx], OOD_X[:,1][ood_idx], c='black', sizes=[2]*len(OOD_X), alpha=0.05)
     plt.title(f"{method} InD/OoD Separation Heatmap")
     plt.xlabel("X")
     plt.ylabel("Y")
