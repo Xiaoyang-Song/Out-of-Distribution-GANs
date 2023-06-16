@@ -20,7 +20,7 @@ class N():
 class GSIM(nn.Module):
     def __init__(self, h=8):
         super().__init__()
-        self.fc1 = nn.Linear(1, h)
+        self.fc1 = nn.Linear(2, h)
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(h, h)
         self.fc3 = nn.Linear(h, 2)
@@ -207,7 +207,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # Logits for X_in
             logits_real = D(x)
 
-            seed = torch.rand((bsz_tri, 1), device=DEVICE)
+            seed = torch.rand((bsz_tri, 2), device=DEVICE)
             # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
             Gz = G(seed)
@@ -232,8 +232,8 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ------------------ #
             # GENERATOR TRAINING #
             # ------------------ #
-            for g_step in range(2):
-                seed = torch.rand((bsz_tri, 1), device=DEVICE)
+            for g_step in range(1):
+                seed = torch.rand((bsz_tri, 2), device=DEVICE)
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
                 Gz = G(seed)
