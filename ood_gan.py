@@ -26,40 +26,15 @@ def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
     return ind_ce_loss, w_ood, w_fake
 
 
-def ood_gan_g_loss(logits_fake, img_fake=None, img_ind=None,
-                   img_ood=None, model=None):
+def ood_gan_g_loss(logits_fake, gz, xood):
     # 1. Wasserstein distance of G(z)
+    assert logits_fake.requires_grad
     w_fake = batch_wasserstein(logits_fake)
-    # 2. Distance between X_in and G(z)
-    # dist_fake_ind = get_dist_metric(
-    #     img_fake, img_ind, ind_fake_sample_size, DIST_TYPE.EUC)
-
-    ######################
-    # Euclidean Distance #
-    ######################
-    # dist_fake_ind = torch.sqrt(torch.sum((xin - gz)**2))
-
-    ###############
-    # Correlation #
-    ###############
-    # xin = torch.mean(img_ind, dim=0).reshape(1, -1)  # 1 x HW
-    # gz = torch.mean(img_fake, dim=0).reshape(1, -1)  # 1 x HW
-    # target_mat = torch.cat([xin, gz])
-    # dist_fake_ind = -torch.corrcoef(target_mat)[0][1]
-
-    ########################
-    # Feature Vector Angle #
-    ########################
-    if model is not None:
-        target_feat = model(img_ood).mean(dim=0).squeeze()
-        gz_feat = model(img_fake).mean(dim=0).squeeze()
-        norm1, norm2 = LA.norm(target_feat), LA.norm(gz_feat)
-        dist_fake_ood = torch.dot(target_feat, gz_feat) / (norm1 * norm2)
-    else:
-        return w_fake, None, None
-    dist_fake_ind = None
-    return w_fake, dist_fake_ind, -dist_fake_ood
-
+    # distance term
+    # print(torch.mean(gz, dim=0) - torch.mean(xood, dim=0))
+    dist = torch.sqrt(torch.sum((torch.mean(gz) - torch.mean(xood))**2))
+    assert dist.requires_grad
+    return w_fake, dist
 
 class OOD_GAN_TRAINER():
     def __init__(self, D, G, noise_dim, num_classes,
@@ -122,13 +97,8 @@ class OOD_GAN_TRAINER():
                 D_solver.zero_grad()
                 # Logits for X_in
                 logits_real = self.D(x)
-                # Logits for G(z)
-                # seed = torch.rand(
-                #     (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
 
-                seed = torch.rand(
-                    (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE) * 2 - 1
-                # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
+                seed = torch.rand((self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
 
                 Gz = self.G(seed)
                 logits_fake = self.D(Gz)
@@ -163,22 +133,13 @@ class OOD_GAN_TRAINER():
                 for g_step in range(self.gd_steps_ratio):
                     G_solver.zero_grad()
                     # Logits for G(z)
-                    # seed = torch.rand(
-                    #     (self.bsz_tri, self.noise_dim), device=DEVICE) * 2 - 1
-                    # Gz = self.G(seed,  [cls]*self.bsz_tri).to(DEVICE).detach()
-                    # Gz = self.G(seed).to(DEVICE).detach()
+                    seed = torch.rand( (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
+
+                    Gz = self.G(seed)
                     logits_fake = self.D(Gz)
-                    # Compute loss
-                    # Minimize ood and gz
-                    # w_z, _, dist_fake_ood = self.gloss(
-                    #     logits_fake, Gz, None, ood_img_batch, model=metric)
 
-                    w_z, _, dist_fake_ood = self.gloss(
-                        logits_fake, Gz, None, ood_img_batch, model=None)
-
-                    # g_total = -(self.hp.wass * (w_z) -
-                    #             self.hp.dist * dist_fake_ood)
-
+                    w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_img)
+                    # g_total = -w_wass * (w_z) + dist * w_dist
                     g_total = -self.hp.wass * (w_z)
 
                     # Write statistics
@@ -207,7 +168,7 @@ class OOD_GAN_TRAINER():
                     # print(
                     #     f"Step: {steps:<4} | {cls} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | CosSim: {-dist_fake_ood.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f}")
                     print(
-                        f"Step: {steps:<4} | {cls} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f}")
+                        f"Step: {steps:<4} | {cls} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f} | dist: {dist:.4f}")
                 iter_count += 1
 
             # Save checkpoint
