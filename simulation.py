@@ -277,22 +277,27 @@ def calculate_accuracy(D, ind, ood, tnr):
     tpr = sum(s_ood > threshold) / len(s_ood)
     print(tpr)
 
-def plot_heatmap(ind, ood, observed_ood, D):
-    plt.scatter(ind[:,0], ind[:,1], c='orange', label ="InD", alpha=1)
-    plt.scatter(ood[:,0], ood[:,1], c='navy', label="OoD", alpha=0.05)
-    plt.scatter(observed_ood[:,0], observed_ood[:,1], c='navy', label="OoD", alpha=1)
-    xi = np.linspace(0, 8, 50, endpoint=True)
-    yi = np.linspace(0, 8, 50, endpoint=True)
+
+def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, m=100):
+    xi = np.linspace(0, 8, m, endpoint=True)
+    yi = np.linspace(0, 8, m, endpoint=True)
     xy_pos = np.array(list(product(xi, yi)))
     zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
-    # print(zi.shape)
+    print(zi.shape)
     si = ood_wass_loss(zi)
-    plt.pcolormesh(xi, yi, si.reshape((50,50)).T, shading='auto', alpha=0.8)
-    plt.title("Plot Title")
+    plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto', alpha=0.8)
+    plt.colorbar()
+    plt.scatter(IND_X[:,0], IND_X[:,1], c='orange', label ="InD", sizes=[2]*len(IND_X), alpha=1)
+    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='black', label="OoD", sizes=[2]*len(OOD_X), alpha=1)
+    plt.scatter(IND_X_TEST[:,0], IND_X_TEST[:,1], c='orange', sizes=[2]*len(IND_X), alpha=0.2)
+    plt.scatter(OOD_X[:,0], OOD_X[:,1], c='black', sizes=[2]*len(OOD_X), alpha=0.05)
+    plt.title(f"{method} InD/OoD Separation Heatmap")
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.legend()
-    plt.show()
+    plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1000)
+    # plt.show()
+    return plt
 
 def plot_scatter(ind):
     pass
