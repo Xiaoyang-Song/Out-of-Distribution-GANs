@@ -232,7 +232,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ------------------ #
             # GENERATOR TRAINING #
             # ------------------ #
-            for g_step in range(1):
+            for g_step in range(2):
                 seed = torch.rand((bsz_tri, 1), device=DEVICE)
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
