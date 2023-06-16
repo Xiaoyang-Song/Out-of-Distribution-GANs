@@ -18,24 +18,24 @@ class N():
         return mn(self.mu, self.cov, n)
 
 class GSIM(nn.Module):
-    def __init__(self):
+    def __init__(self, h=8):
         super().__init__()
-        self.fc1 = nn.Linear(1, 64)
+        self.fc1 = nn.Linear(1, h)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(64, 64)
-        self.fc3 = nn.Linear(64, 2)
+        self.fc2 = nn.Linear(h, h)
+        self.fc3 = nn.Linear(h, 2)
     
     def forward(self, z):
         return self.fc3(self.relu(self.fc2(self.relu(self.fc1(z)))))
         
 
 class DSIM(nn.Module):
-    def __init__(self):
+    def __init__(self, h=8):
         super().__init__()
-        self.fc1 = nn.Linear(2, 64)
+        self.fc1 = nn.Linear(2, h)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(64, 64)
-        self.fc3 = nn.Linear(64, 3)
+        self.fc2 = nn.Linear(h, h)
+        self.fc3 = nn.Linear(h, 3)
         # self.fc = nn.Linear(2, 3)
 
     def forward(self, x):
@@ -168,7 +168,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
                     | Val accuracy: {np.round(np.mean(val_acc), 4)}")
     return D
 
-def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, \
+def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, w_dist,\
                     ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100):
     
     def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
@@ -210,7 +210,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             seed = torch.rand((bsz_tri, 1), device=DEVICE)
             # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
-            Gz = G(seed).detach()
+            Gz = G(seed)
 
             # Gz = self.G(seed).to(DEVICE).detach()
             logits_fake = D(Gz)
@@ -232,7 +232,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ------------------ #
             # GENERATOR TRAINING #
             # ------------------ #
-            for g_step in range(3):
+            for g_step in range(1):
                 seed = torch.rand((bsz_tri, 1), device=DEVICE)
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
@@ -240,7 +240,8 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 G_solver.zero_grad()
                 logits_fake = D(Gz)
                 w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_sample)
-                g_total = -w_wass * (w_z) + dist
+                # g_total = -w_wass * (w_z) + dist * w_dist
+                g_total = -w_wass * (w_z)
                 # Update
                 g_total.backward()
                 G_solver.step()
@@ -262,6 +263,19 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 val_acc.append(acc)
             if epoch % n_epoch == 0:
                 print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
+
+def calculate_accuracy(D, ind, ood, tnr):
+    z = torch.softmax(D(torch.tensor(ind, dtype=torch.float32)), dim=-1)
+    print(z.shape)
+    s = ood_wass_loss(z)
+    print(s.shape)
+    threshold = np.quantile(s, tnr)
+    print(threshold)
+    z_ood = torch.softmax(D(torch.tensor(ood, dtype=torch.float32)), dim=-1)
+    print(z_ood.shape)
+    s_ood = ood_wass_loss(z_ood)
+    tpr = sum(s_ood > threshold) / len(s_ood)
+    print(tpr)
 
 def plot_heatmap(ind, ood, observed_ood, D):
     plt.scatter(ind[:,0], ind[:,1], c='orange', label ="InD", alpha=1)
