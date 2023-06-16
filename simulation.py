@@ -276,6 +276,7 @@ def calculate_accuracy(D, ind, ood, tnr):
     s_ood = ood_wass_loss(z_ood)
     tpr = sum(s_ood > threshold) / len(s_ood)
     print(tpr)
+    return threshold
 
 
 def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, m=100):
