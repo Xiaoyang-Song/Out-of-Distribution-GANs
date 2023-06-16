@@ -13,4 +13,5 @@
 module purge
 conda init bash
 
-conda activate OoDpython3 main/main_ood.py --config=config/GAN/OOD-GAN-CIFAR10-SVHN.yaml --n_ood=8 > checkpoint/log/CIFAR10-SVHN/OOD-GAN/log-8.txt
+conda activate OoD
+python3 main/main_ood.py --config=config/GAN/OOD-GAN-CIFAR10-SVHN.yaml --n_ood=8 > checkpoint/log/CIFAR10-SVHN/OOD-GAN/log-8.txt
