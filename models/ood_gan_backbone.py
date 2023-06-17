@@ -122,10 +122,10 @@ def test_backbone_D(model, val_loader):
             val_acc.append(acc)
             total_acc.append([num_correct, num_total])
             val_loss.append(loss.detach().item())
-        ic(np.mean(val_acc))
-        ic(np.mean(val_loss))
+        print(np.mean(val_acc))
+        print(np.mean(val_loss))
         total_acc = np.array(total_acc)
-        ic(np.sum(total_acc[:, 0] / np.sum(total_acc[:, 1])))
+        print(np.sum(total_acc[:, 0] / np.sum(total_acc[:, 1])))
 
 
 if __name__ == '__main__':

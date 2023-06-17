@@ -35,7 +35,7 @@ model:
 
 train_config:
   mc: 3
-  max_epochs: 8
+  max_epochs: 16
   bsz_tri: 64
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
@@ -50,7 +50,7 @@ train_config:
   gd_step_ratio: 1
   noise_dim: 96
   logging:
-    n_steps_log: 25
+    n_steps_log: 20
 
 eval_config:
   each_cls: False
