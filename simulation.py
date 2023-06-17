@@ -24,6 +24,9 @@ class GSIM(nn.Module):
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(h, h)
         self.fc3 = nn.Linear(h, 2)
+        torch.nn.init.xavier_uniform_(self.fc1.weight)
+        torch.nn.init.xavier_uniform_(self.fc2.weight)
+        torch.nn.init.xavier_uniform_(self.fc3.weight)
     
     def forward(self, z):
         return self.fc3(self.relu(self.fc2(self.relu(self.fc1(z)))))
@@ -37,6 +40,9 @@ class DSIM(nn.Module):
         self.fc2 = nn.Linear(h, h)
         self.fc3 = nn.Linear(h, 3)
         # self.fc = nn.Linear(2, 3)
+        torch.nn.init.xavier_uniform_(self.fc1.weight)
+        torch.nn.init.xavier_uniform_(self.fc2.weight)
+        torch.nn.init.xavier_uniform_(self.fc3.weight)
 
     def forward(self, x):
         out = self.relu(self.fc1(x))
@@ -223,7 +229,8 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # Compute loss
             ind_ce_loss, w_ood, w_fake = ood_gan_d_loss(
                 logits_real, logits_fake, logits_ood, y)
-            d_total = w_ce * ind_ce_loss + \
+            # print(w_ood)
+            d_total = w_ce * ind_ce_loss - \
                 w_wass * (w_ood - (w_fake))
             # Update
             d_total.backward()
@@ -249,7 +256,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # Print out statistics
             if (iter_count % n_step_log == 0):
                 print(
-                    f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f} | dist: {dist:.4f}")
+                    f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}")
             iter_count += 1
 
         D.eval()
@@ -266,16 +273,16 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
 
 def calculate_accuracy(D, ind, ood, tnr):
     z = torch.softmax(D(torch.tensor(ind, dtype=torch.float32)), dim=-1)
-    print(z.shape)
+    # print(z.shape)
     s = ood_wass_loss(z)
-    print(s.shape)
+    # print(s.shape)
     threshold = np.quantile(s, tnr)
-    print(threshold)
+    # print(threshold)
     z_ood = torch.softmax(D(torch.tensor(ood, dtype=torch.float32)), dim=-1)
-    print(z_ood.shape)
+    # print(z_ood.shape)
     s_ood = ood_wass_loss(z_ood)
     tpr = sum(s_ood > threshold) / len(s_ood)
-    print(tpr)
+    print(f"{tnr}: {tpr}")
     return threshold
 
 

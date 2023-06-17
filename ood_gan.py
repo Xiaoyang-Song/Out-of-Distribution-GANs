@@ -84,8 +84,6 @@ class OOD_GAN_TRAINER():
         iter_count = 0
         for epoch in range(self.max_epochs):
             for steps, (x, y) in enumerate(tqdm(ind_loader)):
-                cls = int(iter_count % self.num_classes)
-                # cls=0
                 x = x.to(DEVICE)
                 y = y.to(DEVICE)
                 # Manually discard last batch
@@ -111,14 +109,13 @@ class OOD_GAN_TRAINER():
                 # Compute loss
                 ind_ce_loss, w_ood, w_fake = self.dloss(
                     logits_real, logits_fake, logits_ood, y)
-                d_total = self.hp.ce * ind_ce_loss + \
-                    self.hp.wass * (w_ood - (w_fake))
+                d_total = self.hp.ce * ind_ce_loss - self.hp.wass * (w_ood - (w_fake))
 
                 # Write statistics
                 self.writer.add_scalars("Discriminator Loss/each", {
                     'CE': ind_ce_loss.detach(),
-                    'W_ood': -torch.log(-w_ood.detach()),
-                    'W_z': -torch.log(-w_fake.detach())
+                    'W_ood': w_ood.detach(),
+                    'W_z': w_fake.detach()
                 }, steps)
                 self.writer.add_scalar(
                     "Discriminator Loss/total", d_total.detach(), steps)
@@ -144,18 +141,10 @@ class OOD_GAN_TRAINER():
 
                     # Write statistics
                     global_step = steps*self.gd_steps_ratio+g_step
-                    # self.writer.add_scalars("Generator Loss/each", {
-                    #     'W_z': w_z.detach(),
-                    #     'd_ood': -dist_fake_ood.detach()
-                    # }, global_step)
 
                     self.writer.add_scalars("Generator Loss/each", {
                         'W_z': w_z.detach()
                     }, global_step)
-
-                    # self.writer.add_scalar(
-                    #     f"Generator Loss/distance/{cls}", -dist_fake_ood.detach(), global_step // 5)
-
                     self.writer.add_scalar(
                         "Generator Loss/total", g_total.detach(), global_step)
 
@@ -165,10 +154,8 @@ class OOD_GAN_TRAINER():
 
                 # Print out statistics
                 if (iter_count % self.n_steps_log == 0):
-                    # print(
-                    #     f"Step: {steps:<4} | {cls} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | CosSim: {-dist_fake_ood.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f}")
                     print(
-                        f"Step: {steps:<4} | {cls} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {-torch.log(-w_ood).item(): .4f} | W_z: {-torch.log(-w_fake).item(): .4f} | G: {g_total.item(): .4f} | W_z: {-torch.log(-w_z).item(): .4f} | dist: {dist:.4f}")
+                        f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}")
                 iter_count += 1
 
             # Save checkpoint

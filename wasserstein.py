@@ -7,12 +7,13 @@ from utils import *
 def batch_wasserstein(x):
     # Input to this function is a batch of logits
     WLoss = Wasserstein.apply
-    return torch.mean(-WLoss(torch.softmax(x, dim=-1)))
+    # print(WLoss(torch.softmax(x, dim=-1)))
+    return torch.mean(WLoss(torch.softmax(x, dim=-1)))
 
 
 def single_wasserstein(x):
     WLoss = Wasserstein.apply
-    return -WLoss(torch.softmax(x, dim=-1))
+    return WLoss(torch.softmax(x, dim=-1))
 
 
 class Wasserstein(Function):
