@@ -162,6 +162,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
         if epoch % n_epoch == 0:
             print(f"Epoch  # {epoch + 1} | Tri loss: {np.round(np.mean(train_loss), 4)} \
                     | Tri accuracy: {np.round(np.mean(train_acc), 4)}")
+            print(wass_loss)
         # Evaluation
         D.eval()
         with torch.no_grad():
