@@ -129,7 +129,7 @@ for mc in range(mc_num):
             ood_logits = model(ood_img)
             # ic(ood_logits.shape)
             wass_loss = batch_wasserstein(ood_logits)
-            loss = criterion(logits, labels) + beta * wass_loss
+            loss = criterion(logits, labels) - beta * wass_loss
             loss.backward()
             # ic(loss)
             optimizer.step()

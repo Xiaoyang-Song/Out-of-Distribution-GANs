@@ -8,7 +8,8 @@ def batch_wasserstein(x):
     # Input to this function is a batch of logits
     WLoss = Wasserstein.apply
     # print(WLoss(torch.softmax(x, dim=-1)))
-    return torch.mean(WLoss(torch.softmax(x, dim=-1)))
+    # print(torch.softmax(x, dim=-1))
+    return WLoss(torch.softmax(x, dim=-1))
 
 
 def single_wasserstein(x):
@@ -54,7 +55,8 @@ class Wasserstein(Function):
 
         # Save for backward pass
         ctx.save_for_backward(all1hot, p, idx)
-        # ic(values.shape)
+        # print(values)
+        # ic(values.mean())
         return values.mean()
 
     @staticmethod
@@ -79,10 +81,22 @@ class Wasserstein(Function):
             OOD_f[b] = f[idx[b]]
 
         grad = torch.zeros([B, C]).to(DEVICE)
-        grad = -OOD_f
+        grad = OOD_f * upstream_grad
+        # print(grad)
         return grad, None, None, None, None
 
 
 if __name__ == '__main__':
     ic("Hello wasserstein.py")
     # This is not a driver class
+    k = torch.tensor([[1.0, 9.0], [1.0, 1.0]], requires_grad=True)
+    a = batch_wasserstein(k)
+    print(a)
+    a.backward()
+    print(k.grad.data)
+    b = batch_wasserstein(torch.tensor([[1.0-0.5285, 2.0+0.1664]], requires_grad=True))
+    print(b)
+    a = torch.tensor([[3.0, 6.0]], requires_grad=True)
+    c = torch.sum(a)
+    c.backward()
+    print(a.grad.data)

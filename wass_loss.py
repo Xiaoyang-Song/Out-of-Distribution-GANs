@@ -106,3 +106,7 @@ if __name__ == "__main__":
     print(ood_wass_loss(example, 'cpu'))
     print(ood_wass_loss(onehot))
     print(ood_wass_loss(example_2, 'cpu'))
+
+    example = torch.tensor([[0.3557, 0.2983, 0.3461],
+        [0.3679, 0.2906, 0.3416]])
+    print(ood_wass_loss(example, 'cpu'))

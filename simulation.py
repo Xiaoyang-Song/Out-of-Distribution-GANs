@@ -141,9 +141,14 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
             len(ood_batch), min(len(ood_batch), ood_bsz), replace=False)
             ood_samples = ood_batch[ood_idx, :].to(DEVICE)
             ood_logits = D(ood_samples)
+            # print(torch.softmax(ood_logits, dim=-1))
             # ic(ood_logits.shape)
             wass_loss = batch_wasserstein(ood_logits)
-            loss = criterion(logits, labels) + beta * wass_loss
+            # print(wass_loss)
+            # loss = wass_loss
+            # print(loss)
+            loss = criterion(logits, labels) - beta * wass_loss
+            # loss = criterion(logits, labels)
             loss.backward()
             # ic(loss)
             optimizer.step()
@@ -153,6 +158,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
             train_acc.append(acc)
             train_loss.append(loss.detach().item())
             iter_count_train += 1
+
         if epoch % n_epoch == 0:
             print(f"Epoch  # {epoch + 1} | Tri loss: {np.round(np.mean(train_loss), 4)} \
                     | Tri accuracy: {np.round(np.mean(train_acc), 4)}")
@@ -230,8 +236,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             ind_ce_loss, w_ood, w_fake = ood_gan_d_loss(
                 logits_real, logits_fake, logits_ood, y)
             # print(w_ood)
-            d_total = w_ce * ind_ce_loss - \
-                w_wass * (w_ood - (w_fake))
+            d_total = w_ce * ind_ce_loss - w_wass * (w_ood - 0.1 * w_fake)
             # Update
             d_total.backward()
             D_solver.step()
@@ -239,7 +244,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ------------------ #
             # GENERATOR TRAINING #
             # ------------------ #
-            for g_step in range(1):
+            for g_step in range(5):
                 seed = torch.rand((bsz_tri, 2), device=DEVICE)
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
@@ -248,7 +253,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 logits_fake = D(Gz)
                 w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_sample)
                 # g_total = -w_wass * (w_z) + dist * w_dist
-                g_total = -w_wass * (w_z)
+                g_total = -w_wass * 0.1 * (w_z)
                 # Update
                 g_total.backward()
                 G_solver.step()
@@ -284,7 +289,6 @@ def calculate_accuracy(D, ind, ood, tnr):
     tpr = sum(s_ood > threshold) / len(s_ood)
     print(f"{tnr}: {tpr}")
     return threshold
-
 
 def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, m=100, n_ind=25, n_ood=25):
     xi = np.linspace(0, 6, m, endpoint=True)
