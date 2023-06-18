@@ -109,7 +109,7 @@ class OOD_GAN_TRAINER():
                 # Compute loss
                 ind_ce_loss, w_ood, w_fake = self.dloss(
                     logits_real, logits_fake, logits_ood, y)
-                d_total = self.hp.ce * ind_ce_loss - self.hp.wass * (w_ood - (w_fake))
+                d_total = self.hp.ce * ind_ce_loss - self.hp.wass * (w_ood - w_fake)
 
                 # Write statistics
                 self.writer.add_scalars("Discriminator Loss/each", {
@@ -137,7 +137,7 @@ class OOD_GAN_TRAINER():
 
                     w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_img)
                     # g_total = -w_wass * (w_z) + dist * w_dist
-                    g_total = -self.hp.wass * (w_z)
+                    g_total = -self.hp.wass * w_z
 
                     # Write statistics
                     global_step = steps*self.gd_steps_ratio+g_step
