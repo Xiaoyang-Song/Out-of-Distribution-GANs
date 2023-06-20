@@ -17,6 +17,35 @@ class N():
     def sample(self, n):
         return mn(self.mu, self.cov, n)
 
+class GSIM_SINGLE(nn.Module):
+    def __init__(self, h=8):
+        super().__init__()
+        self.fc1 = nn.Linear(2, h)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(h, 2)
+        torch.nn.init.xavier_uniform_(self.fc1.weight)
+        torch.nn.init.xavier_uniform_(self.fc2.weight)
+    
+    def forward(self, z):
+        return self.fc2(self.relu(self.fc1(z)))
+        
+
+class DSIM_SINGLE(nn.Module):
+    def __init__(self, h=8):
+        super().__init__()
+        self.fc1 = nn.Linear(2, h)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(h, 3)
+        # self.fc = nn.Linear(2, 3)
+        torch.nn.init.xavier_uniform_(self.fc1.weight)
+        torch.nn.init.xavier_uniform_(self.fc2.weight)
+
+    def forward(self, x):
+        out = self.relu(self.fc1(x))
+        out = self.fc2(out)
+        return out
+    
+# Two layer NN
 class GSIM(nn.Module):
     def __init__(self, h=8):
         super().__init__()
@@ -216,36 +245,37 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ---------------------- #
             # DISCRIMINATOR TRAINING #
             # ---------------------- #
-            D_solver.zero_grad()
-            # Logits for X_in
-            logits_real = D(x)
+            for d_step in range(1):
+                D_solver.zero_grad()
+                # Logits for X_in
+                logits_real = D(x)
 
-            seed = torch.rand((bsz_tri, 2), device=DEVICE)
-            # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
+                seed = torch.rand((bsz_tri, 2), device=DEVICE)
+                # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
-            Gz = G(seed)
+                Gz = G(seed)
 
-            # Gz = self.G(seed).to(DEVICE).detach()
-            logits_fake = D(Gz)
-            # Logits for X_ood
-            ood_idx = np.random.choice(len(ood_batch), min(
-                len(ood_batch), ood_bsz), replace=False)
-            ood_sample = ood_batch[ood_idx, :].to(DEVICE)
-            logits_ood = D(ood_sample)
+                # Gz = self.G(seed).to(DEVICE).detach()
+                logits_fake = D(Gz)
+                # Logits for X_ood
+                ood_idx = np.random.choice(len(ood_batch), min(
+                    len(ood_batch), ood_bsz), replace=False)
+                ood_sample = ood_batch[ood_idx, :].to(DEVICE)
+                logits_ood = D(ood_sample)
 
-            # Compute loss
-            ind_ce_loss, w_ood, w_fake = ood_gan_d_loss(
-                logits_real, logits_fake, logits_ood, y)
-            # print(w_ood)
-            d_total = w_ce * ind_ce_loss - w_wass * (w_ood - 0.1 * w_fake)
-            # Update
-            d_total.backward()
-            D_solver.step()
+                # Compute loss
+                ind_ce_loss, w_ood, w_fake = ood_gan_d_loss(
+                    logits_real, logits_fake, logits_ood, y)
+                # print(w_ood)
+                d_total = w_ce * ind_ce_loss - w_wass * (w_ood - w_fake * 0.1)
+                # Update
+                d_total.backward()
+                D_solver.step()
 
             # ------------------ #
             # GENERATOR TRAINING #
             # ------------------ #
-            for g_step in range(5):
+            for g_step in range(1):
                 seed = torch.rand((bsz_tri, 2), device=DEVICE)
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
@@ -254,7 +284,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 logits_fake = D(Gz)
                 w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_sample)
                 # g_total = -w_wass * (w_z) + dist * w_dist
-                g_total = -w_wass * 0.1 * (w_z)
+                g_total = -w_wass * w_z* 0.1
                 # Update
                 g_total.backward()
                 G_solver.step()
