@@ -20,16 +20,19 @@ config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
 #---------- Dataset, Path & Regime  ----------#
 dset, is_within_dset, ind, ood = config['dataset'].values()
 print(f"Experiment: {dset}")
+ic(f"Experiment: {dset}") # for slurm output
 root_dir, pretrained_dir, sample_dir = config['path'].values()
 method, regime, observed_cls = config['experiment'].values()
 print(f"Experiment regime: {regime}")
 print(f"Method: {method}")
+ic(f"Method: {method}") # for slurm output
 print(line())
 if regime == 'Imbalanced':
     assert observed_cls is not None
     print(f"Observed Classes are: {observed_cls}")
 n_ood = args.n_ood
 print(f"Number of observed OoD samples (class-level): {n_ood}")
+ic(f"Number of observed OoD samples (class-level): {n_ood}") # for slurm output
 log_dir = root_dir + f"{method}/{dset}/{regime}/{n_ood}/"
 ckpt_dir = root_dir + f"{method}/{dset}/{regime}/{n_ood}/"
 os.makedirs(log_dir, exist_ok=True)
@@ -59,7 +62,7 @@ ood_bsz = train_config['ood_bsz']
 ###---------- Optimizer  ----------###
 lr, beta1, beta2 = train_config['optimizer'].values()
 print(f"Hyperparameters: beta={beta} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz}")
-
+ic(f"Hyperparameters: beta={beta} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz}") # for slurm output
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
 each_cls, cls_idx = eval_config
@@ -144,10 +147,10 @@ for mc in range(mc_num):
             # pretrain_writer.add_scalar("Training/Loss", loss.detach().item(), iter_count_train)
             iter_count_train += 1
 
-        # pretrain_writer.add_scalar("Training/Accuracy (Epoch)", np.mean(train_acc), epoch)
-        # pretrain_writer.add_scalar("Training/Loss (Epoch)", np.mean(train_loss), epoch)
-        print(f"\nEpoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+        print(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
                 | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
+        ic(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+                | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}") # for slurm output
         # Evaluation
         # scheduler.step()
         model.eval()
@@ -165,6 +168,8 @@ for mc in range(mc_num):
 
             print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
+            ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+                | validation acc: {np.mean(val_acc)}") # for slurm output
     with torch.no_grad():
         # Evaluation
         torch.save(model.state_dict(),
