@@ -197,7 +197,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
         with torch.no_grad():
             val_loss, val_acc = [], []
             for idx, (img, labels) in enumerate(ind_val_loader):
-                img, labels = img.to(torch.float32), labels.to(DEVICE)
+                img, labels = img.to(torch.float32).to(DEVICE), labels.to(DEVICE)
                 logits = D(img)
                 loss = criterion(logits, labels)
                 acc = (torch.argmax(logits, dim=1) ==
