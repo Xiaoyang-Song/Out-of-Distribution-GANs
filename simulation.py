@@ -211,8 +211,10 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
     return D
 
 def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, w_dist, scaling, \
-                    ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100):
+                    d_step_ratio, g_step_ratio, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100):
     
+    assert d_step_ratio == 1 or g_step_ratio == 1
+
     def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
         # 1: CrossEntropy of X_in
         criterion = nn.CrossEntropyLoss()
@@ -245,7 +247,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ---------------------- #
             # DISCRIMINATOR TRAINING #
             # ---------------------- #
-            for d_step in range(1):
+            for d_step in range(d_step_ratio):
                 D_solver.zero_grad()
                 # Logits for X_in
                 logits_real = D(x)
@@ -275,7 +277,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             # ------------------ #
             # GENERATOR TRAINING #
             # ------------------ #
-            for g_step in range(1):
+            for g_step in range(g_step_ratio):
                 seed = torch.rand((bsz_tri, 2), device=DEVICE)
                 # Gz = self.G(seed, [cls]*self.bsz_tri).detach()
 
@@ -322,6 +324,7 @@ def calculate_accuracy(D, ind, ood, tnr):
     return threshold
 
 def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, ind_idx, ood_idx, m=100):
+    # print(m)
     # m, n_ind, n_ood = 100, 25, 25
     xi = np.linspace(0, 6, m, endpoint=True)
     yi = np.linspace(0, 6, m, endpoint=True)
