@@ -161,7 +161,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
         D.train()
         train_loss, train_acc, wass = [], [], []
         for idx, (img, labels) in enumerate(ind_tri_loader):
-            img = img.to(torch.float32)
+            img = img.to(torch.float32).to(DEVICE)
             labels = labels.to(DEVICE)
             optimizer.zero_grad()
             logits = D(img)
@@ -243,7 +243,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
         D.train()
         G.train()
         for steps, (x, y) in enumerate(ind_tri_loader):
-            x,y = x.to(torch.float32), y.to(DEVICE)
+            x,y = x.to(torch.float32).to(DEVICE), y.to(DEVICE)
             # ---------------------- #
             # DISCRIMINATOR TRAINING #
             # ---------------------- #
