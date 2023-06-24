@@ -210,7 +210,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
                     | Val accuracy: {np.round(np.mean(val_acc), 4)}")
     return D
 
-def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, w_dist,\
+def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, w_dist, scaling, \
                     ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100):
     
     def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
@@ -267,7 +267,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 ind_ce_loss, w_ood, w_fake = ood_gan_d_loss(
                     logits_real, logits_fake, logits_ood, y)
                 # print(w_ood)
-                d_total = w_ce * ind_ce_loss - w_wass * (w_ood - w_fake * 0.1)
+                d_total = w_ce * ind_ce_loss - w_wass * (w_ood - w_fake * scaling)
                 # Update
                 d_total.backward()
                 D_solver.step()
@@ -284,7 +284,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 logits_fake = D(Gz)
                 w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_sample)
                 # g_total = -w_wass * (w_z) + dist * w_dist
-                g_total = -w_wass * w_z* 0.1
+                g_total = -w_wass * w_z * scaling
                 # Update
                 g_total.backward()
                 G_solver.step()
@@ -321,25 +321,27 @@ def calculate_accuracy(D, ind, ood, tnr):
     print(f"{tnr}: {tpr}")
     return threshold
 
-def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, m=100, n_ind=25, n_ood=25):
+def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, ind_idx, ood_idx, m=100):
+    # m, n_ind, n_ood = 100, 25, 25
     xi = np.linspace(0, 6, m, endpoint=True)
     yi = np.linspace(0, 6, m, endpoint=True)
     xy_pos = np.array(list(product(xi, yi)))
     zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
     print(zi.shape)
     si = ood_wass_loss(zi)
-    plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto', alpha=0.8)
+    threshold =calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=0.99)
+    mask = si > threshold
+    plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto',cmap='inferno', alpha=1)
     plt.colorbar()
+    plt.pcolormesh(xi, yi, mask.reshape((m, m)).T, shading='auto',cmap='gray', alpha=0.1)
     # InD and OoD
-    ind_idx = np.random.choice(len(IND_X), n_ind, replace=False)
-    ood_idx = np.random.choice(len(OOD_X), n_ind, replace=False)
-    plt.scatter(IND_X[:,0][ind_idx], IND_X[:,1][ind_idx], c='orange', label ="InD", sizes=[3]*len(IND_X), alpha=1)
-    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='black', label="OoD", sizes=[3]*len(OOD_X), alpha=1)
-    plt.scatter(IND_X_TEST[:,0][ind_idx], IND_X_TEST[:,1][ind_idx], c='orange', sizes=[3]*len(IND_X), alpha=0.2)
-    plt.scatter(OOD_X[:,0][ood_idx], OOD_X[:,1][ood_idx], c='black', sizes=[2]*len(OOD_X), alpha=0.05)
-    plt.title(f"{method} InD/OoD Separation Heatmap")
-    plt.xlabel("X")
-    plt.ylabel("Y")
+    plt.scatter(IND_X[:,0][ind_idx], IND_X[:,1][ind_idx], c='white', label ="InD", sizes=[30]*len(IND_X), alpha=1)
+    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="OoD", sizes=[30]*len(OOD_X), alpha=1)
+    plt.scatter(IND_X_TEST[:,0][ind_idx], IND_X_TEST[:,1][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.2)
+    plt.scatter(OOD_X[:,0][ood_idx], OOD_X[:,1][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.2)
+    plt.title(f"WOOD Wasserstein Scores Heatmap")
+    plt.xlabel("X1")
+    plt.ylabel("X2")
     plt.legend()
     plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1000)
     # plt.show()
