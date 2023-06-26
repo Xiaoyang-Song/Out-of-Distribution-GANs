@@ -89,12 +89,12 @@ class Wasserstein(Function):
 if __name__ == '__main__':
     ic("Hello wasserstein.py")
     # This is not a driver class
-    k = torch.tensor([[1.0, 9.0], [1.0, 1.0]], requires_grad=True)
-    a = batch_wasserstein(k)
+    k = torch.tensor([[1.0, 2.0]], requires_grad=True)
+    a = -batch_wasserstein(k)
     print(a)
     a.backward()
     print(k.grad.data)
-    b = batch_wasserstein(torch.tensor([[1.0-0.5285, 2.0+0.1664]], requires_grad=True))
+    b = batch_wasserstein(torch.tensor([[1.0-0.1366, 2.0+0.1366]], requires_grad=True))
     print(b)
     a = torch.tensor([[3.0, 6.0]], requires_grad=True)
     c = torch.sum(a)

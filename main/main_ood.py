@@ -58,13 +58,15 @@ ood_bsz = train_config['ood_bsz']
 
 w_ce, w_loss, w_dist = train_config['hp'].values()
 hp = HParam(ce=w_ce, wass=w_loss, dist=w_dist)
-gd_step_ratio = train_config['gd_step_ratio']
+scaling = train_config['scaling']
+d_step_ratio = train_config['d_step_ratio']
+g_step_ratio = train_config['g_step_ratio']
 noise_dim = train_config['noise_dim']
 n_steps_log = train_config['logging']['n_steps_log']
 
 ###---------- Optimizer  ----------###
 lr, beta1, beta2 = train_config['optimizer'].values()
-print(f"Hyperparameters: lambda_ce={w_ce} & lambda_w={w_loss} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz}")
+print(f"Hyperparameters: lambda_ce={w_ce} & lambda_w={w_loss} & scaling={scaling} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz}")
 
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
@@ -124,24 +126,25 @@ for mc in range(mc_num):
                               noise_dim=noise_dim,
                               num_classes=num_classes,
                               bsz_tri=bsz_tri,
-                              gd_steps_ratio=gd_step_ratio,
+                              d_steps_ratio=d_step_ratio,
+                              g_steps_ratio=g_step_ratio,
                               hp=hp,
+                              scaling=scaling,
                               max_epochs=max_epoch,
                               ood_bsz=ood_bsz,
                               writer_name=writer_name,
                               ckpt_name=ckpt_name,
                               ckpt_dir=ckpt_dir,
                               n_steps_log=n_steps_log)
-    # trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
-    #               D.encoder, pretrainedD=None, checkpoint=None)
+    
     # Used for complex dataset
-    trainer.train(ind_loader, ood_img_batch, D_solver, G_solver,
-                  metric=None, pretrainedD=None, checkpoint=None)
+    trainer.train(ind_loader, ood_img_batch, D_solver, G_solver, pretrainedD=None, checkpoint=None)
+    
     ###---------- evaluation  ----------###
     evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
     test_backbone_D(D, dset.ind_val_loader)
     mc_stop = time.time()
-    print(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
+    print(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)} seconds | About {np.round((mc_stop-mc_start)/60, 2)} minutes | About {np.round((mc_stop-mc_start)/3600, 2)} hours")
 
 # Display & save statistics
 evaler.display_stats()
@@ -149,4 +152,4 @@ torch.save(evaler, log_dir + "eval.pt")
 print("EVALER & Stats saved successfully!")
 
 stop = time.time()
-print(f"Training time: {np.round(stop - start, 2)}s | About {np.round((stop-start)/60, 1)} mins")
+print(f"Training time: {np.round(stop - start, 2)} seconds | About {np.round((stop-start)/60, 2)} minutes | About {np.round((stop-start)/3600, 2)} hours")

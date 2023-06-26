@@ -38,8 +38,8 @@ def ood_gan_g_loss(logits_fake, gz, xood):
 
 class OOD_GAN_TRAINER():
     def __init__(self, D, G, noise_dim, num_classes,
-                 bsz_tri, gd_steps_ratio, hp,
-                 max_epochs, ood_bsz,
+                 bsz_tri, g_steps_ratio, d_steps_ratio, 
+                 scaling, hp, max_epochs, ood_bsz,
                  writer_name, ckpt_name, ckpt_dir,
                  n_steps_show=100, n_steps_log=1):
         super().__init__()
@@ -60,12 +60,14 @@ class OOD_GAN_TRAINER():
         self.gloss = ood_gan_g_loss
         # Training config
         self.bsz_tri = bsz_tri
-        self.gd_steps_ratio = gd_steps_ratio
+        self.d_steps_ratio = d_steps_ratio
+        self.g_steps_ratio = g_steps_ratio
+        self.scaling = scaling
         self.max_epochs = max_epochs
         self.hp = hp
         self.ood_bsz = ood_bsz
 
-    def train(self, ind_loader, ood_img_batch, D_solver, G_solver, metric=None, pretrainedD=None, checkpoint=None):
+    def train(self, ind_loader, ood_img_batch, D_solver, G_solver, pretrainedD=None, checkpoint=None):
         # Load pretrained Discriminator
         if pretrainedD is not None:
             pretrain = torch.load(pretrainedD)
@@ -92,42 +94,45 @@ class OOD_GAN_TRAINER():
                 # ---------------------- #
                 # DISCRIMINATOR TRAINING #
                 # ---------------------- #
-                D_solver.zero_grad()
-                # Logits for X_in
-                logits_real = self.D(x)
+                for dstep in range(self.d_steps_ratio):
+                    D_solver.zero_grad()
+                    # Logits for X_in
+                    logits_real = self.D(x)
 
-                seed = torch.rand((self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
+                    seed = torch.rand((self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
 
-                Gz = self.G(seed)
-                logits_fake = self.D(Gz)
-                # Logits for X_ood
-                ood_idx = np.random.choice(len(ood_img_batch), min(
-                    len(ood_img_batch), self.ood_bsz), replace=False)
-                ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
-                logits_ood = self.D(ood_img)
+                    Gz = self.G(seed)
+                    logits_fake = self.D(Gz)
+                    # Logits for X_ood
+                    ood_idx = np.random.choice(len(ood_img_batch), min(
+                        len(ood_img_batch), self.ood_bsz), replace=False)
+                    ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
+                    logits_ood = self.D(ood_img)
 
-                # Compute loss
-                ind_ce_loss, w_ood, w_fake = self.dloss(
-                    logits_real, logits_fake, logits_ood, y)
-                d_total = self.hp.ce * ind_ce_loss - self.hp.wass * (w_ood - w_fake * 0.1)
+                    # Compute loss
+                    ind_ce_loss, w_ood, w_fake = self.dloss(
+                        logits_real, logits_fake, logits_ood, y)
+                    d_total = self.hp.ce * ind_ce_loss - self.hp.wass * (w_ood - w_fake * self.scaling)
+                    
+                    # Write statistics
+                    global_step_d = steps * self.d_steps_ratio + dstep
+                    self.writer.add_scalars("Discriminator Loss/each", {
+                        'CE': ind_ce_loss.detach(),
+                        'W_ood': w_ood.detach(),
+                        'W_z': w_fake.detach()
+                    }, global_step_d)
+                    self.writer.add_scalar(
+                        "Discriminator Loss/total", d_total.detach(), global_step_d)
+                    
+                    # Update
+                    d_total.backward()
+                    D_solver.step()
 
-                # Write statistics
-                self.writer.add_scalars("Discriminator Loss/each", {
-                    'CE': ind_ce_loss.detach(),
-                    'W_ood': w_ood.detach(),
-                    'W_z': w_fake.detach()
-                }, steps)
-                self.writer.add_scalar(
-                    "Discriminator Loss/total", d_total.detach(), steps)
-
-                # Update
-                d_total.backward()
-                D_solver.step()
 
                 # ------------------ #
                 # GENERATOR TRAINING #
                 # ------------------ #
-                for g_step in range(self.gd_steps_ratio):
+                for gstep in range(self.g_steps_ratio):
                     G_solver.zero_grad()
                     # Logits for G(z)
                     seed = torch.rand( (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
@@ -137,16 +142,16 @@ class OOD_GAN_TRAINER():
 
                     w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_img)
                     # g_total = -w_wass * (w_z) + dist * w_dist
-                    g_total = -self.hp.wass * w_z * 0.1
+                    g_total = -self.hp.wass * w_z * self.scaling
 
                     # Write statistics
-                    global_step = steps*self.gd_steps_ratio+g_step
+                    global_step_g = steps * self.g_steps_ratio + gstep
 
                     self.writer.add_scalars("Generator Loss/each", {
                         'W_z': w_z.detach()
-                    }, global_step)
+                    }, global_step_g)
                     self.writer.add_scalar(
-                        "Generator Loss/total", g_total.detach(), global_step)
+                        "Generator Loss/total", g_total.detach(), global_step_g)
 
                     # Update
                     g_total.backward()

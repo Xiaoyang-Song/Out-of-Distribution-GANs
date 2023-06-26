@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#SBATCH --account=jhjin1
-#SBATCH --job-name=OoD-training
+#SBATCH --account=sunwbgt0
+#SBATCH --job-name=GANFM128
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=12GB
-#SBATCH --time=96:00:00
+#SBATCH --mem-per-gpu=16GB
+#SBATCH --time=120:00:00
 
 module purge
 conda init bash

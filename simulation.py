@@ -326,14 +326,17 @@ def calculate_accuracy(D, ind, ood, tnr):
 def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, ind_idx, ood_idx, m=100):
     # print(m)
     # m, n_ind, n_ood = 100, 25, 25
-    xi = np.linspace(0, 6, m, endpoint=True)
-    yi = np.linspace(0, 6, m, endpoint=True)
-    xy_pos = np.array(list(product(xi, yi)))
-    zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
-    print(zi.shape)
-    si = ood_wass_loss(zi)
-    threshold =calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=0.99)
-    mask = si > threshold
+    with torch.no_grad():
+        xi = np.linspace(0, 7, m, endpoint=True)
+        yi = np.linspace(0, 7, m, endpoint=True)
+        xy_pos = np.array(list(product(xi, yi)))
+        zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
+        print(zi.shape)
+        si = ood_wass_loss(zi)
+        threshold =calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=0.99)
+        mask = si > threshold
+    # Plot
+    # Heatmap
     plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto',cmap='inferno', alpha=1)
     plt.colorbar()
     plt.pcolormesh(xi, yi, mask.reshape((m, m)).T, shading='auto',cmap='gray', alpha=0.1)
@@ -342,7 +345,7 @@ def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, ind_idx, ood_id
     plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="OoD", sizes=[30]*len(OOD_X), alpha=1)
     plt.scatter(IND_X_TEST[:,0][ind_idx], IND_X_TEST[:,1][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.2)
     plt.scatter(OOD_X[:,0][ood_idx], OOD_X[:,1][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.2)
-    plt.title(f"WOOD Wasserstein Scores Heatmap")
+    plt.title(f"{method} Wasserstein Scores Heatmap")
     plt.xlabel("X1")
     plt.ylabel("X2")
     plt.legend()
@@ -350,8 +353,14 @@ def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, ind_idx, ood_id
     # plt.show()
     return plt
 
-def plot_scatter(ind):
-    pass
+def plot_distribution(D, IND_X, OOD_X, method):
+    with torch.no_grad():
+        z_ind = torch.softmax(D(torch.tensor(IND_X, dtype=torch.float32)), dim=-1)
+        s_ind = ood_wass_loss(z_ind)
+        z_ood = torch.softmax(D(torch.tensor(OOD_X, dtype=torch.float32)), dim=-1)
+        s_ood = ood_wass_loss(z_ood)
+    plt.hist(s_ind)
+    plt.hist(s_ood)
 
 
 
