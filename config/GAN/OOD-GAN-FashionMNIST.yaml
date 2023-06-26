@@ -31,7 +31,7 @@ model:
 
 train_config:
   mc: 3
-  max_epochs: 8
+  max_epochs: 16
   bsz_tri: 64
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32

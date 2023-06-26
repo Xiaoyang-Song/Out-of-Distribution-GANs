@@ -42,9 +42,9 @@ def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
     #     plt.axvline(x=thresh, color='b', label=thresh_lbl)
     plt.legend()
     plt.xlabel("Wasserstein Distance")
-    plt.ylabel("Number of Samples")
-    plt.title(f"Number of observed OoD: {n_ood}")
-    plt.savefig(log_dir + f"wass_plot[{n_ood}]-[{tag}].png")
+    plt.ylabel("Count")
+    plt.title(f"Number of Observed OoD Samples: {n_ood}")
+    plt.savefig(log_dir + f"wass_plot[{n_ood}]-[{tag}].jpg", dpi=1000)
     plt.close()
 
 
