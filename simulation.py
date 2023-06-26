@@ -323,35 +323,57 @@ def calculate_accuracy(D, ind, ood, tnr):
     print(f"{tnr}: {tpr}")
     return threshold
 
-def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, method, ind_idx, ood_idx, m=100):
+def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood_idx, m=100):
     # print(m)
-    # m, n_ind, n_ood = 100, 25, 25
+    fig, ax = plt.subplots()
     with torch.no_grad():
         xi = np.linspace(0, 7, m, endpoint=True)
         yi = np.linspace(0, 7, m, endpoint=True)
         xy_pos = np.array(list(product(xi, yi)))
         zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
-        print(zi.shape)
+        # print(zi.shape)
         si = ood_wass_loss(zi)
-        threshold =calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=0.99)
+        threshold = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=0.99)
         mask = si > threshold
+    print(f"Rejection Threshold: {threshold}")
+    print(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")   
     # Plot
     # Heatmap
     plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto',cmap='inferno', alpha=1)
     plt.colorbar()
     plt.pcolormesh(xi, yi, mask.reshape((m, m)).T, shading='auto',cmap='gray', alpha=0.1)
     # InD and OoD
-    plt.scatter(IND_X[:,0][ind_idx], IND_X[:,1][ind_idx], c='white', label ="InD", sizes=[30]*len(IND_X), alpha=1)
-    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="OoD", sizes=[30]*len(OOD_X), alpha=1)
-    plt.scatter(IND_X_TEST[:,0][ind_idx], IND_X_TEST[:,1][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.2)
-    plt.scatter(OOD_X[:,0][ood_idx], OOD_X[:,1][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.2)
+    plt.scatter(IND_X[:,0][ind_idx], IND_X[:,1][ind_idx], c='white', label ="InD", marker='^',sizes=[30]*len(IND_X), alpha=1)
+    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="OoD",marker='^', sizes=[30]*len(OOD_X), alpha=1)
+    plt.scatter(IND_X_TEST[:,0][ind_idx], IND_X_TEST[:,1][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.3)
+    plt.scatter(OOD_X[:,0][ood_idx], OOD_X[:,1][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.3)
+
+    # Generated samples
+    if G is not None:
+        n_gen = 10
+        seed = torch.rand((n_gen, 2), device=DEVICE)
+        Gz = G(seed).detach().numpy()
+        plt.scatter(Gz[:,0], Gz[:,1], marker='x', c='#00b384', sizes=[30]*n_gen, alpha=0.5)
+
     plt.title(f"{method} Wasserstein Scores Heatmap")
     plt.xlabel("X1")
     plt.ylabel("X2")
-    plt.legend()
-    plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1000)
+    # Legend Processing
+    leg = plt.legend()
+    ax.add_artist(leg)
+    if G is not None:
+        markers = ['^', 'o', 'x']
+        legends = ['Training Data', 'Testing Data', 'Generated Data']
+    else:
+        markers = ['^', 'o']
+        legends = ['Training Data', 'Testing Data']
+
+    h = [plt.plot([],[], color="navy", marker=mk, ls="",ms=5)[0] for mk in markers]
+    plt.legend(handles=h, labels=legends, loc='lower right')
+    # Save plots
+    plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1500)
     # plt.show()
-    return plt
+    # return plt
 
 def plot_distribution(D, IND_X, OOD_X, method):
     with torch.no_grad():
@@ -361,6 +383,7 @@ def plot_distribution(D, IND_X, OOD_X, method):
         s_ood = ood_wass_loss(z_ood)
     plt.hist(s_ind)
     plt.hist(s_ood)
+    plt.legend()
 
 
 
