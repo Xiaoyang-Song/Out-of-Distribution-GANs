@@ -19,4 +19,8 @@ model.t7
 dcd.pt
 model-[64]-[15]-[2].pt
 other/
+
+# simulation example
 ckpt/
+simulation_log/
+Simulation/

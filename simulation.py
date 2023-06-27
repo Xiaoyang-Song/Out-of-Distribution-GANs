@@ -7,6 +7,11 @@ from matplotlib import pyplot as plt
 from config import DEVICE
 from itertools import product
 from wasserstein import batch_wasserstein, ood_wass_loss
+# For argument processing
+import argparse
+import time
+import yaml
+import os
 
 
 
@@ -17,6 +22,7 @@ class N():
     def sample(self, n):
         return mn(self.mu, self.cov, n)
 
+# Single layer NN
 class GSIM_SINGLE(nn.Module):
     def __init__(self, h=8):
         super().__init__()
@@ -29,7 +35,6 @@ class GSIM_SINGLE(nn.Module):
     def forward(self, z):
         return self.fc2(self.relu(self.fc1(z)))
         
-
 class DSIM_SINGLE(nn.Module):
     def __init__(self, h=8):
         super().__init__()
@@ -59,7 +64,6 @@ class GSIM(nn.Module):
     
     def forward(self, z):
         return self.fc3(self.relu(self.fc2(self.relu(self.fc1(z)))))
-        
 
 class DSIM(nn.Module):
     def __init__(self, h=8):
@@ -210,7 +214,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
                     | Val accuracy: {np.round(np.mean(val_acc), 4)}")
     return D
 
-def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass, w_dist, scaling, \
+def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass_ood, w_wass_gz, w_dist, \
                     d_step_ratio, g_step_ratio, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100):
     
     assert d_step_ratio == 1 or g_step_ratio == 1
@@ -269,7 +273,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 ind_ce_loss, w_ood, w_fake = ood_gan_d_loss(
                     logits_real, logits_fake, logits_ood, y)
                 # print(w_ood)
-                d_total = w_ce * ind_ce_loss - w_wass * (w_ood - w_fake * scaling)
+                d_total = w_ce * ind_ce_loss -w_wass_ood * w_ood + w_fake * w_wass_gz
                 # Update
                 d_total.backward()
                 D_solver.step()
@@ -286,7 +290,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 logits_fake = D(Gz)
                 w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_sample)
                 # g_total = -w_wass * (w_z) + dist * w_dist
-                g_total = -w_wass * w_z * scaling
+                g_total = -w_wass_gz * w_z
                 # Update
                 g_total.backward()
                 G_solver.step()
@@ -369,7 +373,7 @@ def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood
         legends = ['Training Data', 'Testing Data']
 
     h = [plt.plot([],[], color="navy", marker=mk, ls="",ms=5)[0] for mk in markers]
-    plt.legend(handles=h, labels=legends, loc='lower right')
+    plt.legend(handles=h, labels=legends, loc='lower left')
     # Save plots
     plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1500)
     # plt.show()
@@ -385,5 +389,115 @@ def plot_distribution(D, IND_X, OOD_X, method):
     plt.hist(s_ood)
     plt.legend()
 
+def simulate(config):
+    pass
+
+def generate_ind_ood_settings(config):
+    # path
+    ckpt_dir, log_dir = config['ckpt_dir'], config['log_dir']
+    setting_id = config['id']
+    if os.path.exists(os.path.join(ckpt_dir, setting_id, 'data')):
+        assert False, f'{setting_id} already exists.'
+    os.makedirs(os.path.join(ckpt_dir, setting_id, 'data'), exist_ok=True)
+    # seeding
+    np.random.seed(config['seed'])
+    # Data config
+    MU = config['data']['mu']
+    COV = {}
+    for k, v in config['data']['std'].items():
+        COV[k] = np.eye(2)*v**2
+    K = len(MU)
+    SAMPLERS = get_sampler(MU, COV, K)
+    # Get SAMPLES
+    n = config['size']
+    X_TRAIN, Y_TRAIN, X_TEST, Y_TEST = get_train_test_samples(SAMPLERS=SAMPLERS, n=n)
+    # Dataset
+    IND_CLS, OOD_CLS = config['ind_cls'], config['ood_cls']
+    IND_DATA, IND_X, IND_Y = cls_to_dset(IND_CLS, X_TRAIN, Y_TRAIN)
+    OOD_DATA, OOD_X, OOD_Y = cls_to_dset(OOD_CLS, X_TRAIN, Y_TRAIN)
+    IND_DATA_TEST, IND_X_TEST, IND_Y_TEST = cls_to_dset(IND_CLS, X_TEST, Y_TEST)
+    OOD_DATA_TEST, OOD_X_TEST, OOD_Y_TEST = cls_to_dset(OOD_CLS, X_TEST, Y_TEST)
+
+    # Save generated data
+    torch.save((X_TRAIN, Y_TRAIN, X_TEST, Y_TEST), os.path.join(ckpt_dir, setting_id, 'data', 'raw.pt'))
+    torch.save((IND_DATA, IND_X, IND_Y), os.path.join(ckpt_dir, setting_id, 'data', 'ind_data.pt'))
+    torch.save((OOD_DATA, OOD_X, OOD_Y), os.path.join(ckpt_dir, setting_id, 'data', 'ood_data.pt'))
+    torch.save((IND_DATA_TEST, IND_X_TEST, IND_Y_TEST), os.path.join(ckpt_dir, setting_id, 'data', 'ind_data_test.pt'))
+    torch.save((OOD_DATA_TEST, OOD_X_TEST, OOD_Y_TEST), os.path.join(ckpt_dir, setting_id, 'data', 'ood_data_test.pt'))
+
+    # Plot generated data
+    n_plot = config['n_distribution']
+    for idx in IND_CLS:
+        sample_idx = np.random.choice(n, n_plot, replace=False)
+        plt.scatter(IND_X[:,0][IND_Y==idx][sample_idx], IND_X[:,1][IND_Y==idx][sample_idx], label =f"InD - Class {idx+1}", sizes=[35]*len(IND_X),alpha=0.8)
+    for idx in OOD_CLS:
+        sample_idx = np.random.choice(n, n_plot, replace=False)
+        plt.scatter(OOD_X[:,0][OOD_Y==idx][sample_idx], OOD_X[:,1][OOD_Y==idx][sample_idx], label =f"OoD - Class {idx + 1}", sizes=[35]*len(OOD_X), alpha=0.8)
+    lb, ub = config['lb'], config['ub']
+    plt.xlim((lb, ub))
+    plt.ylim((lb, ub))
+    plt.legend()
+    plt.xlabel("X1")
+    plt.ylabel("X2")
+    plt.title("Distribution of All Simulated InD and OoD Data")
+    plt.savefig(os.path.join(ckpt_dir, setting_id, 'data', 'data.jpg'), dpi=1500)
+
+    # Generate OOD data
+    os.makedirs(os.path.join(ckpt_dir, setting_id, 'data', 'OoDs'), exist_ok=True)
+    for n_ood in config['ood_batch_sizes']:
+        OOD_BATCH = []
+        for idx in OOD_CLS:
+            cls_batch = list(OOD_X[OOD_Y == idx][np.random.choice(n, n_ood, replace=False)]) 
+        OOD_BATCH = OOD_BATCH + cls_batch
+        OOD_BATCH = torch.tensor(np.array(OOD_BATCH), dtype=torch.float32)
+        torch.save(OOD_BATCH, os.path.join(ckpt_dir, setting_id, 'data', 'OoDs', f'OOD_{n_ood}.pt'))
+
+    # Plotting configuration generation
+    n_ind, n_ood = config['n_per_ind_cls'], config['n_per_ood_cls']
+    m = config['resolution']
+    ind_idx = np.random.choice(len(IND_X), n_ind, replace=False)
+    ood_idx = np.random.choice(len(OOD_X), n_ood, replace=False)
+    plotting_config = dict(
+        ind_idx=ind_idx,
+        ood_idx=ood_idx,
+        lb=lb, ub=ub, m=m
+    )
+    torch.save(plotting_config, os.path.join(ckpt_dir, setting_id, 'plt_config.pt'))
+
+
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--mode', help='G - Generation | R - Run')
+    parser.add_argument('--config', help='Configuration file')
+    # NN structures
+    parser.add_argument('--h', help="Number of NN hidden dimensions", type=int)
+    # Weight
+    parser.add_argument('--w_ce', help='CE term weight', type=float)
+    parser.add_argument('--w_ood', help="OoD term weight", type=float)
+    parser.add_argument('--w_z', help="Adversarial term weight", type=float)
+    # Training parameters
+    parser.add_argument('--lr', help="Learning rate", type=float)
+    parser.add_argument('--bsz_tri', help="Training batch size", type=float)
+    parser.add_argument('--bsz_val', help="Validation batch size", type=float)
+    parser.add_argument('--bsz_ood', help='OoD batch size', type=int)
+    parser.add_argument('--n_d', help='d_step_ratio', type=int)
+    parser.add_argument('--n_g', help='g_step_ratio', type=int)
+    
+    args = parser.parse_args()
+    assert args.config is not None, 'Please specify the config .yml file to proceed.'
+    config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
+
+    if args.mode == "G":
+        generate_ind_ood_settings(config)
+    elif args.mode == 'R':
+        setting = config['id']
+        ckpt_dir = config['path']['ckpt_dir']
+        assert os.path.exists(os.path.join(ckpt_dir, setting))
+        simulate(config)
+    else:
+        assert False, 'Unrecognized mode.'
 
 
