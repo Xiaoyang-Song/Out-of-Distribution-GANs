@@ -26,7 +26,7 @@ n_per_ood_cls: 15
 n_distribution: 100
 lb: 0
 ub: 7
-resolution: 4
+resolution: 400
 
 # path
 ckpt_dir: checkpoint/Simulation/
