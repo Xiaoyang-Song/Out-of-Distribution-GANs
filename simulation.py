@@ -155,7 +155,7 @@ def classifier_training(D, criterion, optimizer, ind_tri_loader, ind_val_loader,
                     | Val accuracy: {np.round(np.mean(val_acc), 4)}")
     return D
 
-def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10):
+def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, f=None):
     # Simple training loop
     ood_batch = OOD_BATCH.to(DEVICE)
     iter_count_train = 0
@@ -177,9 +177,6 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
             # print(torch.softmax(ood_logits, dim=-1))
             # ic(ood_logits.shape)
             wass_loss = batch_wasserstein(ood_logits)
-            # print(wass_loss)
-            # loss = wass_loss
-            # print(loss)
             loss = criterion(logits, labels) - beta * wass_loss
             # loss = criterion(logits, labels)
             loss.backward()
@@ -195,7 +192,11 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
         if epoch % n_epoch == 0:
             print(f"Epoch  # {epoch + 1} | Tri loss: {np.round(np.mean(train_loss), 4)} \
                     | Tri accuracy: {np.round(np.mean(train_acc), 4)}")
-            print(wass_loss)
+            print(f"Wasserstein Scores: {wass_loss}")
+            if f is not None:
+                f.write(f"Epoch  # {epoch + 1} | Tri loss: {np.round(np.mean(train_loss), 4)} \
+                    | Tri accuracy: {np.round(np.mean(train_acc), 4)}")
+                f.write(f"Wasserstein Scores: {wass_loss}")
         # Evaluation
         D.eval()
         with torch.no_grad():
@@ -212,10 +213,13 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
             if epoch % n_epoch == 0:
                 print(f"Epoch  # {epoch + 1} | Val loss: {np.round(np.mean(val_loss), 4)} \
                     | Val accuracy: {np.round(np.mean(val_acc), 4)}")
+                if f is not None:
+                    f.write(f"Epoch  # {epoch + 1} | Val loss: {np.round(np.mean(val_loss), 4)} \
+                    | Val accuracy: {np.round(np.mean(val_acc), 4)}")
     return D
 
 def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass_ood, w_wass_gz, w_dist, \
-                    d_step_ratio, g_step_ratio, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100):
+                    d_step_ratio, g_step_ratio, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, n_step_log = 100, f=None):
     
     assert d_step_ratio == 1 or g_step_ratio == 1
 
@@ -299,6 +303,9 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             if (iter_count % n_step_log == 0):
                 print(
                     f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}")
+                if f is not None:
+                    f.write(
+                    f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}")
             iter_count += 1
 
         D.eval()
@@ -312,6 +319,8 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 val_acc.append(acc)
             if epoch % n_epoch == 0:
                 print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
+                if f is not None:
+                    f.write(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
     return D, G
 
 def calculate_accuracy(D, ind, ood, tnr):
@@ -329,7 +338,7 @@ def calculate_accuracy(D, ind, ood, tnr):
     return threshold, tpr
 
 def plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method, ind_cls, ood_cls, 
-                 ind_idx, ood_idx, path=None, tnr=0.99, lb=0, ub=7,m=100):
+                 ind_idx, ood_idx, path=None, tnr=0.99, lb=0, ub=7,m=100, f=None):
     # print(m)
     fig, ax = plt.subplots()
     with torch.no_grad():
@@ -342,7 +351,10 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method
         threshold, _ = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=tnr)
         mask = si > threshold
     print(f"Rejection Threshold: {threshold}")
-    print(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")   
+    print(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")
+    if f is not None:
+        f.write(f"Rejection Threshold: {threshold}")
+        f.write(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")
     # Plot
     # Heatmap
     plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto',cmap='inferno', alpha=1)
@@ -385,6 +397,7 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method
     else:
         plt.savefig(path, dpi=1500)
     # plt.show()
+    plt.close()
     # return plt
 
 def plot_distribution(D, IND_X, OOD_X, method):
@@ -438,7 +451,7 @@ def simulate(args, config):
     ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
     # Training
     D_WOOD = wood_training(D_WOOD, OOD_BATCH, args.bsz_ood, args.beta, criterion, 
-                           optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log)
+                           optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log, f)
     torch.save(D_WOOD.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_WOOD.pt'))
     # Detection Performance
     f.write("\nWOOD Performance\n")
@@ -454,7 +467,7 @@ def simulate(args, config):
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
     plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'])
+                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
     wood_stop = time.time()
     f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
     
@@ -489,7 +502,8 @@ def simulate(args, config):
                                     ind_val_loader=ind_val_loader,
                                     max_epoch=max_epochs,
                                     n_epoch=n_epochs_log,
-                                    n_step_log=25)
+                                    n_step_log=25,
+                                    f=f)
     
     # Save model checkpoints
     torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN.pt'))
@@ -507,7 +521,7 @@ def simulate(args, config):
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap.jpg")
     plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'])
+                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
     gan_stop = time.time()
     f.write(f"OoD GAN Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 1)} mins\n")
     
