@@ -312,6 +312,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 val_acc.append(acc)
             if epoch % n_epoch == 0:
                 print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
+    return D, G
 
 def calculate_accuracy(D, ind, ood, tnr):
     z = torch.softmax(D(torch.tensor(ind, dtype=torch.float32)), dim=-1)
@@ -327,8 +328,8 @@ def calculate_accuracy(D, ind, ood, tnr):
     # print(f"{tnr}: {tpr}")
     return threshold, tpr
 
-def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood_idx, 
-                 path=None, tnr=0.99, lb=0, ub=7,m=100):
+def plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method, ind_cls, ood_cls, 
+                 ind_idx, ood_idx, path=None, tnr=0.99, lb=0, ub=7,m=100):
     # print(m)
     fig, ax = plt.subplots()
     with torch.no_grad():
@@ -338,7 +339,7 @@ def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood
         zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
         # print(zi.shape)
         si = ood_wass_loss(zi)
-        threshold = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=tnr)
+        threshold, _ = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=tnr)
         mask = si > threshold
     print(f"Rejection Threshold: {threshold}")
     print(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")   
@@ -348,10 +349,13 @@ def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood
     plt.colorbar()
     plt.pcolormesh(xi, yi, mask.reshape((m, m)).T, shading='auto',cmap='gray', alpha=0.1)
     # InD and OoD
-    plt.scatter(IND_X[:,0][ind_idx], IND_X[:,1][ind_idx], c='white', label ="InD", marker='^',sizes=[30]*len(IND_X), alpha=1)
+    for idx in ind_cls:
+        plt.scatter(IND_X[:,0][IND_Y==idx][ind_idx], IND_X[:,1][IND_Y==idx][ind_idx], c='white', label ="InD", marker='^',sizes=[30]*len(IND_X), alpha=1)
     plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="OoD",marker='^', sizes=[30]*len(OOD_X), alpha=1)
-    plt.scatter(IND_X_TEST[:,0][ind_idx], IND_X_TEST[:,1][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.3)
-    plt.scatter(OOD_X[:,0][ood_idx], OOD_X[:,1][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.3)
+    for idx in ind_cls:
+        plt.scatter(IND_X_TEST[:,0][IND_Y==idx][ind_idx], IND_X_TEST[:,1][IND_Y==idx][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.3)
+    for idx in ood_cls:
+        plt.scatter(OOD_X[:,0][OOD_Y==idx][ood_idx], OOD_X[:,1][OOD_Y==idx][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.3)
 
     # Generated samples
     if G is not None:
@@ -374,7 +378,7 @@ def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood
         legends = ['Training Data', 'Testing Data']
 
     h = [plt.plot([],[], color="navy", marker=mk, ls="",ms=5)[0] for mk in markers]
-    plt.legend(handles=h, labels=legends, loc='lower left')
+    plt.legend(handles=h, labels=legends, loc='lower right')
     # Save plots
     if path is None:
         plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1500)
@@ -393,32 +397,41 @@ def plot_distribution(D, IND_X, OOD_X, method):
     plt.hist(s_ood)
     plt.legend()
 
-def simulate(args,config):
+def simulate(args, config):
     # Path & Settings
     ckpt_dir = config['path']['ckpt_dir']
     setting = config['setting']
+    # Make checkpoint directory
+    dir_name = f"Eg_{args.n_ood}_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_[{args.wood_lr}|{args.gan_lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
+    os.makedirs(os.path.join(ckpt_dir, setting, dir_name), exist_ok=True)
+
+    f = open(os.path.join(ckpt_dir, setting, dir_name, "log.txt"), "w")
+    f.write("Directory Name Format: Eg_[<n_ood>]_[<beta>]_[<CE>|<OoD>|<Z>]_[<WOOD_lr>|<GAN_lr>|<bsz_tri>|<bsz_val>|<bsz_ood>]_[<n_d>|<n_g>]\n")
+    f.write(f"Directory Name: {dir_name}\n")
+    start = time.time()
 
     # Load InD data
-    X_TRAIN, Y_TRAIN, X_TEST, Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'raw.pt'))
+    IND_CLS, OOD_CLS = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ind_ood_cls.pt'))
+    # X_TRAIN, Y_TRAIN, X_TEST, Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'raw.pt'))
     IND_DATA, IND_X, IND_Y = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ind_data.pt'))
     OOD_DATA, OOD_X, OOD_Y = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ood_data.pt'))
     IND_DATA_TEST, IND_X_TEST, IND_Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ind_data_test.pt'))
-    OOD_DATA_TEST, OOD_X_TEST, OOD_Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ood_data_test.pt'))
+    # OOD_DATA_TEST, OOD_X_TEST, OOD_Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ood_data_test.pt'))
+    
     # Load OoD data
     OOD_BATCH = torch.load(os.path.join(ckpt_dir, setting, 'data', 'OoDs', f'OOD_{args.n_ood}.pt'))
-    print(f"Observed OoD data shape: {OOD_BATCH.shape}")
-
-    # Make checkpoint directory
-    dir_name = f"{args.n_ood}_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_\
-        [{args.lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
-    os.makedirs(os.path.join(ckpt_dir, setting, dir_name), exist_ok=True)
+    f.write(f"Observed OoD data shape: {OOD_BATCH.shape}\n")
 
     # WOOD SIMULATION
+    wood_start = time.time()
     max_epochs = config['max_epochs']
     n_epochs_log = config['n_epochs_log']
 
+    f.write("WOOD Training Hyperparameters\n")
+    f.write(f"h={args.h}, w_ood={args.beta}, lr={args.wood_lr}\n")
+    f.write(f"epochs={max_epochs}, bsz_tri={args.bsz_tri}, bsz_val={args.bsz_val}, bsz_ood={args.bsz_ood}\n\n")
     D_WOOD = DSIM(args.h).to(DEVICE)
-    optimizer = torch.optim.Adam(D_WOOD.parameters(), lr=args.lr, betas=(0.9, 0.999))
+    optimizer = torch.optim.Adam(D_WOOD.parameters(), lr=args.wood_lr, betas=(0.9, 0.999))
     criterion = nn.CrossEntropyLoss()
     # Dataloader
     ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
@@ -428,24 +441,79 @@ def simulate(args,config):
                            optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log)
     torch.save(D_WOOD.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_WOOD.pt'))
     # Detection Performance
+    f.write("\nWOOD Performance\n")
     threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
-    print(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}")
+    f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
     threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
-    print(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}")
+    f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
     threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
-    print(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}")
+    f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n")
 
     # Plot
     pltargs = torch.load(os.path.join(ckpt_dir, setting, 'plt_config.pt'))
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
-    plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D_WOOD, None, 'WOOD', pltargs.ind_idx, pltargs.ood_idx, 
-                 path=plt_path, tnr=0.99, lb=pltargs.lb, ub=pltargs.ub, m=pltargs.m)
+    plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
+                 IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'])
+    wood_stop = time.time()
+    f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
     
 
+    
     # OoD GAN Simulation
+    gan_start = time.time()
+    f.write("OoD GAN Training Hyperparameters\n")
+    f.write(f"h={args.h}, w_ce={args.w_ce}, w_ood={args.w_ood}, w_z={args.w_z}, lr={args.gan_lr}, n_d={args.n_d}, n_g={args.n_g}\n")
+    f.write(f"epochs={max_epochs}, bsz_tri={args.bsz_tri}, bsz_val={args.bsz_val}, bsz_ood={args.bsz_ood}\n\n")
+    D_GAN = DSIM(args.h).to(DEVICE)
+    G_GAN = GSIM(args.h).to(DEVICE)
+    D_solver = torch.optim.Adam(D_GAN.parameters(), lr=args.gan_lr, betas=(0.9, 0.999))
+    G_solver = torch.optim.Adam(G_GAN.parameters(), lr=args.gan_lr, betas=(0.9, 0.999))
+    criterion = nn.CrossEntropyLoss()
+    ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
+    ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
+    # Training
+    D_GAN, G_GAN = oodgan_training(D=D_GAN, G=G_GAN, 
+                                    D_solver=D_solver, 
+                                    G_solver=G_solver, 
+                                    OOD_BATCH=OOD_BATCH, 
+                                    ood_bsz=args.bsz_ood, 
+                                    bsz_tri=args.bsz_tri, 
+                                    w_ce=args.w_ce, 
+                                    w_wass_ood=args.w_ood,
+                                    w_wass_gz=args.w_z,
+                                    w_dist=None,
+                                    d_step_ratio=args.n_d,
+                                    g_step_ratio=args.n_g,
+                                    ind_tri_loader=ind_tri_loader,
+                                    ind_val_loader=ind_val_loader,
+                                    max_epoch=max_epochs,
+                                    n_epoch=n_epochs_log,
+                                    n_step_log=25)
+    
+    # Save model checkpoints
+    torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN.pt'))
+    torch.save(G_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'G_GAN.pt'))
 
+    f.write("\nOoD GAN Performance\n")
+    threshold_95, tpr_95 = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.95)
+    f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
+    threshold_99, tpr_99  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.99)
+    f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
+    threshold_999, tpr_999  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.999)
+    f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n") 
 
-
+    # Plot
+    plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap.jpg")
+    plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN', 
+                 IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'])
+    gan_stop = time.time()
+    f.write(f"OoD GAN Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 1)} mins\n")
+    
+    stop = time.time()
+    f.write(f"Total time: {np.round(stop - start, 2)} s | About {np.round((stop-start)/60, 1)} mins\n")
+    f.close()
 
 def generate_ind_ood_settings(config):
     # path
@@ -474,6 +542,7 @@ def generate_ind_ood_settings(config):
     OOD_DATA_TEST, OOD_X_TEST, OOD_Y_TEST = cls_to_dset(OOD_CLS, X_TEST, Y_TEST)
 
     # Save generated data
+    torch.save((IND_CLS, OOD_CLS), os.path.join(ckpt_dir, setting_id, 'data', 'ind_ood_cls.pt'))
     torch.save((X_TRAIN, Y_TRAIN, X_TEST, Y_TEST), os.path.join(ckpt_dir, setting_id, 'data', 'raw.pt'))
     torch.save((IND_DATA, IND_X, IND_Y), os.path.join(ckpt_dir, setting_id, 'data', 'ind_data.pt'))
     torch.save((OOD_DATA, OOD_X, OOD_Y), os.path.join(ckpt_dir, setting_id, 'data', 'ood_data.pt'))
@@ -510,8 +579,8 @@ def generate_ind_ood_settings(config):
     # Plotting configuration generation
     n_ind, n_ood = config['n_per_ind_cls'], config['n_per_ood_cls']
     m = config['resolution']
-    ind_idx = np.random.choice(len(IND_X), n_ind, replace=False)
-    ood_idx = np.random.choice(len(OOD_X), n_ood, replace=False)
+    ind_idx = np.random.choice(n, n_ind, replace=False)
+    ood_idx = np.random.choice(n, n_ood, replace=False)
     plotting_config = dict(
         ind_idx=ind_idx,
         ood_idx=ood_idx,
@@ -521,7 +590,7 @@ def generate_ind_ood_settings(config):
 
 # Example command for R mode:
 # python3 simulation.py --config=config/simulation/R_config.yaml --mode=R --n_ood=32 --h=128 
-# --beta=1 --w_ce=1 --w_ood=1 --w_z=1 
+# --beta=1 --w_ce=1 --w_ood=1 --w_z=1 --wood_lr=0.001 --gan_lr=0.0001 --bsz_tri=256 --bsz_val=256 --bsz_ood=4 --n_d=1 --n_g=1
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -536,9 +605,10 @@ if __name__ == '__main__':
     parser.add_argument('--w_z', help="Adversarial term weight", type=float)
     # Training parameters
     parser.add_argument('--n_ood', help="Number of OoD samples", type=int)
-    parser.add_argument('--lr', help="Learning rate", type=float)
-    parser.add_argument('--bsz_tri', help="Training batch size", type=float)
-    parser.add_argument('--bsz_val', help="Validation batch size", type=float)
+    parser.add_argument('--wood_lr', help="WOOD learning rate", type=float)
+    parser.add_argument('--gan_lr', help="OoD GAN learning rate", type=float)
+    parser.add_argument('--bsz_tri', help="Training batch size", type=int)
+    parser.add_argument('--bsz_val', help="Validation batch size", type=int)
     parser.add_argument('--bsz_ood', help='OoD batch size', type=int)
     parser.add_argument('--n_d', help='d_step_ratio', type=int)
     parser.add_argument('--n_g', help='g_step_ratio', type=int)
@@ -550,7 +620,7 @@ if __name__ == '__main__':
     if args.mode == "G":
         generate_ind_ood_settings(config)
     elif args.mode == 'R':
-        setting = config['id']
+        setting = config['setting']
         ckpt_dir = config['path']['ckpt_dir']
         assert os.path.exists(os.path.join(ckpt_dir, setting))
         simulate(args, config)

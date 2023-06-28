@@ -1,0 +1,33 @@
+---
+id: SETTING-1
+seed: 2023
+# MU and COV of bivariate normal data
+data:
+  mu:
+    0: [4, 3]
+    1: [3, 5]
+    2: [3, 1]
+    3: [1.5, 6]
+
+  std:
+    0: 0.3
+    1: 0.3
+    2: 0.3
+    3: 0.3
+
+ind_cls: [0, 1, 2]
+ood_cls: [3]
+size: 1000 # Number of data points per class
+ood_batch_sizes: [2, 4, 8, 16, 32, 64] # generate OoD batch at the first place
+
+# plotting configs
+n_per_ind_cls: 8
+n_per_ood_cls: 15
+n_distribution: 100
+lb: 0
+ub: 7
+resolution: 4
+
+# path
+ckpt_dir: checkpoint/Simulation/
+log_dir: checkpoint/Simulation/

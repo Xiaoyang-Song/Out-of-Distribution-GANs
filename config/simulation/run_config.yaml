@@ -1,0 +1,12 @@
+---
+# settings
+setting: SETTING-1
+# path
+path:
+  ckpt_dir: checkpoint/Simulation/
+  log_dir: checkpoint/Simulation/
+# more configurations go here...
+
+# Some fixed training config
+max_epochs: 256
+n_epochs_log: 10

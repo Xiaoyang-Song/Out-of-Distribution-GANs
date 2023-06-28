@@ -23,4 +23,4 @@ other/
 # simulation example
 ckpt/
 simulation_log/
-Simulation/
+checkpoint/Simulation/
