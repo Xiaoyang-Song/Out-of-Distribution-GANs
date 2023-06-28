@@ -324,20 +324,21 @@ def calculate_accuracy(D, ind, ood, tnr):
     # print(z_ood.shape)
     s_ood = ood_wass_loss(z_ood)
     tpr = sum(s_ood > threshold) / len(s_ood)
-    print(f"{tnr}: {tpr}")
-    return threshold
+    # print(f"{tnr}: {tpr}")
+    return threshold, tpr
 
-def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood_idx, m=100):
+def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood_idx, 
+                 path=None, tnr=0.99, lb=0, ub=7,m=100):
     # print(m)
     fig, ax = plt.subplots()
     with torch.no_grad():
-        xi = np.linspace(0, 7, m, endpoint=True)
-        yi = np.linspace(0, 7, m, endpoint=True)
+        xi = np.linspace(lb, ub, m, endpoint=True)
+        yi = np.linspace(lb, ub, m, endpoint=True)
         xy_pos = np.array(list(product(xi, yi)))
         zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
         # print(zi.shape)
         si = ood_wass_loss(zi)
-        threshold = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=0.99)
+        threshold = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=tnr)
         mask = si > threshold
     print(f"Rejection Threshold: {threshold}")
     print(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")   
@@ -375,7 +376,10 @@ def plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D, G, method, ind_idx, ood
     h = [plt.plot([],[], color="navy", marker=mk, ls="",ms=5)[0] for mk in markers]
     plt.legend(handles=h, labels=legends, loc='lower left')
     # Save plots
-    plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1500)
+    if path is None:
+        plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1500)
+    else:
+        plt.savefig(path, dpi=1500)
     # plt.show()
     # return plt
 
@@ -389,8 +393,59 @@ def plot_distribution(D, IND_X, OOD_X, method):
     plt.hist(s_ood)
     plt.legend()
 
-def simulate(config):
-    pass
+def simulate(args,config):
+    # Path & Settings
+    ckpt_dir = config['path']['ckpt_dir']
+    setting = config['setting']
+
+    # Load InD data
+    X_TRAIN, Y_TRAIN, X_TEST, Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'raw.pt'))
+    IND_DATA, IND_X, IND_Y = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ind_data.pt'))
+    OOD_DATA, OOD_X, OOD_Y = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ood_data.pt'))
+    IND_DATA_TEST, IND_X_TEST, IND_Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ind_data_test.pt'))
+    OOD_DATA_TEST, OOD_X_TEST, OOD_Y_TEST = torch.load(os.path.join(ckpt_dir, setting, 'data', 'ood_data_test.pt'))
+    # Load OoD data
+    OOD_BATCH = torch.load(os.path.join(ckpt_dir, setting, 'data', 'OoDs', f'OOD_{args.n_ood}.pt'))
+    print(f"Observed OoD data shape: {OOD_BATCH.shape}")
+
+    # Make checkpoint directory
+    dir_name = f"{args.n_ood}_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_\
+        [{args.lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
+    os.makedirs(os.path.join(ckpt_dir, setting, dir_name), exist_ok=True)
+
+    # WOOD SIMULATION
+    max_epochs = config['max_epochs']
+    n_epochs_log = config['n_epochs_log']
+
+    D_WOOD = DSIM(args.h).to(DEVICE)
+    optimizer = torch.optim.Adam(D_WOOD.parameters(), lr=args.lr, betas=(0.9, 0.999))
+    criterion = nn.CrossEntropyLoss()
+    # Dataloader
+    ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
+    ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
+    # Training
+    D_WOOD = wood_training(D_WOOD, OOD_BATCH, args.bsz_ood, args.beta, criterion, 
+                           optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log)
+    torch.save(D_WOOD.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_WOOD.pt'))
+    # Detection Performance
+    threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
+    print(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}")
+    threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
+    print(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}")
+    threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
+    print(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}")
+
+    # Plot
+    pltargs = torch.load(os.path.join(ckpt_dir, setting, 'plt_config.pt'))
+    plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
+    plot_heatmap(IND_X, IND_X_TEST, OOD_X, OOD_BATCH, D_WOOD, None, 'WOOD', pltargs.ind_idx, pltargs.ood_idx, 
+                 path=plt_path, tnr=0.99, lb=pltargs.lb, ub=pltargs.ub, m=pltargs.m)
+    
+
+    # OoD GAN Simulation
+
+
+
 
 def generate_ind_ood_settings(config):
     # path
@@ -464,9 +519,9 @@ def generate_ind_ood_settings(config):
     )
     torch.save(plotting_config, os.path.join(ckpt_dir, setting_id, 'plt_config.pt'))
 
-
-
-
+# Example command for R mode:
+# python3 simulation.py --config=config/simulation/R_config.yaml --mode=R --n_ood=32 --h=128 
+# --beta=1 --w_ce=1 --w_ood=1 --w_z=1 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -475,10 +530,12 @@ if __name__ == '__main__':
     # NN structures
     parser.add_argument('--h', help="Number of NN hidden dimensions", type=int)
     # Weight
+    parser.add_argument('--beta', help="WOOD beta", type=float)
     parser.add_argument('--w_ce', help='CE term weight', type=float)
     parser.add_argument('--w_ood', help="OoD term weight", type=float)
     parser.add_argument('--w_z', help="Adversarial term weight", type=float)
     # Training parameters
+    parser.add_argument('--n_ood', help="Number of OoD samples", type=int)
     parser.add_argument('--lr', help="Learning rate", type=float)
     parser.add_argument('--bsz_tri', help="Training batch size", type=float)
     parser.add_argument('--bsz_val', help="Validation batch size", type=float)
@@ -496,7 +553,7 @@ if __name__ == '__main__':
         setting = config['id']
         ckpt_dir = config['path']['ckpt_dir']
         assert os.path.exists(os.path.join(ckpt_dir, setting))
-        simulate(config)
+        simulate(args, config)
     else:
         assert False, 'Unrecognized mode.'
 
