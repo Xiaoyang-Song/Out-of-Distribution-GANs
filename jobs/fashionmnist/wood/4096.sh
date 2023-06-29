@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=jhjin1
+#SBATCH --account=alkontar1
 #SBATCH --job-name=WDFM4096
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
@@ -8,7 +8,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=16GB
-#SBATCH --time=144:00:00\
+#SBATCH --time=144:00:00
 #SBATCH --output=/home/xysong/slurm-jobs/WDFM4096.log
 
 module purge
