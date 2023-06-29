@@ -9,8 +9,10 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=16GB
 #SBATCH --time=144:00:00
+#SBATCH --output=/home/xysong/slurm-jobs/WDFM8.log
 
 module purge
 conda init bash
 conda activate OoD
+
 python3 main/main_wood.py --config=config/WOOD/WOOD-FashionMNIST.yaml --n_ood=8 > checkpoint/log/FashionMNIST/WOOD/log-8.txt
