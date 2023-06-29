@@ -195,8 +195,8 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
             print(f"Wasserstein Scores: {wass_loss}")
             if f is not None:
                 f.write(f"Epoch  # {epoch + 1} | Tri loss: {np.round(np.mean(train_loss), 4)} \
-                    | Tri accuracy: {np.round(np.mean(train_acc), 4)}")
-                f.write(f"Wasserstein Scores: {wass_loss}")
+                    | Tri accuracy: {np.round(np.mean(train_acc), 4)}\n")
+                f.write(f"Wasserstein Scores: {wass_loss}\n")
         # Evaluation
         D.eval()
         with torch.no_grad():
@@ -215,7 +215,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
                     | Val accuracy: {np.round(np.mean(val_acc), 4)}")
                 if f is not None:
                     f.write(f"Epoch  # {epoch + 1} | Val loss: {np.round(np.mean(val_loss), 4)} \
-                    | Val accuracy: {np.round(np.mean(val_acc), 4)}")
+                    | Val accuracy: {np.round(np.mean(val_acc), 4)}\n")
     return D
 
 def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce, w_wass_ood, w_wass_gz, w_dist, \
@@ -305,7 +305,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                     f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}")
                 if f is not None:
                     f.write(
-                    f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}")
+                    f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}\n")
             iter_count += 1
 
         D.eval()
@@ -320,7 +320,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             if epoch % n_epoch == 0:
                 print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
                 if f is not None:
-                    f.write(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
+                    f.write(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}\n")
     return D, G
 
 def calculate_accuracy(D, ind, ood, tnr):
@@ -337,7 +337,7 @@ def calculate_accuracy(D, ind, ood, tnr):
     # print(f"{tnr}: {tpr}")
     return threshold, tpr
 
-def plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method, ind_cls, ood_cls, 
+def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method, ind_cls, ood_cls, 
                  ind_idx, ood_idx, path=None, tnr=0.99, lb=0, ub=7,m=100, f=None):
     # print(m)
     fig, ax = plt.subplots()
@@ -353,19 +353,26 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method
     print(f"Rejection Threshold: {threshold}")
     print(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")
     if f is not None:
-        f.write(f"Rejection Threshold: {threshold}")
-        f.write(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")
+        f.write(f"Rejection Threshold: {threshold}\n")
+        f.write(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%\n")
     # Plot
     # Heatmap
     plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto',cmap='inferno', alpha=1)
     plt.colorbar()
     plt.pcolormesh(xi, yi, mask.reshape((m, m)).T, shading='auto',cmap='gray', alpha=0.1)
     # InD and OoD
-    for idx in ind_cls:
-        plt.scatter(IND_X[:,0][IND_Y==idx][ind_idx], IND_X[:,1][IND_Y==idx][ind_idx], c='white', label ="InD", marker='^',sizes=[30]*len(IND_X), alpha=1)
+    # IND Training
+    for i, idx in enumerate(ind_cls):
+        if i == 0:
+            plt.scatter(IND_X[:,0][IND_Y==idx][ind_idx], IND_X[:,1][IND_Y==idx][ind_idx], c='white', label ="InD", marker='^',sizes=[30]*len(IND_X), alpha=1)
+        else:
+            plt.scatter(IND_X[:,0][IND_Y==idx][ind_idx], IND_X[:,1][IND_Y==idx][ind_idx], c='white', marker='^',sizes=[30]*len(IND_X), alpha=1)
+    # OOD BATCH
     plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="OoD",marker='^', sizes=[30]*len(OOD_X), alpha=1)
+    # IND Test
     for idx in ind_cls:
-        plt.scatter(IND_X_TEST[:,0][IND_Y==idx][ind_idx], IND_X_TEST[:,1][IND_Y==idx][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.3)
+        plt.scatter(IND_X_TEST[:,0][IND_Y_TEST==idx][ind_idx], IND_X_TEST[:,1][IND_Y_TEST==idx][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.3)
+    # OOD
     for idx in ood_cls:
         plt.scatter(OOD_X[:,0][OOD_Y==idx][ood_idx], OOD_X[:,1][OOD_Y==idx][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.3)
 
@@ -465,7 +472,7 @@ def simulate(args, config):
     # Plot
     pltargs = torch.load(os.path.join(ckpt_dir, setting, 'plt_config.pt'))
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
-    plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
+    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
                  path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
     wood_stop = time.time()
@@ -519,7 +526,7 @@ def simulate(args, config):
 
     # Plot
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap.jpg")
-    plot_heatmap(IND_X, IND_Y, IND_X_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN', 
+    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
                  path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
     gan_stop = time.time()
