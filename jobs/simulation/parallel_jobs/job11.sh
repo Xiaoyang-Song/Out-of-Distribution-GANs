@@ -9,6 +9,7 @@
 #SBATCH --mem=8GB
 #SBATCH --cpus-per-task=4
 #SBATCH --time=12:00:00
+#SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/j11.log
 
 module purge
 conda init bash
