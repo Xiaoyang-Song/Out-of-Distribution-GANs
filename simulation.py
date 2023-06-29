@@ -13,8 +13,6 @@ import time
 import yaml
 import os
 
-
-
 class N():
     def __init__(self, mu, cov):
         self.mu = mu
