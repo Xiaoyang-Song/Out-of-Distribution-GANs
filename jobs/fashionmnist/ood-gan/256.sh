@@ -1,14 +1,15 @@
 #!/bin/bash
 
-#SBATCH --account=sunwbgt0
+#SBATCH --account=jhjin1
 #SBATCH --job-name=GANFM256
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=15GB
+#SBATCH --mem-per-gpu=12GB
 #SBATCH --time=120:00:00
+#SBATCH --output=/home/xysong/slurm-jobs/GANFM256.log
 
 module purge
 conda init bash

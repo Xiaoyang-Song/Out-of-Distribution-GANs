@@ -9,6 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=16GB
 #SBATCH --time=120:00:00
+#SBATCH --output=/home/xysong/slurm-jobs/GANFM16.log
 
 module purge
 conda init bash
