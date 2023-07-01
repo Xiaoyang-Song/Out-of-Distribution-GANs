@@ -1,17 +1,11 @@
-from email.policy import default
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
 import torch
 import torch.utils.data
-import torchvision
-from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
-from collections import Counter, defaultdict
+from collections import defaultdict
 from config import *
 from dataset import *
-from models.hparam import HParam
 from models.gans import *
 from models.dc_gan_model import *
 from utils import *
@@ -181,18 +175,6 @@ class EVALER():
         self.tpr99.append(tpr_99)
         self.tpr99_thresh.append(tpr_99_thresh)
         # yxoutv = None
-        # winv, woutv = None, None
-        if self.method == "OOD-GAN":
-            assert G is not None
-            lr = LR(D, G, self.xin_t, self.num_classes, self.n_lr)
-            train_stats = lr.fit()
-            eval_stats = lr.eval(winv, woutv)
-            tpr_lr, tpr_lr_thresh = tpr(winv, woutv, eval_stats[0])
-            self.lrtpr.append(tpr_lr)
-            self.tpr_lr_thresh.append(tpr_lr_thresh)
-            self.lr_instance.append(lr)
-            self.lr_train.append(train_stats)
-            self.lr_overall.append(eval_stats)
         w_lst, legend_lst = [winv], ['InD']
         if each_class:
             assert cls_idx is not None
@@ -226,18 +208,6 @@ class EVALER():
         print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
         print("\n" + line())
         return
-        if self.method == "OOD-GAN":
-            lr_train = np.array(self.lr_train)
-            print("Logistic Regression Statistics")
-            print_stats(lr_train[:, 0], "Mean win")
-            print_stats(lr_train[:, 1], "Mean wgz")
-            print_stats(lr_train[:, 2], "Training Accuracy")
-            lr_stats = np.array(self.lr_overall)
-            print_stats(lr_stats[:, 0], "InD Accuracy")
-            print_stats(lr_stats[:, 1], "OoD Accuracy")
-            print_stats(lr_stats[:, 2], "AUROC")
-            print_stats(self.lrtpr, "TPR@LR-InD-TNR")
-            print_stats(self.tpr_lr_thresh, "TPR@LR-InD-TNR-Threshold")
         if len(self.cls_stats) != 0:
             for key, val in self.cls_stats.items():
                 print("\n" + line())

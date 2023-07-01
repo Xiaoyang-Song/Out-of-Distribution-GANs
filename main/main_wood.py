@@ -7,6 +7,7 @@ from eval import *
 import argparse
 import time
 import yaml
+from itertools import cycle
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', help='Training configuration file')
@@ -86,12 +87,12 @@ if torch.cuda.is_available():
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
-                n_ood
-            , log_dir, method, num_classes)
+                n_ood, log_dir, method, num_classes)
 # Load OoD
 fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
 ood_img_batch, ood_img_label = torch.load(fname)
 # assert len(ood_img_label) == n_ood * 2
+ood_tri_loader = set_to_loader(ood_img_batch, ood_bsz, True)
 
 for mc in range(mc_num):
     mc_start = time.time()
@@ -120,15 +121,15 @@ for mc in range(mc_num):
         # Training
         model.train()
         train_loss, train_acc, wass = [], [], []
-        for idx, (img, labels) in enumerate(ind_tri_loader):
+        for idx, ((img, labels), ood_img) in enumerate(zip(ind_tri_loader, cycle(ood_tri_loader))):
             img = img.to(DEVICE)
             labels = labels.to(DEVICE)
             optimizer.zero_grad()
             logits = model(img)
-            # Sample 10 ood image from the seen OoD set
-            ood_idx = np.random.choice(
-                len(ood_img_batch), min(len(ood_img_batch), ood_bsz), replace=False)
-            ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
+            # Sample ood image from the seen OoD set
+            # ood_idx = np.random.choice(
+            #     len(ood_img_batch), min(len(ood_img_batch), ood_bsz), replace=False)
+            # ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
             ood_logits = model(ood_img)
             # ic(ood_logits.shape)
             wass_loss = batch_wasserstein(ood_logits)
