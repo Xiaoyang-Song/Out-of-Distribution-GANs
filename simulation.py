@@ -502,20 +502,20 @@ def simulate(args, config):
                            optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log, f)
     torch.save(D_WOOD.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_WOOD.pt'))
     # Detection Performance
-    # f.write("\nWOOD Performance\n")
-    # threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
-    # f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
-    # threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
-    # f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
-    # threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
-    # f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n")
+    f.write("\nWOOD Performance\n")
+    threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
+    f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
+    threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
+    f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
+    threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
+    f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n")
 
     # Plot
     pltargs = torch.load(os.path.join(ckpt_dir, setting, 'plt_config.pt'))
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
-    # plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
-    #              IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-    #              path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
+    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
+                 IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
     wood_stop = time.time()
     f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
     
