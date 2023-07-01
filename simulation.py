@@ -308,7 +308,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
             iter_count += 1
         
         D_loss.append((ind_ce_loss.detach().item(), w_ood.detach().item(), w_fake.detach().item()))
-        G_loss.append((w_z.detach().item(), dist))
+        G_loss.append((w_z.detach().item(), dist.detach().item()))
 
         D.eval()
         with torch.no_grad():
@@ -427,13 +427,14 @@ def plot_loss_curve(d_loss, g_loss, path):
 
 
     fig, axs = plt.subplots(3, sharex=True)
-    fig.suptitle('Training Loss Curves')
+    fig.tight_layout(pad=2.0)
+    # fig.suptitle('Training Loss Curves')
 
     # Discriminator Loss
     axs[0].plot(iters, ce, label='CE', marker='^')
     axs[0].plot(iters, w_ood, label=r'$W_{OoD}$', marker='o')
     axs[0].plot(iters, w_d, label=r'$W_{Z}$', marker='x')
-    axs[0].set_xlabel('Training Epochs')
+    # axs[0].set_xlabel('Training Epochs')
     axs[0].set_ylabel('Loss Value')
     axs[0].set_title("Discriminator Loss Curve")
     axs[0].legend()
@@ -441,7 +442,7 @@ def plot_loss_curve(d_loss, g_loss, path):
 
     # Generator Loss
     axs[1].plot(iters, w_g, label=r'$W_{Z}$', marker='o')
-    axs[1].set_xlabel('Training Epochs')
+    # axs[1].set_xlabel('Training Epochs')
     axs[1].set_ylabel('Loss Value')
     axs[1].set_title("Generator Loss Curve")
     axs[1].legend()
@@ -453,7 +454,6 @@ def plot_loss_curve(d_loss, g_loss, path):
     axs[2].set_title("Distance Curve")
     axs[2].legend()
     fig.savefig(path, dpi=1500)
-
 
 
 def simulate(args, config):
@@ -486,6 +486,8 @@ def simulate(args, config):
     max_epochs = config['max_epochs']
     n_epochs_log = config['n_epochs_log']
 
+
+    f.write("\n------------- WOOD Baseline Training -------------\n") 
     f.write("WOOD Training Hyperparameters\n")
     f.write(f"h={args.h}, w_ood={args.beta}, lr={args.wood_lr}\n")
     f.write(f"epochs={max_epochs}, bsz_tri={args.bsz_tri}, bsz_val={args.bsz_val}, bsz_ood={args.bsz_ood}\n\n")
@@ -500,20 +502,20 @@ def simulate(args, config):
                            optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log, f)
     torch.save(D_WOOD.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_WOOD.pt'))
     # Detection Performance
-    f.write("\nWOOD Performance\n")
-    threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
-    f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
-    threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
-    f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
-    threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
-    f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n")
+    # f.write("\nWOOD Performance\n")
+    # threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
+    # f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
+    # threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
+    # f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
+    # threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
+    # f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n")
 
     # Plot
     pltargs = torch.load(os.path.join(ckpt_dir, setting, 'plt_config.pt'))
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
-    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
-                 IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
+    # plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
+    #              IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+    #              path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
     wood_stop = time.time()
     f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
     
@@ -521,6 +523,7 @@ def simulate(args, config):
     
     # OoD GAN Simulation
     gan_start = time.time()
+    f.write("\n------------- Out-of-Distribution GANs Training -------------\n") 
     f.write("OoD GAN Training Hyperparameters\n")
     f.write(f"h={args.h}, w_ce={args.w_ce}, w_ood={args.w_ood}, w_z={args.w_z}, lr={args.gan_lr}, n_d={args.n_d}, n_g={args.n_g}\n")
     f.write(f"epochs={max_epochs}, bsz_tri={args.bsz_tri}, bsz_val={args.bsz_val}, bsz_ood={args.bsz_ood}\n\n")
