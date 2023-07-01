@@ -122,10 +122,10 @@ def test_backbone_D(model, val_loader):
             val_acc.append(acc)
             total_acc.append([num_correct, num_total])
             val_loss.append(loss.detach().item())
-        print(np.mean(val_acc))
-        print(np.mean(val_loss))
-        total_acc = np.array(total_acc)
-        print(np.sum(total_acc[:, 0] / np.sum(total_acc[:, 1])))
+        print(f"Validation Accuracy: {np.mean(val_acc)}")
+        print(f"Validation Classification Loss: {np.mean(val_loss)}")
+        # total_acc = np.array(total_acc)
+        # print(np.sum(total_acc[:, 0] / np.sum(total_acc[:, 1])))
 
 
 if __name__ == '__main__':
