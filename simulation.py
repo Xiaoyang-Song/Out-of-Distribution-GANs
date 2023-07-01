@@ -307,8 +307,8 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                     f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}\n")
             iter_count += 1
         
-        D_loss.append((ind_ce_loss.item(), w_ood.item(), w_fake.item()))
-        G_loss.append((w_z.item(), dist))
+        D_loss.append((ind_ce_loss.detach().item(), w_ood.detach().item(), w_fake.detach().item()))
+        G_loss.append((w_z.detach().item(), dist))
 
         D.eval()
         with torch.no_grad():
