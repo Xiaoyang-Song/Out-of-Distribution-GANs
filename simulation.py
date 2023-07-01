@@ -156,8 +156,7 @@ def classifier_training(D, criterion, optimizer, ind_tri_loader, ind_val_loader,
 def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loader, ind_val_loader, max_epoch, n_epoch=10, f=None):
     # Simple training loop
     ood_batch = OOD_BATCH.to(DEVICE)
-    iter_count_train = 0
-    iter_count_val = 0
+    iter_count_train, iter_count_val = 0, 0
     for epoch in tqdm(range(max_epoch)):
         # Training
         D.train()
@@ -245,6 +244,8 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
     
     iter_count = 0
     ood_batch = OOD_BATCH.to(DEVICE)
+    # Logging
+    D_loss, G_loss = [], []
     for epoch in tqdm(range(max_epoch)):
         D.train()
         G.train()
@@ -305,6 +306,9 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                     f.write(
                     f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}\n")
             iter_count += 1
+        
+        D_loss.append((ind_ce_loss.item(), w_ood.item(), w_fake.item()))
+        G_loss.append((w_z.item(), dist))
 
         D.eval()
         with torch.no_grad():
@@ -319,7 +323,8 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 print(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}")
                 if f is not None:
                     f.write(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}\n")
-    return D, G
+    
+    return D, G, (D_loss, G_loss)
 
 def calculate_accuracy(D, ind, ood, tnr):
     z = torch.softmax(D(torch.tensor(ind, dtype=torch.float32)), dim=-1)
@@ -415,6 +420,42 @@ def plot_distribution(D, IND_X, OOD_X, method):
     plt.hist(s_ood)
     plt.legend()
 
+def plot_loss_curve(d_loss, g_loss, path):
+    ce, w_ood, w_d = d_loss[:,0], d_loss[:,1], d_loss[:,2]
+    w_g, dist = g_loss[:,0], g_loss[:,1]
+    iters = range(0, len(d_loss), 1)
+
+
+    fig, axs = plt.subplots(3, sharex=True)
+    fig.suptitle('Training Loss Curves')
+
+    # Discriminator Loss
+    axs[0].plot(iters, ce, label='CE', marker='^')
+    axs[0].plot(iters, w_ood, label=r'$W_{OoD}$', marker='o')
+    axs[0].plot(iters, w_d, label=r'$W_{Z}$', marker='x')
+    axs[0].set_xlabel('Training Epochs')
+    axs[0].set_ylabel('Loss Value')
+    axs[0].set_title("Discriminator Loss Curve")
+    axs[0].legend()
+
+
+    # Generator Loss
+    axs[1].plot(iters, w_g, label=r'$W_{Z}$', marker='o')
+    axs[1].set_xlabel('Training Epochs')
+    axs[1].set_ylabel('Loss Value')
+    axs[1].set_title("Generator Loss Curve")
+    axs[1].legend()
+
+    # Distance
+    axs[2].plot(iters, dist, label=r'Dist', marker='x')
+    axs[2].set_xlabel('Training Epochs')
+    axs[2].set_ylabel('Euclidean Distance')
+    axs[2].set_title("Distance Curve")
+    axs[2].legend()
+    fig.savefig(path, dpi=1500)
+
+
+
 def simulate(args, config):
     # Path & Settings
     ckpt_dir = config['path']['ckpt_dir']
@@ -491,7 +532,7 @@ def simulate(args, config):
     ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
     ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
     # Training
-    D_GAN, G_GAN = oodgan_training(D=D_GAN, G=G_GAN, 
+    D_GAN, G_GAN, loss = oodgan_training(D=D_GAN, G=G_GAN, 
                                     D_solver=D_solver, 
                                     G_solver=G_solver, 
                                     OOD_BATCH=OOD_BATCH, 
@@ -509,6 +550,12 @@ def simulate(args, config):
                                     n_epoch=n_epochs_log,
                                     n_step_log=25,
                                     f=f)
+    
+    # Plot loss relevant curve
+    d_loss, g_loss = loss
+    d_loss, g_loss = np.array(d_loss), np.array(g_loss)
+    loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Loss_Curves.jpg")
+    plot_loss_curve(d_loss, g_loss, loss_path)
     
     # Save model checkpoints
     torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN.pt'))
