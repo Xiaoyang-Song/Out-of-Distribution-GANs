@@ -122,6 +122,9 @@ for mc in range(mc_num):
         model.train()
         train_loss, train_acc, wass = [], [], []
         for idx, ((img, labels), ood_img) in enumerate(zip(ind_tri_loader, cycle(ood_tri_loader))):
+            
+            print("successful")
+            print(ood_img.shape)
             img = img.to(DEVICE)
             labels = labels.to(DEVICE)
             optimizer.zero_grad()
