@@ -3,7 +3,7 @@
 
 # scheduling simulation study on GL
 # Generate Settings
-sbatch jobs/simulation/generate_setting.sh
+# sbatch jobs/simulation/generate_setting.sh
 
 # Jobs
 sbatch jobs/simulation/parallel_jobs/job1.sh
