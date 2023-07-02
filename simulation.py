@@ -614,7 +614,7 @@ def simulate(args, config):
     # Plot loss relevant curve
     d_loss, g_loss = loss
     d_loss, g_loss = np.array(d_loss), np.array(g_loss)
-    loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_W/_Pretraining_Loss_Curves.jpg")
+    loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Pretraining_Loss_Curves.jpg")
     plot_loss_curve(d_loss, g_loss, loss_path)
     
     # Save model checkpoints
@@ -631,7 +631,7 @@ def simulate(args, config):
 
     # Plot
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap_Pretraining.jpg")
-    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN w/ Pretraining', 
+    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN with Pretraining', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
                  path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
     gan_stop = time.time()
