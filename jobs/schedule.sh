@@ -13,7 +13,7 @@ sbatch jobs/fashionmnist/wood/256.sh
 sbatch jobs/fashionmnist/wood/512.sh
 sbatch jobs/fashionmnist/wood/1024.sh
 sbatch jobs/fashionmnist/wood/2048.sh
-# sbatch jobs/fashionmnist/wood/4096.sh
+sbatch jobs/fashionmnist/wood/4096.sh
 
 # SVHN WOOD
 # sbatch jobs/svhn/wood/svhn-4.sh

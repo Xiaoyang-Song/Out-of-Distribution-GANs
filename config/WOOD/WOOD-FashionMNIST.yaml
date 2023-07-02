@@ -35,7 +35,7 @@ train_config:
   max_epochs: 80
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
-  beta: 0.1 # WOOD balancing factor
+  beta: 0.01 # WOOD balancing factor
   ood_bsz: 10
   optimizer:
     lr: 0.001

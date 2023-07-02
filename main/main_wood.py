@@ -100,14 +100,14 @@ for mc in range(mc_num):
     ##### logging information #####
     writer_name = log_dir + f"[{dset.name}]-[{n_ood}]-[{regime}]-[{mc}]"
     ckpt_name = f'[{dset.name}]-[{n_ood}]-[{regime}]-[{mc}]'
-    print(D_model)
-    print(G_model)
+    print(f"Discriminator Model: {D_model}")
+    print(f"Generator Model: {G_model}")
     model = model_getter(D_model, D_config, G_model, G_config)
 
     optimizer = torch.optim.Adam(
         model.parameters(), lr=lr, betas=(beta1, beta2))
     # scheduler = torch.optim.lr_scheduler.StepLR(
-    #     optimizer, step_size=100, gamma=0.1)  # no scheduler
+    #     optimizer, step_size=100, gamma=0.1)  # no scheduler for now
 
     # Training dataset
     ind_tri_loader = dset.ind_train_loader
