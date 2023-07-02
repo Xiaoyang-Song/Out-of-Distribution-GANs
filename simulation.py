@@ -460,7 +460,7 @@ def simulate(args, config):
     ckpt_dir = config['path']['ckpt_dir']
     setting = config['setting']
     # Make checkpoint directory
-    dir_name = f"Eg_{args.n_ood}_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_[{args.wood_lr}|{args.gan_lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
+    dir_name = f"Eg_{args.n_ood}_[{args.h}]_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_[{args.wood_lr}|{args.gan_lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
     os.makedirs(os.path.join(ckpt_dir, setting, dir_name), exist_ok=True)
 
     f = open(os.path.join(ckpt_dir, setting, dir_name, "log.txt"), "w")
@@ -714,6 +714,9 @@ def generate_ind_ood_settings(config):
         lb=lb, ub=ub, m=m
     )
     torch.save(plotting_config, os.path.join(ckpt_dir, setting_id, 'plt_config.pt'))
+
+# Example command for G mode:
+# python3 simulation.py --mode=G --config=config/simulation/setting_1_config.yaml
 
 # Example command for R mode:
 # python3 simulation.py --config=config/simulation/R_config.yaml --mode=R --n_ood=32 --h=128 

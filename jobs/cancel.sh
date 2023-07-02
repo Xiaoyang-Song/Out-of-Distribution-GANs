@@ -1,17 +1,31 @@
 #!/bin/bash
 
 # Cancel jobs
-scancel 55199573
-scancel 55199572
-scancel 55199571
-scancel 55199570
-scancel 55199569
-scancel 55199555
-scancel 55199554
-scancel 55199553
-scancel 55199568
-scancel 55199551
-scancel 55199548
-scancel 55199562
-scancel 55199563
-scancel 55199561
+scancel 55209792
+scancel 55209793
+scancel 55209794
+scancel 55209795
+scancel 55209796
+scancel 55209797
+scancel 55209798
+scancel 55209799
+scancel 55209800
+scancel 55209801
+scancel 55209802
+scancel 55209803
+scancel 55209804
+scancel 55209805
+scancel 55209806
+scancel 55209807
+scancel 55209808
+scancel 55209809
+scancel 55209810
+scancel 55209811
+scancel 55209812
+scancel 55209813
+scancel 55209814
+scancel 55209815
+scancel 55209816
+scancel 55209817
+
+
