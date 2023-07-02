@@ -432,8 +432,8 @@ def plot_loss_curve(d_loss, g_loss, path):
 
     # Discriminator Loss
     axs[0].plot(iters, ce, label='CE', marker='^')
-    axs[0].plot(iters, w_ood, label=r'$W_{OoD}$', marker='o')
-    axs[0].plot(iters, w_d, label=r'$W_{Z}$', marker='x')
+    axs[0].plot(iters, w_ood, label=r'$W_{OoD}$', marker='o', markersize=3)
+    axs[0].plot(iters, w_d, label=r'$W_{Z}$', marker='x', markersize=3)
     # axs[0].set_xlabel('Training Epochs')
     axs[0].set_ylabel('Loss Value')
     axs[0].set_title("Discriminator Loss Curve")
@@ -441,20 +441,19 @@ def plot_loss_curve(d_loss, g_loss, path):
 
 
     # Generator Loss
-    axs[1].plot(iters, w_g, label=r'$W_{Z}$', marker='o')
+    axs[1].plot(iters, w_g, label=r'$W_{Z}$', marker='o', markersize=3)
     # axs[1].set_xlabel('Training Epochs')
     axs[1].set_ylabel('Loss Value')
     axs[1].set_title("Generator Loss Curve")
     axs[1].legend()
 
     # Distance
-    axs[2].plot(iters, dist, label=r'Dist', marker='x')
+    axs[2].plot(iters, dist, label=r'Dist', marker='o', markersize=3)
     axs[2].set_xlabel('Training Epochs')
     axs[2].set_ylabel('Euclidean Distance')
     axs[2].set_title("Distance Curve")
     axs[2].legend()
     fig.savefig(path, dpi=1500)
-
 
 def simulate(args, config):
     # Path & Settings
@@ -578,10 +577,69 @@ def simulate(args, config):
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
                  path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
     gan_stop = time.time()
-    f.write(f"OoD GAN Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 1)} mins\n")
+    f.write(f"OoD GAN Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
     
+
+    # OoD GAN with WOOD pretraining
+    gan_start = time.time()
+    f.write("\n------------- Out-of-Distribution GANs Training (With WOOD Pretraining) -------------\n") 
+    D_GAN = DSIM(args.h).to(DEVICE)
+    G_GAN = GSIM(args.h).to(DEVICE)
+    D_GAN.load_state_dict(D_WOOD.state_dict()) # Use pretrained weight from wood as starting point
+    D_solver = torch.optim.Adam(D_GAN.parameters(), lr=args.gan_lr, betas=(0.9, 0.999))
+    G_solver = torch.optim.Adam(G_GAN.parameters(), lr=args.gan_lr, betas=(0.9, 0.999))
+    criterion = nn.CrossEntropyLoss()
+    ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
+    ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
+    # Training
+    D_GAN, G_GAN, loss = oodgan_training(D=D_GAN, G=G_GAN, 
+                                    D_solver=D_solver, 
+                                    G_solver=G_solver, 
+                                    OOD_BATCH=OOD_BATCH, 
+                                    ood_bsz=args.bsz_ood, 
+                                    bsz_tri=args.bsz_tri, 
+                                    w_ce=args.w_ce, 
+                                    w_wass_ood=args.w_ood,
+                                    w_wass_gz=args.w_z,
+                                    w_dist=None,
+                                    d_step_ratio=args.n_d,
+                                    g_step_ratio=args.n_g,
+                                    ind_tri_loader=ind_tri_loader,
+                                    ind_val_loader=ind_val_loader,
+                                    max_epoch=max_epochs,
+                                    n_epoch=n_epochs_log,
+                                    n_step_log=25,
+                                    f=f)
+    
+    # Plot loss relevant curve
+    d_loss, g_loss = loss
+    d_loss, g_loss = np.array(d_loss), np.array(g_loss)
+    loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_W/_Pretraining_Loss_Curves.jpg")
+    plot_loss_curve(d_loss, g_loss, loss_path)
+    
+    # Save model checkpoints
+    torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN_pretrain.pt'))
+    torch.save(G_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'G_GAN_pretrain.pt'))
+
+    f.write("\nOoD GAN w/ Pretraining Performance\n")
+    threshold_95, tpr_95 = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.95)
+    f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
+    threshold_99, tpr_99  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.99)
+    f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
+    threshold_999, tpr_999  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.999)
+    f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n") 
+
+    # Plot
+    plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap_Pretraining.jpg")
+    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN w/ Pretraining', 
+                 IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
+    gan_stop = time.time()
+    f.write(f"OoD GAN (w/ pretraining) Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
+    
+    # Stop time logging
     stop = time.time()
-    f.write(f"Total time: {np.round(stop - start, 2)} s | About {np.round((stop-start)/60, 1)} mins\n")
+    f.write(f"Total time: {np.round(stop - start, 2)} s | About {np.round((stop-start)/60, 2)} mins | About {np.round((stop-start)/(60**2), 2)} hrs\n")
     f.close()
 
 def generate_ind_ood_settings(config):

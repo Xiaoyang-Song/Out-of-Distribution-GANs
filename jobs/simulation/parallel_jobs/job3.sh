@@ -6,9 +6,9 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=standard
-#SBATCH --mem=8GB
-#SBATCH --cpus-per-task=4
-#SBATCH --time=12:00:00
+#SBATCH --mem=4GB
+#SBATCH --cpus-per-task=8
+#SBATCH --time=24:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/j3.log
 
 module purge

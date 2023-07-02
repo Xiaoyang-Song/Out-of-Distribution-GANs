@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# scheduling simulation study on GL
 
+# scheduling simulation study on GL
+# Generate Settings
+sbatch jobs/simulation/generate_setting.sh
+
+# Jobs
 sbatch jobs/simulation/parallel_jobs/job1.sh
 sbatch jobs/simulation/parallel_jobs/job2.sh
 sbatch jobs/simulation/parallel_jobs/job3.sh
@@ -19,3 +23,12 @@ sbatch jobs/simulation/parallel_jobs/job14.sh
 sbatch jobs/simulation/parallel_jobs/job15.sh
 sbatch jobs/simulation/parallel_jobs/job16.sh
 sbatch jobs/simulation/parallel_jobs/job17.sh
+sbatch jobs/simulation/parallel_jobs/job18.sh
+sbatch jobs/simulation/parallel_jobs/job19.sh
+sbatch jobs/simulation/parallel_jobs/job20.sh
+sbatch jobs/simulation/parallel_jobs/job21.sh
+sbatch jobs/simulation/parallel_jobs/job22.sh
+sbatch jobs/simulation/parallel_jobs/job23.sh
+sbatch jobs/simulation/parallel_jobs/job24.sh
+sbatch jobs/simulation/parallel_jobs/job25.sh
+sbatch jobs/simulation/parallel_jobs/job26.sh
