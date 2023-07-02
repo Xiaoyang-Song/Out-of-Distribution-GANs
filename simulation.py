@@ -431,7 +431,7 @@ def plot_loss_curve(d_loss, g_loss, path):
     # fig.suptitle('Training Loss Curves')
 
     # Discriminator Loss
-    axs[0].plot(iters, ce, label='CE', marker='^')
+    axs[0].plot(iters, ce, label='CE', marker='^', markersize=3)
     axs[0].plot(iters, w_ood, label=r'$W_{OoD}$', marker='o', markersize=3)
     axs[0].plot(iters, w_d, label=r'$W_{Z}$', marker='x', markersize=3)
     # axs[0].set_xlabel('Training Epochs')
