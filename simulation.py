@@ -461,6 +461,8 @@ def simulate(args, config):
     setting = config['setting']
     # Make checkpoint directory
     dir_name = f"Eg_{args.n_ood}_[{args.h}]_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_[{args.wood_lr}|{args.gan_lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
+    if args.JID is not None:
+        dir_name = f"[{args.JID}]_" + dir_name
     os.makedirs(os.path.join(ckpt_dir, setting, dir_name), exist_ok=True)
 
     f = open(os.path.join(ckpt_dir, setting, dir_name, "log.txt"), "w")
@@ -743,6 +745,9 @@ if __name__ == '__main__':
     parser.add_argument('--bsz_ood', help='OoD batch size', type=int)
     parser.add_argument('--n_d', help='d_step_ratio', type=int)
     parser.add_argument('--n_g', help='g_step_ratio', type=int)
+
+    # Productivity
+    parser.add_argument('--JID', help='GL Job ID', type=int)
     
     args = parser.parse_args()
     assert args.config is not None, 'Please specify the config .yml file to proceed.'
