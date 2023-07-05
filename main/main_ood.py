@@ -105,7 +105,7 @@ for mc in range(mc_num):
     print(f"Monte Carlo Iteration {mc}")
 
     ###---------- logging information  ----------###
-    writer_name = log_dir + f"[{dset}]-[{n_ood}]-[{regime}]-[{mc}]"
+    writer_name = log_dir + f"[{dset.name}]-[{n_ood}]-[{regime}]-[{mc}]"
     ckpt_name = f'[{dset.name}]-[{n_ood}]-[{regime}]-[{mc}]'
 
     ###---------- models  ----------###
