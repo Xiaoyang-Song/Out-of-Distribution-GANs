@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path configuration
-conda activate OoD
+# conda activate OoD
 
 # Environment Configuration
 export PYTHONPATH=$PYTHONPATH$:`pwd`
