@@ -460,13 +460,13 @@ def simulate(args, config):
     ckpt_dir = config['path']['ckpt_dir']
     setting = config['setting']
     # Make checkpoint directory
-    dir_name = f"Eg_{args.n_ood}_[{args.h}]_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_[{args.wood_lr}|{args.gan_lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
+    dir_name = f"Eg_{args.n_ood}_[{args.h}]_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_[{args.wood_lr}|{args.d_lr}|{args.g_lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
     if args.JID is not None:
         dir_name = f"[{args.JID}]_" + dir_name
     os.makedirs(os.path.join(ckpt_dir, setting, dir_name), exist_ok=True)
 
     f = open(os.path.join(ckpt_dir, setting, dir_name, "log.txt"), "w")
-    f.write("Directory Name Format: Eg_[<n_ood>]_[<beta>]_[<CE>|<OoD>|<Z>]_[<WOOD_lr>|<GAN_lr>|<bsz_tri>|<bsz_val>|<bsz_ood>]_[<n_d>|<n_g>]\n")
+    f.write("Directory Name Format: Eg_[<n_ood>]_[<beta>]_[<CE>|<OoD>|<Z>]_[<WOOD_lr>|<D_lr>|<G_lr>|<bsz_tri>|<bsz_val>|<bsz_ood>]_[<n_d>|<n_g>]\n")
     f.write(f"Directory Name: {dir_name}\n")
     start = time.time()
 
@@ -721,8 +721,9 @@ def generate_ind_ood_settings(config):
 # python3 simulation.py --mode=G --config=config/simulation/setting_1_config.yaml
 
 # Example command for R mode:
-# python3 simulation.py --config=config/simulation/R_config.yaml --mode=R --n_ood=32 --h=128 
-# --beta=1 --w_ce=1 --w_ood=1 --w_z=1 --wood_lr=0.001 --gan_lr=0.0001 --bsz_tri=256 --bsz_val=256 --bsz_ood=4 --n_d=1 --n_g=1
+# python3 simulation.py --config=config/simulation/R_config.yaml --mode=R --JID=0 
+# --n_ood=32 --h=128 --beta=1 --w_ce=1 --w_ood=1 --w_z=1 --wood_lr=0.001 --d_lr=0.0001 
+# --g_lr=0.0001 --bsz_tri=256 --bsz_val=256 --bsz_ood=4 --n_d=1 --n_g=1
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
