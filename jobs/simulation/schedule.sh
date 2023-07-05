@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Path configuration
+conda activate OoD
+
+# Environment Configuration
+export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 # scheduling simulation study on GL
 # Generate Settings

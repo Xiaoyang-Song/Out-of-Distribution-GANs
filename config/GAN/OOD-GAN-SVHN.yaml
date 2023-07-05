@@ -27,30 +27,30 @@ model:
   D: "DenseNet"
   D_config:
     depth: 100
-  # D: "DC_D"
-  # D_config: null
   G: "Deep_G"
   G_config:
     noise_dim: 96
 
 train_config:
   mc: 3
-  max_epochs: 8
+  max_epochs: 16
   bsz_tri: 64
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
   optimizer:
     lr: 0.001
-    beta1: 0.9 # this is the default value used in WOOD
+    beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
     ce: 1
     wass: 0.1
     dist: 1 # Set to zero to check whether this is important
-  gd_step_ratio: 3
+  scaling: 0.01
+  d_step_ratio: 1
+  g_step_ratio: 1
   noise_dim: 96
   logging:
-    n_steps_log: 25
+    n_steps_log: 20
 
 eval_config:
   each_cls: False
