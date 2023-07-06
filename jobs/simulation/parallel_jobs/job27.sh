@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --partition=standard
 #SBATCH --mem=8GB
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=32
 #SBATCH --time=48:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/j27.log
 
