@@ -24,8 +24,8 @@ ood_batch_sizes: [2, 4, 8, 16, 32, 64] # generate OoD batch at the first place
 n_per_ind_cls: 8
 n_per_ood_cls: 15
 n_distribution: 100
-lb: -1
-ub: 7
+lb: -2
+ub: 10
 resolution: 400
 
 # path
