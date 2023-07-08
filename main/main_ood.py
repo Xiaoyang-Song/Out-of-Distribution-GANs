@@ -65,8 +65,8 @@ noise_dim = train_config['noise_dim']
 n_steps_log = train_config['logging']['n_steps_log']
 
 ###---------- Optimizer  ----------###
-lr, beta1, beta2 = train_config['optimizer'].values()
-print(f"Hyperparameters: lambda_ce={w_ce} & lambda_w={w_loss} & scaling={scaling} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz}")
+d_lr, g_lr, beta1, beta2 = train_config['optimizer'].values()
+print(f"Hyperparameters: lambda_ce={w_ce} & lambda_w={w_loss} & scaling={scaling} & d_lr={d_lr} & g_lr={g_lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz} & n_d: {d_step_ratio} & n_g: {g_step_ratio}")
 
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
@@ -116,8 +116,8 @@ for mc in range(mc_num):
     ###---------- checkpoint loading (if necessary)  ----------###
 
     ###---------- optimizers  ----------###
-    D_solver = torch.optim.Adam(D.parameters(), lr=lr, betas=(beta1, beta2))
-    G_solver = torch.optim.Adam(G.parameters(), lr=lr, betas=(beta1, beta2))
+    D_solver = torch.optim.Adam(D.parameters(), lr=d_lr, betas=(beta1, beta2))
+    G_solver = torch.optim.Adam(G.parameters(), lr=g_lr, betas=(beta1, beta2))
 
     ###---------- dataset  ----------###
     ind_loader = dset.ind_train_loader

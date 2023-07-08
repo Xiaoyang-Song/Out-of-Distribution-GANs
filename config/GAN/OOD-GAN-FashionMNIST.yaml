@@ -36,7 +36,8 @@ train_config:
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
   optimizer:
-    lr: 0.001
+    d_lr: 0.001
+    g_lr: 0.001
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
