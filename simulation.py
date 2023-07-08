@@ -246,6 +246,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
     ood_batch = OOD_BATCH.to(DEVICE)
     # Logging
     D_loss, G_loss = [], []
+    trajectory = []
     for epoch in tqdm(range(max_epoch)):
         D.train()
         G.train()
@@ -309,6 +310,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
         
         D_loss.append((ind_ce_loss.detach().item(), w_ood.detach().item(), w_fake.detach().item()))
         G_loss.append((w_z.detach().item(), dist.detach().item()))
+        trajectory.append(np.array(torch.mean(Gz.detach(), dim=0)))
 
         D.eval()
         with torch.no_grad():
@@ -324,7 +326,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
                 if f is not None:
                     f.write(f"Epoch  # {epoch + 1} | Val accuracy: {np.round(np.mean(val_acc), 4)}\n")
     
-    return D, G, (D_loss, G_loss)
+    return D, G, (D_loss, G_loss, np.array(trajectory))
 
 def calculate_accuracy(D, ind, ood, tnr):
     z = torch.softmax(D(torch.tensor(ind, dtype=torch.float32)), dim=-1)
@@ -345,6 +347,16 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, 
     # print(m)
     fig, ax = plt.subplots()
     with torch.no_grad():
+        # Generated samples
+        if G is not None:
+            n_gen = 10
+            seed = torch.rand((n_gen, 2), device=DEVICE)
+            Gz = G(seed).detach().numpy()
+            lb_g = np.floor(np.min(Gz)) - 1
+            ub_g = np.floor(np.max(Gz)) + 1
+            lb = min(lb_g, lb)
+            ub = max(ub_g, ub)
+        
         xi = np.linspace(lb, ub, m, endpoint=True)
         yi = np.linspace(lb, ub, m, endpoint=True)
         xy_pos = np.array(list(product(xi, yi)))
@@ -379,13 +391,8 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, 
     for idx in ood_cls:
         plt.scatter(OOD_X[:,0][OOD_Y==idx][ood_idx], OOD_X[:,1][OOD_Y==idx][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.3)
 
-    # Generated samples
     if G is not None:
-        n_gen = 10
-        seed = torch.rand((n_gen, 2), device=DEVICE)
-        Gz = G(seed).detach().numpy()
         plt.scatter(Gz[:,0], Gz[:,1], marker='x', c='#00b384', sizes=[30]*n_gen, alpha=0.5)
-
     plt.title(f"{method} Wasserstein Scores Heatmap")
     plt.xlabel("X1")
     plt.ylabel("X2")
@@ -409,6 +416,30 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, 
     # plt.show()
     plt.close()
     # return plt
+
+def plot_trajectory(trajectory, IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, IND_CLS, OOD_CLS, path):
+    # Plot generated data
+    n = int(len(IND_X) / len(IND_CLS))
+    n_plot = int(n / 10) # Hardcoded, not important
+    # print(n, n_plot)
+    for idx in IND_CLS:
+        sample_idx = np.random.choice(n, n_plot, replace=False)
+        plt.scatter(IND_X[:,0][IND_Y==idx][sample_idx], IND_X[:,1][IND_Y==idx][sample_idx], label =f"InD - Class {idx+1}", sizes=[35]*len(IND_X),alpha=0.8)
+    for idx in OOD_CLS:
+        sample_idx = np.random.choice(n, n_plot, replace=False)
+        plt.scatter(OOD_X[:,0][OOD_Y==idx][sample_idx], OOD_X[:,1][OOD_Y==idx][sample_idx], label =f"OoD - Class {idx + 1}", sizes=[35]*len(OOD_X), alpha=0.8)
+    # OOD BATCH
+    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="Observed OoD",marker='^', sizes=[30]*len(OOD_X), alpha=1)
+    # Trajectory
+    plt.scatter(trajectory[:,0], trajectory[:,1], label=f"G(z)", marker='x', c='#00b384', sizes=[30]*len(trajectory), alpha=0.5)
+    plt.scatter(trajectory[:,0][0], trajectory[:,1][0], label=f"Start Point", marker='x', c='red', alpha=0.8)
+    plt.scatter(trajectory[:,0][-1], trajectory[:,1][-1],  label=f"End Point", marker='x', c='blue', alpha=0.8)
+    plt.legend()
+    plt.xlabel("X1")
+    plt.ylabel("X2")
+    plt.title("Trajectory of Generated Data")
+    plt.savefig(path, dpi=1500)
+    plt.close()
 
 def plot_distribution(D, IND_X, OOD_X, method):
     with torch.no_grad():
@@ -454,6 +485,7 @@ def plot_loss_curve(d_loss, g_loss, path):
     axs[2].set_title("Distance Curve")
     axs[2].legend()
     fig.savefig(path, dpi=1500)
+    plt.close()
 
 def simulate(args, config):
     # Path & Settings
@@ -556,7 +588,7 @@ def simulate(args, config):
                                     f=f)
     
     # Plot loss relevant curve
-    d_loss, g_loss = loss
+    d_loss, g_loss, trajectory = loss
     d_loss, g_loss = np.array(d_loss), np.array(g_loss)
     loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Loss_Curves.jpg")
     plot_loss_curve(d_loss, g_loss, loss_path)
@@ -573,15 +605,19 @@ def simulate(args, config):
     threshold_999, tpr_999  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.999)
     f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n") 
 
-    # Plot
+    # Plot Wasserstein Score Heatmap
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap.jpg")
     plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
                  path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
+
+    # Plot Gz trajectory plots
+    plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_G_Trajectory.jpg")
+    plot_trajectory(trajectory, IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, IND_CLS, OOD_CLS, plt_path)
+
     gan_stop = time.time()
     f.write(f"OoD GAN Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
     
-
     # OoD GAN with WOOD pretraining
     gan_start = time.time()
     f.write("\n------------- Out-of-Distribution GANs Training (With WOOD Pretraining) -------------\n") 
@@ -614,7 +650,7 @@ def simulate(args, config):
                                     f=f)
     
     # Plot loss relevant curve
-    d_loss, g_loss = loss
+    d_loss, g_loss, trajectory = loss
     d_loss, g_loss = np.array(d_loss), np.array(g_loss)
     loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Pretraining_Loss_Curves.jpg")
     plot_loss_curve(d_loss, g_loss, loss_path)
@@ -636,6 +672,11 @@ def simulate(args, config):
     plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN with Pretraining', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
                  path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
+    
+    # Plot Gz trajectory plots
+    plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_G_Trajectory_Pretraining.jpg")
+    plot_trajectory(trajectory, IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, IND_CLS, OOD_CLS, plt_path)
+
     gan_stop = time.time()
     f.write(f"OoD GAN (w/ pretraining) Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
     

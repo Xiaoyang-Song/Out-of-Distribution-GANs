@@ -8,7 +8,7 @@
 #SBATCH --partition=standard
 #SBATCH --mem=8GB
 #SBATCH --cpus-per-task=8
-#SBATCH --time=48:00:00
+#SBATCH --time=24:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/j37.log
 
 module purge

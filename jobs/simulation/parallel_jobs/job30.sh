@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#SBATCH --account=alkontar1
+#SBATCH --account=sunwbgt0
 #SBATCH --job-name=J30
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=standard
-#SBATCH --mem=8GB
+#SBATCH --mem=4GB
 #SBATCH --cpus-per-task=8
-#SBATCH --time=48:00:00
+#SBATCH --time=24:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/j30.log
 
 module purge
