@@ -39,18 +39,19 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/simulation/parallel_jobs/job26.sh
 
 # n_g > n_d experiments (jobs)
-sbatch jobs/simulation/parallel_jobs/job27.sh
-sbatch jobs/simulation/parallel_jobs/job28.sh
-sbatch jobs/simulation/parallel_jobs/job29.sh
-sbatch jobs/simulation/parallel_jobs/job30.sh
-sbatch jobs/simulation/parallel_jobs/job31.sh
-sbatch jobs/simulation/parallel_jobs/job32.sh
-sbatch jobs/simulation/parallel_jobs/job33.sh
-sbatch jobs/simulation/parallel_jobs/job34.sh
-sbatch jobs/simulation/parallel_jobs/job35.sh
-sbatch jobs/simulation/parallel_jobs/job36.sh
-sbatch jobs/simulation/parallel_jobs/job37.sh
+# sbatch jobs/simulation/parallel_jobs/job27.sh
+# sbatch jobs/simulation/parallel_jobs/job28.sh
+# sbatch jobs/simulation/parallel_jobs/job29.sh
+# sbatch jobs/simulation/parallel_jobs/job30.sh
+# sbatch jobs/simulation/parallel_jobs/job31.sh
+# sbatch jobs/simulation/parallel_jobs/job32.sh
+# sbatch jobs/simulation/parallel_jobs/job33.sh
+# sbatch jobs/simulation/parallel_jobs/job34.sh
+# sbatch jobs/simulation/parallel_jobs/job35.sh
+# sbatch jobs/simulation/parallel_jobs/job36.sh
+# sbatch jobs/simulation/parallel_jobs/job37.sh
 sbatch jobs/simulation/parallel_jobs/job38.sh
-sbatch jobs/simulation/parallel_jobs/job39.sh
+# sbatch jobs/simulation/parallel_jobs/job39.sh
 sbatch jobs/simulation/parallel_jobs/job40.sh
-sbatch jobs/simulation/parallel_jobs/job41.sh
+# sbatch jobs/simulation/parallel_jobs/job41.sh
+sbatch jobs/simulation/parallel_jobs/job42.sh
