@@ -28,10 +28,10 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/svhn/wood/svhn-64.sh
 # sbatch jobs/svhn/wood/svhn-128.sh
 # sbatch jobs/svhn/wood/svhn-256.sh
-# sbatch jobs/svhn/wood/svhn-512.sh
-# sbatch jobs/svhn/wood/svhn-1024.sh
-# sbatch jobs/svhn/wood/svhn-2048.sh
-
+sbatch jobs/svhn/wood/svhn-512.sh
+sbatch jobs/svhn/wood/svhn-1024.sh
+sbatch jobs/svhn/wood/svhn-2048.sh
+# sbatch jobs/svhn/wood/svhn-4096.sh
 
 # FashionMNIST OoD GAN
 # sbatch jobs/fashionmnist/ood-gan/4.sh
@@ -48,7 +48,6 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 
 # SVHN OoD GAN
-# SVHN WOOD
 # sbatch jobs/svhn/ood-gan/svhn-4.sh
 # sbatch jobs/svhn/ood-gan/svhn-8.sh
 # sbatch jobs/svhn/ood-gan/svhn-16.sh
@@ -56,7 +55,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/svhn/ood-gan/svhn-64.sh
 # sbatch jobs/svhn/ood-gan/svhn-128.sh
 # sbatch jobs/svhn/ood-gan/svhn-256.sh
-sbatch jobs/svhn/ood-gan/svhn-512.sh
-sbatch jobs/svhn/ood-gan/svhn-1024.sh
-sbatch jobs/svhn/ood-gan/svhn-2048.sh
+# sbatch jobs/svhn/ood-gan/svhn-512.sh
+# sbatch jobs/svhn/ood-gan/svhn-1024.sh
+# sbatch jobs/svhn/ood-gan/svhn-2048.sh
 # sbatch jobs/svhn/ood-gan/svhn-4096.sh
