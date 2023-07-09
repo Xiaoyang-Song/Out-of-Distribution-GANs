@@ -158,6 +158,16 @@ class EVALER():
         # Refer to class_level statistics
         self.cls_stats = defaultdict(list)
 
+    def save(self, path):
+        # Do not save unnecessary stuffs
+        self.xin_t = None # InD training dataset & loader
+        # self.xin_t_loader = xin_t_loader
+        self.xin_v = None  # InD Testing dataset & loader
+        self.xin_v_loader = None
+        self.xout_v = None  # OoD Testing dataset & loader
+        self.xout_v_loader = None
+        torch.save(self, path)
+
     def evaluate(self, D, tag, G=None, each_class=False, cls_idx=None):
         print("Computing evaluation statistics...")
         _, yxoutv = tuple_list_to_tensor(self.xout_v)

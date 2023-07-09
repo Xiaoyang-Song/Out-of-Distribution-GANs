@@ -93,7 +93,7 @@ dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
                 n_ood, log_dir, method, num_classes, n_lr)
-torch.save(evaler, log_dir + "eval.pt")
+# torch.save(evaler, log_dir + "eval.pt")
 
 # Load OoD
 fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
@@ -148,7 +148,7 @@ for mc in range(mc_num):
 
 # Display & save statistics
 evaler.display_stats()
-torch.save(evaler, log_dir + "eval.pt")
+evaler.save(log_dir + "eval.pt")
 print("EVALER & Stats saved successfully!")
 
 stop = time.time()

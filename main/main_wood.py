@@ -186,7 +186,7 @@ for mc in range(mc_num):
 
 # Display & save statistics
 evaler.display_stats()
-torch.save(evaler, log_dir + "eval.pt")
+evaler.save(log_dir + "eval.pt")
 print("EVALER & Stats saved successfully!")
 
 stop = time.time()
