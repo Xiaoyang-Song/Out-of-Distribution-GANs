@@ -160,9 +160,7 @@ class EVALER():
 
     def save(self, path):
         # Do not save unnecessary stuffs
-        self.xin_t = None # InD training dataset & loader
-        # self.xin_t_loader = xin_t_loader
-        self.xin_v = None  # InD Testing dataset & loader
+        self.xin_t, self.xin_v = None, None  # InD Testing dataset & loader
         self.xin_v_loader = None
         self.xout_v = None  # OoD Testing dataset & loader
         self.xout_v_loader = None
