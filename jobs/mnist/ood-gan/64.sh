@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --partition=standard
 #SBATCH --mem=8GB
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=50
 #SBATCH --time=240:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANM64.log
 
