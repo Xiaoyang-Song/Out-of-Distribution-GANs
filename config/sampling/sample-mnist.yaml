@@ -1,0 +1,12 @@
+dataset:
+  dset: MNIST
+  is_within_dset: True
+  ind: [2, 3, 6, 8, 9]
+  ood: [1, 7]
+
+path:
+  sample_dir: ../checkpoint/OOD-Sample/
+
+experiment:
+  regime: Balanced
+  observed_cls: null
