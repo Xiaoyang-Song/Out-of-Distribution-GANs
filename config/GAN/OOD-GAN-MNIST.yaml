@@ -1,19 +1,18 @@
 dataset:
-  dset: MNIST
+  dset: FashionMNIST
   is_within_dset: True
   ind: [2, 3, 6, 8, 9]
   ood: [1, 7]
 
 path:
-  root_dir: ../checkpoint/
-  pretrained_dir: ../checkpoint/pretrained/
+  root_dir: checkpoint/
+  pretrained_dir: checkpoint/pretrained/
+  sample_dir: checkpoint/OOD-Sample/
 
 experiment:
   method: OOD-GAN
   regime: Balanced
   observed_cls: null
-
-n_ood: 1
 
 dset_info:
   img_info:
@@ -22,18 +21,10 @@ dset_info:
     C: 1
   num_class: 5
 
-# model:
-#   D: "DC_D"
-#   D_config: null
-#   G: "DC_G"
-#   G_config:
-#     noise_dim: 96
 model:
   D: "DenseNet"
   D_config:
     depth: 100
-  # D: "DC_D"
-  # D_config: null
   G: "Deep_G"
   G_config:
     noise_dim: 96
@@ -41,22 +32,26 @@ model:
 train_config:
   mc: 3
   max_epochs: 16
-  bsz_tri: 50
-  bsz_val: 64 # this is not used in general
+  bsz_tri: 64
+  bsz_val: 64 # this is used for evaluation
+  ood_bsz: 32
+  optimizer:
+    d_lr: 0.001
+    g_lr: 0.001
+    beta1: 0.5 # this is the default value used in WOOD
+    beta2: 0.999
   hp:
     ce: 1
     wass: 0.1
-    dist: 1
-  gd_step_ratio: 1
+    dist: 1 # Set to zero to check whether this is important
+  scaling: 0.01
+  d_step_ratio: 1
+  g_step_ratio: 1
   noise_dim: 96
-  optimizer:
-    lr: 0.001
-    beta1: 0.9
-    beta2: 0.999
   logging:
-    n_steps_log: 5
+    n_steps_log: 20
 
 eval_config:
   each_cls: False
-  cls_idx: [1, 7]
+  cls_idx: [8, 9]
   n_lr: 5000
