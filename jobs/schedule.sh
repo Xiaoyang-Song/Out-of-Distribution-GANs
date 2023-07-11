@@ -49,7 +49,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # MNIST OoD GAN
 sbatch jobs/mnist/ood-gan/4.sh
 sbatch jobs/mnist/ood-gan/8.sh
-sbatch jobs/mnist/ood-gan/16.sh
+# sbatch jobs/mnist/ood-gan/16.sh
 sbatch jobs/mnist/ood-gan/32.sh
 # sbatch jobs/mnist/ood-gan/64.sh
 # sbatch jobs/mnist/ood-gan/128.sh
