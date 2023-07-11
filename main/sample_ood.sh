@@ -5,10 +5,11 @@
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=14GB
-#SBATCH --time=1:00:00
+#SBATCH --partition=standard
+#SBATCH --mem=4GB
+#SBATCH --cpus-per-task=64
+#SBATCH --time=24:00:00
+#SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/sample_ood.log
 
 module purge
 conda init bash
