@@ -89,3 +89,6 @@ sbatch jobs/mnist-fashionmnist/ood-gan/4096.sh
 # sbatch jobs/svhn/ood-gan/svhn-1024.sh
 # sbatch jobs/svhn/ood-gan/svhn-2048.sh
 # sbatch jobs/svhn/ood-gan/svhn-4096.sh
+
+# Check memory on disk
+home-quota
