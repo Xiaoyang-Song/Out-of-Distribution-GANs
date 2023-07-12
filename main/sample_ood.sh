@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --partition=standard
 #SBATCH --mem=4GB
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=4
 #SBATCH --time=24:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/sample_ood.log
 
