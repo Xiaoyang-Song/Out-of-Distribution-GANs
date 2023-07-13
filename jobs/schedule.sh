@@ -39,7 +39,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 # FashionMNIST OoD GAN
 # sbatch jobs/fashionmnist/ood-gan/4.sh
-# sbatch jobs/fashionmnist/ood-gan/8.sh
+sbatch jobs/fashionmnist/ood-gan/8.sh
 # sbatch jobs/fashionmnist/ood-gan/16.sh
 # sbatch jobs/fashionmnist/ood-gan/32.sh
 # sbatch jobs/fashionmnist/ood-gan/64.sh
@@ -60,10 +60,10 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/mnist/ood-gan/256.sh
 # sbatch jobs/mnist/ood-gan/512.sh
 # sbatch jobs/mnist/ood-gan/1024.sh
-sbatch jobs/mnist/ood-gan/2048.sh
+# sbatch jobs/mnist/ood-gan/2048.sh
 # sbatch jobs/mnist/ood-gan/4096.sh
 
-# MNIST-FashionMNSIT OoD GAN
+# MNIST-FashionMNIST OoD GAN
 # sbatch jobs/mnist-fashionmnist/ood-gan/4.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/8.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/16.sh
@@ -71,7 +71,7 @@ sbatch jobs/mnist/ood-gan/2048.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/64.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/128.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/256.sh
-sbatch jobs/mnist-fashionmnist/ood-gan/512.sh
+# sbatch jobs/mnist-fashionmnist/ood-gan/512.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/1024.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/2048.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/4096.sh

@@ -263,8 +263,8 @@ class DSET():
         return ood_img_batch, ood_img_label
 
 
-def line(n=40):
-    return "-"*n
+def line(n=80):
+    return "="*n
 
 
 if __name__ == '__main__':

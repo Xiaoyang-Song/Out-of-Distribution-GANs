@@ -63,6 +63,7 @@ d_step_ratio = train_config['d_step_ratio']
 g_step_ratio = train_config['g_step_ratio']
 noise_dim = train_config['noise_dim']
 n_steps_log = train_config['logging']['n_steps_log']
+print(f"Number of Epochs: {max_epoch}.")
 
 ###---------- Optimizer  ----------###
 d_lr, g_lr, beta1, beta2 = train_config['optimizer'].values()
