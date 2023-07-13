@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --account=sunwbgt0
-#SBATCH --job-name=OoD-training
+#SBATCH --account=jhjin1
+#SBATCH --job-name=CSWD4
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
@@ -9,6 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=16GB
 #SBATCH --time=144:00:00
+#SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/CSWD4.log
 
 module purge
 conda init bash
