@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --account=sunwbgt0
+#SBATCH --account=jhjin1
 #SBATCH --job-name=GANM128
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
@@ -8,7 +8,7 @@
 #SBATCH --partition=standard
 #SBATCH --mem=8GB
 #SBATCH --cpus-per-task=32
-#SBATCH --time=288:00:00
+#SBATCH --time=240:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANM128.log
 
 module purge
