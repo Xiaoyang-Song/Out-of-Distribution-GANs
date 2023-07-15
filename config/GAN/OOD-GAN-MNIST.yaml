@@ -1,5 +1,5 @@
 dataset:
-  dset: FashionMNIST
+  dset: MNIST
   is_within_dset: True
   ind: [2, 3, 6, 8, 9]
   ood: [1, 7]
@@ -44,7 +44,7 @@ train_config:
     ce: 1
     wass: 0.1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 0.01
+  scaling: 0.1
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96
