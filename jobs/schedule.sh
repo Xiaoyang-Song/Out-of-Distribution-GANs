@@ -56,7 +56,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/mnist/ood-gan/16.sh
 # sbatch jobs/mnist/ood-gan/32.sh
 # sbatch jobs/mnist/ood-gan/64.sh
-sbatch jobs/mnist/ood-gan/128.sh
+# sbatch jobs/mnist/ood-gan/128.sh
 # sbatch jobs/mnist/ood-gan/256.sh
 # sbatch jobs/mnist/ood-gan/512.sh
 # sbatch jobs/mnist/ood-gan/1024.sh
@@ -76,6 +76,19 @@ sbatch jobs/mnist/ood-gan/128.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/2048.sh
 # sbatch jobs/mnist-fashionmnist/ood-gan/4096.sh
 
+# CIFAR10-SVHN OoD GAN
+# sbatch jobs/cifar10-svhn/ood-gan/4.sh
+sbatch jobs/cifar10-svhn/ood-gan/8.sh
+sbatch jobs/cifar10-svhn/ood-gan/16.sh
+sbatch jobs/cifar10-svhn/ood-gan/32.sh
+sbatch jobs/cifar10-svhn/ood-gan/64.sh
+sbatch jobs/cifar10-svhn/ood-gan/128.sh
+# sbatch jobs/cifar10-svhn/ood-gan/256.sh
+# sbatch jobs/cifar10-svhn/ood-gan/512.sh
+# sbatch jobs/cifar10-svhn/ood-gan/1024.sh
+# sbatch jobs/cifar10-svhn/ood-gan/2048.sh
+# sbatch jobs/cifar10-svhn/ood-gan/4096.sh
+
 
 # SVHN OoD GAN
 # sbatch jobs/svhn/ood-gan/svhn-4.sh
@@ -92,3 +105,6 @@ sbatch jobs/mnist/ood-gan/128.sh
 
 # Check memory on disk
 home-quota
+
+# Check current job lists
+squeue -u xysong
