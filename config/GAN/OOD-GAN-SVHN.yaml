@@ -48,7 +48,7 @@ train_config:
     dist: 1 # Set to zero to check whether this is important
   scaling: 0.01
   d_step_ratio: 1
-  g_step_ratio: 2
+  g_step_ratio: 1
   noise_dim: 96
   logging:
     n_steps_log: 20
