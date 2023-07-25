@@ -8,6 +8,7 @@ from config import *
 from dataset import *
 from models.gans import *
 from models.dc_gan_model import *
+from models.model import *
 from utils import *
 from models.ood_gan_backbone import *
 from ood_gan import *
@@ -266,26 +267,28 @@ class UMAPER():
 
 if __name__ == "__main__":
     # Test visualization script
+    C = 3
     # dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
-    dset = DSET('FashionMNIST-MNIST', False, 256, 128, None, None)
+    dset = DSET('SVHN', True, 256, 128, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
     umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
 
-    xood = torch.load("other/x_ood-[256]-[2].pt")[0]
+    xood = torch.load("other/OOD-Balanced-32.pt")[0]
     ic(xood.shape)
-    G = DC_CG(10,  96)
-    # G = DC_G(96)
-    G.load_state_dict(torch.load("other/[FashionMNIST-MNIST]-[256]-[Balanced]-[2]_[1].pt",
+    G = Generator(96, C)
+    G.load_state_dict(torch.load("other/[SVHN]-[32]-[Balanced]-[1]_[15].pt",
                                  map_location=torch.device('cpu'))['G-state'])
 
-    seed = torch.rand(1000, 96, device=DEVICE) * 2 - 1
-    cls_label = list(range(10))*100
-    ic(len(cls_label))
-    gz = G(seed, cls_label)
+    # G.load_state_dict(torch.load("other/[FashionMNIST]-[8]-[Balanced]-[2]_[9].pt",
+                                #  map_location=torch.device('cpu'))['G-state'])
+    seed = torch.rand((100, 96, 1, 1), device=DEVICE) * 2 - 1
+    gz = G(seed)
     # ic(gz.shape)
     # gz = G(seed)
     # ic(gz.shape)
 
     umaper.visualize(xood.detach(), gz.detach(), [
         "lightgray", "blue", "lightgreen", "orange"])
-    plt.imshow(gz[0].detach().squeeze())
+    plt.imshow(gz[0].reshape((32, 32, 3)).detach().squeeze())
+    # plt.imshow(gz[0].detach().squeeze())
     plt.show()
+    

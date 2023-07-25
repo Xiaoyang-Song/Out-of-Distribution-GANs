@@ -19,7 +19,11 @@ with open(f"res/regime-{regime}-results.json", 'r') as f:
     labels, colors, markers, linestyles = config.values()
     # plt.figure(figsize=(8, 6))
     for idx, (item, val) in enumerate(result.items()):
-        plt.plot(n, val, label=labels[idx], linestyle=linestyles[idx],
+        if type(val) == list:
+            vals = val
+        else:
+            vals = [val] * n
+        plt.plot(n, vals, label=labels[idx], linestyle=linestyles[idx],
                  color=colors[idx], marker=markers[idx], markersize=4)
         # plt.fill_between(
         #     n, val-np.array(std[item])*100, val+np.array(std[item])*100, alpha=0.10, color=colors[idx])
