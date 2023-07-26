@@ -11,4 +11,4 @@ experiment:
   # regime: Balanced
   # observed_cls: null
   regime: Imbalanced
-  observed_cls: 8
+  observed_cls: 0
