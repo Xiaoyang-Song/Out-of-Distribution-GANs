@@ -250,7 +250,7 @@ class DSET():
 
     def ood_sample(self, n, regime, idx=None):
         dset = self.train if self.within_dset else self.ood_train_by_class
-        cls_lst = self.ood if self.within_dset else np.arange(10)
+        cls_lst = np.array(self.ood) if self.within_dset else np.arange(10)
         if regime == 'Balanced':
             idx_lst = cls_lst
         elif regime == 'Imbalanced':
