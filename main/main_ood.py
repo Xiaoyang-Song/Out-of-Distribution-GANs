@@ -110,8 +110,8 @@ for mc in range(mc_num):
     print(D_model)
     print(G_model)
     D, G = model_getter(D_model, D_config, G_model, G_config)
-    evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
-    ic("Test Done.")
+    # evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
+    # ic("Test Done.")
 
     ###---------- checkpoint loading (if necessary)  ----------###
 

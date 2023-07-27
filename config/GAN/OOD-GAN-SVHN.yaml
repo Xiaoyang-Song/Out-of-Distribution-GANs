@@ -46,7 +46,7 @@ train_config:
     ce: 1
     wass: 0.1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 0.1
+  scaling: 0.01
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96
