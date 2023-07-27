@@ -197,9 +197,6 @@ class EVALER():
                 # plot
                 w_lst.append(woutv_idx)
                 legend_lst.append(f"OoD-[Class {idx}]")
-                if self.method == 'OOD-GAN':
-                    cls_lr_eval = lr.eval(winv, woutv_idx)
-                    result += cls_lr_eval
                 self.cls_stats[idx].append(result)
         else:
             w_lst.append(woutv)

@@ -25,9 +25,7 @@ method, regime, observed_cls = config['experiment'].values()
 print(f"Experiment regime: {regime}")
 print(f"Method: {method}")
 print(line())
-if regime == 'Imbalanced':
-    assert observed_cls is not None
-    print(f"Observed Classes are: {observed_cls}")
+
 n_ood = args.n_ood
 print(f"Number of observed OoD samples (class-level): {n_ood}")
 log_dir = root_dir + f"{method}/{dset}/{regime}/{n_ood}/"
@@ -112,6 +110,8 @@ for mc in range(mc_num):
     print(D_model)
     print(G_model)
     D, G = model_getter(D_model, D_config, G_model, G_config)
+    evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
+    ic("Test Done.")
 
     ###---------- checkpoint loading (if necessary)  ----------###
 
