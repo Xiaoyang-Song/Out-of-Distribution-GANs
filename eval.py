@@ -213,7 +213,7 @@ class EVALER():
         print_stats(self.tpr99, "TPR@99TNR")
         print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
         print("\n" + line())
-        return
+        # return
         if len(self.cls_stats) != 0:
             for key, val in self.cls_stats.items():
                 print("\n" + line())
@@ -223,11 +223,11 @@ class EVALER():
                 print_stats(vals[:, 1], "TPR@95TNR-Threshold")
                 print_stats(vals[:, 2], "TPR@99TNR")
                 print_stats(vals[:, 3], "TPR@99TNR-Threshold")
-                if len(val) > 4:
-                    lr_stats = vals[4:7]
-                    print_stats(lr_stats[:, 0], "InD Accuracy")
-                    print_stats(lr_stats[:, 1], "OoD Accuracy")
-                    print_stats(lr_stats[:, 2], "AUROC")
+                # if len(val) > 4:
+                #     lr_stats = vals[4:7]
+                #     print_stats(lr_stats[:, 0], "InD Accuracy")
+                #     print_stats(lr_stats[:, 1], "OoD Accuracy")
+                #     print_stats(lr_stats[:, 2], "AUROC")
 
 
 class UMAPER():
