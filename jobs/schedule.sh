@@ -91,8 +91,8 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 
 # SVHN OoD GAN
-# sbatch jobs/svhn/ood-gan/svhn-4.sh
-# sbatch jobs/svhn/ood-gan/svhn-8.sh
+sbatch jobs/svhn/ood-gan/svhn-4.sh
+sbatch jobs/svhn/ood-gan/svhn-8.sh
 # sbatch jobs/svhn/ood-gan/svhn-16.sh
 # sbatch jobs/svhn/ood-gan/svhn-32.sh
 # sbatch jobs/svhn/ood-gan/svhn-64.sh
@@ -109,12 +109,26 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/fashionmnist-r2/ood-gan/16.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/32.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/64.sh
-sbatch jobs/fashionmnist-r2/ood-gan/128.sh
-sbatch jobs/fashionmnist-r2/ood-gan/256.sh
-sbatch jobs/fashionmnist-r2/ood-gan/512.sh
+# sbatch jobs/fashionmnist-r2/ood-gan/128.sh
+# sbatch jobs/fashionmnist-r2/ood-gan/256.sh
+# sbatch jobs/fashionmnist-r2/ood-gan/512.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/1024.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/2048.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/4096.sh
+
+
+# SVHN OoD GAN - Regime II
+sbatch jobs/svhn-r2/ood-gan/svhn-4.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-8.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-16.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-32.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-64.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-128.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-256.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-512.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-1024.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-2048.sh
+sbatch jobs/svhn-r2/ood-gan/svhn-4096.sh
 
 # Check memory on disk
 home-quota
