@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --account=sunwbgt98
-#SBATCH --job-name=GANSV8
+#SBATCH --job-name=GANSV8-R1
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
