@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#SBATCH --account=sunwbgt98
+#SBATCH --account=alkontar1
 #SBATCH --job-name=GANSV8-R1
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=14GB
-#SBATCH --time=120:00:00
+#SBATCH --mem-per-gpu=8GB
+#SBATCH --time=96:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANSV8.log
 
 module purge
