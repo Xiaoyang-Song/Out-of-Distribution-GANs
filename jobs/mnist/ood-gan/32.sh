@@ -5,10 +5,10 @@
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
-#SBATCH --partition=standard
-#SBATCH --mem=8GB
-#SBATCH --cpus-per-task=32
-#SBATCH --time=240:00:00
+#SBATCH --partition=gpu
+#SBATCH --gres=gpu:1
+#SBATCH --mem-per-gpu=8GB
+#SBATCH --time=96:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANM32.log
 
 
