@@ -37,7 +37,7 @@ train_config:
   ood_bsz: 10
   optimizer:
     d_lr: 0.001
-    g_lr: 0.001
+    g_lr: 0.005
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
@@ -46,7 +46,7 @@ train_config:
     dist: 1 # Set to zero to check whether this is important
   scaling: 0.01
   d_step_ratio: 1
-  g_step_ratio: 2
+  g_step_ratio: 1
   noise_dim: 96
   logging:
     n_steps_log: 20
