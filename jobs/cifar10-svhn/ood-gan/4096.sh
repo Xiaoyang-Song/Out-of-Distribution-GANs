@@ -7,8 +7,8 @@
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=16GB
-#SBATCH --time=240:00:00
+#SBATCH --mem-per-gpu=12GB
+#SBATCH --time=168:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/CSGAN4096.log
 
 module purge

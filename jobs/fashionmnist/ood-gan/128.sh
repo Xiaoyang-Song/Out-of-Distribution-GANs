@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH --account=sunwbgt0
+#SBATCH --account=sunwbgt98
 #SBATCH --job-name=GANFM128
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=16GB
+#SBATCH --mem-per-gpu=8GB
 #SBATCH --time=144:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANFM128.log
 

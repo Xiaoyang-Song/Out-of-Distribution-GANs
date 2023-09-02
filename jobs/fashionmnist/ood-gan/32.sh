@@ -7,7 +7,7 @@
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=16GB
+#SBATCH --mem-per-gpu=8GB
 #SBATCH --time=144:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANFM32.log
 
