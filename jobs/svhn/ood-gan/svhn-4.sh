@@ -8,7 +8,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=8GB
-#SBATCH --time=96:00:00
+#SBATCH --time=120:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANSV4.log
 
 module purge
