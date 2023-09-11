@@ -33,13 +33,13 @@ model:
 
 train_config:
   mc: 3
-  max_epochs: 16
-  bsz_tri: 64
-  bsz_val: 64 # this is used for evaluation
-  ood_bsz: 32
+  max_epochs: 10
+  bsz_tri: 50
+  bsz_val: 50 # this is used for evaluation
+  ood_bsz: 10
   optimizer:
     d_lr: 0.001
-    g_lr: 0.001
+    g_lr: 0.005
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
@@ -48,7 +48,7 @@ train_config:
     dist: 1 # Set to zero to check whether this is important
   scaling: 0.01
   d_step_ratio: 1
-  g_step_ratio: 2
+  g_step_ratio: 1
   noise_dim: 96
   logging:
     n_steps_log: 20
