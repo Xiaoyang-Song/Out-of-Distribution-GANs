@@ -15,4 +15,4 @@ module purge
 conda init bash
 conda activate OoD
 
-python3 main/main_ood.py --config=config/GAN/OOD-GAN-SVHN.yaml --n_ood=1024 > checkpoint/log/SVHN/OOD-GAN/log-1024.txt
+python3 main/main_ood.py --config=config/GAN/OOD-GAN-SVHN.yaml --n_ood=1024 > checkpoint/log/SVHN/OOD-GAN/log-1024-V2.txt
