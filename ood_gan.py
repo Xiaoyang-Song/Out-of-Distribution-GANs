@@ -30,9 +30,10 @@ def ood_gan_g_loss(logits_fake, gz, xood):
     assert dist.requires_grad
     return w_fake, dist
 
+
 class OOD_GAN_TRAINER():
     def __init__(self, D, G, noise_dim, num_classes,
-                 bsz_tri, g_steps_ratio, d_steps_ratio, 
+                 bsz_tri, g_steps_ratio, d_steps_ratio,
                  scaling, hp, max_epochs, ood_bsz,
                  writer_name, ckpt_name, ckpt_dir,
                  n_steps_show=100, n_steps_log=1):
@@ -83,8 +84,8 @@ class OOD_GAN_TRAINER():
                 x = x.to(DEVICE)
                 y = y.to(DEVICE)
                 # Manually discard last batch
-                if len(x) != self.bsz_tri:
-                    continue
+                # if len(x) != self.bsz_tri:
+                #     continue
                 # ---------------------- #
                 # DISCRIMINATOR TRAINING #
                 # ---------------------- #
@@ -95,7 +96,8 @@ class OOD_GAN_TRAINER():
                     logits_real = self.D(x)
 
                     # Adversarial Training
-                    seed = torch.rand((self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
+                    seed = torch.rand(
+                        (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
                     Gz = self.G(seed)
                     logits_fake = self.D(Gz)
 
@@ -108,8 +110,9 @@ class OOD_GAN_TRAINER():
                     # Overall Loss Function
                     ind_ce_loss, w_ood, w_fake = self.dloss(
                         logits_real, logits_fake, logits_ood, y)
-                    d_total = self.hp.ce * ind_ce_loss - self.hp.wass * (w_ood - w_fake * self.scaling)
-                    
+                    d_total = self.hp.ce * ind_ce_loss - \
+                        self.hp.wass * (w_ood - w_fake * self.scaling)
+
                     # Write relevant statistics
                     global_step_d = steps * self.d_steps_ratio + dstep
                     self.writer.add_scalars("Discriminator Loss/each", {
@@ -119,11 +122,10 @@ class OOD_GAN_TRAINER():
                     }, global_step_d)
                     self.writer.add_scalar(
                         "Discriminator Loss/total", d_total.detach(), global_step_d)
-                    
+
                     # Gradient Update
                     d_total.backward()
                     D_solver.step()
-
 
                 # ------------------ #
                 # GENERATOR TRAINING #
@@ -132,7 +134,8 @@ class OOD_GAN_TRAINER():
                     G_solver.zero_grad()
 
                     # OoD Adversarial Training
-                    seed = torch.rand( (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
+                    seed = torch.rand(
+                        (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
                     Gz = self.G(seed)
                     logits_fake = self.D(Gz)
 
