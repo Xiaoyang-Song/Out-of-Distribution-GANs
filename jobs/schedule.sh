@@ -107,7 +107,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/fashionmnist-r2/ood-gan/4.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/8.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/16.sh
-# sbatch jobs/fashionmnist-r2/ood-gan/32.sh
+sbatch jobs/fashionmnist-r2/ood-gan/32.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/64.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/128.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/256.sh
@@ -132,7 +132,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 # SVHN OoD GAN - Regime II
 # sbatch jobs/svhn-r2/ood-gan/svhn-4.sh
-sbatch jobs/svhn-r2/ood-gan/svhn-8.sh
+# sbatch jobs/svhn-r2/ood-gan/svhn-8.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-16.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-32.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-64.sh
