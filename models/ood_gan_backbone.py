@@ -55,7 +55,8 @@ class Generator(nn.Module):
         if self.num_channels == 3:
             self.main = nn.Sequential(
                 # Block 1:input is Z, going into a convolution
-                nn.ConvTranspose2d(self.latent_dim, 64 * 8, 4, 1, 0, bias=False),
+                nn.ConvTranspose2d(self.latent_dim, 64 * \
+                                   8, 4, 1, 0, bias=False),
                 nn.BatchNorm2d(64 * 8),
                 nn.ReLU(True),
                 # Block 2: input is (64 * 8) x 4 x 4
@@ -129,11 +130,13 @@ def test_backbone_D(model, val_loader):
 
 
 if __name__ == '__main__':
-    model = Generator(96, 1)
-    noise = torch.ones(1, 96, 1, 1)
+    model = Generator(96, 3)
+    noise = torch.ones(10, 96, 1, 1)
     out = model(noise)
     ic(out.shape)
-    print(summary(model))
+    # print(summary(model))
+    # print(model)
+    summary(model, noise.shape)
 
     # from dataset import *
     # model = DC_D(8, {'H': 28, 'W': 28, 'C': 1})
