@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --account=sunwbgt98
-#SBATCH --job-name=GANSV4-R1
+#SBATCH --job-name=GANSV4-1
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=10GB
 #SBATCH --time=144:00:00
-#SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANSV4.log
+#SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANSV4-R1.log
 
 module purge
 conda init bash
