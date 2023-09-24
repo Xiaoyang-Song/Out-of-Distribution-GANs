@@ -96,7 +96,7 @@ evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
 # Load OoD
 fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
 ood_img_batch, ood_img_label = torch.load(fname)
-print(label(ood_img_label))
+print(ood_img_label)
 
 #---------- Monte Carlo Simulation  ----------#
 for mc in range(mc_num):
