@@ -54,69 +54,6 @@ def loader_wass(data_loader, D):
     return torch.cat(wass_dists, dim=0)
 
 
-class LR():
-    def __init__(self, D, G, xin_t, C, n):
-        self.D, self.G = D, G
-        self.xin_t, _ = tuple_list_to_tensor(xin_t)
-        # self.xin_t = xin_t
-        self.xin_t = self.xin_t[np.random.choice(len(self.xin_t), n), :, :, :]
-        self.n, self.c = n, C
-        # Statistics
-        self.train_stats = None
-
-    def fit(self):
-        print("Logistic Regression Training Starts...")
-        yin = torch.ones(len(self.xin_t))
-        ind_loader = set_to_loader(list(zip(self.xin_t, yin)), 64, True)
-        # Generate OoD images
-        # g_seed = sample_noise((self.n // self.c) * self.c, 96)
-        # n_class = self.n // self.c
-        # # ic(self.c)
-        # gz = self.G(g_seed, np.array(
-        #     [[i] * n_class for i in range(self.c)]).flatten())
-        g_seed = sample_noise(self.n, 96, extra_dim=True)
-        gz = self.G(g_seed)
-        # yz = torch.zeros(n_class * self.c)
-        yz = torch.zeros(self.n)
-        gz_loader = set_to_loader(list(zip(gz, yz)), 64, True)
-        # Form training dataset
-        print("> Evaluating InD Wasserstein distances...")
-        win = loader_wass(ind_loader, self.D)
-        ic("> Evaluating G(z) Wasserstein distances...")
-        wgz = loader_wass(gz_loader, self.D)
-        mean_win, mean_wgz = torch.mean(win), torch.mean(wgz)
-        print(f"Mean win {mean_win} ; Mean wgz {mean_wgz}")
-        # Training
-        x = torch.cat([win, wgz])
-        y = torch.ones(len(yz) + len(yin))
-        y[0:len(yin)] = 0  # InD = 0; OoD = 1
-        X, Y = x.unsqueeze(-1).data.cpu(), y.data.cpu()
-        clf = LogisticRegression(random_state=0).fit(X, Y)
-        training_acc = clf.score(X, Y)
-        print(f"Training accuracy: {training_acc}")
-        self.train_stats = [mean_win, mean_wgz, training_acc]
-        self.clf = clf
-        return [mean_win.cpu(), mean_wgz.cpu(), training_acc]
-
-    def eval(self, winv, woutv):
-        print("Logistic Regression Evaluation")
-        assert self.clf is not None
-        ind_acc = self.clf.score(
-            winv.unsqueeze(-1).data.cpu(), np.zeros(len(winv)))
-        ood_acc = self.clf.score(
-            woutv.unsqueeze(-1).data.cpu(), np.ones(len(woutv)))
-        print(f"Testing accuracy on InD: {ind_acc}")
-        print(f"Testing accuracy on OoD: {ood_acc}")
-        # Calculate AUROC
-        in_prob = self.clf.predict_proba(winv.unsqueeze(-1).data.cpu())
-        out_prob = self.clf.predict_proba(woutv.unsqueeze(-1).data.cpu())
-        auroc = roc_auc_score([1]*len(woutv) + [0]*len(winv),
-                              list(out_prob[:, 1])+list(in_prob[:, 1]))
-        print(f"Testing AUROC: {auroc}")
-        self.eval_stats = [ind_acc, ood_acc, auroc]
-        return [ind_acc, ood_acc, auroc]
-
-
 def print_stats(stat, name, precision=5):
     print(f"{name}: {stat}")
     mad = np.mean(np.abs(np.mean(stat) - stat))
@@ -276,7 +213,7 @@ if __name__ == "__main__":
                                  map_location=torch.device('cpu'))['G-state'])
 
     # G.load_state_dict(torch.load("other/[FashionMNIST]-[8]-[Balanced]-[2]_[9].pt",
-                                #  map_location=torch.device('cpu'))['G-state'])
+    #  map_location=torch.device('cpu'))['G-state'])
     seed = torch.rand((100, 96, 1, 1), device=DEVICE) * 2 - 1
     gz = G(seed)
     # ic(gz.shape)
@@ -288,4 +225,3 @@ if __name__ == "__main__":
     plt.imshow(gz[0].reshape((32, 32, 3)).detach().squeeze())
     # plt.imshow(gz[0].detach().squeeze())
     plt.show()
-    

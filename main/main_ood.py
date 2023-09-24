@@ -96,6 +96,7 @@ evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
 # Load OoD
 fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
 ood_img_batch, ood_img_label = torch.load(fname)
+print(label(ood_img_label))
 
 #---------- Monte Carlo Simulation  ----------#
 for mc in range(mc_num):
@@ -136,10 +137,11 @@ for mc in range(mc_num):
                               ckpt_name=ckpt_name,
                               ckpt_dir=ckpt_dir,
                               n_steps_log=n_steps_log)
-    
+
     # Used for complex dataset
-    trainer.train(ind_loader, ood_img_batch, D_solver, G_solver, pretrainedD=None, checkpoint=None)
-    
+    trainer.train(ind_loader, ood_img_batch, D_solver,
+                  G_solver, pretrainedD=None, checkpoint=None)
+
     ###---------- evaluation  ----------###
     evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
     test_backbone_D(D, dset.ind_val_loader)

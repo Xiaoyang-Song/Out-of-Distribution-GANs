@@ -39,7 +39,7 @@ train_config:
   ood_bsz: 10
   optimizer:
     d_lr: 0.001
-    g_lr: 0.005
+    g_lr: 0.01
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
