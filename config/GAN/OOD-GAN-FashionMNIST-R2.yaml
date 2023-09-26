@@ -30,9 +30,9 @@ model:
     noise_dim: 96
 
 train_config:
-  mc: 3
+  mc: 1
   max_epochs: 16
-  bsz_tri: 64
+  bsz_tri: 128
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
   optimizer:

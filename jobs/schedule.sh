@@ -10,20 +10,6 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # ...
 # scheduling parallel jobs
 
-
-# FashionMNIST WOOD
-# sbatch jobs/fashionmnist/wood/4.sh
-# sbatch jobs/fashionmnist/wood/8.sh
-# sbatch jobs/fashionmnist/wood/16.sh
-# sbatch jobs/fashionmnist/wood/32.sh
-# sbatch jobs/fashionmnist/wood/64.sh
-# sbatch jobs/fashionmnist/wood/128.sh
-# sbatch jobs/fashionmnist/wood/256.sh
-# sbatch jobs/fashionmnist/wood/512.sh
-# sbatch jobs/fashionmnist/wood/1024.sh
-# sbatch jobs/fashionmnist/wood/2048.sh
-# sbatch jobs/fashionmnist/wood/4096.sh
-
 # SVHN WOOD
 # sbatch jobs/svhn/wood/svhn-4.sh
 # sbatch jobs/svhn/wood/svhn-8.sh
@@ -107,7 +93,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/fashionmnist-r2/ood-gan/4.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/8.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/16.sh
-# sbatch jobs/fashionmnist-r2/ood-gan/32.sh
+sbatch jobs/fashionmnist-r2/ood-gan/32.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/64.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/128.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/256.sh
@@ -131,7 +117,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 
 # SVHN OoD GAN - Regime II
-sbatch jobs/svhn-r2/ood-gan/svhn-4.sh
+# sbatch jobs/svhn-r2/ood-gan/svhn-4.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-8.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-16.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-32.sh
