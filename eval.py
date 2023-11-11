@@ -202,26 +202,35 @@ class UMAPER():
 if __name__ == "__main__":
     # Test visualization script
     C = 3
-    # dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
-    dset = DSET('SVHN', True, 256, 128, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
-    umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
+    dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
+    # dset = DSET('SVHN', True, 256, 128, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
+    # umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
 
-    xood = torch.load("other/OOD-Balanced-32.pt")[0]
-    ic(xood.shape)
-    G = Generator(96, C)
-    G.load_state_dict(torch.load("other/[SVHN]-[32]-[Balanced]-[1]_[15].pt",
-                                 map_location=torch.device('cpu'))['G-state'])
+    # xood = torch.load("other/OOD-Balanced-32.pt")[0]
+    # ic(xood.shape)
+    # G = Generator(96, C)
+    # G.load_state_dict(torch.load("other/[SVHN]-[32]-[Balanced]-[1]_[15].pt",
+                                #  map_location=torch.device('cpu'))['G-state'])
 
     # G.load_state_dict(torch.load("other/[FashionMNIST]-[8]-[Balanced]-[2]_[9].pt",
     #  map_location=torch.device('cpu'))['G-state'])
-    seed = torch.rand((100, 96, 1, 1), device=DEVICE) * 2 - 1
-    gz = G(seed)
+    # seed = torch.rand((100, 96, 1, 1), device=DEVICE) * 2 - 1
+    # gz = G(seed)
     # ic(gz.shape)
     # gz = G(seed)
     # ic(gz.shape)
 
-    umaper.visualize(xood.detach(), gz.detach(), [
-        "lightgray", "blue", "lightgreen", "orange"])
-    plt.imshow(gz[0].reshape((32, 32, 3)).detach().squeeze())
-    # plt.imshow(gz[0].detach().squeeze())
-    plt.show()
+    # umaper.visualize(xood.detach(), gz.detach(), [
+    #     "lightgray", "blue", "lightgreen", "orange"])
+    # plt.imshow(gz[0].reshape((32, 32, 3)).detach().squeeze())
+    # # plt.imshow(gz[0].detach().squeeze())
+    # plt.show()
+
+    # Evaluate
+    D = DenseNet3(depth=100, num_classes=8, input_channel=1).to(DEVICE)
+    D.load_state_dict(torch.load('res/32-2.pt', map_location='cpu')['D-state'])
+
+    evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
+                    dset.ood_val, dset.ood_val_loader,
+                    32, '../', 'SEE-OoD',8, 1000)
+    evaler.evaluate(D, '', None, False, None)

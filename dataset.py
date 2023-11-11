@@ -3,7 +3,9 @@ from config import *
 # Auxiliary imports
 from utils import visualize_img
 from collections import defaultdict, Counter
-
+import torchvision.transforms as trn
+from image_folder import ImageSubfolder
+from imagenet_loader import *
 
 def FashionMNIST(bs_t, bs_v, sf):
     tset = torchvision.datasets.FashionMNIST(
@@ -124,6 +126,21 @@ def SVHN(bsz_tri, bsz_val, shuffle=True):
 
     return train_dataset, val_dataset, train_loader, val_loader
 
+
+def PLACES365(bsz_tri, bsz_val, shuffle=True):
+    mean = [x / 255 for x in [125.3, 123.0, 113.9]]
+    std = [x / 255 for x in [63.0, 62.1, 66.7]]
+    train_data = torchvision.datasets.Places365(root="../Datasets/Places365", download=True, split='train-standard',
+                            transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
+                                                   trn.ToTensor(), trn.Normalize(mean, std)]))
+    test_data = torchvision.datasets.Places365(root="../Datasets/Places365", split='val',download=True,
+                            transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
+                                                   trn.ToTensor(), trn.Normalize(mean, std)]))
+    tri_ldr = torch.utils.data.DataLoader(train_data, batch_size=bsz_tri, shuffle=True,
+                                            num_workers=2, pin_memory=True)
+    val_ldr = torch.utils.data.DataLoader(test_data, batch_size=bsz_val, shuffle=True,
+                                            num_workers=2, pin_memory=True)
+    return train_data, test_data, tri_ldr, val_ldr
 
 def dset_by_class(dset):
     ic(len(dset))
@@ -266,23 +283,42 @@ class DSET():
 def line(n=80):
     return "="*n
 
+def set_loader(bsz_tri, bsz_val):
+    train_transform = trn.Compose([
+        trn.Resize(size=224, interpolation=trn.InterpolationMode.BICUBIC),
+        # trn.RandomResizedCrop(size=(224, 224), scale=(0.5, 1), interpolation=trn.InterpolationMode.BICUBIC),
+        trn.RandomHorizontalFlip(p=0.5),
+        trn.ToTensor(),
+        trn.Normalize(mean=(0.48145466, 0.4578275, 0.40821073), std=(0.26862954, 0.26130258, 0.27577711))
+    ])
+    test_transform = trn.Compose([
+        trn.Resize(size=(224, 224), interpolation=trn.InterpolationMode.BICUBIC),
+        trn.CenterCrop(size=(224, 224)),
+        trn.ToTensor(),
+        trn.Normalize(mean=(0.48145466, 0.4578275, 0.40821073), std=(0.26862954, 0.26130258, 0.27577711))
+    ])
+    root_dir = '/nobackup-slow/dataset/ILSVRC-2012/'
+    train_dir = root_dir + 'val'
+    classes, _ = torchvision.datasets.folder.find_classes(train_dir)
+    index = [125, 788, 630, 535, 474, 694, 146, 914, 447, 208, 182, 621, 271, 646, 328, 119, 772, 928, 610, 891, 340,
+             890, 589, 524, 172, 453, 869, 556, 168, 982, 942, 874, 787, 320, 457, 127, 814, 358, 604, 634, 898, 388,
+             618, 306, 150, 508, 702, 323, 822, 63, 445, 927, 266, 298, 255, 44, 207, 151, 666, 868, 992, 843, 436, 131,
+             384, 908, 278, 169, 294, 428, 60, 472, 778, 304, 76, 289, 199, 152, 584, 510, 825, 236, 395, 762, 917, 573,
+             949, 696, 977, 401, 583, 10, 562, 738, 416, 637, 973, 359, 52, 708]
+
+    num_classes = 100
+    classes = [classes[i] for i in index]
+    class_to_idx = {c: i for i, c in enumerate(classes)}
+    train_data = ImageSubfolder(root_dir + 'train', transform=test_transform, class_to_idx=class_to_idx)
+    test_data = ImageSubfolder(root_dir + 'val', transform=test_transform, class_to_idx=class_to_idx)
+    labeled_trainloader = torch.utils.data.DataLoader(train_data, \
+                                                      batch_size=bsz_tri, shuffle=True, num_workers=16,
+                                                      pin_memory=True, drop_last=True)
+    testloader = torch.utils.data.DataLoader(test_data,
+                                             batch_size=bsz_val, shuffle=True, num_workers=16, pin_memory=True)
+    return labeled_trainloader, testloader
+
 
 if __name__ == '__main__':
-    # Test dataset functions
-    ind = [2, 3, 6, 8, 9]
-    ood = [1, 7]
-    dset = DSET('CIFAR10-SVHN', False, 50, 128, ind, ood)
-    # ood_img_batch, ood_img_label = dset.ood_sample(2, 'imbalanced', [0])
-    # ic(ood_img_label)
-    # ic(ood_img_batch.shape)
-    # for img in ood_img_batch:
-    #     plt.imshow(img.squeeze())
-    #     plt.show()
-    ic(len(dset.ind_train))
-    ic(len(dset.ind_val))
-    # ic(len(dset.ind))
-    ic(len(dset.ood_val))
-    ic(len(dset.ind_val) + len(dset.ood_val))
-
-    for keys in dset.ood_train_by_class:
-        ic(len(dset.ood_train_by_class[keys][0]))
+    # labeled_trainloader, testloader = set_loader(256, 256)
+    train_data, test_data, tri_ldr, val_ldr = PLACES365(128, 128)
