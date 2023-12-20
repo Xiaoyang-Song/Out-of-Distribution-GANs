@@ -36,7 +36,21 @@ def label_2_onehot(label, C, device):
 # Names of the original functions
 # sink_dist_test -> ind_wass_loss
 # sink_dist_test_v2 -> ood_wass_loss
-
+def sink_dist_test_v2(input, target, C, device=DEVICE):
+    
+    all_class = torch.LongTensor([i for i in range(C)]).to(device)
+    all_class_onehot = label_2_onehot(all_class, C, device)
+    ##reshape into (B,N,D)
+    all_class_onehot = torch.unsqueeze(all_class_onehot, -1)
+    test_input = torch.unsqueeze(input, -1)
+    test_batch_size = test_input.shape[0]
+    test_loss_values = torch.zeros(test_batch_size, C).to(device)
+    test_loss = SamplesLoss("sinkhorn", p=2, blur=1., cost = cost_matrix) #Wasserstein-1 distance
+    for b in range(test_batch_size):
+        input_b = test_input[b:b+1,:,:].repeat(C, 1, 1)
+        test_loss_values[b] = test_loss(input_b[:,:,0], input_b, all_class_onehot[:,:,0], all_class_onehot)
+    
+    return test_loss_values.min(dim=1)[0]
 
 def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVICE):
     # TODO: Add assertion check

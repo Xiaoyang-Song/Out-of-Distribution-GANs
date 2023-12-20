@@ -5,6 +5,7 @@ from metrics import *
 from wasserstein import *
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
+from eval import *
 
 
 def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real):
@@ -36,7 +37,8 @@ class OOD_GAN_TRAINER():
                  bsz_tri, g_steps_ratio, d_steps_ratio,
                  scaling, hp, max_epochs, ood_bsz,
                  writer_name, ckpt_name, ckpt_dir,
-                 n_steps_show=100, n_steps_log=1):
+                 n_steps_show=100, n_steps_log=1,
+                ind_val_loader=None, ood_val_loader=None):
         super().__init__()
         # Logger information
         self.writer_name = writer_name
@@ -62,7 +64,12 @@ class OOD_GAN_TRAINER():
         self.hp = hp
         self.ood_bsz = ood_bsz
 
+        self.ind_val_loader = ind_val_loader
+        self.ood_val_loader = ood_val_loader
+
     def train(self, ind_loader, ood_img_batch, D_solver, G_solver, pretrainedD=None, checkpoint=None):
+        # with torch.no_grad():
+        #         evaluate(self.D, self.ind_val_loader, self.ood_val_loader)
         # Load pretrained Discriminator
         if pretrainedD is not None:
             pretrain = torch.load(pretrainedD)
@@ -80,6 +87,8 @@ class OOD_GAN_TRAINER():
         ood_img_batch = ood_img_batch.to(DEVICE)
         iter_count = 0
         for epoch in range(self.max_epochs):
+            self.D.train()
+            self.G.train()
             for steps, (x, y) in enumerate(tqdm(ind_loader)):
                 x = x.to(DEVICE)
                 y = y.to(DEVICE)
@@ -161,6 +170,10 @@ class OOD_GAN_TRAINER():
                     print(
                         f"Step: {steps:<4} | D: {d_total.item(): .4f} | CE: {ind_ce_loss.item(): .4f} | W_OoD: {w_ood.item(): .4f} | W_z: {w_fake.item(): .4f} | G: {g_total.item(): .4f} | W_z: {w_z.item(): .4f} | dist: {dist:.4f}")
                 iter_count += 1
+
+            with torch.no_grad():
+                evaluate(self.D, self.ind_val_loader, self.ood_val_loader)
+                test_backbone_D(self.D, self.ind_val_loader)
 
             # Save checkpoint
             ckpt_name = f"{self.ckpt_dir}{self.ckpt_name}_[{epoch}].pt"

@@ -18,6 +18,59 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
 
+def naive_auroc(winv, woutv):
+    pos = np.array(winv[:]).reshape((-1, 1))
+    neg = np.array(woutv[:]).reshape((-1, 1))
+    examples = np.squeeze(np.vstack((pos, neg)))
+    labels = np.zeros(len(examples), dtype=np.int32)
+    labels[:len(pos)] += 1
+    auroc = roc_auc_score(labels, examples)
+
+    return auroc
+
+def auroc_log(winv, woutv):
+    tp, fp = dict(), dict()
+    tnr_at_tpr95 = dict()
+    # tpr 99
+    tnr_at_tpr99 = dict()
+    known, novel = winv, woutv
+    known.sort()
+    novel.sort()
+    num_k = known.shape[0]
+    num_n = novel.shape[0]
+    tp = -np.ones([num_k+num_n+1], dtype=int)
+    fp= -np.ones([num_k+num_n+1], dtype=int)
+    tp[0], fp[0] = num_k, num_n
+    k, n = 0, 0
+    for l in range(num_k+num_n):
+        if k == num_k:
+            tp[l+1:] = tp[l]
+            fp[l+1:] = np.arange(fp[l]-1, -1, -1)
+            break
+        elif n == num_n:
+            tp[l+1:] = np.arange(tp[l]-1, -1, -1)
+            fp[l+1:] = fp[l]
+            break
+        else:
+            if novel[n] < known[k]:
+                n += 1
+                tp[l+1] = tp[l]
+                fp[l+1] = fp[l] - 1
+            else:
+                k += 1
+                tp[l+1] = tp[l] - 1
+                fp[l+1] = fp[l]
+    tpr95_pos = np.abs(tp / num_k - .95).argmin()
+    tnr_at_tpr95 = 1. - fp[tpr95_pos] / num_n
+
+    # TPR 99
+    tpr99_pos = np.abs(tp/ num_k - .99).argmin()
+    tnr_at_tpr99 = 1. - fp[tpr99_pos] / num_n
+    tpr = np.concatenate([[1.], tp/tp[0], [0.]])
+    fpr = np.concatenate([[1.], fp/fp[0], [0.]])
+    auroc = -np.trapz(1.-fpr, tpr)
+    return auroc, tnr_at_tpr95, tnr_at_tpr99
+
 def tpr(winv, woutv, level=0.95):
     assert level < 1 and level > 0
     threshold = np.quantile(winv.to('cpu'), level)
@@ -47,10 +100,14 @@ def loader_wass(data_loader, D):
     wass_dists = []
     # ic(DEVICE)
     # assert DEVICE == 'cuda'
-    for (img, _) in tqdm(data_loader):
+    for (img, label) in tqdm(data_loader):
+        # print(label)
         out = D(img.to(DEVICE))
         wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
-        wass_dists.append(wass_dist)
+        # wass_dist = sink_dist_test_v2(torch.softmax(out, dim=-1), None, 8)
+        # img = img.to('cpu')
+        # wass_dist = ood_wass_loss(out)
+        wass_dists.append(wass_dist.cpu())
     return torch.cat(wass_dists, dim=0)
 
 
@@ -86,7 +143,9 @@ class EVALER():
         self.winv, self.woutv = [],  []
         # Statistics - TPR at x% TNR
         self.tpr95, self.tpr99 = [], []
+        self.tpr95_raw, self.tpr99_raw = [], []
         self.tpr95_thresh, self.tpr99_thresh = [], []
+        self.auroc = []
         # Statistics - Logistic Regression
         # Refer to the return values of logistic regression for details.
         self.lr_instance = []
@@ -120,7 +179,12 @@ class EVALER():
         self.tpr95_thresh.append(tpr_95_thresh)
         self.tpr99.append(tpr_99)
         self.tpr99_thresh.append(tpr_99_thresh)
+        auroc, tnr_at_tpr95, tnr_at_tpr99 = auroc_log(winv, woutv)
+        self.auroc.append(auroc)
+        self.tpr95_raw.append(tnr_at_tpr95)
+        self.tpr99_raw.append(tnr_at_tpr99)
         # yxoutv = None
+
         w_lst, legend_lst = [winv], ['InD']
         if each_class:
             assert cls_idx is not None
@@ -149,23 +213,37 @@ class EVALER():
         print_stats(self.tpr95_thresh, "TPR@95TNR-Threshold")
         print_stats(self.tpr99, "TPR@99TNR")
         print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
+        print_stats(self.auroc, "AUROC")
+        print_stats(self.tpr95_raw, "TPR@95RAW")
+        print_stats(self.tpr99_raw, "TPR@99RAW")
         print("\n" + line())
-        # return
-        if len(self.cls_stats) != 0:
-            for key, val in self.cls_stats.items():
-                print("\n" + line())
-                ic(f"Class: {key}")
-                vals = np.array(val)
-                print_stats(vals[:, 0], "TPR@95TNR")
-                print_stats(vals[:, 1], "TPR@95TNR-Threshold")
-                print_stats(vals[:, 2], "TPR@99TNR")
-                print_stats(vals[:, 3], "TPR@99TNR-Threshold")
-                # if len(val) > 4:
-                #     lr_stats = vals[4:7]
-                #     print_stats(lr_stats[:, 0], "InD Accuracy")
-                #     print_stats(lr_stats[:, 1], "OoD Accuracy")
-                #     print_stats(lr_stats[:, 2], "AUROC")
 
+
+def evaluate(D, ind_val, ood_val):
+        print("Computing evaluation statistics...")
+        print("> Evaluating InD Wasserstein distances...")
+        winv = loader_wass(ind_val, D)
+        print("> Evaluating OoD Wasserstein distances...")
+        woutv = loader_wass(ood_val, D)
+        # print(len(winv))
+        # print(winv[0:10])
+        # print(len(woutv))
+        # print(woutv[0:10])
+        # Test model performance
+        tpr_95, tpr_95_thresh = tpr(winv, woutv, 0.95)
+        tpr_99, tpr_99_thresh = tpr(winv, woutv, 0.99)
+        # auroc, tnr_at_tpr95, tnr_at_tpr99 = auroc_log(winv, woutv)
+        print("Overall Statistics")
+        print_stats(tpr_95, "TPR@95TNR")
+        print_stats(tpr_95_thresh, "TPR@95TNR-Threshold")
+        print_stats(tpr_99, "TPR@99TNR")
+        print_stats(tpr_99_thresh, "TPR@99TNR-Threshold")
+        # print_stats(auroc, "AUROC")
+        # print_stats(tnr_at_tpr95, "TPR@95RAW")
+        # print_stats(tnr_at_tpr99, "TPR@99RAW")
+        auc = naive_auroc(-winv.cpu(), -woutv.cpu())
+        print(auc)
+        return tpr_95, tpr_99, auc
 
 class UMAPER():
     def __init__(self, ind_dset, ood_dset, n_ind, n_ood):
@@ -200,9 +278,10 @@ class UMAPER():
 
 
 if __name__ == "__main__":
+    # pass
     # Test visualization script
-    C = 3
-    dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
+    # C = 3
+    # dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
     # dset = DSET('SVHN', True, 256, 128, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
     # umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
 
@@ -227,10 +306,16 @@ if __name__ == "__main__":
     # plt.show()
 
     # Evaluate
-    D = DenseNet3(depth=100, num_classes=8, input_channel=1).to(DEVICE)
-    D.load_state_dict(torch.load('res/32-2.pt', map_location='cpu')['D-state'])
+    # D = DenseNet3(depth=100, num_classes=8, input_channel=1).to(DEVICE)
+    # D.load_state_dict(torch.load('res/32-2.pt', map_location='cpu')['D-state'])
 
-    evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
-                    dset.ood_val, dset.ood_val_loader,
-                    32, '../', 'SEE-OoD',8, 1000)
-    evaler.evaluate(D, '', None, False, None)
+    # evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
+    #                 dset.ood_val, dset.ood_val_loader,
+    #                 32, '../', 'SEE-OoD',8, 1000)
+    # evaler.evaluate(D, '', None, False, None)
+
+
+    winv = torch.zeros((2044))
+    woutv = torch.ones((1832))
+    # print(auroc_log(winv, woutv))
+    print(naive_auroc(winv, woutv, step=100))

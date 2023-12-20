@@ -93,7 +93,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/fashionmnist-r2/ood-gan/4.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/8.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/16.sh
-sbatch jobs/fashionmnist-r2/ood-gan/32.sh
+# sbatch jobs/fashionmnist-r2/ood-gan/32.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/64.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/128.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/256.sh
@@ -129,8 +129,34 @@ sbatch jobs/fashionmnist-r2/ood-gan/32.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-2048.sh
 # sbatch jobs/svhn-r2/ood-gan/svhn-4096.sh
 
+# REBUTTAL
+sbatch jobs/cifar10-texture/4.sh
+sbatch jobs/cifar10-texture/8.sh
+sbatch jobs/cifar10-texture/16.sh
+sbatch jobs/cifar10-texture/32.sh
+sbatch jobs/cifar10-texture/64.sh
+# sbatch jobs/cifar10-texture/128.sh
+# sbatch jobs/cifar10-texture/256.sh
+# sbatch jobs/cifar10-texture/512.sh
+# sbatch jobs/cifar10-texture/1024.sh
+# sbatch jobs/cifar10-texture/2048.sh
+
+# sbatch jobs/cifar100-texture/16.sh
+# sbatch jobs/cifar100-texture/32.sh 
+# sbatch jobs/cifar100-texture/64.sh
+# sbatch jobs/cifar100-texture/128.sh
+# sbatch jobs/cifar100-texture/256.sh
+
+# METRICS
+# sbatch jobs/metrics/cifar10-svhn.sh
+# sbatch jobs/metrics/fashionmnist.sh
+# sbatch jobs/metrics/fashionmnist-r2.sh
+# sbatch jobs/metrics/svhn.sh
+# sbatch jobs/metrics/svhn-r2.sh
+# sbatch jobs/metrics/cifar10-texture.sh
+
 # Check memory on disk
-home-quota
+# home-quota
 
 # Check current job lists
-squeue -u xysong
+# squeue -u xysong

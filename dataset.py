@@ -3,9 +3,11 @@ from config import *
 # Auxiliary imports
 from utils import visualize_img
 from collections import defaultdict, Counter
+import torchvision
 import torchvision.transforms as trn
 from image_folder import ImageSubfolder
 from imagenet_loader import *
+from sklearn.model_selection import train_test_split
 
 def FashionMNIST(bs_t, bs_v, sf):
     tset = torchvision.datasets.FashionMNIST(
@@ -45,7 +47,7 @@ def MNIST_SUB(batch_size: int, val_batch_size: int, idx_ind: list, idx_ood: list
         idx_ood (list): a list of integer from 0-9 (specifying out-of-distribution labels)
         shuffle (bool, optional): whether or not to shuffle the dataset. Defaults to True.
     """
-    def get_subsamples(label_idx: list[list, list], dset):
+    def get_subsamples(label_idx, dset):
         assert len(label_idx) == 2, 'Expect a nested list for label_idx'
         assert len(label_idx[0]) + len(label_idx[1]
                                        ) <= 10, 'Two lists should be less than length of 10 in total'
@@ -83,6 +85,26 @@ def MNIST_SUB(batch_size: int, val_batch_size: int, idx_ind: list, idx_ood: list
     }
     return dset_dict
 
+
+def CIFAR100(batch_size, test_batch_size):
+
+    # Ground truth mean & std:
+    # mean = torch.tensor([125.3072, 122.9505, 113.8654])
+    # std = torch.tensor([62.9932, 62.0887, 66.7049])
+    normalizer = transforms.Normalize(mean=[x/255.0 for x in [125.3, 123.0, 113.9]],
+                                      std=[x/255.0 for x in [63.0, 62.1, 66.7]])
+    transform = transforms.Compose([transforms.ToTensor(), normalizer])
+    train_dataset = datasets.CIFAR100('./Datasets/CIFAR-100', train=True,
+                                     download=True, transform=transform)
+    # ic(len(train_dataset))
+    train_loader = torch.utils.data.DataLoader(
+        train_dataset, batch_size=batch_size, shuffle=True)
+    val_dataset = datasets.CIFAR100('./Datasets/CIFAR-100', train=False, download=True,
+                                   transform=transform)
+    val_loader = torch.utils.data.DataLoader(
+        val_dataset, batch_size=test_batch_size, shuffle=True)
+
+    return train_dataset, val_dataset, train_loader, val_loader
 
 def CIFAR10(batch_size, test_batch_size):
 
@@ -127,20 +149,19 @@ def SVHN(bsz_tri, bsz_val, shuffle=True):
     return train_dataset, val_dataset, train_loader, val_loader
 
 
-def PLACES365(bsz_tri, bsz_val, shuffle=True):
+def Texture(bsz_tri, bsz_val, shuffle=True):
     mean = [x / 255 for x in [125.3, 123.0, 113.9]]
     std = [x / 255 for x in [63.0, 62.1, 66.7]]
-    train_data = torchvision.datasets.Places365(root="../Datasets/Places365", download=True, split='train-standard',
+    
+    data = datasets.ImageFolder(root="Datasets/dtd/images/",
                             transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
                                                    trn.ToTensor(), trn.Normalize(mean, std)]))
-    test_data = torchvision.datasets.Places365(root="../Datasets/Places365", split='val',download=True,
-                            transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
-                                                   trn.ToTensor(), trn.Normalize(mean, std)]))
-    tri_ldr = torch.utils.data.DataLoader(train_data, batch_size=bsz_tri, shuffle=True,
-                                            num_workers=2, pin_memory=True)
-    val_ldr = torch.utils.data.DataLoader(test_data, batch_size=bsz_val, shuffle=True,
-                                            num_workers=2, pin_memory=True)
-    return train_data, test_data, tri_ldr, val_ldr
+    print(len(data))
+    # tri_ldr = torch.utils.data.DataLoader(train_data, batch_size=bsz_tri, shuffle=True,
+    #                                         num_workers=2, pin_memory=True)
+    # val_ldr = torch.utils.data.DataLoader(test_data, batch_size=bsz_val, shuffle=True,
+    #                                         num_workers=2, pin_memory=True)
+    # return train_data, test_data, tri_ldr, val_ldr
 
 def dset_by_class(dset):
     ic(len(dset))
@@ -261,6 +282,31 @@ class DSET():
                 self.bsz_tri, self.bsz_val)
             self.ood_train_by_class = dset_by_class(
                 self.ood_train)  # this is used for sampling
+                
+        elif self.name == 'CIFAR100-SVHN':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR100(
+                self.bsz_tri, self.bsz_val)
+            self.ood_train, self.ood_val, _, self.ood_val_loader = SVHN(
+                self.bsz_tri, self.bsz_val)
+            self.ood_train_by_class = dset_by_class(
+                self.ood_train)  # this is used for sampling
+
+        elif self.name == 'CIFAR10-Texture':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(
+                self.bsz_tri, self.bsz_val)
+            
+            self.ood_train = torch.load('Datasets/dtd/texture-tri.pt')
+            self.ood_val = torch.load('Datasets/dtd/texture-val.pt')
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
+
+        elif self.name == 'CIFAR100-Texture':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR100(
+                self.bsz_tri, self.bsz_val)
+            
+            self.ood_train = torch.load('Datasets/dtd/texture-tri.pt')
+            self.ood_val = torch.load('Datasets/dtd/texture-val.pt')
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
 
         else:
             assert False, 'Unrecognized Dataset Combination.'
@@ -321,4 +367,41 @@ def set_loader(bsz_tri, bsz_val):
 
 if __name__ == '__main__':
     # labeled_trainloader, testloader = set_loader(256, 256)
-    train_data, test_data, tri_ldr, val_ldr = PLACES365(128, 128)
+    print('Hello World')
+    mean = [x / 255 for x in [125.3, 123.0, 113.9]]
+    std = [x / 255 for x in [63.0, 62.1, 66.7]]
+
+    # Process texture data
+    # data = datasets.ImageFolder(root="Datasets/dtd/images/",
+    #                         transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
+    #                                                trn.ToTensor(), trn.Normalize(mean, std)]))
+    # print(len(data))
+    # train_data, test_data = train_test_split(data, train_size=2048, test_size=5640 - 2048)
+    # print(len(train_data))
+    # print(len(test_data))
+    # torch.save(train_data, 'Datasets/dtd/texture-tri.pt')
+    # torch.save(train_data, 'Datasets/dtd/texture-val.pt')
+    train_data = torch.load('Datasets/dtd/texture-tri.pt')
+    val_data = torch.load('Datasets/dtd/texture-val.pt')
+
+    print(train_data[0][0].shape)
+    print(train_data[5][1])
+
+    N = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+    for n in N:
+        data = []
+        idx = np.random.choice(len(train_data), n, False)
+        data = [train_data[i] for i in idx]
+        print(len(data))
+        torch.save(tuple_list_to_tensor(data), f'checkpoint/OOD-Sample/OOD-Balanced-{n}.pt')
+
+
+
+
+    # Process LSUN data
+
+    # data = datasets.Places365('Datasets/Places365/', split='train-standard', small=True,download=True,
+    #                           transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
+    #                                                trn.ToTensor(), trn.Normalize(mean, std)]))
+    # print(len(data))
+    pass

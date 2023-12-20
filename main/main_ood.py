@@ -31,7 +31,6 @@ print(f"Number of observed OoD samples (class-level): {n_ood}")
 log_dir = root_dir + f"{method}/{dset}/{regime}/{n_ood}/"
 ckpt_dir = root_dir + f"{method}/{dset}/{regime}/{n_ood}/"
 os.makedirs(log_dir, exist_ok=True)
-pretrained_dir = pretrained_dir + f"{dset}/"
 
 
 #---------- Training Hyperparameters  ----------#
@@ -44,8 +43,7 @@ print(f"Number of InD classes: {num_classes}")
 
 ###---------- Models  ----------###
 D_model, D_config, G_model, G_config = config['model'].values()
-model_getter = MODEL_GETTER(num_classes=num_classes,
-                            img_info=img_info, return_DG=True)
+model_getter = MODEL_GETTER(num_classes=num_classes, img_info=img_info, return_DG=True)
 
 ###---------- Trainer  ----------###
 train_config = config['train_config']
@@ -81,8 +79,7 @@ start = time.time()
 #---------- GPU information  ----------#
 if torch.cuda.is_available():
     print(f"-- Current Device: {torch.cuda.get_device_name(0)}")
-    print(
-        f"-- Device Total Memory: {torch.cuda.get_device_properties(0).total_memory / (1024**3):.2f} GB")
+    print(f"-- Device Total Memory: {torch.cuda.get_device_properties(0).total_memory / (1024**3):.2f} GB")
     print("-- Let's use", torch.cuda.device_count(), "GPUs!")
 else:
     print("-- Unfortunately, we are only using CPUs now.")
@@ -92,11 +89,12 @@ dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
                 n_ood, log_dir, method, num_classes, n_lr)
-
 # Load OoD
+# fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
 fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
 ood_img_batch, ood_img_label = torch.load(fname)
 print(ood_img_label)
+print(Counter(np.array(ood_img_label)))
 
 #---------- Monte Carlo Simulation  ----------#
 for mc in range(mc_num):
@@ -115,7 +113,14 @@ for mc in range(mc_num):
     # ic("Test Done.")
 
     ###---------- checkpoint loading (if necessary)  ----------###
+    # ckpt = "/scratch/sunwbgt_root/sunwbgt98/xysong/energy_ood/CIFAR/snapshots/pretrained/[CIFAR100-SVHN]-pretrained-classifier.pt"
+    # D.load_state_dict(torch.load(ckpt))
+    name = f"[{dset.name}]-[{n_ood}]-[{regime}]-[0]_[9]"
+    ckpt = f"/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/OOD-GAN/{dset.name}/{regime}/{n_ood}/{name}.pt"
 
+    D.load_state_dict(torch.load(ckpt)['D-state'])
+    G.load_state_dict(torch.load(ckpt)['G-state'])
+    print('Successfully Load checkpoints')
     ###---------- optimizers  ----------###
     D_solver = torch.optim.Adam(D.parameters(), lr=d_lr, betas=(beta1, beta2))
     G_solver = torch.optim.Adam(G.parameters(), lr=g_lr, betas=(beta1, beta2))
@@ -136,7 +141,9 @@ for mc in range(mc_num):
                               writer_name=writer_name,
                               ckpt_name=ckpt_name,
                               ckpt_dir=ckpt_dir,
-                              n_steps_log=n_steps_log)
+                              n_steps_log=n_steps_log,
+                              ind_val_loader = dset.ind_val_loader,
+                              ood_val_loader = dset.ood_val_loader)
 
     # Used for complex dataset
     trainer.train(ind_loader, ood_img_batch, D_solver,
