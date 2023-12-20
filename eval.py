@@ -74,10 +74,10 @@ def auroc_log(winv, woutv):
 def tpr(winv, woutv, level=0.95):
     assert level < 1 and level > 0
     threshold = np.quantile(winv.to('cpu'), level)
-    print(f"{level*100}% TNR Threshold: {threshold}")
+    # print(f"{level*100}% TNR Threshold: {threshold}")
     fpr = woutv[woutv <= threshold].shape[0] / float(woutv.shape[0])
     tpr = 1 - fpr
-    print(f"TPR at {level*100}%  TNR: {tpr}")
+    # print(f"TPR at {level*100}%  TNR: {tpr}")
     return tpr, threshold
 
 
@@ -233,16 +233,16 @@ def evaluate(D, ind_val, ood_val):
         tpr_95, tpr_95_thresh = tpr(winv, woutv, 0.95)
         tpr_99, tpr_99_thresh = tpr(winv, woutv, 0.99)
         # auroc, tnr_at_tpr95, tnr_at_tpr99 = auroc_log(winv, woutv)
-        print("Overall Statistics")
+        print("\nOverall Statistics")
         print_stats(tpr_95, "TPR@95TNR")
         print_stats(tpr_95_thresh, "TPR@95TNR-Threshold")
         print_stats(tpr_99, "TPR@99TNR")
-        print_stats(tpr_99_thresh, "TPR@99TNR-Threshold")
+        print_stats(tpr_99_thresh, "TPR@99TNR-Threshold\n")
         # print_stats(auroc, "AUROC")
         # print_stats(tnr_at_tpr95, "TPR@95RAW")
         # print_stats(tnr_at_tpr99, "TPR@99RAW")
         auc = naive_auroc(-winv.cpu(), -woutv.cpu())
-        print(auc)
+        print(f"AUROC: {auc}\n")
         return tpr_95, tpr_99, auc
 
 class UMAPER():

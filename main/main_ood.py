@@ -55,16 +55,19 @@ ood_bsz = train_config['ood_bsz']
 w_ce, w_loss, w_dist = train_config['hp'].values()
 hp = HParam(ce=w_ce, wass=w_loss, dist=w_dist)
 scaling = train_config['scaling']
+score = train_config['score']
+T = train_config['T']
 d_step_ratio = train_config['d_step_ratio']
 g_step_ratio = train_config['g_step_ratio']
 noise_dim = train_config['noise_dim']
 n_steps_log = train_config['logging']['n_steps_log']
+n_epochs_save = train_config['logging']['n_epochs_save']
 print(f"Number of Epochs: {max_epoch}.")
 
 ###---------- Optimizer  ----------###
 d_lr, g_lr, beta1, beta2 = train_config['optimizer'].values()
 print(f"Hyperparameters: lambda_ce={w_ce} & lambda_w={w_loss} & scaling={scaling} & d_lr={d_lr} & g_lr={g_lr} & B_InD: {bsz_tri} & B_OoD: {ood_bsz} & n_d: {d_step_ratio} & n_g: {g_step_ratio}")
-
+print(f"Score Function: {score}")
 #---------- Evaluation Configuration  ----------#
 eval_config = config['eval_config'].values()
 each_cls, cls_idx, n_lr = eval_config
@@ -113,14 +116,15 @@ for mc in range(mc_num):
     # ic("Test Done.")
 
     ###---------- checkpoint loading (if necessary)  ----------###
+    # TODO: optimize the implementation later.
     # ckpt = "/scratch/sunwbgt_root/sunwbgt98/xysong/energy_ood/CIFAR/snapshots/pretrained/[CIFAR100-SVHN]-pretrained-classifier.pt"
     # D.load_state_dict(torch.load(ckpt))
-    name = f"[{dset.name}]-[{n_ood}]-[{regime}]-[0]_[9]"
-    ckpt = f"/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/OOD-GAN/{dset.name}/{regime}/{n_ood}/{name}.pt"
+    # name = f"[{dset.name}]-[{n_ood}]-[{regime}]-[0]_[9]"
+    # ckpt = f"/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/OOD-GAN/{dset.name}/{regime}/{n_ood}/{name}.pt"
 
-    D.load_state_dict(torch.load(ckpt)['D-state'])
-    G.load_state_dict(torch.load(ckpt)['G-state'])
-    print('Successfully Load checkpoints')
+    # D.load_state_dict(torch.load(ckpt)['D-state'])
+    # G.load_state_dict(torch.load(ckpt)['G-state'])
+    # print('Successfully Load checkpoints')
     ###---------- optimizers  ----------###
     D_solver = torch.optim.Adam(D.parameters(), lr=d_lr, betas=(beta1, beta2))
     G_solver = torch.optim.Adam(G.parameters(), lr=g_lr, betas=(beta1, beta2))
@@ -136,12 +140,15 @@ for mc in range(mc_num):
                               g_steps_ratio=g_step_ratio,
                               hp=hp,
                               scaling=scaling,
+                              score=score,
+                              T=T,
                               max_epochs=max_epoch,
                               ood_bsz=ood_bsz,
                               writer_name=writer_name,
                               ckpt_name=ckpt_name,
                               ckpt_dir=ckpt_dir,
                               n_steps_log=n_steps_log,
+                              n_epochs_save=n_epochs_save,
                               ind_val_loader = dset.ind_val_loader,
                               ood_val_loader = dset.ood_val_loader)
 
