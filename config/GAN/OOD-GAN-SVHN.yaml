@@ -33,7 +33,7 @@ model:
 
 train_config:
   score: "energy"
-  T: 0.1
+  T: 1
   mc: 1
   max_epochs: 100
   bsz_tri: 64
@@ -41,14 +41,14 @@ train_config:
   ood_bsz: 32
   optimizer:
     d_lr: 0.001
-    g_lr: 0.01
+    g_lr: 0.001
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
     ce: 1
     wass: 0.1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 0.01
+  scaling: 0.1
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96
