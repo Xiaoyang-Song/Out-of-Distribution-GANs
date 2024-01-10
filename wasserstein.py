@@ -11,11 +11,56 @@ def batch_wasserstein(x):
     # print(torch.softmax(x, dim=-1))
     return WLoss(torch.softmax(x, dim=-1))
 
+def batch_dynamic_wasserstein(x):
+    # Input to this function is a batch of logits
+    WLoss = Dynamic_Wasserstein.apply
+    # print(WLoss(torch.softmax(x, dim=-1)))
+    # print(torch.softmax(x, dim=-1))
+    return WLoss(torch.softmax(x, dim=-1))
+
 
 def single_wasserstein(x):
     WLoss = Wasserstein.apply
     return WLoss(torch.softmax(x, dim=-1))
 
+
+class Dynamic_Wasserstein(Function):
+    @staticmethod
+    def forward(ctx, input: torch.tensor, device=DEVICE):
+        """
+        Forward pass for Wasserstein distance metric computation
+
+        Args:
+            ctx (_type_): static object
+            p (torch.tensor): B x C predicted probability vector
+            device (_type_, optional): default to DEVICE
+        """
+        p = input.clone()
+        B, C = input.shape
+
+        all_class = torch.LongTensor([i for i in range(1)]).to(device)
+        all1hot = label_2_onehot(all_class, C, device)
+        all1hot = torch.unsqueeze(all1hot, -1)
+        WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1.)
+        p = torch.unsqueeze(p, -1)
+
+        all1hot = all1hot.repeat(B,1,1)
+        loss = WASSLOSS(p[:,:,0], p, all1hot[:,:,0], all1hot).mean()
+        ctx.save_for_backward(all1hot, p)
+
+        return loss
+
+    @staticmethod
+    def backward(ctx, upstream_grad):
+        all1hot, p = ctx.saved_tensors
+        B, C, _ = p.shape
+
+        OOD_loss = SamplesLoss("sinkhorn", p=2, blur=1., potentials=True)
+        OOD_f, OOD_g = OOD_loss(p[:,:,0], p, all1hot[0:1].repeat(B,1,1)[:,:,0], all1hot[0:1].repeat(B,1,1))
+
+        grad = upstream_grad * OOD_f
+    
+        return grad
 
 class Wasserstein(Function):
     @staticmethod
@@ -90,11 +135,12 @@ if __name__ == '__main__':
     ic("Hello wasserstein.py")
     # This is not a driver class
     k = torch.tensor([[1.0, 2.0]], requires_grad=True)
-    a = -batch_wasserstein(k)
+    # a = -batch_wasserstein(k)
+    a = -batch_dynamic_wasserstein(k)
     print(a)
     a.backward()
     print(k.grad.data)
-    b = batch_wasserstein(torch.tensor([[1.0-0.1366, 2.0+0.1366]], requires_grad=True))
+    b = batch_dynamic_wasserstein(torch.tensor([[1.0-0.1366, 2.0+0.1366]], requires_grad=True))
     print(b)
     a = torch.tensor([[3.0, 6.0]], requires_grad=True)
     c = torch.sum(a)
