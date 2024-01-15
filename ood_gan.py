@@ -27,6 +27,11 @@ def ood_gan_d_loss(logits_real, logits_fake, logits_ood, labels_real, score='ene
         # 3. W_z
         assert logits_fake.requires_grad
         w_fake = batch_wasserstein(logits_fake)
+    elif score == 'Dynamic_Wasserstein':
+        w_ood = batch_dynamic_wasserstein(logits_ood)
+        # 3. W_z
+        assert logits_fake.requires_grad
+        w_fake = batch_dynamic_wasserstein(logits_fake)
     else:
         assert False, 'Unrecognized score function.'
 
@@ -38,9 +43,14 @@ def ood_gan_g_loss(logits_fake, gz, xood, score='energy', T=None):
     if score == 'energy':
         assert T is not None
         w_fake = energy(logits_fake, T)
-    else:
+    elif score == 'Wasserstein':
         assert logits_fake.requires_grad
         w_fake = batch_wasserstein(logits_fake)
+    elif score == 'Dynamic_Wasserstein':
+        assert logits_fake.requires_grad
+        w_fake = batch_dynamic_wasserstein(logits_fake)
+    else:
+        assert False, 'Unrecognized score function.'
     # distance term
     # print(torch.mean(gz, dim=0) - torch.mean(xood, dim=0))
     dist = torch.sqrt(torch.sum((torch.mean(gz) - torch.mean(xood))**2))

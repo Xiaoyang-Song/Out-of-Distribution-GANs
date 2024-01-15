@@ -68,6 +68,21 @@ def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVI
     return test_loss_value
 
 
+def ood_wass_loss_dynamic(input, device=DEVICE):
+    p = input.clone()
+    B, C = input.shape
+
+    all_class = torch.LongTensor([i for i in range(1)]).to(device)
+    all1hot = label_2_onehot(all_class, C, device)
+    all1hot = torch.unsqueeze(all1hot, -1)
+    WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1.)
+    p = torch.unsqueeze(p, -1)
+
+    all1hot = all1hot.repeat(B,1,1)
+    loss = WASSLOSS(p[:,:,0], p, all1hot[:,:,0], all1hot).mean()
+    return loss
+
+
 def ood_wass_loss(input: torch.Tensor, device=DEVICE):
     """
     Test version of Wasserstein distances (no gradient flow)

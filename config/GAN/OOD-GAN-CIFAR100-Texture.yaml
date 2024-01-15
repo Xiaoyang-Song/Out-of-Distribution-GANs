@@ -30,8 +30,10 @@ model:
     noise_dim: 96
 
 train_config:
+  score: "Dynamic_Wasserstein"
   mc: 1
-  max_epochs: 5
+  T: 1
+  max_epochs: 16
   bsz_tri: 32
   bsz_val: 16 # this is used for evaluation
   ood_bsz: 16
@@ -50,6 +52,7 @@ train_config:
   noise_dim: 96
   logging:
     n_steps_log: 25
+    n_epochs_save: 4
 
 eval_config:
   each_cls: False

@@ -103,7 +103,8 @@ def loader_wass(data_loader, D):
     for (img, label) in tqdm(data_loader):
         # print(label)
         out = D(img.to(DEVICE))
-        wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
+        wass_dist = ood_wass_loss_dynamic(torch.softmax(out, dim=-1))
+        # wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
         # wass_dist = sink_dist_test_v2(torch.softmax(out, dim=-1), None, 8)
         # img = img.to('cpu')
         # wass_dist = ood_wass_loss(out)
