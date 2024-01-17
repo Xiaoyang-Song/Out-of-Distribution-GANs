@@ -97,19 +97,22 @@ def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
 
 
 def loader_wass(data_loader, D):
-    wass_dists = []
-    # ic(DEVICE)
-    # assert DEVICE == 'cuda'
-    for (img, label) in tqdm(data_loader):
-        # print(label)
-        out = D(img.to(DEVICE))
-        wass_dist = ood_wass_loss_dynamic(torch.softmax(out, dim=-1))
-        # wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
-        # wass_dist = sink_dist_test_v2(torch.softmax(out, dim=-1), None, 8)
-        # img = img.to('cpu')
-        # wass_dist = ood_wass_loss(out)
-        wass_dists.append(wass_dist.cpu())
-    return torch.cat(wass_dists, dim=0)
+    with torch.no_grad():
+        wass_dists = []
+        # ic(DEVICE)
+        # assert DEVICE == 'cuda'
+        for (img, label) in tqdm(data_loader):
+            # print(label)
+            # print(img.shape)
+            img = img.to(DEVICE)
+            out = D(img)
+            wass_dist = ood_wass_loss_dynamic(torch.softmax(out, dim=-1))
+            # wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
+            # wass_dist = sink_dist_test_v2(torch.softmax(out, dim=-1), None, 8)
+            # img = img.to('cpu')
+            # wass_dist = ood_wass_loss(out)
+            wass_dists.append(wass_dist.cpu())
+        return torch.cat(wass_dists, dim=0)
 
 
 def print_stats(stat, name, precision=5):

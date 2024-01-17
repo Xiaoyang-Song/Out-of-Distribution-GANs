@@ -68,9 +68,8 @@ def ind_wass_loss(input: torch.Tensor, target: torch.Tensor, C: int, device=DEVI
     return test_loss_value
 
 
-def ood_wass_loss_dynamic(input, device=DEVICE):
-    p = input.clone()
-    B, C = input.shape
+def ood_wass_loss_dynamic(p, device=DEVICE):
+    B, C = p.shape
 
     all_class = torch.LongTensor([i for i in range(1)]).to(device)
     all1hot = label_2_onehot(all_class, C, device)
@@ -79,9 +78,21 @@ def ood_wass_loss_dynamic(input, device=DEVICE):
     p = torch.unsqueeze(p, -1)
 
     all1hot = all1hot.repeat(B,1,1)
-    loss = WASSLOSS(p[:,:,0], p, all1hot[:,:,0], all1hot).mean()
+    loss = WASSLOSS(p[:,:,0], p, all1hot[:,:,0], all1hot)
     return loss
 
+
+def sink_dist_test(input, target, C, device=DEVICE):
+    
+    test_label_onehot = label_2_onehot(target, C, device)
+    ##reshape into (B,N,D)
+    test_label_onehot = torch.unsqueeze(test_label_onehot, -1)
+    test_input = torch.unsqueeze(input, -1)
+    ##Loss value for InD samples
+    test_loss = SamplesLoss("sinkhorn", p=2, blur=1.) #Wasserstein-1 distance
+    test_loss_value = test_loss(test_input[:,:,0], test_input, test_label_onehot[:,:,0], test_label_onehot)
+    
+    return test_loss_value
 
 def ood_wass_loss(input: torch.Tensor, device=DEVICE):
     """
@@ -125,7 +136,7 @@ if __name__ == "__main__":
 
     # TEST ood_wass_loss function
     K = 5
-    onehot = torch.tensor([[1, 0, 0, 0, 0]])
+    onehot = torch.tensor([[1.0, 0, 0, 0, 0]])
     uniform = torch.ones(1, 5) * 0.2
     uniform_0 = torch.tensor([[0.19, 0.21, 0.2, 0.2, 0.2]])
     example = torch.tensor([[0, 0.25, 0.25, 0.25, 0.25]])
@@ -135,6 +146,17 @@ if __name__ == "__main__":
     print(ood_wass_loss(example, 'cpu'))
     print(ood_wass_loss(onehot))
     print(ood_wass_loss(example_2, 'cpu'))
+
+    print(ood_wass_loss_dynamic(uniform, 'cpu'))
+    print(sink_dist_test(uniform, torch.tensor([0]), 5))
+    print(ood_wass_loss_dynamic(uniform_0, 'cpu'))
+    print(sink_dist_test(uniform_0, torch.tensor([0]), 5))
+    print(sink_dist_test(uniform_0, torch.tensor([3]), 5))
+    print(ood_wass_loss_dynamic(example, 'cpu'))
+    print(sink_dist_test(example, torch.tensor([0]), 5))
+    print(sink_dist_test(example, torch.tensor([3]), 5))
+    print(ood_wass_loss_dynamic(onehot))
+    print(ood_wass_loss_dynamic(example_2, 'cpu'))
 
     example = torch.tensor([[0.3557, 0.2983, 0.3461],
         [0.3679, 0.2906, 0.3416]])
