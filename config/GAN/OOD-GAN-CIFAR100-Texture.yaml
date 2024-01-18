@@ -33,7 +33,7 @@ train_config:
   score: "Dynamic_Wasserstein"
   mc: 1
   T: 1
-  max_epochs: 16
+  max_epochs: 100
   bsz_tri: 32
   bsz_val: 16 # this is used for evaluation
   ood_bsz: 16

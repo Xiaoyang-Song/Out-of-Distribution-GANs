@@ -8,7 +8,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=16GB
-#SBATCH --time=24:00:00
+#SBATCH --time=12:00:00
 #SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/C100TGAN64.log
 
 python3 main/main_ood.py --config=config/GAN/OOD-GAN-CIFAR100-Texture.yaml --n_ood=64 > checkpoint/log/CIFAR100-Texture/log-64.txt

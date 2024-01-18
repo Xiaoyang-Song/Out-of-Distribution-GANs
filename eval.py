@@ -102,16 +102,17 @@ def loader_wass(data_loader, D):
         # ic(DEVICE)
         # assert DEVICE == 'cuda'
         for (img, label) in tqdm(data_loader):
-            # print(label)
-            # print(img.shape)
+            label = label.to(DEVICE)
             img = img.to(DEVICE)
             out = D(img)
-            wass_dist = ood_wass_loss_dynamic(torch.softmax(out, dim=-1))
+            # wass_dist = ood_wass_loss_dynamic(torch.softmax(out, dim=-1))
+            wass_dist = sink_dist_test(torch.softmax(out, dim=-1), label, out.shape[1]).cpu().detach()
+
             # wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
             # wass_dist = sink_dist_test_v2(torch.softmax(out, dim=-1), None, 8)
             # img = img.to('cpu')
             # wass_dist = ood_wass_loss(out)
-            wass_dists.append(wass_dist.cpu())
+            wass_dists.append(wass_dist)
         return torch.cat(wass_dists, dim=0)
 
 

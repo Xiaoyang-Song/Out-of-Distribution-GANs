@@ -1,18 +1,14 @@
 #!/bin/bash
 
 #SBATCH --account=sunwbgt98
-#SBATCH --job-name=CTGAN128
+#SBATCH --job-name=C100TGAN128
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=16GB
-#SBATCH --time=72:00:00
-#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/CTGAN128.log
+#SBATCH --time=12:00:00
+#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/C100TGAN128.log
 
-module purge
-conda init bash
-conda activate OoD
-
-python3 main/main_ood.py --config=config/GAN/OOD-GAN-CIFAR10-Texture.yaml --n_ood=128 > checkpoint/log/CIFAR10-Texture/log-128.txt
+python3 main/main_ood.py --config=config/GAN/OOD-GAN-CIFAR100-Texture.yaml --n_ood=128 > checkpoint/log/CIFAR100-Texture/log-128.txt
