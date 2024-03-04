@@ -364,36 +364,62 @@ def set_loader(bsz_tri, bsz_val):
                                              batch_size=bsz_val, shuffle=True, num_workers=16, pin_memory=True)
     return labeled_trainloader, testloader
 
+def process_large_ood_dataset(name, reserved_training=2048):
+    normalize = trn.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    if name == 'Texture':
+        mean = [x / 255 for x in [125.3, 123.0, 113.9]]
+        std = [x / 255 for x in [63.0, 62.1, 66.7]]
+        data = datasets.ImageFolder(root="Datasets/dtd/images/",
+                            transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
+                                                       trn.ToTensor(), trn.Normalize(mean, std)]))
+    
+    elif name == 'Places365-32':
+        data = torchvision.datasets.ImageFolder(root="../Dataset/Places/", 
+                                                transform=transforms.Compose([transforms.Resize(32), transforms.CenterCrop(32), transforms.ToTensor(),normalize]))
+    elif name == 'iSUN':
+        data = torchvision.datasets.ImageFolder(root="../Dataset/iSUN",
+                                    transform=transforms.Compose([transforms.Resize(32), transforms.ToTensor(),normalize]))
+    elif name == 'LSUN-C':
+        data = torchvision.datasets.ImageFolder(root="../Dataset/LSUN",
+                                    transform=transforms.Compose([transforms.Resize(32), transforms.ToTensor(),normalize]))
+        
+    # Process data
+    print(len(data))
+    train_data, test_data = train_test_split(data, train_size=reserved_training, test_size=len(data) - reserved_training, random_state=2024)
+    print(len(train_data))
+    print(len(test_data))
+    os.makedirs(os.path.join('Datasets','OOD', name), exist_ok=True)
+    torch.save(train_data, os.path.join('Datasets','OOD', name, 'train.pt'))
+    torch.save(test_data, os.path.join('Datasets','OOD', name, 'test.pt'))
 
-if __name__ == '__main__':
-    # labeled_trainloader, testloader = set_loader(256, 256)
-    print('Hello World')
-    mean = [x / 255 for x in [125.3, 123.0, 113.9]]
-    std = [x / 255 for x in [63.0, 62.1, 66.7]]
-
-    # Process texture data
-    # data = datasets.ImageFolder(root="Datasets/dtd/images/",
-    #                         transform=trn.Compose([trn.Resize(32), trn.CenterCrop(32),
-    #                                                trn.ToTensor(), trn.Normalize(mean, std)]))
-    # print(len(data))
-    # train_data, test_data = train_test_split(data, train_size=2048, test_size=5640 - 2048)
-    # print(len(train_data))
-    # print(len(test_data))
-    # torch.save(train_data, 'Datasets/dtd/texture-tri.pt')
-    # torch.save(train_data, 'Datasets/dtd/texture-val.pt')
-    train_data = torch.load('Datasets/dtd/texture-tri.pt')
-    val_data = torch.load('Datasets/dtd/texture-val.pt')
-
-    print(train_data[0][0].shape)
-    print(train_data[5][1])
-
-    N = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-    for n in N:
+def sample_large_ood_dataset(ood_name, exp_name, sizes):
+    np.random.seed(2024)
+    train_data = torch.load(os.path.join('Datasets', 'OOD', ood_name, 'test.pt'))
+    print(len(train_data))
+    # Sample
+    os.makedirs(f"checkpoint/OOD-Sample/{exp_name}/", exist_ok=True)
+    for n in sizes:
         data = []
         idx = np.random.choice(len(train_data), n, False)
         data = [train_data[i] for i in idx]
         print(len(data))
-        torch.save(tuple_list_to_tensor(data), f'checkpoint/OOD-Sample/OOD-Balanced-{n}.pt')
+        torch.save(tuple_list_to_tensor(data), f'checkpoint/OOD-Sample/{exp_name}/OOD-Imbalanced-{n}.pt')
+
+
+if __name__ == '__main__':
+    # labeled_trainloader, testloader = set_loader(256, 256)
+    print('Hello World')
+    # process_large_ood_dataset('Texture')
+    # process_large_ood_dataset('Places365-32')
+    # process_large_ood_dataset('iSUN')
+    # process_large_ood_dataset('LSUN-C')
+
+    sizes = [64, 128, 256, 512, 1024, 2048]
+
+    sample_large_ood_dataset('iSUN', 'CIFAR100-iSUN', sizes)
+    sample_large_ood_dataset('LSUN-C', 'CIFAR100-LSUN-C', sizes)
+    sample_large_ood_dataset('Places365-32', 'CIFAR100-Places365-32', sizes)
+    sample_large_ood_dataset('Texture', 'CIFAR100-Texture', sizes)
 
 
 
