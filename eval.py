@@ -12,8 +12,6 @@ from models.model import *
 from utils import *
 from models.ood_gan_backbone import *
 from ood_gan import *
-import umap
-import umap.plot
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
@@ -250,75 +248,9 @@ def evaluate(D, ind_val, ood_val):
         print(f"AUROC: {auc}\n")
         return tpr_95, tpr_99, auc
 
-class UMAPER():
-    def __init__(self, ind_dset, ood_dset, n_ind, n_ood):
-        self.ind_dset = ind_dset
-        # Process
-        self.xin, self.yin = self.process_dset(ind_dset, n_ind, "X_InD")
-        self.xout, self.yout = self.process_dset(ood_dset, n_ood, "X_OoD")
-
-    @staticmethod
-    def process_dset(dset, n, label):
-        x = torch.stack([x[0] for x in dset]).flatten(1, 3)
-        rand_idx = np.random.choice(len(x), n, False)
-        x = x[rand_idx]
-        y = [label] * x.shape[0]
-        # y = torch.tensor([x[1] for x in dset])[rand_idx]
-        return x, y
-
-    def visualize(self, xood, gz, colors):
-        xood = xood.flatten(1, 3)
-        yood = np.array(["Observed OoD"] * xood.shape[0])
-        gz = gz.flatten(1, 3)
-        ygz = np.array(["Generated Img"] * gz.shape[0])
-        # Visualize
-        x_vis = np.concatenate([self.xin, self.xout, xood, gz])
-        y_vis = np.concatenate([self.yin, self.yout, yood, ygz])
-        ic(x_vis.shape)
-        mapper = umap.UMAP().fit(x_vis)
-        # p = umap.plot.points(mapper, labels=y_vis, color_key=colors)
-        p = umap.plot.points(mapper, labels=y_vis)
-        umap.plot.show(p)
-        # torch.save(umap.plot.show(p), "umap.png")
-
 
 if __name__ == "__main__":
     # pass
-    # Test visualization script
-    # C = 3
-    # dset = DSET('FashionMNIST', True, 256, 128, range(8), [8, 9])
-    # dset = DSET('SVHN', True, 256, 128, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
-    # umaper = UMAPER(dset.ind_train, dset.ood_train, 2000, 1000)
-
-    # xood = torch.load("other/OOD-Balanced-32.pt")[0]
-    # ic(xood.shape)
-    # G = Generator(96, C)
-    # G.load_state_dict(torch.load("other/[SVHN]-[32]-[Balanced]-[1]_[15].pt",
-                                #  map_location=torch.device('cpu'))['G-state'])
-
-    # G.load_state_dict(torch.load("other/[FashionMNIST]-[8]-[Balanced]-[2]_[9].pt",
-    #  map_location=torch.device('cpu'))['G-state'])
-    # seed = torch.rand((100, 96, 1, 1), device=DEVICE) * 2 - 1
-    # gz = G(seed)
-    # ic(gz.shape)
-    # gz = G(seed)
-    # ic(gz.shape)
-
-    # umaper.visualize(xood.detach(), gz.detach(), [
-    #     "lightgray", "blue", "lightgreen", "orange"])
-    # plt.imshow(gz[0].reshape((32, 32, 3)).detach().squeeze())
-    # # plt.imshow(gz[0].detach().squeeze())
-    # plt.show()
-
-    # Evaluate
-    # D = DenseNet3(depth=100, num_classes=8, input_channel=1).to(DEVICE)
-    # D.load_state_dict(torch.load('res/32-2.pt', map_location='cpu')['D-state'])
-
-    # evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
-    #                 dset.ood_val, dset.ood_val_loader,
-    #                 32, '../', 'SEE-OoD',8, 1000)
-    # evaler.evaluate(D, '', None, False, None)
-
 
     winv = torch.zeros((2044))
     woutv = torch.ones((1832))
