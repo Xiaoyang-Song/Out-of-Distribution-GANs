@@ -8,6 +8,7 @@ import torchvision.transforms as trn
 from image_folder import ImageSubfolder
 from imagenet_loader import *
 from sklearn.model_selection import train_test_split
+from tqdm import tqdm
 
 def FashionMNIST(bs_t, bs_v, sf):
     tset = torchvision.datasets.FashionMNIST(
@@ -163,17 +164,17 @@ def Texture(bsz_tri, bsz_val, shuffle=True):
     #                                         num_workers=2, pin_memory=True)
     # return train_data, test_data, tri_ldr, val_ldr
 
-def dset_by_class(dset):
+def dset_by_class(dset, n_cls=10):
     ic(len(dset))
     img_lst = defaultdict(list)
     label_lst = defaultdict(list)
     # Loop through each tuple
-    for item in dset:
+    for item in tqdm(dset):
         img_lst[item[1]].append(item[0])
         label_lst[item[1]].append(item[1])
     # Declare a wrapper dictionary
     dset_by_class = {}
-    for label in np.arange(10):
+    for label in tqdm(range(n_cls)):
         dset_by_class[label] = (img_lst[label], label_lst[label])
     return dset_by_class
 
@@ -182,7 +183,7 @@ def dset_by_class(dset):
 
 def form_ind_dsets(input_dsets, ind_idx):
     dset = []
-    for label in ind_idx:
+    for label in tqdm(ind_idx):
         dset += list(zip(input_dsets[label][0], input_dsets[label][1]))
     return dset
 
@@ -204,7 +205,7 @@ def set_to_loader(dset: torch.tensor, bs: int, sf: bool):
 def relabel_tuples(dsets, ori, target):
     transformation = dict(zip(ori, target))
     transformed = []
-    for dpts in dsets:
+    for dpts in tqdm(dsets):
         transformed.append((dpts[0], transformation[dpts[1]]))
     return transformed
 
@@ -237,7 +238,6 @@ class DSET():
 
             elif self.name == "SVHN":
                 dset_tri, dset_val, _, _ = SVHN(self.bsz_tri, self.bsz_val)
-
             else:
                 dset_tri, dset_val, _, _ = FashionMNIST(
                     self.bsz_tri, self.bsz_val, True)
@@ -332,6 +332,53 @@ class DSET():
             self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'LSUN-C', 'test.pt'))
             self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
 
+        elif self.name == 'ImageNet100-INAT':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
+            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'INAT', 'train.pt'))
+            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'INAT', 'test.pt'))
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
+        elif self.name == 'ImageNet100-SUN':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
+            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'SUN', 'train.pt'))
+            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'SUN', 'test.pt'))
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
+        elif self.name == 'ImageNet100-Places365-224':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
+            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'Places365-224', 'train.pt'))
+            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'Places365-224', 'test.pt'))
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
+        elif self.name == 'ImageNet100-Texture-224':
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
+            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'Texture-224', 'train.pt'))
+            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'Texture-224', 'test.pt'))
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
+        elif self.name == 'ImageNet100':
+            self.ind_train = torch.load(os.path.join(OOD_TEST_PATH, 'ImageNet100', 'ind-train.pt'))
+            self.ind_val = torch.load(os.path.join(OOD_TEST_PATH, 'ImageNet100', 'ind-val.pt'))
+            self.ind_train_loader = set_to_loader(self.ind_train, self.bsz_tri, True)
+            self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
+            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'ImageNet100', 'ood-val.pt'))
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
+        elif self.name == 'CIFAR100':
+            self.ind_train = torch.load(os.path.join(OOD_TEST_PATH, 'CIFAR100', 'ind-train.pt'))
+            self.ind_val = torch.load(os.path.join(OOD_TEST_PATH, 'CIFAR100', 'ind-val.pt'))
+            self.ind_train_loader = set_to_loader(self.ind_train, self.bsz_tri, True)
+            self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
+            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'CIFAR100', 'ood-val.pt'))
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
+        elif self.name == '3DPC':
+            self.ind_train = torch.load(os.path.join('Datasets', '3DPC', 'ind-train.pt'))
+            self.ind_val = torch.load(os.path.join('Datasets', '3DPC', 'ind-test.pt'))
+            self.ind_train_loader = set_to_loader(self.ind_train, self.bsz_tri, True)
+            self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
+            self.ood_val = torch.load(os.path.join('Datasets', '3DPC',  'ood-test.pt'))
+            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
         else:
             assert False, 'Unrecognized Dataset Combination.'
 
@@ -354,8 +401,9 @@ def line(n=80):
     return "="*n
 
 def set_loader(bsz_tri, bsz_val):
+    # Code is obtained from NPOS source
     train_transform = trn.Compose([
-        trn.Resize(size=224, interpolation=trn.InterpolationMode.BICUBIC),
+        trn.Resize(size=(224, 224), interpolation=trn.InterpolationMode.BICUBIC),
         # trn.RandomResizedCrop(size=(224, 224), scale=(0.5, 1), interpolation=trn.InterpolationMode.BICUBIC),
         trn.RandomHorizontalFlip(p=0.5),
         trn.ToTensor(),
@@ -367,8 +415,9 @@ def set_loader(bsz_tri, bsz_val):
         trn.ToTensor(),
         trn.Normalize(mean=(0.48145466, 0.4578275, 0.40821073), std=(0.26862954, 0.26130258, 0.27577711))
     ])
-    root_dir = '../Dataset'
-    train_dir = root_dir + 'val'
+    root_dir = os.path.join('..', 'Dataset')
+    # train_dir = root_dir + 'val' # this line is from original NPOS paper, definitely problematic
+    train_dir = os.path.join(root_dir, 'train')
     classes, _ = torchvision.datasets.folder.find_classes(train_dir)
     index = [125, 788, 630, 535, 474, 694, 146, 914, 447, 208, 182, 621, 271, 646, 328, 119, 772, 928, 610, 891, 340,
              890, 589, 524, 172, 453, 869, 556, 168, 982, 942, 874, 787, 320, 457, 127, 814, 358, 604, 634, 898, 388,
@@ -379,13 +428,12 @@ def set_loader(bsz_tri, bsz_val):
     num_classes = 100
     classes = [classes[i] for i in index]
     class_to_idx = {c: i for i, c in enumerate(classes)}
-    train_data = ImageSubfolder(root_dir + 'train', transform=test_transform, class_to_idx=class_to_idx)
-    test_data = ImageSubfolder(root_dir + 'val', transform=test_transform, class_to_idx=class_to_idx)
-    labeled_trainloader = torch.utils.data.DataLoader(train_data, \
-                                                      batch_size=bsz_tri, shuffle=True, num_workers=16,
-                                                      pin_memory=True, drop_last=True)
-    testloader = torch.utils.data.DataLoader(test_data, batch_size=bsz_val, shuffle=True, num_workers=16, pin_memory=True)
-    return labeled_trainloader, testloader
+    # print(class_to_idx)
+    train_data = ImageSubfolder(os.path.join(root_dir, 'train'), transform=train_transform, class_to_idx=class_to_idx)
+    test_data = ImageSubfolder(os.path.join(root_dir, 'val'), transform=test_transform, class_to_idx=class_to_idx)
+    labeled_trainloader = torch.utils.data.DataLoader(train_data,batch_size=bsz_tri, shuffle=True, num_workers=4, pin_memory=True, drop_last=True)
+    testloader = torch.utils.data.DataLoader(test_data, batch_size=bsz_val, shuffle=True, num_workers=4, pin_memory=True)
+    return train_data, test_data, labeled_trainloader, testloader
 
 def process_large_ood_dataset(name, reserved_training=2048):
     normalize = transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761))
@@ -402,7 +450,53 @@ def process_large_ood_dataset(name, reserved_training=2048):
     elif name == 'LSUN-C':
         data = torchvision.datasets.ImageFolder(root="../Dataset/LSUN",
                                     transform=transforms.Compose([transforms.Resize(32), transforms.CenterCrop(32), transforms.ToTensor(),normalize]))
-        
+    elif name == 'INAT':
+        data = torchvision.datasets.ImageFolder("../Dataset/iNaturalist",
+                                    transform=trn.Compose([trn.Resize(256),trn.CenterCrop(224),trn.ToTensor(),
+                                        trn.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])]))
+    elif name == 'Places365-224':
+        data = torchvision.datasets.ImageFolder(root="../Dataset/Places/",
+                                    transform=trn.Compose([trn.Resize(256), trn.CenterCrop(224), trn.ToTensor(),
+                                        trn.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),]))
+    elif name == 'SUN':
+        data = torchvision.datasets.ImageFolder(root="../Dataset/SUN/",
+                                    transform=trn.Compose([trn.Resize(256), trn.CenterCrop(224), trn.ToTensor(),
+                                        trn.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),]))
+    elif name == 'Texture-224':
+        data = torchvision.datasets.ImageFolder(root="Datasets/dtd/images/",
+                                    transform=trn.Compose([trn.Resize(256), trn.CenterCrop(224), trn.ToTensor(),
+                                        trn.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),]))
+    elif name == 'ImageNet100' or 'CIFAR100':
+        os.makedirs(os.path.join('Datasets','OOD', name), exist_ok=True)
+        # Within-Dataset experiment
+        if name == 'ImageNet100':
+            dset_tri, dset_val , _, _ = set_loader(256, 256)
+        elif name == 'CIFAR100':
+            dset_tri, dset_val, _, _ = CIFAR100(256, 256)
+        ind = np.arange(0, 80, 1)
+        ood = np.arange(80, 100, 1)
+        dset_tri = dset_by_class(dset_tri, 100)
+        dset_val = dset_by_class(dset_val, 100)
+        # Training set
+        ind_tri = form_ind_dsets(dset_tri, ind)
+        # Relabel InD
+        ind_tri = relabel_tuples(ind_tri, ind, np.arange(len(ind)))
+        torch.save(ind_tri, os.path.join('Datasets','OOD', name, 'ind-train.pt'))
+        ind_tri = None
+        ind_val = form_ind_dsets(dset_val, ind)
+        ind_val = relabel_tuples(ind_val, ind, np.arange(len(ind)))
+        torch.save(ind_val, os.path.join('Datasets','OOD', name, 'ind-val.pt'))
+        ind_val = None
+
+        ood_tri = form_ind_dsets(dset_tri, ood)
+        torch.save(ood_tri, os.path.join('Datasets','OOD', name, 'ood-train.pt'))
+        ood_tri = None
+        ood_val = form_ind_dsets(dset_val, ood)
+        torch.save(ood_val, os.path.join('Datasets','OOD', name, 'ood-val.pt'))
+        ood_val = None
+        # print(len(ind_tri), len(ood_tri), len(ind_val), len(ood_val))
+        return
+
     # Process data
     print(len(data))
     train_data, test_data = train_test_split(data, train_size=reserved_training, test_size=len(data) - reserved_training, random_state=2024)
@@ -414,7 +508,12 @@ def process_large_ood_dataset(name, reserved_training=2048):
 
 def sample_large_ood_dataset(ood_name, exp_name, sizes):
     np.random.seed(2024)
-    train_data = torch.load(os.path.join('Datasets', 'OOD', ood_name, 'test.pt'))
+    if ood_name in ['CIFAR100', 'ImageNet100']:
+        train_data = torch.load(os.path.join('Datasets', 'OOD', ood_name, 'ood-train.pt'))
+    elif ood_name == "3DPC":
+        train_data = torch.load(os.path.join('Datasets', ood_name, 'ood-train.pt'))
+    else:
+        train_data = torch.load(os.path.join('Datasets', 'OOD', ood_name, 'train.pt'))
     print(len(train_data))
     # Sample
     os.makedirs(f"checkpoint/OOD-Sample/{exp_name}/", exist_ok=True)
@@ -427,29 +526,59 @@ def sample_large_ood_dataset(ood_name, exp_name, sizes):
 
 
 if __name__ == '__main__':
-    # labeled_trainloader, testloader = set_loader(256, 256)
-    print('Hello World')
+    print('Dataset preparing')
     # process_large_ood_dataset('Texture')
     # process_large_ood_dataset('Places365-32')
     # process_large_ood_dataset('iSUN')
     # process_large_ood_dataset('LSUN-C')
+    # process_large_ood_dataset('INAT')
+    # process_large_ood_dataset('Places365-224')
+    # process_large_ood_dataset('SUN')
+    # process_large_ood_dataset('Texture-224')
+    # process_large_ood_dataset('ImageNet100')
+    # process_large_ood_dataset('CIFAR100')
 
-    # sizes = [64, 128, 256, 512, 1024, 2048]
+
+    # Folder structure for source OOD set
+    # ls 
+    # ImageNet32  iNaturalist  iSUN  LSUN  Places  SUN  train  val
+
+    # sizes = [32, 64, 128, 256, 512, 1024]
+    sizes = [50, 100, 500, 1000, 2000]
 
     # sample_large_ood_dataset('iSUN', 'CIFAR100-iSUN', sizes)
     # sample_large_ood_dataset('LSUN-C', 'CIFAR100-LSUN-C', sizes)
     # sample_large_ood_dataset('Places365-32', 'CIFAR100-Places365-32', sizes)
     # sample_large_ood_dataset('Texture', 'CIFAR100-Texture', sizes)
+    # sample_large_ood_dataset('INAT', 'ImageNet-INAT', sizes)
+    # sample_large_ood_dataset('SUN', 'ImageNet-SUN', sizes)
+    # sample_large_ood_dataset('Places365-224', 'ImageNet-Places365-224', sizes)
+    # sample_large_ood_dataset('Texture-224', 'ImageNet-Texture-224', sizes)
+    # sample_large_ood_dataset('ImageNet100', 'ImageNet100', sizes)
+    # sample_large_ood_dataset('CIFAR100', 'CIFAR100', sizes)
+    sample_large_ood_dataset('3DPC', '3DPC', sizes)
 
-
-    # Test
+    # Test sampled dataset
     # OOD = 'Places365-32'
     # OOD = 'Texture'
+    # OOD = 'CIFAR100'
     # OOD = 'iSUN'
-    OOD = 'LSUN-C'
-    ood_val = torch.load(os.path.join(OOD_TEST_PATH, OOD, 'test.pt'))
-    val_loader = torch.utils.data.DataLoader(ood_val, batch_size=32, shuffle=True)
-    for (x, y) in val_loader:
-        print(x.shape, y.shape)
-        print(y)
-        break
+    # OOD = 'LSUN-C'
+    # OOD = 'INAT'
+    # ood_val = torch.load(os.path.join(OOD_TEST_PATH, OOD, 'ind-train.pt'))
+    # ood_val = torch.load(os.path.join('Datasets', '3DPC', 'ind-train.pt'))
+    # val_loader = torch.utils.data.DataLoader(ood_val, batch_size=32, shuffle=True)
+    # for (x, y) in val_loader:
+    #     print(x.shape, y.shape)
+    #     print(x.dtype)
+    #     print(y.dtype)
+    #     print(y)
+    #     break
+
+
+    # Test ImageNet dataset creation
+    # train_data, test_data, labeled_trainloader, testloader = set_loader(64, 64)
+    # label = []
+    # for x, y, in labeled_trainloader:
+    #     print(y)
+    # print(Counter(label))

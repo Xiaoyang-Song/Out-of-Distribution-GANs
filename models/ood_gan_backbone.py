@@ -1,5 +1,5 @@
 from config import *
-from models.resnet import resnet18
+from models.resnet import *
 # from models.model import *
 from tqdm import tqdm
 from torchinfo import summary

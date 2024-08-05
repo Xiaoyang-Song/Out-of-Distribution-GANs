@@ -128,6 +128,11 @@ for mc in range(mc_num):
     ###---------- optimizers  ----------###
     D_solver = torch.optim.Adam(D.parameters(), lr=d_lr, betas=(beta1, beta2))
     G_solver = torch.optim.Adam(G.parameters(), lr=g_lr, betas=(beta1, beta2))
+    # D_solver = torch.optim.SGD(D.parameters(), lr=d_lr, momentum=0.9)
+    # G_solver = torch.optim.SGD(G.parameters(), lr=g_lr, momentum=0.9)
+
+    # D_scheduler = torch.optim.lr_scheduler.StepLR(D_solver, 10, gamma=0.1)
+    # G_scheduler = torch.optim.lr_scheduler.StepLR(G_solver, 10, gamma=0.1)
 
     ###---------- dataset  ----------###
     ind_loader = dset.ind_train_loader

@@ -96,7 +96,7 @@ class OOD_GAN_TRAINER():
         self.ind_val_loader = ind_val_loader
         self.ood_val_loader = ood_val_loader
 
-    def train(self, ind_loader, ood_img_batch, D_solver, G_solver, pretrainedD=None, checkpoint=None):
+    def train(self, ind_loader, ood_img_batch, D_solver, G_solver, D_scheduler=None, G_scheduler=None, pretrainedD=None, checkpoint=None):
         # with torch.no_grad():
         #         evaluate(self.D, self.ind_val_loader, self.ood_val_loader)
         # Load pretrained Discriminator
@@ -214,6 +214,17 @@ class OOD_GAN_TRAINER():
                     # 'writer': self.writer
                 }, ckpt_name)
                 print(f'New checkpoint created at the end of epoch {epoch}.')
+
+            # Update learning rate
+            # D_scheduler.step()
+            # G_scheduler.step()
+            # if (epoch+1) in [10, 50, 75, 90]:
+            #     for param_group in D_solver.param_groups:
+            #         param_group['lr'] = param_group['lr'] / 10
+            #     for param_group in G_solver.param_groups:
+            #         param_group['lr'] = param_group['lr'] / 10
+            #     print(f"Learning rate updated at the end of epoch {epoch}.")
+
 
 
 if __name__ == '__main__':

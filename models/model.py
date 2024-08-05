@@ -11,6 +11,7 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 from models.dc_gan_model import *
 from models.ood_gan_backbone import *
+from models.resnet import *
 
 
 class BasicBlock(nn.Module):
@@ -151,7 +152,41 @@ class DenseNet3(nn.Module):
         out = self.fc(out)
         # out = self.softmax(out)
         return out
+class PCDiscriminator(nn.Module):
+    def __init__(self):
+        super(PCDiscriminator, self).__init__()
+        self.conv1 = nn.Conv2d(1, 6, 3, padding = (0, 20))
+        self.pool = nn.MaxPool2d(3, 3)
+        self.conv2 = nn.Conv2d(6, 16, 3)
+        self.fc1 = nn.Linear(16 * 32 * 3, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 5)
 
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 16 * 32 * 3)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+    
+class PCGenerator(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(32, 64)
+        self.fc2 = nn.Linear(64, 128)
+        self.fc3 = nn.Linear(128, 256)
+        self.fc4 = nn.Linear(256, 900)
+        self.gate = nn.Tanh()
+
+    def forward(self, x):
+        out = x.squeeze()
+        out = F.relu(self.fc1(out))
+        out = F.relu(self.fc2(out))
+        out = F.relu(self.fc3(out))
+        out = self.gate(self.fc4(out).reshape(-1, 1, 300, 3))
+        return out
 
 class MODEL_GETTER():
     def __init__(self, num_classes, img_info, return_DG):
@@ -174,6 +209,10 @@ class MODEL_GETTER():
             assert 'depth' in D_config and D_config['depth'] is not None
             D = DenseNet3(depth=D_config['depth'], num_classes=self.num_classes,
                           input_channel=self.C).to(device)
+        elif D_model == 'ResNet':
+            D = resnet101(num_class=self.num_classes).to(device)
+        elif D_model == '3DPC':
+            D = PCDiscriminator().to(device)
         else:
             assert False, 'Unrecognized Discriminator Type.'
         # Process GENERATORS
@@ -185,6 +224,11 @@ class MODEL_GETTER():
                 G = DC_G(noise_dim).to(device)
             elif G_model == "Deep_G":
                 G = Generator(noise_dim, self.C).to(device)
+            elif G_model == 'Deep_ResNet_G':
+                config = [3, 4, 6, 3]
+                G = ResNetDecoder(config[::-1], False).to(device)
+            elif G_model == "3DPC":
+                G = PCGenerator().to(device)
             else:
                 assert False, 'Unrecognized Generator Type.'
         if self.return_DG:
