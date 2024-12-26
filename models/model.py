@@ -171,6 +171,7 @@ class PCDiscriminator(nn.Module):
         x = self.fc3(x)
         return x
     
+    
 class PCGenerator(nn.Module):
     def __init__(self):
         super().__init__()
