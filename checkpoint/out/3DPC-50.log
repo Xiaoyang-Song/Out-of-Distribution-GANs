@@ -1,20 +1,5 @@
-2024-12-26 14:01:28.691303: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+2024-12-26 15:04:24.728365: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-12-26 14:01:30.326168: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory
-2024-12-26 14:01:30.326300: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory
-2024-12-26 14:01:30.326328: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
-  0%|          | 0/1250 [00:00<?, ?it/s]  0%|          | 0/1250 [00:01<?, ?it/s]
-Traceback (most recent call last):
-  File "/gpfs/accounts/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/main/main_ood.py", line 161, in <module>
-    trainer.train(ind_loader, ood_img_batch, D_solver,
-  File "/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/ood_gan.py", line 140, in train
-    Gz = self.G(seed)
-  File "/home/xysong/.local/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/models/model.py", line 186, in forward
-    out = F.relu(self.fc1(out))
-  File "/home/xysong/.local/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/xysong/.local/lib/python3.9/site-packages/torch/nn/modules/linear.py", line 114, in forward
-    return F.linear(input, self.weight, self.bias)
-RuntimeError: mat1 and mat2 shapes cannot be multiplied (32x96 and 32x64)
+2024-12-26 15:04:26.466491: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory
+2024-12-26 15:04:26.466629: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory
+2024-12-26 15:04:26.466651: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
