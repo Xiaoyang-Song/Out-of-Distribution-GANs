@@ -188,8 +188,8 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/CIFAR100-Places365/2048.sh
 
 sbatch jobs/3DPC/50.sh
-sbatch jobs/3DPC/100.sh
-sbatch jobs/3DPC/500.sh
-sbatch jobs/3DPC/1000.sh
-sbatch jobs/3DPC/1500.sh
-sbatch jobs/3DPC/2000.sh
+# sbatch jobs/3DPC/100.sh
+# sbatch jobs/3DPC/500.sh
+# sbatch jobs/3DPC/1000.sh
+# sbatch jobs/3DPC/1500.sh
+# sbatch jobs/3DPC/2000.sh

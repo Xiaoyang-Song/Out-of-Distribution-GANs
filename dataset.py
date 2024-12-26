@@ -544,7 +544,7 @@ if __name__ == '__main__':
     # ImageNet32  iNaturalist  iSUN  LSUN  Places  SUN  train  val
 
     # sizes = [32, 64, 128, 256, 512, 1024]
-    sizes = [50, 100, 500, 1000, 2000]
+    sizes = [50, 100, 500, 1000, 1500, 2000]
 
     # sample_large_ood_dataset('iSUN', 'CIFAR100-iSUN', sizes)
     # sample_large_ood_dataset('LSUN-C', 'CIFAR100-LSUN-C', sizes)
