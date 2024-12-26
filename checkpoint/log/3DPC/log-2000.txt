@@ -46,3 +46,23 @@ In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/co
 compilation terminated.
 
 OK
+Experiment: 3DPC
+Experiment regime: Imbalanced
+Method: OOD-GAN
+================================================================================
+Number of observed OoD samples (class-level): 2000
+Input Dimension: 300 x 3 x 1
+Number of InD classes: 5
+Number of Epochs: 100.
+Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.001 & B_InD: 100 & B_OoD: 10 & n_d: 1 & n_g: 1
+Score Function: Dynamic_Wasserstein
+Finished Processing Input Arguments.
+-- Current Device: Tesla V100-PCIE-16GB
+-- Device Total Memory: 15.77 GB
+-- Let's use 1 GPUs!
+tensor([5, 5, 5,  ..., 5, 5, 5])
+Counter({5: 2000})
+Monte Carlo Iteration 0
+3DPC
+3DPC
+OoD sample shape: torch.Size([2000, 1, 300, 3])

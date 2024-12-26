@@ -520,7 +520,8 @@ def sample_large_ood_dataset(ood_name, exp_name, sizes):
     for n in sizes:
         data = []
         idx = np.random.choice(len(train_data), n, False)
-        data = [train_data[i] for i in idx]
+        data = [(train_data[i][0], torch.tensor(train_data[i][1], dtype=torch.int64)) for i in idx]
+        
         print(len(data))
         torch.save(tuple_list_to_tensor(data), f'checkpoint/OOD-Sample/{exp_name}/OOD-Imbalanced-{n}.pt')
 

@@ -100,7 +100,7 @@ def loader_wass(data_loader, D):
         # ic(DEVICE)
         # assert DEVICE == 'cuda'
         for (img, label) in tqdm(data_loader):
-            label = label.to(DEVICE)
+            label = torch.tensor(label, dtype=torch.int64).to(DEVICE)
             img = img.to(DEVICE)
             out = D(img)
             # wass_dist = ood_wass_loss_dynamic(torch.softmax(out, dim=-1))

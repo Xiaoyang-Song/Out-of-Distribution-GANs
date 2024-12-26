@@ -121,8 +121,8 @@ class OOD_GAN_TRAINER():
             self.G.train()
             for steps, (x, y) in enumerate(tqdm(ind_loader)):
                 x = x.to(DEVICE)
-                # y = y.to(DEVICE)
-                y = y.type(torch.LongTensor).to(DEVICE)
+                y = y.to(DEVICE)
+                # y = torch.tensor(y, dtype=torch.int64).to(DEVICE)
                 # Manually discard last batch
                 # if len(x) != self.bsz_tri:
                 #     continue
