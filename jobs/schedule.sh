@@ -160,29 +160,36 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # JOBS
 
 # sbatch jobs/CIFAR100-LSUN-C/64.sh
-sbatch jobs/CIFAR100-LSUN-C/128.sh
+# sbatch jobs/CIFAR100-LSUN-C/128.sh
 # sbatch jobs/CIFAR100-LSUN-C/256.sh
-sbatch jobs/CIFAR100-LSUN-C/512.sh
+# sbatch jobs/CIFAR100-LSUN-C/512.sh
 # sbatch jobs/CIFAR100-LSUN-C/1024.sh
-sbatch jobs/CIFAR100-LSUN-C/2048.sh
+# sbatch jobs/CIFAR100-LSUN-C/2048.sh
 
 # sbatch jobs/CIFAR100-Texture/64.sh
-sbatch jobs/CIFAR100-Texture/128.sh
+# sbatch jobs/CIFAR100-Texture/128.sh
 # sbatch jobs/CIFAR100-Texture/256.sh
-sbatch jobs/CIFAR100-Texture/512.sh
+# sbatch jobs/CIFAR100-Texture/512.sh
 # sbatch jobs/CIFAR100-Texture/1024.sh
-sbatch jobs/CIFAR100-Texture/2048.sh
+# sbatch jobs/CIFAR100-Texture/2048.sh
 
-sbatch jobs/CIFAR100-iSUN/64.sh
+# sbatch jobs/CIFAR100-iSUN/64.sh
 # sbatch jobs/CIFAR100-iSUN/128.sh
-sbatch jobs/CIFAR100-iSUN/256.sh
+# sbatch jobs/CIFAR100-iSUN/256.sh
 # sbatch jobs/CIFAR100-iSUN/512.sh
-sbatch jobs/CIFAR100-iSUN/1024.sh
+# sbatch jobs/CIFAR100-iSUN/1024.sh
 # sbatch jobs/CIFAR100-iSUN/2048.sh
 
-sbatch jobs/CIFAR100-Places365/64.sh
+# sbatch jobs/CIFAR100-Places365/64.sh
 # sbatch jobs/CIFAR100-Places365/128.sh
-sbatch jobs/CIFAR100-Places365/256.sh
+# sbatch jobs/CIFAR100-Places365/256.sh
 # sbatch jobs/CIFAR100-Places365/512.sh
-sbatch jobs/CIFAR100-Places365/1024.sh
+# sbatch jobs/CIFAR100-Places365/1024.sh
 # sbatch jobs/CIFAR100-Places365/2048.sh
+
+sbatch jobs/3DPC/50.sh
+sbatch jobs/3DPC/100.sh
+sbatch jobs/3DPC/500.sh
+sbatch jobs/3DPC/1000.sh
+sbatch jobs/3DPC/1500.sh
+sbatch jobs/3DPC/2000.sh
