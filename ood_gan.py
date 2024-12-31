@@ -203,7 +203,7 @@ class OOD_GAN_TRAINER():
                 iter_count += 1
 
             with torch.no_grad():
-                evaluate(self.D, self.ind_val_loader, self.ood_val_loader)
+                evaluate(self.D, self.ind_val_loader, self.ood_val_loader, self.score)
                 test_backbone_D(self.D, self.ind_val_loader)
 
             # Save checkpoint

@@ -32,13 +32,14 @@ model:
     noise_dim: 96
 
 train_config:
-  score: "Dynamic_Wasserstein"
+  # score: "Dynamic_Wasserstein"
+  score: "Wasserstein"
   T: 1
   mc: 1
-  max_epochs: 100
-  bsz_tri: 64
-  bsz_val: 32 # this is used for evaluation
-  ood_bsz: 32
+  max_epochs: 16
+  bsz_tri: 50
+  bsz_val: 10 # this is used for evaluation
+  ood_bsz: 10
   optimizer:
     d_lr: 0.001
     g_lr: 0.001

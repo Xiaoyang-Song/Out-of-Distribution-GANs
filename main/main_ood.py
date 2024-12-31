@@ -91,7 +91,7 @@ else:
 dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
-                n_ood, log_dir, method, num_classes, n_lr)
+                n_ood, log_dir, method, num_classes, n_lr, score)
 # Load OoD
 # fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
 fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
@@ -158,8 +158,7 @@ for mc in range(mc_num):
                               ood_val_loader = dset.ood_val_loader)
 
     # Used for complex dataset
-    trainer.train(ind_loader, ood_img_batch, D_solver,
-                  G_solver, pretrainedD=None, checkpoint=None)
+    trainer.train(ind_loader, ood_img_batch, D_solver, G_solver, pretrainedD=None, checkpoint=None)
 
     ###---------- evaluation  ----------###
     evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)

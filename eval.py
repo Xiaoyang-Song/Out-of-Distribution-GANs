@@ -94,7 +94,7 @@ def plot_wass_dist_and_thresh(wass_lst, legend_lst, n_ood, log_dir, tag,
     plt.close()
 
 
-def loader_wass(data_loader, D):
+def loader_wass(data_loader, D, loss_type='Dynamic_Wasserstein'):
     with torch.no_grad():
         wass_dists = []
         # ic(DEVICE)
@@ -104,9 +104,10 @@ def loader_wass(data_loader, D):
             img = img.to(DEVICE)
             out = D(img)
             # wass_dist = ood_wass_loss_dynamic(torch.softmax(out, dim=-1))
-            wass_dist = sink_dist_test(torch.softmax(out, dim=-1), label, out.shape[1]).cpu().detach()
-
-            # wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
+            if loss_type == 'Dynamic_Wasserstein':
+                wass_dist = sink_dist_test(torch.softmax(out, dim=-1), label, out.shape[1]).cpu().detach()
+            else:
+                wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
             # wass_dist = sink_dist_test_v2(torch.softmax(out, dim=-1), None, 8)
             # img = img.to('cpu')
             # wass_dist = ood_wass_loss(out)
@@ -128,7 +129,7 @@ def ic_stats(stat, precision=5):
 
 class EVALER():
     def __init__(self, xin_t, xin_v, xin_v_loader, xout_v, xout_v_loader,
-                 n_ood, log_dir, method, num_classes, n_lr=2000):
+                 n_ood, log_dir, method, num_classes, n_lr=2000, loss_type='Dynamic_Wasserstein'):
         self.n_ood = n_ood
         self.log_dir = log_dir
         # DATASETS
@@ -149,6 +150,7 @@ class EVALER():
         self.tpr95_raw, self.tpr99_raw = [], []
         self.tpr95_thresh, self.tpr99_thresh = [], []
         self.auroc = []
+        self.loss_type = loss_type
         # Statistics - Logistic Regression
         # Refer to the return values of logistic regression for details.
         self.lr_instance = []
@@ -170,9 +172,9 @@ class EVALER():
         print("Computing evaluation statistics...")
         _, yxoutv = tuple_list_to_tensor(self.xout_v)
         print("> Evaluating InD Wasserstein distances...")
-        winv = loader_wass(self.xin_v_loader, D)
+        winv = loader_wass(self.xin_v_loader, D, self.loss_type)
         print("> Evaluating OoD Wasserstein distances...")
-        woutv = loader_wass(self.xout_v_loader, D)
+        woutv = loader_wass(self.xout_v_loader, D, self.loss_type)
         self.winv.append(winv)
         self.woutv.append(woutv)
         # Test model performance
@@ -222,12 +224,12 @@ class EVALER():
         print("\n" + line())
 
 
-def evaluate(D, ind_val, ood_val):
+def evaluate(D, ind_val, ood_val, loss_type='Dynamic_Wasserstein'):
         print("Computing evaluation statistics...")
         print("> Evaluating InD Wasserstein distances...")
-        winv = loader_wass(ind_val, D)
+        winv = loader_wass(ind_val, D, loss_type)
         print("> Evaluating OoD Wasserstein distances...")
-        woutv = loader_wass(ood_val, D)
+        woutv = loader_wass(ood_val, D, loss_type)
         # print(len(winv))
         # print(winv[0:10])
         # print(len(woutv))

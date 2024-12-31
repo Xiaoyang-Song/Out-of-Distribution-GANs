@@ -14,6 +14,7 @@ experiment:
   regime: Imbalanced
   observed_cls: null
 
+
 dset_info:
   img_info:
     H: 300
@@ -34,8 +35,8 @@ train_config:
   mc: 1
   T: 1
   max_epochs: 100
-  bsz_tri: 100
-  bsz_val: 50 # this is used for evaluation
+  bsz_tri: 50
+  bsz_val: 10 # this is used for evaluation
   ood_bsz: 10
   optimizer:
     d_lr: 0.001

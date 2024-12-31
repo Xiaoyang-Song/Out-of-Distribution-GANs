@@ -54,7 +54,7 @@ Number of observed OoD samples (class-level): 1500
 Input Dimension: 300 x 3 x 1
 Number of InD classes: 5
 Number of Epochs: 100.
-Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.001 & B_InD: 100 & B_OoD: 10 & n_d: 1 & n_g: 1
+Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.001 & B_InD: 50 & B_OoD: 10 & n_d: 1 & n_g: 1
 Score Function: Dynamic_Wasserstein
 Finished Processing Input Arguments.
 -- Current Device: Tesla V100-PCIE-16GB
@@ -66,3 +66,37 @@ Monte Carlo Iteration 0
 3DPC
 3DPC
 OoD sample shape: torch.Size([1500, 1, 300, 3])
+Step: 0    | D:  1.5796 | CE:  1.6111 | S_OoD:  0.3188 | S_z:  0.3197 | G: -0.0003 | S_z:  0.3197 | dist: 0.4123
+Step: 25   | D:  1.2106 | CE:  1.2354 | S_OoD:  0.2510 | S_z:  0.3194 | G: -0.0003 | S_z:  0.3146 | dist: 0.2129
+Step: 50   | D:  0.8789 | CE:  0.9053 | S_OoD:  0.2671 | S_z:  0.3187 | G: -0.0003 | S_z:  0.3159 | dist: 0.2403
+Step: 75   | D:  0.8629 | CE:  0.8881 | S_OoD:  0.2548 | S_z:  0.3156 | G: -0.0003 | S_z:  0.3143 | dist: 0.1492
+Step: 100  | D:  0.8265 | CE:  0.8488 | S_OoD:  0.2264 | S_z:  0.3115 | G: -0.0003 | S_z:  0.3127 | dist: 0.3725
+Step: 125  | D:  0.8494 | CE:  0.8714 | S_OoD:  0.2229 | S_z:  0.3038 | G: -0.0003 | S_z:  0.3007 | dist: 0.1343
+Step: 150  | D:  1.0218 | CE:  1.0444 | S_OoD:  0.2293 | S_z:  0.3042 | G: -0.0003 | S_z:  0.3038 | dist: 0.2377
+Step: 175  | D:  0.7686 | CE:  0.7882 | S_OoD:  0.1985 | S_z:  0.2866 | G: -0.0003 | S_z:  0.2913 | dist: 0.1852
+Step: 200  | D:  0.9471 | CE:  0.9695 | S_OoD:  0.2270 | S_z:  0.2670 | G: -0.0003 | S_z:  0.2742 | dist: 0.0213
+Step: 225  | D:  0.8595 | CE:  0.8767 | S_OoD:  0.1750 | S_z:  0.2633 | G: -0.0002 | S_z:  0.2499 | dist: 0.0690
+Step: 250  | D:  0.8572 | CE:  0.8758 | S_OoD:  0.1880 | S_z:  0.2556 | G: -0.0003 | S_z:  0.2576 | dist: 0.4614
+Step: 275  | D:  0.6866 | CE:  0.7081 | S_OoD:  0.2170 | S_z:  0.2033 | G: -0.0002 | S_z:  0.2034 | dist: 0.1200
+Step: 300  | D:  0.7170 | CE:  0.7369 | S_OoD:  0.2004 | S_z:  0.1816 | G: -0.0002 | S_z:  0.1767 | dist: 0.1935
+Step: 325  | D:  0.6813 | CE:  0.6994 | S_OoD:  0.1829 | S_z:  0.1582 | G: -0.0002 | S_z:  0.1580 | dist: 0.0692
+Step: 350  | D:  0.6881 | CE:  0.7062 | S_OoD:  0.1828 | S_z:  0.1510 | G: -0.0002 | S_z:  0.1535 | dist: 0.4488
+Step: 375  | D:  0.5763 | CE:  0.5974 | S_OoD:  0.2116 | S_z:  0.0257 | G: -0.0000 | S_z:  0.0319 | dist: 0.1693
+Step: 400  | D:  0.5371 | CE:  0.5572 | S_OoD:  0.2009 | S_z:  0.0067 | G: -0.0000 | S_z:  0.0091 | dist: 0.0596
+Step: 425  | D:  0.6153 | CE:  0.6366 | S_OoD:  0.2135 | S_z:  0.0065 | G: -0.0000 | S_z:  0.0054 | dist: 0.0564
+Step: 450  | D:  0.5318 | CE:  0.5495 | S_OoD:  0.1776 | S_z:  0.0113 | G: -0.0000 | S_z:  0.0100 | dist: 0.0768
+Step: 475  | D:  0.6857 | CE:  0.7065 | S_OoD:  0.2071 | S_z:  0.0008 | G: -0.0000 | S_z:  0.0021 | dist: 0.3883
+Step: 500  | D:  0.7166 | CE:  0.7375 | S_OoD:  0.2082 | S_z:  0.0010 | G: -0.0000 | S_z:  0.0002 | dist: 0.1321
+Step: 525  | D:  0.8285 | CE:  0.8467 | S_OoD:  0.1817 | S_z:  0.0008 | G: -0.0000 | S_z:  0.0050 | dist: 0.1191
+Step: 550  | D:  0.4963 | CE:  0.5148 | S_OoD:  0.1853 | S_z:  0.0002 | G: -0.0000 | S_z:  0.0002 | dist: 0.2439
+Step: 575  | D:  0.6800 | CE:  0.6968 | S_OoD:  0.1675 | S_z:  0.0043 | G: -0.0000 | S_z:  0.0025 | dist: 0.1566
+Step: 600  | D:  0.4585 | CE:  0.4717 | S_OoD:  0.1326 | S_z:  0.0003 | G: -0.0000 | S_z:  0.0001 | dist: 0.1767
+Step: 625  | D:  0.7063 | CE:  0.7255 | S_OoD:  0.1920 | S_z:  0.0006 | G: -0.0000 | S_z:  0.0012 | dist: 0.0439
+Step: 650  | D:  0.6121 | CE:  0.6292 | S_OoD:  0.1716 | S_z:  0.0024 | G: -0.0000 | S_z:  0.0046 | dist: 0.3567
+Step: 675  | D:  0.4953 | CE:  0.5139 | S_OoD:  0.1854 | S_z:  0.0003 | G: -0.0000 | S_z:  0.0005 | dist: 0.0728
+Step: 700  | D:  0.6086 | CE:  0.6283 | S_OoD:  0.1972 | S_z:  0.0019 | G: -0.0000 | S_z:  0.0013 | dist: 0.1274
+Step: 725  | D:  0.5562 | CE:  0.5735 | S_OoD:  0.1727 | S_z:  0.0165 | G: -0.0000 | S_z:  0.0056 | dist: 0.2373
+Step: 750  | D:  0.4504 | CE:  0.4690 | S_OoD:  0.1859 | S_z:  0.0020 | G: -0.0000 | S_z:  0.0063 | dist: 0.1502
+Step: 775  | D:  0.5191 | CE:  0.5384 | S_OoD:  0.1931 | S_z:  0.0040 | G: -0.0000 | S_z:  0.0014 | dist: 0.2727
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...

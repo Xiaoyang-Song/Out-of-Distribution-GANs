@@ -8,7 +8,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem-per-gpu=16GB
-#SBATCH --time=24:00:00
+#SBATCH --time=48:00:00
 #SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/SV-I-4.log
 
-python3 main/main_ood.py --config=config/GAN/OOD-GAN-SVHN.yaml --n_ood=4 > checkpoint/log/SVHN/OOD-GAN/log-4.txt
+python3 main/main_ood.py --config=config/GAN/OOD-GAN-SVHN.yaml --n_ood=4 > checkpoint/log/SVHN/OOD-GAN/log-4.log
