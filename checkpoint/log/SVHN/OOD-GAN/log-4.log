@@ -54,7 +54,7 @@ Number of observed OoD samples (class-level): 4
 Input Dimension: 32 x 32 x 3
 Number of InD classes: 8
 Number of Epochs: 16.
-Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.1 & d_lr=0.001 & g_lr=0.001 & B_InD: 50 & B_OoD: 10 & n_d: 1 & n_g: 1
+Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.005 & B_InD: 50 & B_OoD: 10 & n_d: 1 & n_g: 1
 Score Function: Wasserstein
 Finished Processing Input Arguments.
 -- Current Device: Tesla V100-PCIE-16GB
