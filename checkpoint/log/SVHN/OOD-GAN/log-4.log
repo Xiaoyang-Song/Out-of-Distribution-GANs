@@ -471,3 +471,64 @@ AUROC: 0.9251708696088778
 
 Validation Accuracy: 0.9468644174087544
 Validation Classification Loss: 0.20019450140283213
+Step: 64   | D: -0.0130 | CE:  0.0325 | S_OoD:  0.4556 | S_z:  0.0697 | G: -0.0001 | S_z:  0.0620 | dist: 0.5377
+Step: 164  | D: -0.0333 | CE:  0.0129 | S_OoD:  0.4629 | S_z:  0.0215 | G: -0.0000 | S_z:  0.0493 | dist: 0.5679
+Step: 264  | D: -0.0399 | CE:  0.0057 | S_OoD:  0.4561 | S_z:  0.0446 | G: -0.0000 | S_z:  0.0230 | dist: 0.5861
+Step: 364  | D: -0.0332 | CE:  0.0124 | S_OoD:  0.4554 | S_z:  0.0153 | G: -0.0000 | S_z:  0.0086 | dist: 0.6626
+Step: 464  | D: -0.0104 | CE:  0.0355 | S_OoD:  0.4595 | S_z:  0.0233 | G: -0.0000 | S_z:  0.0395 | dist: 0.6834
+Step: 564  | D:  0.0037 | CE:  0.0499 | S_OoD:  0.4615 | S_z:  0.0000 | G: -0.0000 | S_z:  0.0000 | dist: 0.7955
+Step: 664  | D:  0.0111 | CE:  0.0568 | S_OoD:  0.4565 | S_z:  0.0000 | G: -0.0000 | S_z:  0.0001 | dist: 0.8100
+Step: 764  | D: -0.0161 | CE:  0.0299 | S_OoD:  0.4597 | S_z:  0.0030 | G: -0.0000 | S_z:  0.0015 | dist: 0.8591
+Step: 864  | D: -0.0278 | CE:  0.0180 | S_OoD:  0.4589 | S_z:  0.0501 | G: -0.0000 | S_z:  0.0230 | dist: 0.9420
+Step: 964  | D:  0.0535 | CE:  0.0994 | S_OoD:  0.4594 | S_z:  0.0061 | G: -0.0000 | S_z:  0.0024 | dist: 0.9978
+Step: 1064 | D:  0.0542 | CE:  0.0997 | S_OoD:  0.4552 | S_z:  0.0001 | G: -0.0000 | S_z:  0.0003 | dist: 1.0073
+Step: 1164 | D: -0.0095 | CE:  0.0364 | S_OoD:  0.4594 | S_z:  0.0420 | G: -0.0000 | S_z:  0.0379 | dist: 0.9748
+Step: 1264 | D: -0.0056 | CE:  0.0400 | S_OoD:  0.4560 | S_z:  0.0146 | G: -0.0000 | S_z:  0.0033 | dist: 0.9305
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5450076804915515
+mean: 0.54501 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.08883176296949391
+mean: 0.08883 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.1821812596006145
+mean: 0.18218 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.27087876439094555
+mean: 0.27088 | std: 0.0 | MAD: 0.0
+AUROC: 0.9249335860203926
+
+Validation Accuracy: 0.9491659350307289
+Validation Classification Loss: 0.2014472777284236
+Step: 92   | D: -0.0442 | CE:  0.0020 | S_OoD:  0.4621 | S_z:  0.0320 | G: -0.0000 | S_z:  0.0298 | dist: 0.8783
+Step: 192  | D: -0.0149 | CE:  0.0308 | S_OoD:  0.4578 | S_z:  0.0353 | G: -0.0000 | S_z:  0.0333 | dist: 0.8125
+Step: 292  | D:  0.0184 | CE:  0.0645 | S_OoD:  0.4606 | S_z:  0.0525 | G: -0.0000 | S_z:  0.0380 | dist: 0.8666
+Step: 392  | D: -0.0383 | CE:  0.0079 | S_OoD:  0.4620 | S_z:  0.0010 | G: -0.0000 | S_z:  0.0008 | dist: 0.8775
+Step: 492  | D:  0.0756 | CE:  0.1212 | S_OoD:  0.4564 | S_z:  0.0052 | G: -0.0000 | S_z:  0.0004 | dist: 0.8962
+Step: 592  | D:  0.1029 | CE:  0.1485 | S_OoD:  0.4565 | S_z:  0.0008 | G: -0.0000 | S_z:  0.0017 | dist: 0.8970
+Step: 692  | D:  0.0797 | CE:  0.1242 | S_OoD:  0.4458 | S_z:  0.0045 | G: -0.0000 | S_z:  0.0116 | dist: 0.8900
+Step: 792  | D: -0.0143 | CE:  0.0317 | S_OoD:  0.4605 | S_z:  0.0058 | G: -0.0000 | S_z:  0.0013 | dist: 0.8925
+Step: 892  | D: -0.0396 | CE:  0.0063 | S_OoD:  0.4591 | S_z:  0.0094 | G: -0.0000 | S_z:  0.0075 | dist: 0.9162
+Step: 992  | D: -0.0159 | CE:  0.0298 | S_OoD:  0.4564 | S_z:  0.0003 | G: -0.0000 | S_z:  0.0016 | dist: 0.9417
+Step: 1092 | D: -0.0271 | CE:  0.0178 | S_OoD:  0.4500 | S_z:  0.0349 | G: -0.0000 | S_z:  0.0309 | dist: 0.9653
+Step: 1192 | D:  0.0763 | CE:  0.1223 | S_OoD:  0.4600 | S_z:  0.0153 | G: -0.0000 | S_z:  0.0229 | dist: 1.0443
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.511520737327189
+mean: 0.51152 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.09378781467676174
+mean: 0.09379 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.17634408602150542
+mean: 0.17634 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.26851135492324846
+mean: 0.26851 | std: 0.0 | MAD: 0.0
+AUROC: 0.9147900767927761
+
+Validation Accuracy: 0.9436786654960493
+Validation Classification Loss: 0.2128889993877656
