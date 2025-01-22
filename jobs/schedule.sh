@@ -77,7 +77,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 
 # SVHN OoD GAN
-sbatch jobs/svhn/ood-gan/svhn-4.sh
+# sbatch jobs/svhn/ood-gan/svhn-4.sh
 # sbatch jobs/svhn/ood-gan/svhn-8.sh
 # sbatch jobs/svhn/ood-gan/svhn-16.sh
 # sbatch jobs/svhn/ood-gan/svhn-32.sh
@@ -191,5 +191,5 @@ sbatch jobs/svhn/ood-gan/svhn-4.sh
 # sbatch jobs/3DPC/100.sh
 # sbatch jobs/3DPC/500.sh
 # sbatch jobs/3DPC/1000.sh
-# sbatch jobs/3DPC/1500.sh
+sbatch jobs/3DPC/1500.sh
 # sbatch jobs/3DPC/2000.sh
