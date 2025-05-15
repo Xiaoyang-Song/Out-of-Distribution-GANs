@@ -6,13 +6,9 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+#SBATCH --gpus=1
 #SBATCH --mem-per-gpu=16GB
-#SBATCH --time=144:00:00
-#SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANFM4.log
-
-module purge
-conda init bash
-conda activate OoD
+#SBATCH --time=2:00:00
+#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/fm-4.log
 
 python3 main/main_ood.py --config=config/GAN/OOD-GAN-FashionMNIST.yaml --n_ood=4 > checkpoint/log/FashionMNIST/OOD-GAN/log-4.txt

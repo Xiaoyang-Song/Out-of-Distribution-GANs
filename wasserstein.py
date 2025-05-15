@@ -7,9 +7,16 @@ from utils import *
 def batch_wasserstein(x):
     # Input to this function is a batch of logits
     WLoss = Wasserstein.apply
-    # print(WLoss(torch.softmax(x, dim=-1)))
+
+    # Traditional way
+    # score = WLoss(torch.softmax(x, dim=-1))
+    # print(score)
     # print(torch.softmax(x, dim=-1))
-    return WLoss(torch.softmax(x, dim=-1))
+    score = 1 - torch.max(torch.softmax(x, dim=-1), dim=-1)[0]
+    # print(score)
+    # return WLoss(torch.softmax(x, dim=-1))
+    # Shortcut way
+    return torch.mean(score)
 
 def batch_dynamic_wasserstein(x):
     # Input to this function is a batch of logits
@@ -82,7 +89,7 @@ class Wasserstein(Function):
         all1hot = label_2_onehot(all_class, C, device)
         all1hot = torch.unsqueeze(all1hot, -1)
         # 2-Wasserstein distance with binary cost matrix
-        WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1., cost=cost_matrix)
+        WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=0.05, cost=cost_matrix)
         p = torch.unsqueeze(p, -1)
         # Compute Wasserstein distance
         loss = torch.zeros(B, C).to(device)
@@ -101,7 +108,7 @@ class Wasserstein(Function):
         # Save for backward pass
         ctx.save_for_backward(all1hot, p, idx)
         # print(values)
-        # ic(values.mean())
+        ic(values)
         return values.mean()
 
     @staticmethod
@@ -134,11 +141,11 @@ class Wasserstein(Function):
 if __name__ == '__main__':
     ic("Hello wasserstein.py")
     # This is not a driver class
-    k = torch.tensor([[1.0, 2.0]], requires_grad=True)
+    k = torch.tensor([[1.0, 2.0], [3,1]], requires_grad=True)
     a = -batch_wasserstein(k)
-    print(a)
+    print("a", a)
     a = -batch_dynamic_wasserstein(k)
-    print(a)
+    print("a", a)
     a.backward()
     print(k.grad.data)
     b = batch_dynamic_wasserstein(torch.tensor([[1.0-0.1366, 2.0+0.1366]], requires_grad=True))

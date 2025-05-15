@@ -24,9 +24,9 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/svhn/wood/svhn-4096.sh
 
 # FashionMNIST OoD GAN
-# sbatch jobs/fashionmnist/ood-gan/4.sh
+sbatch jobs/fashionmnist/ood-gan/4.sh
 # sbatch jobs/fashionmnist/ood-gan/8.sh
-# sbatch jobs/fashionmnist/ood-gan/16.sh
+sbatch jobs/fashionmnist/ood-gan/16.sh
 # sbatch jobs/fashionmnist/ood-gan/32.sh
 # sbatch jobs/fashionmnist/ood-gan/64.sh
 # sbatch jobs/fashionmnist/ood-gan/128.sh
@@ -191,5 +191,5 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/3DPC/100.sh
 # sbatch jobs/3DPC/500.sh
 # sbatch jobs/3DPC/1000.sh
-sbatch jobs/3DPC/1500.sh
+# sbatch jobs/3DPC/1500.sh
 # sbatch jobs/3DPC/2000.sh
