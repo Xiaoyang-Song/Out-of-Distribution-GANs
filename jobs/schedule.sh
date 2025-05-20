@@ -26,7 +26,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # FashionMNIST OoD GAN
 sbatch jobs/fashionmnist/ood-gan/4.sh
 # sbatch jobs/fashionmnist/ood-gan/8.sh
-sbatch jobs/fashionmnist/ood-gan/16.sh
+# sbatch jobs/fashionmnist/ood-gan/16.sh
 # sbatch jobs/fashionmnist/ood-gan/32.sh
 # sbatch jobs/fashionmnist/ood-gan/64.sh
 # sbatch jobs/fashionmnist/ood-gan/128.sh
