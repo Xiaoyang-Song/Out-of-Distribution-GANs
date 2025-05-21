@@ -31,9 +31,9 @@ model:
 
 train_config:
   score: "Wasserstein"
-  mc: 3
+  mc: 1
   T: 1
-  max_epochs: 16
+  max_epochs: 25
   bsz_tri: 64
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
@@ -44,9 +44,9 @@ train_config:
     beta2: 0.999
   hp:
     ce: 1
-    wass: 0.1
+    wass: 1 # 0.1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 0.01
+  scaling: 1 # 0.01
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96
