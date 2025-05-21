@@ -8,7 +8,7 @@ path:
   sample_dir: ../checkpoint/OOD-Sample/
 
 experiment:
-  regime: Balanced
-  observed_cls: null
-  # regime: Imbalanced
-  # observed_cls: [0]
+  # regime: Balanced
+  # observed_cls: null
+  regime: Imbalanced
+  observed_cls: [0]
