@@ -30,9 +30,11 @@ model:
     noise_dim: 96
 
 train_config:
+  score: "Wasserstein"
   mc: 1
-  max_epochs: 16
-  bsz_tri: 128
+  T: 1
+  max_epochs: 25
+  bsz_tri: 64
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
   optimizer:
@@ -42,16 +44,17 @@ train_config:
     beta2: 0.999
   hp:
     ce: 1
-    wass: 0.1
+    wass: 1 # 0.1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 0.01
+  scaling: 1 # 0.01
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96
   logging:
     n_steps_log: 20
+    n_epochs_save: 4
 
 eval_config:
-  each_cls: True
+  each_cls: False
   cls_idx: [8, 9]
   n_lr: 5000
