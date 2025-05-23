@@ -9,6 +9,9 @@ import argparse
 import time
 import yaml
 
+np.random.seed(2025)
+torch.manual_seed(2025)
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', help='Training configuration file')
 parser.add_argument('--n_ood', help="Number of OoD samples", type=int)
