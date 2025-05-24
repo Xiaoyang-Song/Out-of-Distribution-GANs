@@ -23,7 +23,7 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/svhn/wood/svhn-2048.sh
 # sbatch jobs/svhn/wood/svhn-4096.sh
 
-sbatch jobs/cifar10-svhn/wood/64.sh
+# sbatch jobs/cifar10-svhn/wood/64.sh
 # sbatch jobs/cifar10-svhn/wood/1024.sh
 
 # FashionMNIST OoD GAN
@@ -81,10 +81,10 @@ sbatch jobs/cifar10-svhn/wood/64.sh
 
 # SVHN OoD GAN
 # sbatch jobs/svhn/ood-gan/svhn-4.sh
-# sbatch jobs/svhn/ood-gan/svhn-8.sh
+sbatch jobs/svhn/ood-gan/svhn-8.sh
 # sbatch jobs/svhn/ood-gan/svhn-16.sh
 # sbatch jobs/svhn/ood-gan/svhn-32.sh
-# sbatch jobs/svhn/ood-gan/svhn-64.sh
+sbatch jobs/svhn/ood-gan/svhn-64.sh
 # sbatch jobs/svhn/ood-gan/svhn-128.sh
 # sbatch jobs/svhn/ood-gan/svhn-256.sh
 # sbatch jobs/svhn/ood-gan/svhn-512.sh

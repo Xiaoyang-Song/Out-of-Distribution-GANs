@@ -66,3 +66,191 @@ Using downloaded and verified file: ./Datasets/SVHN/test_32x32.mat
 Monte Carlo Iteration 0
 Discriminator Model: DenseNet
 Generator Model: None
+Epoch  # 1 | training loss: 1.1721561611294746                 | training acc: 0.55308 | Wass Loss 0.6134107331931591
+Epoch  # 1 | validation loss: 1.588529676388783                 | validation acc: 0.5328423566878981
+Epoch  # 2 | training loss: 0.7061113565862179                 | training acc: 0.73446 | Wass Loss 0.5673146604001522
+Epoch  # 2 | validation loss: 1.1431869955579186                 | validation acc: 0.6453025477707006
+Epoch  # 3 | training loss: 0.5203255210965871                 | training acc: 0.79948 | Wass Loss 0.5651041191518307
+Epoch  # 3 | validation loss: 0.7946287889009828                 | validation acc: 0.7418391719745223
+Epoch  # 4 | training loss: 0.40675107201933863                 | training acc: 0.8405400000000002 | Wass Loss 0.577524482280016
+Epoch  # 4 | validation loss: 0.7832298948886288                 | validation acc: 0.7573646496815286
+Epoch  # 5 | training loss: 0.3228001715131104                 | training acc: 0.8694400000000001 | Wass Loss 0.5910175614655018
+Epoch  # 5 | validation loss: 0.7258478154422371                 | validation acc: 0.7643312101910829
+Epoch  # 6 | training loss: 0.2640369264520705                 | training acc: 0.88898 | Wass Loss 0.6058388087153435
+Epoch  # 6 | validation loss: 0.9054762491375018                 | validation acc: 0.7426353503184714
+Epoch  # 7 | training loss: 0.21509373054653405                 | training acc: 0.90504 | Wass Loss 0.6232770074605942
+Epoch  # 7 | validation loss: 0.8021930778861805                 | validation acc: 0.7598527070063694
+Epoch  # 8 | training loss: 0.16703553700447082                 | training acc: 0.9205200000000001 | Wass Loss 0.6453513901233673
+Epoch  # 8 | validation loss: 0.6499504166044248                 | validation acc: 0.8009554140127388
+Epoch  # 9 | training loss: 0.12824389182776214                 | training acc: 0.9336800000000001 | Wass Loss 0.6627731251120568
+Epoch  # 9 | validation loss: 0.7573908523769136                 | validation acc: 0.7662221337579618
+Epoch  # 10 | training loss: 0.099120027564466                 | training acc: 0.9421600000000001 | Wass Loss 0.6793083810210228
+Epoch  # 10 | validation loss: 0.5824877969968091                 | validation acc: 0.8111066878980892
+Epoch  # 11 | training loss: 0.07209059438854457                 | training acc: 0.9515 | Wass Loss 0.7011088827252387
+Epoch  # 11 | validation loss: 0.6301362943497433                 | validation acc: 0.799562101910828
+Epoch  # 12 | training loss: 0.0519143453836441                 | training acc: 0.95754 | Wass Loss 0.7214795760512352
+Epoch  # 12 | validation loss: 0.6136614160173258                 | validation acc: 0.8028463375796179
+Epoch  # 13 | training loss: 0.038508739829063415                 | training acc: 0.9616800000000001 | Wass Loss 0.7363587057590485
+Epoch  # 13 | validation loss: 0.5975653855663956                 | validation acc: 0.8045382165605095
+Epoch  # 14 | training loss: 0.03001119452342391                 | training acc: 0.96448 | Wass Loss 0.7521300410628319
+Epoch  # 14 | validation loss: 0.6549017953265245                 | validation acc: 0.7923964968152867
+Epoch  # 15 | training loss: 0.01787923300638795                 | training acc: 0.96706 | Wass Loss 0.7721894867420197
+Epoch  # 15 | validation loss: 0.5985326681547104                 | validation acc: 0.805234872611465
+Epoch  # 16 | training loss: 0.008287863370031118                 | training acc: 0.9690200000000001 | Wass Loss 0.7912704764604569
+Epoch  # 16 | validation loss: 0.6112518447219946                 | validation acc: 0.8039410828025477
+Epoch  # 17 | training loss: -0.0028802901171147825                 | training acc: 0.9739200000000001 | Wass Loss 0.8024703383445739
+Epoch  # 17 | validation loss: 0.613066671000924                 | validation acc: 0.805234872611465
+Epoch  # 18 | training loss: -0.013730837777256966                 | training acc: 0.9769800000000001 | Wass Loss 0.8173874058723449
+Epoch  # 18 | validation loss: 0.7544016391988013                 | validation acc: 0.7436305732484076
+Epoch  # 19 | training loss: -0.010061260342597961                 | training acc: 0.9751000000000002 | Wass Loss 0.8227854759693146
+Epoch  # 19 | validation loss: 0.6702651715582344                 | validation acc: 0.7956807324840764
+Epoch  # 20 | training loss: -0.015712797332555057                 | training acc: 0.97738 | Wass Loss 0.8299816036224366
+Epoch  # 20 | validation loss: 0.7111199319742287                 | validation acc: 0.7763734076433121
+Epoch  # 21 | training loss: -0.022361306574195623                 | training acc: 0.9781200000000001 | Wass Loss 0.8419350937604905
+Epoch  # 21 | validation loss: 0.7563309787185328                 | validation acc: 0.798765923566879
+Epoch  # 22 | training loss: -0.024984846219420435                 | training acc: 0.9794200000000001 | Wass Loss 0.8466451176404953
+Epoch  # 22 | validation loss: 0.8331083488312496                 | validation acc: 0.7633359872611465
+Epoch  # 23 | training loss: -0.026309663638472557                 | training acc: 0.9796000000000001 | Wass Loss 0.8505634871125222
+Epoch  # 23 | validation loss: 0.867794978011186                 | validation acc: 0.7622412420382165
+Epoch  # 24 | training loss: -0.030521003346890212                 | training acc: 0.98136 | Wass Loss 0.8521816539764404
+Epoch  # 24 | validation loss: 0.9083534251352784                 | validation acc: 0.7668192675159236
+Epoch  # 25 | training loss: -0.03233331055194139                 | training acc: 0.9818600000000002 | Wass Loss 0.8578072930574417
+Epoch  # 25 | validation loss: 1.0169922679093233                 | validation acc: 0.7331807324840764
+Epoch  # 26 | training loss: -0.033389413587749                 | training acc: 0.9820000000000001 | Wass Loss 0.8613577291369439
+Epoch  # 26 | validation loss: 0.863964524998027                 | validation acc: 0.8047372611464968
+Epoch  # 27 | training loss: -0.042280195835977794                 | training acc: 0.9846000000000001 | Wass Loss 0.8612168455719947
+Epoch  # 27 | validation loss: 1.0111320451566368                 | validation acc: 0.7552746815286624
+Epoch  # 28 | training loss: -0.03766195959225297                 | training acc: 0.9826600000000001 | Wass Loss 0.8670496906042099
+Epoch  # 28 | validation loss: 1.0119337428147626                 | validation acc: 0.7661226114649682
+Epoch  # 29 | training loss: -0.04328746382892132                 | training acc: 0.9850399999999999 | Wass Loss 0.8693617302775383
+Epoch  # 29 | validation loss: 1.1118256833143294                 | validation acc: 0.762937898089172
+Epoch  # 30 | training loss: -0.0440762688703835                 | training acc: 0.9854 | Wass Loss 0.8712696031928062
+Epoch  # 30 | validation loss: 1.196607155025385                 | validation acc: 0.7548765923566879
+Epoch  # 31 | training loss: -0.04645793142542243                 | training acc: 0.9856000000000001 | Wass Loss 0.8722661030292511
+Epoch  # 31 | validation loss: 0.8747115845133544                 | validation acc: 0.8004578025477707
+Epoch  # 32 | training loss: -0.0418346378095448                 | training acc: 0.985 | Wass Loss 0.8721073390245437
+Epoch  # 32 | validation loss: 1.0965339237717306                 | validation acc: 0.7086982484076433
+Epoch  # 33 | training loss: -0.053114107947796585                 | training acc: 0.98798 | Wass Loss 0.8761553946137428
+Epoch  # 33 | validation loss: 1.2415750110225312                 | validation acc: 0.759156050955414
+Epoch  # 34 | training loss: -0.04870550259575248                 | training acc: 0.98684 | Wass Loss 0.8748836156725883
+Epoch  # 34 | validation loss: 1.1331598101907474                 | validation acc: 0.771297770700637
+Epoch  # 35 | training loss: -0.051861769653856755                 | training acc: 0.9879800000000001 | Wass Loss 0.8786321639418602
+Epoch  # 35 | validation loss: 1.3002808002909279                 | validation acc: 0.7294984076433121
+Epoch  # 36 | training loss: -0.05118141073361039                 | training acc: 0.9877400000000001 | Wass Loss 0.8793562764525413
+Epoch  # 36 | validation loss: 1.1648394810925624                 | validation acc: 0.7754777070063694
+Epoch  # 37 | training loss: -0.0537594931833446                 | training acc: 0.98882 | Wass Loss 0.8801649169921875
+Epoch  # 37 | validation loss: 1.4034165660287166                 | validation acc: 0.7676154458598726
+Epoch  # 38 | training loss: -0.05508187820762396                 | training acc: 0.9886600000000001 | Wass Loss 0.8819794425964356
+Epoch  # 38 | validation loss: 1.4038508150987565                 | validation acc: 0.7872213375796179
+Epoch  # 39 | training loss: -0.05802074645459652                 | training acc: 0.9898200000000001 | Wass Loss 0.8816715802550316
+Epoch  # 39 | validation loss: 1.4126000328428427                 | validation acc: 0.7318869426751592
+Epoch  # 40 | training loss: -0.053926990753039715                 | training acc: 0.9893000000000001 | Wass Loss 0.8672097489535808
+Epoch  # 40 | validation loss: 1.1620102190667656                 | validation acc: 0.7292993630573248
+Epoch  # 41 | training loss: -0.05557665871456265                 | training acc: 0.98854 | Wass Loss 0.8775269775092602
+Epoch  # 41 | validation loss: 1.115778292440305                 | validation acc: 0.7708996815286624
+Epoch  # 42 | training loss: -0.05816947815194726                 | training acc: 0.9896800000000001 | Wass Loss 0.8831199998259545
+Epoch  # 42 | validation loss: 1.3836607773592517                 | validation acc: 0.7119824840764332
+Epoch  # 43 | training loss: -0.0531498801857233                 | training acc: 0.9877800000000001 | Wass Loss 0.8843133453726768
+Epoch  # 43 | validation loss: 1.3319728442817738                 | validation acc: 0.7577627388535032
+Epoch  # 44 | training loss: -0.06657197157293558                 | training acc: 0.9926400000000001 | Wass Loss 0.8861809478998184
+Epoch  # 44 | validation loss: 1.4634776403949519                 | validation acc: 0.7350716560509554
+Epoch  # 45 | training loss: -0.06142218240723014                 | training acc: 0.9908800000000001 | Wass Loss 0.8874895987510681
+Epoch  # 45 | validation loss: 1.5621048758743674                 | validation acc: 0.6779458598726115
+Epoch  # 46 | training loss: -0.059304345697164536                 | training acc: 0.9901000000000001 | Wass Loss 0.8873310992121697
+Epoch  # 46 | validation loss: 1.380437356651209                 | validation acc: 0.7351711783439491
+Epoch  # 47 | training loss: -0.061664399441331626                 | training acc: 0.9908600000000001 | Wass Loss 0.8875798109769821
+Epoch  # 47 | validation loss: 1.4773082702782503                 | validation acc: 0.7560708598726115
+Epoch  # 48 | training loss: -0.06301025376841426                 | training acc: 0.9913400000000001 | Wass Loss 0.8869939687252044
+Epoch  # 48 | validation loss: 1.4969842805983915                 | validation acc: 0.6845143312101911
+Epoch  # 49 | training loss: -0.059922331992536784                 | training acc: 0.9903200000000002 | Wass Loss 0.8874918547272682
+Epoch  # 49 | validation loss: 1.5212811588481734                 | validation acc: 0.6952627388535032
+Epoch  # 50 | training loss: -0.06610969784855843                 | training acc: 0.9920000000000001 | Wass Loss 0.8891276957988739
+Epoch  # 50 | validation loss: 1.553552611618285                 | validation acc: 0.7256170382165605
+Epoch  # 51 | training loss: -0.06460467981919646                 | training acc: 0.9924200000000001 | Wass Loss 0.8889690082669258
+Epoch  # 51 | validation loss: 1.55276046588922                 | validation acc: 0.6944665605095541
+Epoch  # 52 | training loss: -0.060110410263761876                 | training acc: 0.99122 | Wass Loss 0.8671107710152864
+Epoch  # 52 | validation loss: 1.462172274376936                 | validation acc: 0.7041202229299363
+Epoch  # 53 | training loss: -0.06780895388126373                 | training acc: 0.9926200000000002 | Wass Loss 0.8892049850225449
+Epoch  # 53 | validation loss: 1.5755760563406975                 | validation acc: 0.7423367834394905
+Epoch  # 54 | training loss: -0.06519852245226503                 | training acc: 0.9916800000000001 | Wass Loss 0.8889911431670189
+Epoch  # 54 | validation loss: 1.723125334757908                 | validation acc: 0.6940684713375797
+Epoch  # 55 | training loss: -0.062254591554403306                 | training acc: 0.99078 | Wass Loss 0.8893234139084816
+Epoch  # 55 | validation loss: 1.4888948186947282                 | validation acc: 0.7352707006369427
+Epoch  # 56 | training loss: -0.06830154663696886                 | training acc: 0.99292 | Wass Loss 0.8905925637483597
+Epoch  # 56 | validation loss: 1.4679461353144068                 | validation acc: 0.7093949044585988
+Epoch  # 57 | training loss: -0.06642630512826145                 | training acc: 0.9924200000000001 | Wass Loss 0.8856122265011073
+Epoch  # 57 | validation loss: 1.5130784959550116                 | validation acc: 0.693172770700637
+Epoch  # 58 | training loss: -0.06592694601416588                 | training acc: 0.9920800000000002 | Wass Loss 0.8895784356594085
+Epoch  # 58 | validation loss: 1.6750910433993977                 | validation acc: 0.7107882165605095
+Epoch  # 59 | training loss: -0.07045763654261827                 | training acc: 0.9936000000000001 | Wass Loss 0.891208091557026
+Epoch  # 59 | validation loss: 1.701483177531297                 | validation acc: 0.6957603503184714
+Epoch  # 60 | training loss: -0.06430957204848528                 | training acc: 0.9916600000000001 | Wass Loss 0.8903221587538719
+Epoch  # 60 | validation loss: 1.6215228639590513                 | validation acc: 0.7082006369426752
+Epoch  # 61 | training loss: -0.0688316502906382                 | training acc: 0.99316 | Wass Loss 0.8909647192955017
+Epoch  # 61 | validation loss: 1.579876451735284                 | validation acc: 0.6957603503184714
+Epoch  # 62 | training loss: -0.067887128777802                 | training acc: 0.99258 | Wass Loss 0.8894521542787552
+Epoch  # 62 | validation loss: 1.635808594667228                 | validation acc: 0.6736664012738853
+Epoch  # 63 | training loss: -0.06691753545589745                 | training acc: 0.9926000000000001 | Wass Loss 0.8855183499157429
+Epoch  # 63 | validation loss: 1.2655871134654733                 | validation acc: 0.7757762738853503
+Epoch  # 64 | training loss: -0.07107512185350061                 | training acc: 0.9943200000000002 | Wass Loss 0.8882005324363709
+Epoch  # 64 | validation loss: 1.2790543045967249                 | validation acc: 0.742734872611465
+Epoch  # 65 | training loss: -0.07172343719378113                 | training acc: 0.9943400000000001 | Wass Loss 0.8892525216341018
+Epoch  # 65 | validation loss: 1.6540360078690157                 | validation acc: 0.6528662420382165
+Epoch  # 66 | training loss: -0.06798326133191586                 | training acc: 0.99292 | Wass Loss 0.8890182432532311
+Epoch  # 66 | validation loss: 1.5410369186644342                 | validation acc: 0.6882961783439491
+Epoch  # 67 | training loss: -0.07175728184729814                 | training acc: 0.9944200000000001 | Wass Loss 0.8901553636193276
+Epoch  # 67 | validation loss: 1.590989870630252                 | validation acc: 0.6896894904458599
+Epoch  # 68 | training loss: -0.06802786024287343                 | training acc: 0.99298 | Wass Loss 0.889311962813139
+Epoch  # 68 | validation loss: 1.6465860278743087                 | validation acc: 0.7140724522292994
+Epoch  # 69 | training loss: -0.0703731019422412                 | training acc: 0.9933000000000001 | Wass Loss 0.8908244714140892
+Epoch  # 69 | validation loss: 1.3615352500016522                 | validation acc: 0.7302945859872612
+Epoch  # 70 | training loss: -0.07499446942284703                 | training acc: 0.995 | Wass Loss 0.8917910816073418
+Epoch  # 70 | validation loss: 1.6882408804194942                 | validation acc: 0.70421974522293
+Epoch  # 71 | training loss: -0.06536000321060419                 | training acc: 0.9914400000000001 | Wass Loss 0.8878154454231262
+Epoch  # 71 | validation loss: 1.5886238175592604                 | validation acc: 0.6547571656050956
+Epoch  # 72 | training loss: -0.07492614050209523                 | training acc: 0.99522 | Wass Loss 0.8924079401493072
+Epoch  # 72 | validation loss: 1.7124002868202841                 | validation acc: 0.67078025477707
+Epoch  # 73 | training loss: -0.0704363459981978                 | training acc: 0.9933800000000002 | Wass Loss 0.891873757481575
+Epoch  # 73 | validation loss: 1.728817166036861                 | validation acc: 0.7323845541401274
+Epoch  # 74 | training loss: -0.0737988084293902                 | training acc: 0.99458 | Wass Loss 0.8928253476023674
+Epoch  # 74 | validation loss: 1.7159544442110002                 | validation acc: 0.6519705414012739
+Epoch  # 75 | training loss: -0.07271422221139073                 | training acc: 0.99426 | Wass Loss 0.8920462399125099
+Epoch  # 75 | validation loss: 1.8343624430856886                 | validation acc: 0.6997412420382165
+Epoch  # 76 | training loss: -0.0737495314925909                 | training acc: 0.99452 | Wass Loss 0.8928069939017296
+Epoch  # 76 | validation loss: 1.6011172365990414                 | validation acc: 0.7374601910828026
+Epoch  # 77 | training loss: -0.07218178327381611                 | training acc: 0.99468 | Wass Loss 0.8923032385110855
+Epoch  # 77 | validation loss: 1.6891640485471981                 | validation acc: 0.7520899681528662
+Epoch  # 78 | training loss: -0.07441558992117643                 | training acc: 0.9952000000000001 | Wass Loss 0.8930262394547462
+Epoch  # 78 | validation loss: 1.8111766311013775                 | validation acc: 0.6413216560509554
+Epoch  # 79 | training loss: -0.06919452460855245                 | training acc: 0.9930399999999999 | Wass Loss 0.8920729740262031
+Epoch  # 79 | validation loss: 1.6408480542480566                 | validation acc: 0.7436305732484076
+Epoch  # 80 | training loss: -0.07651271939277648                 | training acc: 0.99568 | Wass Loss 0.8938097040057182
+Epoch  # 80 | validation loss: 1.6905992114619843                 | validation acc: 0.7083001592356688
+Model Checkpoint Saved!
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+Validation Accuracy: 0.7080015923566879
+Validation Classification Loss: 1.6912020163930905
+MC #0 time spent: 9763.86s | About 162.7 mins
+
+================================================================================
+Overall Statistics
+TPR@95TNR: [0.07429317762753529]
+mean: 0.07429 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: [0.40138440281152726]
+mean: 0.40138 | std: 0.0 | MAD: 0.0
+TPR@99TNR: [0.003841425937307963]
+mean: 0.00384 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold: [0.40293127596378325]
+mean: 0.40293 | std: 0.0 | MAD: 0.0
+AUROC: [0.7614445874308544]
+mean: 0.76144 | std: 0.0 | MAD: 0.0
+TPR@95RAW: [0.5846650276582668]
+mean: 0.58467 | std: 0.0 | MAD: 0.0
+TPR@99RAW: [0.0013829133374309022]
+mean: 0.00138 | std: 0.0 | MAD: 0.0
+
+================================================================================
+EVALER & Stats saved successfully!
+Training time: 9790.06s | About 163.2 mins

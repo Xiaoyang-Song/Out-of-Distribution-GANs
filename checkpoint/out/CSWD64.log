@@ -5,4 +5,489 @@ ic| f"Hyperparameters: beta={beta} & lr={lr} & B_InD: {bsz_tri} & B_OoD: {ood_bs
 ic| len(dset): 73257
   0%|          | 0/73257 [00:00<?, ?it/s]  0%|          | 118/73257 [00:00<01:02, 1178.59it/s]  1%|          | 514/73257 [00:00<00:25, 2812.85it/s]  1%|          | 912/73257 [00:00<00:21, 3343.79it/s]  2%|▏         | 1309/73257 [00:00<00:20, 3587.03it/s]  2%|▏         | 1673/73257 [00:00<00:19, 3602.60it/s]  3%|▎         | 2036/73257 [00:00<00:19, 3611.71it/s]  3%|▎         | 2398/73257 [00:00<00:19, 3609.77it/s]  4%|▍         | 2762/73257 [00:00<00:19, 3617.90it/s]  4%|▍         | 3125/73257 [00:00<00:19, 3621.50it/s]  5%|▍         | 3489/73257 [00:01<00:19, 3627.12it/s]  5%|▌         | 3854/73257 [00:01<00:19, 3631.39it/s]  6%|▌         | 4219/73257 [00:01<00:18, 3635.35it/s]  6%|▋         | 4584/73257 [00:01<00:18, 3638.21it/s]  7%|▋         | 4948/73257 [00:01<00:18, 3636.38it/s]  7%|▋         | 5313/73257 [00:01<00:18, 3638.93it/s]  8%|▊         | 5678/73257 [00:01<00:18, 3639.52it/s]  8%|▊         | 6042/73257 [00:01<00:18, 3632.34it/s]  9%|▊         | 6406/73257 [00:01<00:18, 3624.38it/s]  9%|▉         | 6769/73257 [00:01<00:18, 3557.11it/s] 10%|▉         | 7133/73257 [00:02<00:18, 3579.23it/s] 10%|█         | 7496/73257 [00:02<00:18, 3591.94it/s] 11%|█         | 7862/73257 [00:02<00:18, 3609.28it/s] 11%|█         | 8229/73257 [00:02<00:17, 3627.00it/s] 12%|█▏        | 8612/73257 [00:02<00:17, 3685.91it/s] 12%|█▏        | 8999/73257 [00:02<00:17, 3739.32it/s] 13%|█▎        | 9378/73257 [00:02<00:17, 3754.29it/s] 13%|█▎        | 9754/73257 [00:02<00:17, 3724.46it/s] 14%|█▍        | 10133/73257 [00:02<00:16, 3743.58it/s] 14%|█▍        | 10516/73257 [00:02<00:16, 3769.15it/s] 15%|█▍        | 10893/73257 [00:03<00:16, 3718.81it/s] 15%|█▌        | 11266/73257 [00:03<00:16, 3696.48it/s] 16%|█▌        | 11636/73257 [00:03<00:16, 3687.96it/s] 16%|█▋        | 12005/73257 [00:03<00:16, 3676.01it/s] 17%|█▋        | 12373/73257 [00:03<00:16, 3665.29it/s] 17%|█▋        | 12740/73257 [00:03<00:16, 3660.45it/s] 18%|█▊        | 13107/73257 [00:03<00:16, 3654.45it/s] 18%|█▊        | 13473/73257 [00:03<00:16, 3654.60it/s] 19%|█▉        | 13850/73257 [00:03<00:16, 3687.25it/s] 19%|█▉        | 14232/73257 [00:03<00:15, 3723.97it/s] 20%|█▉        | 14605/73257 [00:04<00:15, 3688.76it/s] 20%|██        | 14983/73257 [00:04<00:15, 3714.51it/s] 21%|██        | 15366/73257 [00:04<00:15, 3746.86it/s] 21%|██▏       | 15744/73257 [00:04<00:15, 3755.36it/s] 22%|██▏       | 16131/73257 [00:04<00:15, 3787.92it/s] 23%|██▎       | 16518/73257 [00:04<00:14, 3810.63it/s] 23%|██▎       | 16900/73257 [00:04<00:15, 3754.92it/s] 24%|██▎       | 17276/73257 [00:04<00:14, 3732.21it/s] 24%|██▍       | 17650/73257 [00:04<00:15, 3698.34it/s] 25%|██▍       | 18027/73257 [00:04<00:14, 3719.12it/s] 25%|██▌       | 18407/73257 [00:05<00:14, 3740.82it/s] 26%|██▌       | 18782/73257 [00:05<00:14, 3731.04it/s] 26%|██▌       | 19156/73257 [00:05<00:14, 3707.34it/s] 27%|██▋       | 19527/73257 [00:05<00:14, 3700.65it/s] 27%|██▋       | 19898/73257 [00:05<00:14, 3671.76it/s] 28%|██▊       | 20279/73257 [00:05<00:14, 3711.53it/s] 28%|██▊       | 20658/73257 [00:05<00:14, 3732.35it/s] 29%|██▊       | 21032/73257 [00:05<00:14, 3698.69it/s] 29%|██▉       | 21402/73257 [00:05<00:14, 3682.57it/s] 30%|██▉       | 21771/73257 [00:05<00:14, 3657.62it/s] 30%|███       | 22137/73257 [00:06<00:13, 3657.92it/s] 31%|███       | 22503/73257 [00:06<00:14, 3620.81it/s] 31%|███       | 22882/73257 [00:06<00:13, 3669.81it/s] 32%|███▏      | 23256/73257 [00:06<00:13, 3689.36it/s] 32%|███▏      | 23626/73257 [00:06<00:13, 3671.27it/s] 33%|███▎      | 23998/73257 [00:06<00:13, 3683.61it/s] 33%|███▎      | 24367/73257 [00:06<00:13, 3672.66it/s] 34%|███▍      | 24735/73257 [00:06<00:13, 3654.87it/s] 34%|███▍      | 25104/73257 [00:06<00:13, 3663.59it/s] 35%|███▍      | 25478/73257 [00:06<00:12, 3685.52it/s] 35%|███▌      | 25847/73257 [00:07<00:12, 3669.98it/s] 36%|███▌      | 26215/73257 [00:07<00:12, 3662.66it/s] 36%|███▋      | 26582/73257 [00:07<00:12, 3656.41it/s] 37%|███▋      | 26948/73257 [00:07<00:12, 3603.97it/s] 37%|███▋      | 27309/73257 [00:07<00:12, 3589.26it/s] 38%|███▊      | 27683/73257 [00:07<00:12, 3631.40it/s] 38%|███▊      | 28062/73257 [00:07<00:12, 3678.29it/s] 39%|███▉      | 28445/73257 [00:07<00:12, 3722.46it/s] 39%|███▉      | 28820/73257 [00:07<00:11, 3730.42it/s] 40%|███▉      | 29194/73257 [00:07<00:11, 3698.90it/s] 40%|████      | 29565/73257 [00:08<00:11, 3678.43it/s] 41%|████      | 29933/73257 [00:08<00:11, 3669.39it/s] 41%|████▏     | 30303/73257 [00:08<00:11, 3676.74it/s] 42%|████▏     | 30671/73257 [00:08<00:11, 3671.44it/s] 42%|████▏     | 31039/73257 [00:08<00:11, 3649.78it/s] 43%|████▎     | 31405/73257 [00:08<00:11, 3646.17it/s] 43%|████▎     | 31786/73257 [00:08<00:11, 3692.47it/s] 44%|████▍     | 32156/73257 [00:08<00:11, 3671.82it/s] 44%|████▍     | 32531/73257 [00:08<00:11, 3693.77it/s] 45%|████▍     | 32915/73257 [00:08<00:10, 3736.52it/s] 45%|████▌     | 33289/73257 [00:09<00:10, 3701.86it/s] 46%|████▌     | 33660/73257 [00:09<00:10, 3677.15it/s] 46%|████▋     | 34035/73257 [00:09<00:10, 3696.19it/s] 47%|████▋     | 34405/73257 [00:09<00:10, 3674.76it/s] 47%|████▋     | 34778/73257 [00:09<00:10, 3689.03it/s] 48%|████▊     | 35147/73257 [00:09<00:10, 3672.85it/s] 48%|████▊     | 35515/73257 [00:09<00:10, 3637.40it/s] 49%|████▉     | 35879/73257 [00:09<00:10, 3634.51it/s] 49%|████▉     | 36243/73257 [00:09<00:10, 3630.16it/s] 50%|████▉     | 36607/73257 [00:10<00:10, 3627.96it/s] 50%|█████     | 36970/73257 [00:10<00:10, 3570.74it/s] 51%|█████     | 37332/73257 [00:10<00:10, 3584.99it/s] 51%|█████▏    | 37694/73257 [00:10<00:09, 3594.77it/s] 52%|█████▏    | 38070/73257 [00:10<00:09, 3642.41it/s] 52%|█████▏    | 38435/73257 [00:10<00:09, 3630.06it/s] 53%|█████▎    | 38799/73257 [00:10<00:09, 3625.07it/s] 53%|█████▎    | 39162/73257 [00:10<00:09, 3623.19it/s] 54%|█████▍    | 39525/73257 [00:10<00:09, 3624.22it/s] 54%|█████▍    | 39891/73257 [00:10<00:09, 3634.51it/s] 55%|█████▍    | 40262/73257 [00:11<00:09, 3656.48it/s] 55%|█████▌    | 40629/73257 [00:11<00:08, 3659.20it/s] 56%|█████▌    | 41006/73257 [00:11<00:08, 3689.63it/s] 56%|█████▋    | 41390/73257 [00:11<00:08, 3732.70it/s] 57%|█████▋    | 41768/73257 [00:11<00:08, 3744.58it/s] 58%|█████▊    | 42146/73257 [00:11<00:08, 3754.09it/s] 58%|█████▊    | 42522/73257 [00:11<00:08, 3731.75it/s] 59%|█████▊    | 42902/73257 [00:11<00:08, 3750.71it/s] 59%|█████▉    | 43288/73257 [00:11<00:07, 3782.39it/s] 60%|█████▉    | 43675/73257 [00:11<00:07, 3807.27it/s] 60%|██████    | 44057/73257 [00:12<00:07, 3809.17it/s] 61%|██████    | 44439/73257 [00:12<00:07, 3809.39it/s] 61%|██████    | 44820/73257 [00:12<00:10, 2639.16it/s] 62%|██████▏   | 45186/73257 [00:12<00:09, 2870.81it/s] 62%|██████▏   | 45556/73257 [00:12<00:09, 3073.40it/s] 63%|██████▎   | 45913/73257 [00:12<00:08, 3201.07it/s] 63%|██████▎   | 46259/73257 [00:12<00:08, 3256.57it/s] 64%|██████▎   | 46618/73257 [00:12<00:07, 3348.21it/s] 64%|██████▍   | 46989/73257 [00:12<00:07, 3450.67it/s] 65%|██████▍   | 47368/73257 [00:13<00:07, 3546.72it/s] 65%|██████▌   | 47739/73257 [00:13<00:07, 3591.69it/s] 66%|██████▌   | 48110/73257 [00:13<00:06, 3624.84it/s] 66%|██████▌   | 48477/73257 [00:13<00:06, 3624.82it/s] 67%|██████▋   | 48843/73257 [00:13<00:06, 3621.46it/s] 67%|██████▋   | 49207/73257 [00:13<00:06, 3623.20it/s] 68%|██████▊   | 49571/73257 [00:13<00:06, 3621.13it/s] 68%|██████▊   | 49935/73257 [00:13<00:06, 3618.03it/s] 69%|██████▊   | 50298/73257 [00:13<00:06, 3619.84it/s] 69%|██████▉   | 50661/73257 [00:13<00:06, 3616.54it/s] 70%|██████▉   | 51023/73257 [00:14<00:06, 3605.46it/s] 70%|███████   | 51392/73257 [00:14<00:06, 3629.34it/s] 71%|███████   | 51767/73257 [00:14<00:05, 3663.11it/s] 71%|███████   | 52134/73257 [00:14<00:05, 3644.00it/s] 72%|███████▏  | 52499/73257 [00:14<00:05, 3620.07it/s] 72%|███████▏  | 52872/73257 [00:14<00:05, 3650.52it/s] 73%|███████▎  | 53256/73257 [00:14<00:05, 3705.50it/s] 73%|███████▎  | 53636/73257 [00:14<00:05, 3730.87it/s] 74%|███████▎  | 54021/73257 [00:14<00:05, 3764.77it/s] 74%|███████▍  | 54398/73257 [00:14<00:05, 3732.75it/s] 75%|███████▍  | 54772/73257 [00:15<00:04, 3704.67it/s] 75%|███████▌  | 55143/73257 [00:15<00:04, 3663.84it/s] 76%|███████▌  | 55510/73257 [00:15<00:04, 3651.72it/s] 76%|███████▋  | 55876/73257 [00:15<00:04, 3644.79it/s] 77%|███████▋  | 56241/73257 [00:15<00:04, 3604.85it/s] 77%|███████▋  | 56626/73257 [00:15<00:04, 3675.41it/s] 78%|███████▊  | 57010/73257 [00:15<00:04, 3724.06it/s] 78%|███████▊  | 57386/73257 [00:15<00:04, 3733.19it/s] 79%|███████▉  | 57763/73257 [00:15<00:04, 3743.77it/s] 79%|███████▉  | 58138/73257 [00:15<00:04, 3706.40it/s] 80%|███████▉  | 58517/73257 [00:16<00:03, 3730.74it/s] 80%|████████  | 58902/73257 [00:16<00:03, 3764.93it/s] 81%|████████  | 59287/73257 [00:16<00:03, 3789.71it/s] 81%|████████▏ | 59667/73257 [00:16<00:03, 3757.35it/s] 82%|████████▏ | 60043/73257 [00:16<00:03, 3716.19it/s] 82%|████████▏ | 60415/73257 [00:16<00:03, 3704.01it/s] 83%|████████▎ | 60794/73257 [00:16<00:03, 3726.83it/s] 83%|████████▎ | 61167/73257 [00:16<00:03, 3684.11it/s] 84%|████████▍ | 61536/73257 [00:16<00:03, 3669.36it/s] 85%|████████▍ | 61904/73257 [00:17<00:03, 3659.00it/s] 85%|████████▌ | 62270/73257 [00:17<00:03, 3645.58it/s] 86%|████████▌ | 62635/73257 [00:17<00:02, 3634.06it/s] 86%|████████▌ | 62999/73257 [00:17<00:02, 3628.74it/s] 87%|████████▋ | 63368/73257 [00:17<00:02, 3644.98it/s] 87%|████████▋ | 63751/73257 [00:17<00:02, 3699.42it/s] 88%|████████▊ | 64135/73257 [00:17<00:02, 3738.70it/s] 88%|████████▊ | 64516/73257 [00:17<00:02, 3759.56it/s] 89%|████████▊ | 64892/73257 [00:17<00:02, 3732.22it/s] 89%|████████▉ | 65266/73257 [00:17<00:02, 3695.17it/s] 90%|████████▉ | 65636/73257 [00:18<00:02, 3655.92it/s] 90%|█████████ | 66002/73257 [00:18<00:01, 3633.05it/s] 91%|█████████ | 66366/73257 [00:18<00:01, 3589.25it/s] 91%|█████████ | 66727/73257 [00:18<00:01, 3595.23it/s] 92%|█████████▏| 67089/73257 [00:18<00:01, 3601.35it/s] 92%|█████████▏| 67453/73257 [00:18<00:01, 3611.76it/s] 93%|█████████▎| 67831/73257 [00:18<00:01, 3661.21it/s] 93%|█████████▎| 68212/73257 [00:18<00:01, 3704.26it/s] 94%|█████████▎| 68586/73257 [00:18<00:01, 3713.43it/s] 94%|█████████▍| 68960/73257 [00:18<00:01, 3720.59it/s] 95%|█████████▍| 69346/73257 [00:19<00:01, 3759.45it/s] 95%|█████████▌| 69727/73257 [00:19<00:00, 3773.58it/s] 96%|█████████▌| 70106/73257 [00:19<00:00, 3776.19it/s] 96%|█████████▌| 70488/73257 [00:19<00:00, 3786.62it/s] 97%|█████████▋| 70874/73257 [00:19<00:00, 3806.92it/s] 97%|█████████▋| 71255/73257 [00:19<00:00, 3756.71it/s] 98%|█████████▊| 71631/73257 [00:19<00:00, 3717.35it/s] 98%|█████████▊| 72003/73257 [00:19<00:00, 3688.34it/s] 99%|█████████▉| 72372/73257 [00:19<00:00, 3666.85it/s] 99%|█████████▉| 72755/73257 [00:19<00:00, 3713.94it/s]100%|█████████▉| 73137/73257 [00:20<00:00, 3743.16it/s]100%|██████████| 73257/73257 [00:20<00:00, 3648.15it/s]
   0%|          | 0/10 [00:00<?, ?it/s]100%|██████████| 10/10 [00:00<00:00, 320175.88it/s]
-  0%|          | 0/80 [00:00<?, ?it/s]
+  0%|          | 0/80 [00:00<?, ?it/s]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 1 | training loss: 1.1721561611294746                 | training '
+                                                                             'acc: 0.55308 | Wass Loss 0.6134107331931591')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 1 | validation loss: 1.588529676388783                 | validation '
+                                             'acc: 0.5328423566878981')
+  1%|▏         | 1/80 [02:02<2:40:53, 122.19s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 2 | training loss: 0.7061113565862179                 | training '
+                                                                             'acc: 0.73446 | Wass Loss 0.5673146604001522')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 2 | validation loss: 1.1431869955579186                 | '
+                                             'validation acc: 0.6453025477707006')
+  2%|▎         | 2/80 [04:03<2:38:09, 121.66s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 3 | training loss: 0.5203255210965871                 | training '
+                                                                             'acc: 0.79948 | Wass Loss 0.5651041191518307')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 3 | validation loss: 0.7946287889009828                 | '
+                                             'validation acc: 0.7418391719745223')
+  4%|▍         | 3/80 [06:04<2:35:56, 121.51s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 4 | training loss: 0.40675107201933863                 | training '
+                                                                             'acc: 0.8405400000000002 | Wass Loss 0.577524482280016')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 4 | validation loss: 0.7832298948886288                 | '
+                                             'validation acc: 0.7573646496815286')
+  5%|▌         | 4/80 [08:06<2:33:48, 121.43s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 5 | training loss: 0.3228001715131104                 | training '
+                                                                             'acc: 0.8694400000000001 | Wass Loss 0.5910175614655018')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 5 | validation loss: 0.7258478154422371                 | '
+                                             'validation acc: 0.7643312101910829')
+  6%|▋         | 5/80 [10:07<2:31:42, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 6 | training loss: 0.2640369264520705                 | training '
+                                                                             'acc: 0.88898 | Wass Loss 0.6058388087153435')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 6 | validation loss: 0.9054762491375018                 | '
+                                             'validation acc: 0.7426353503184714')
+  8%|▊         | 6/80 [12:08<2:29:38, 121.33s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 7 | training loss: 0.21509373054653405                 | training '
+                                                                             'acc: 0.90504 | Wass Loss 0.6232770074605942')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 7 | validation loss: 0.8021930778861805                 | '
+                                             'validation acc: 0.7598527070063694')
+  9%|▉         | 7/80 [14:09<2:27:36, 121.32s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 8 | training loss: 0.16703553700447082                 | training '
+                                                                             'acc: 0.9205200000000001 | Wass Loss 0.6453513901233673')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 8 | validation loss: 0.6499504166044248                 | '
+                                             'validation acc: 0.8009554140127388')
+ 10%|█         | 8/80 [16:11<2:25:34, 121.31s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 9 | training loss: 0.12824389182776214                 | training '
+                                                                             'acc: 0.9336800000000001 | Wass Loss 0.6627731251120568')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 9 | validation loss: 0.7573908523769136                 | '
+                                             'validation acc: 0.7662221337579618')
+ 11%|█▏        | 9/80 [18:12<2:23:32, 121.30s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 10 | training loss: 0.099120027564466                 | training '
+                                                                             'acc: 0.9421600000000001 | Wass Loss 0.6793083810210228')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 10 | validation loss: 0.5824877969968091                 | '
+                                             'validation acc: 0.8111066878980892')
+ 12%|█▎        | 10/80 [20:13<2:21:33, 121.33s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 11 | training loss: 0.07209059438854457                 | training '
+                                                                             'acc: 0.9515 | Wass Loss 0.7011088827252387')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 11 | validation loss: 0.6301362943497433                 | '
+                                             'validation acc: 0.799562101910828')
+ 14%|█▍        | 11/80 [22:15<2:19:31, 121.32s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 12 | training loss: 0.0519143453836441                 | training '
+                                                                             'acc: 0.95754 | Wass Loss 0.7214795760512352')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 12 | validation loss: 0.6136614160173258                 | '
+                                             'validation acc: 0.8028463375796179')
+ 15%|█▌        | 12/80 [24:16<2:17:29, 121.32s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 13 | training loss: 0.038508739829063415                 | training '
+                                                                             'acc: 0.9616800000000001 | Wass Loss 0.7363587057590485')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 13 | validation loss: 0.5975653855663956                 | '
+                                             'validation acc: 0.8045382165605095')
+ 16%|█▋        | 13/80 [26:17<2:15:26, 121.29s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 14 | training loss: 0.03001119452342391                 | training '
+                                                                             'acc: 0.96448 | Wass Loss 0.7521300410628319')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 14 | validation loss: 0.6549017953265245                 | '
+                                             'validation acc: 0.7923964968152867')
+ 18%|█▊        | 14/80 [28:19<2:13:28, 121.34s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 15 | training loss: 0.01787923300638795                 | training '
+                                                                             'acc: 0.96706 | Wass Loss 0.7721894867420197')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 15 | validation loss: 0.5985326681547104                 | '
+                                             'validation acc: 0.805234872611465')
+ 19%|█▉        | 15/80 [30:20<2:11:27, 121.35s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 16 | training loss: 0.008287863370031118                 | training '
+                                                                             'acc: 0.9690200000000001 | Wass Loss 0.7912704764604569')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 16 | validation loss: 0.6112518447219946                 | '
+                                             'validation acc: 0.8039410828025477')
+ 20%|██        | 16/80 [32:22<2:09:28, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 17 | training loss: -0.0028802901171147825                 | '
+                                                                             'training acc: 0.9739200000000001 | Wass Loss 0.8024703383445739')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 17 | validation loss: 0.613066671000924                 | '
+                                             'validation acc: 0.805234872611465')
+ 21%|██▏       | 17/80 [34:23<2:07:28, 121.40s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 18 | training loss: -0.013730837777256966                 | '
+                                                                             'training acc: 0.9769800000000001 | Wass Loss 0.8173874058723449')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 18 | validation loss: 0.7544016391988013                 | '
+                                             'validation acc: 0.7436305732484076')
+ 22%|██▎       | 18/80 [36:24<2:05:27, 121.42s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 19 | training loss: -0.010061260342597961                 | '
+                                                                             'training acc: 0.9751000000000002 | Wass Loss 0.8227854759693146')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 19 | validation loss: 0.6702651715582344                 | '
+                                             'validation acc: 0.7956807324840764')
+ 24%|██▍       | 19/80 [38:26<2:03:26, 121.41s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 20 | training loss: -0.015712797332555057                 | '
+                                                                             'training acc: 0.97738 | Wass Loss 0.8299816036224366')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 20 | validation loss: 0.7111199319742287                 | '
+                                             'validation acc: 0.7763734076433121')
+ 25%|██▌       | 20/80 [40:27<2:01:23, 121.39s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 21 | training loss: -0.022361306574195623                 | '
+                                                                             'training acc: 0.9781200000000001 | Wass Loss 0.8419350937604905')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 21 | validation loss: 0.7563309787185328                 | '
+                                             'validation acc: 0.798765923566879')
+ 26%|██▋       | 21/80 [42:29<1:59:22, 121.39s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 22 | training loss: -0.024984846219420435                 | '
+                                                                             'training acc: 0.9794200000000001 | Wass Loss 0.8466451176404953')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 22 | validation loss: 0.8331083488312496                 | '
+                                             'validation acc: 0.7633359872611465')
+ 28%|██▊       | 22/80 [44:30<1:57:20, 121.39s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 23 | training loss: -0.026309663638472557                 | '
+                                                                             'training acc: 0.9796000000000001 | Wass Loss 0.8505634871125222')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 23 | validation loss: 0.867794978011186                 | '
+                                             'validation acc: 0.7622412420382165')
+ 29%|██▉       | 23/80 [46:31<1:55:17, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 24 | training loss: -0.030521003346890212                 | '
+                                                                             'training acc: 0.98136 | Wass Loss 0.8521816539764404')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 24 | validation loss: 0.9083534251352784                 | '
+                                             'validation acc: 0.7668192675159236')
+ 30%|███       | 24/80 [48:33<1:53:16, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 25 | training loss: -0.03233331055194139                 | training '
+                                                                             'acc: 0.9818600000000002 | Wass Loss 0.8578072930574417')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 25 | validation loss: 1.0169922679093233                 | '
+                                             'validation acc: 0.7331807324840764')
+ 31%|███▏      | 25/80 [50:34<1:51:15, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 26 | training loss: -0.033389413587749                 | training '
+                                                                             'acc: 0.9820000000000001 | Wass Loss 0.8613577291369439')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 26 | validation loss: 0.863964524998027                 | '
+                                             'validation acc: 0.8047372611464968')
+ 32%|███▎      | 26/80 [52:35<1:49:13, 121.37s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 27 | training loss: -0.042280195835977794                 | '
+                                                                             'training acc: 0.9846000000000001 | Wass Loss 0.8612168455719947')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 27 | validation loss: 1.0111320451566368                 | '
+                                             'validation acc: 0.7552746815286624')
+ 34%|███▍      | 27/80 [54:37<1:47:11, 121.35s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 28 | training loss: -0.03766195959225297                 | training '
+                                                                             'acc: 0.9826600000000001 | Wass Loss 0.8670496906042099')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 28 | validation loss: 1.0119337428147626                 | '
+                                             'validation acc: 0.7661226114649682')
+ 35%|███▌      | 28/80 [56:38<1:45:09, 121.34s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 29 | training loss: -0.04328746382892132                 | training '
+                                                                             'acc: 0.9850399999999999 | Wass Loss 0.8693617302775383')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 29 | validation loss: 1.1118256833143294                 | '
+                                             'validation acc: 0.762937898089172')
+ 36%|███▋      | 29/80 [58:39<1:43:08, 121.35s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 30 | training loss: -0.0440762688703835                 | training '
+                                                                             'acc: 0.9854 | Wass Loss 0.8712696031928062')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 30 | validation loss: 1.196607155025385                 | '
+                                             'validation acc: 0.7548765923566879')
+ 38%|███▊      | 30/80 [1:00:41<1:41:06, 121.34s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 31 | training loss: -0.04645793142542243                 | training '
+                                                                             'acc: 0.9856000000000001 | Wass Loss 0.8722661030292511')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 31 | validation loss: 0.8747115845133544                 | '
+                                             'validation acc: 0.8004578025477707')
+ 39%|███▉      | 31/80 [1:02:42<1:39:06, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 32 | training loss: -0.0418346378095448                 | training '
+                                                                             'acc: 0.985 | Wass Loss 0.8721073390245437')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 32 | validation loss: 1.0965339237717306                 | '
+                                             'validation acc: 0.7086982484076433')
+ 40%|████      | 32/80 [1:04:43<1:37:05, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 33 | training loss: -0.053114107947796585                 | '
+                                                                             'training acc: 0.98798 | Wass Loss 0.8761553946137428')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 33 | validation loss: 1.2415750110225312                 | '
+                                             'validation acc: 0.759156050955414')
+ 41%|████▏     | 33/80 [1:06:45<1:35:04, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 34 | training loss: -0.04870550259575248                 | training '
+                                                                             'acc: 0.98684 | Wass Loss 0.8748836156725883')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 34 | validation loss: 1.1331598101907474                 | '
+                                             'validation acc: 0.771297770700637')
+ 42%|████▎     | 34/80 [1:08:46<1:33:02, 121.35s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 35 | training loss: -0.051861769653856755                 | '
+                                                                             'training acc: 0.9879800000000001 | Wass Loss 0.8786321639418602')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 35 | validation loss: 1.3002808002909279                 | '
+                                             'validation acc: 0.7294984076433121')
+ 44%|████▍     | 35/80 [1:10:48<1:31:02, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 36 | training loss: -0.05118141073361039                 | training '
+                                                                             'acc: 0.9877400000000001 | Wass Loss 0.8793562764525413')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 36 | validation loss: 1.1648394810925624                 | '
+                                             'validation acc: 0.7754777070063694')
+ 45%|████▌     | 36/80 [1:12:49<1:29:01, 121.40s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 37 | training loss: -0.0537594931833446                 | training '
+                                                                             'acc: 0.98882 | Wass Loss 0.8801649169921875')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 37 | validation loss: 1.4034165660287166                 | '
+                                             'validation acc: 0.7676154458598726')
+ 46%|████▋     | 37/80 [1:14:50<1:26:59, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 38 | training loss: -0.05508187820762396                 | training '
+                                                                             'acc: 0.9886600000000001 | Wass Loss 0.8819794425964356')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 38 | validation loss: 1.4038508150987565                 | '
+                                             'validation acc: 0.7872213375796179')
+ 48%|████▊     | 38/80 [1:16:52<1:24:57, 121.37s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 39 | training loss: -0.05802074645459652                 | training '
+                                                                             'acc: 0.9898200000000001 | Wass Loss 0.8816715802550316')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 39 | validation loss: 1.4126000328428427                 | '
+                                             'validation acc: 0.7318869426751592')
+ 49%|████▉     | 39/80 [1:18:53<1:22:55, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 40 | training loss: -0.053926990753039715                 | '
+                                                                             'training acc: 0.9893000000000001 | Wass Loss 0.8672097489535808')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 40 | validation loss: 1.1620102190667656                 | '
+                                             'validation acc: 0.7292993630573248')
+ 50%|█████     | 40/80 [1:20:54<1:20:55, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 41 | training loss: -0.05557665871456265                 | training '
+                                                                             'acc: 0.98854 | Wass Loss 0.8775269775092602')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 41 | validation loss: 1.115778292440305                 | '
+                                             'validation acc: 0.7708996815286624')
+ 51%|█████▏    | 41/80 [1:22:56<1:18:53, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 42 | training loss: -0.05816947815194726                 | training '
+                                                                             'acc: 0.9896800000000001 | Wass Loss 0.8831199998259545')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 42 | validation loss: 1.3836607773592517                 | '
+                                             'validation acc: 0.7119824840764332')
+ 52%|█████▎    | 42/80 [1:24:57<1:16:52, 121.37s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 43 | training loss: -0.0531498801857233                 | training '
+                                                                             'acc: 0.9877800000000001 | Wass Loss 0.8843133453726768')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 43 | validation loss: 1.3319728442817738                 | '
+                                             'validation acc: 0.7577627388535032')
+ 54%|█████▍    | 43/80 [1:26:59<1:14:50, 121.37s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 44 | training loss: -0.06657197157293558                 | training '
+                                                                             'acc: 0.9926400000000001 | Wass Loss 0.8861809478998184')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 44 | validation loss: 1.4634776403949519                 | '
+                                             'validation acc: 0.7350716560509554')
+ 55%|█████▌    | 44/80 [1:29:00<1:12:49, 121.37s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 45 | training loss: -0.06142218240723014                 | training '
+                                                                             'acc: 0.9908800000000001 | Wass Loss 0.8874895987510681')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 45 | validation loss: 1.5621048758743674                 | '
+                                             'validation acc: 0.6779458598726115')
+ 56%|█████▋    | 45/80 [1:31:01<1:10:48, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 46 | training loss: -0.059304345697164536                 | '
+                                                                             'training acc: 0.9901000000000001 | Wass Loss 0.8873310992121697')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 46 | validation loss: 1.380437356651209                 | '
+                                             'validation acc: 0.7351711783439491')
+ 57%|█████▊    | 46/80 [1:33:03<1:08:46, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 47 | training loss: -0.061664399441331626                 | '
+                                                                             'training acc: 0.9908600000000001 | Wass Loss 0.8875798109769821')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 47 | validation loss: 1.4773082702782503                 | '
+                                             'validation acc: 0.7560708598726115')
+ 59%|█████▉    | 47/80 [1:35:04<1:06:45, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 48 | training loss: -0.06301025376841426                 | training '
+                                                                             'acc: 0.9913400000000001 | Wass Loss 0.8869939687252044')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 48 | validation loss: 1.4969842805983915                 | '
+                                             'validation acc: 0.6845143312101911')
+ 60%|██████    | 48/80 [1:37:06<1:04:44, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 49 | training loss: -0.059922331992536784                 | '
+                                                                             'training acc: 0.9903200000000002 | Wass Loss 0.8874918547272682')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 49 | validation loss: 1.5212811588481734                 | '
+                                             'validation acc: 0.6952627388535032')
+ 61%|██████▏   | 49/80 [1:39:07<1:02:42, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 50 | training loss: -0.06610969784855843                 | training '
+                                                                             'acc: 0.9920000000000001 | Wass Loss 0.8891276957988739')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 50 | validation loss: 1.553552611618285                 | '
+                                             'validation acc: 0.7256170382165605')
+ 62%|██████▎   | 50/80 [1:41:08<1:00:40, 121.36s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 51 | training loss: -0.06460467981919646                 | training '
+                                                                             'acc: 0.9924200000000001 | Wass Loss 0.8889690082669258')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 51 | validation loss: 1.55276046588922                 | validation '
+                                             'acc: 0.6944665605095541')
+ 64%|██████▍   | 51/80 [1:43:10<58:39, 121.37s/it]  ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 52 | training loss: -0.060110410263761876                 | '
+                                                                             'training acc: 0.99122 | Wass Loss 0.8671107710152864')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 52 | validation loss: 1.462172274376936                 | '
+                                             'validation acc: 0.7041202229299363')
+ 65%|██████▌   | 52/80 [1:45:11<56:39, 121.39s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 53 | training loss: -0.06780895388126373                 | training '
+                                                                             'acc: 0.9926200000000002 | Wass Loss 0.8892049850225449')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 53 | validation loss: 1.5755760563406975                 | '
+                                             'validation acc: 0.7423367834394905')
+ 66%|██████▋   | 53/80 [1:47:12<54:37, 121.37s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 54 | training loss: -0.06519852245226503                 | training '
+                                                                             'acc: 0.9916800000000001 | Wass Loss 0.8889911431670189')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 54 | validation loss: 1.723125334757908                 | '
+                                             'validation acc: 0.6940684713375797')
+ 68%|██████▊   | 54/80 [1:49:14<52:35, 121.37s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 55 | training loss: -0.062254591554403306                 | '
+                                                                             'training acc: 0.99078 | Wass Loss 0.8893234139084816')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 55 | validation loss: 1.4888948186947282                 | '
+                                             'validation acc: 0.7352707006369427')
+ 69%|██████▉   | 55/80 [1:51:15<50:34, 121.39s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 56 | training loss: -0.06830154663696886                 | training '
+                                                                             'acc: 0.99292 | Wass Loss 0.8905925637483597')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 56 | validation loss: 1.4679461353144068                 | '
+                                             'validation acc: 0.7093949044585988')
+ 70%|███████   | 56/80 [1:53:17<48:33, 121.38s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 57 | training loss: -0.06642630512826145                 | training '
+                                                                             'acc: 0.9924200000000001 | Wass Loss 0.8856122265011073')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 57 | validation loss: 1.5130784959550116                 | '
+                                             'validation acc: 0.693172770700637')
+ 71%|███████▏  | 57/80 [1:55:18<46:33, 121.44s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 58 | training loss: -0.06592694601416588                 | training '
+                                                                             'acc: 0.9920800000000002 | Wass Loss 0.8895784356594085')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 58 | validation loss: 1.6750910433993977                 | '
+                                             'validation acc: 0.7107882165605095')
+ 72%|███████▎  | 58/80 [1:57:20<44:34, 121.56s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 59 | training loss: -0.07045763654261827                 | training '
+                                                                             'acc: 0.9936000000000001 | Wass Loss 0.891208091557026')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 59 | validation loss: 1.701483177531297                 | '
+                                             'validation acc: 0.6957603503184714')
+ 74%|███████▍  | 59/80 [1:59:22<42:34, 121.65s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 60 | training loss: -0.06430957204848528                 | training '
+                                                                             'acc: 0.9916600000000001 | Wass Loss 0.8903221587538719')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 60 | validation loss: 1.6215228639590513                 | '
+                                             'validation acc: 0.7082006369426752')
+ 75%|███████▌  | 60/80 [2:01:24<40:34, 121.70s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 61 | training loss: -0.0688316502906382                 | training '
+                                                                             'acc: 0.99316 | Wass Loss 0.8909647192955017')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 61 | validation loss: 1.579876451735284                 | '
+                                             'validation acc: 0.6957603503184714')
+ 76%|███████▋  | 61/80 [2:03:25<38:32, 121.71s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 62 | training loss: -0.067887128777802                 | training '
+                                                                             'acc: 0.99258 | Wass Loss 0.8894521542787552')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 62 | validation loss: 1.635808594667228                 | '
+                                             'validation acc: 0.6736664012738853')
+ 78%|███████▊  | 62/80 [2:05:27<36:31, 121.76s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 63 | training loss: -0.06691753545589745                 | training '
+                                                                             'acc: 0.9926000000000001 | Wass Loss 0.8855183499157429')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 63 | validation loss: 1.2655871134654733                 | '
+                                             'validation acc: 0.7757762738853503')
+ 79%|███████▉  | 63/80 [2:07:29<34:29, 121.75s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 64 | training loss: -0.07107512185350061                 | training '
+                                                                             'acc: 0.9943200000000002 | Wass Loss 0.8882005324363709')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 64 | validation loss: 1.2790543045967249                 | '
+                                             'validation acc: 0.742734872611465')
+ 80%|████████  | 64/80 [2:09:31<32:28, 121.77s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 65 | training loss: -0.07172343719378113                 | training '
+                                                                             'acc: 0.9943400000000001 | Wass Loss 0.8892525216341018')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 65 | validation loss: 1.6540360078690157                 | '
+                                             'validation acc: 0.6528662420382165')
+ 81%|████████▏ | 65/80 [2:11:32<30:26, 121.75s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 66 | training loss: -0.06798326133191586                 | training '
+                                                                             'acc: 0.99292 | Wass Loss 0.8890182432532311')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 66 | validation loss: 1.5410369186644342                 | '
+                                             'validation acc: 0.6882961783439491')
+ 82%|████████▎ | 66/80 [2:13:34<28:24, 121.77s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 67 | training loss: -0.07175728184729814                 | training '
+                                                                             'acc: 0.9944200000000001 | Wass Loss 0.8901553636193276')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 67 | validation loss: 1.590989870630252                 | '
+                                             'validation acc: 0.6896894904458599')
+ 84%|████████▍ | 67/80 [2:15:36<26:23, 121.78s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 68 | training loss: -0.06802786024287343                 | training '
+                                                                             'acc: 0.99298 | Wass Loss 0.889311962813139')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 68 | validation loss: 1.6465860278743087                 | '
+                                             'validation acc: 0.7140724522292994')
+ 85%|████████▌ | 68/80 [2:17:38<24:21, 121.78s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 69 | training loss: -0.0703731019422412                 | training '
+                                                                             'acc: 0.9933000000000001 | Wass Loss 0.8908244714140892')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 69 | validation loss: 1.3615352500016522                 | '
+                                             'validation acc: 0.7302945859872612')
+ 86%|████████▋ | 69/80 [2:19:40<22:19, 121.81s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 70 | training loss: -0.07499446942284703                 | training '
+                                                                             'acc: 0.995 | Wass Loss 0.8917910816073418')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 70 | validation loss: 1.6882408804194942                 | '
+                                             'validation acc: 0.70421974522293')
+ 88%|████████▊ | 70/80 [2:21:42<20:18, 121.80s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 71 | training loss: -0.06536000321060419                 | training '
+                                                                             'acc: 0.9914400000000001 | Wass Loss 0.8878154454231262')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 71 | validation loss: 1.5886238175592604                 | '
+                                             'validation acc: 0.6547571656050956')
+ 89%|████████▉ | 71/80 [2:23:43<18:15, 121.77s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 72 | training loss: -0.07492614050209523                 | training '
+                                                                             'acc: 0.99522 | Wass Loss 0.8924079401493072')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 72 | validation loss: 1.7124002868202841                 | '
+                                             'validation acc: 0.67078025477707')
+ 90%|█████████ | 72/80 [2:25:45<16:14, 121.79s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 73 | training loss: -0.0704363459981978                 | training '
+                                                                             'acc: 0.9933800000000002 | Wass Loss 0.891873757481575')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 73 | validation loss: 1.728817166036861                 | '
+                                             'validation acc: 0.7323845541401274')
+ 91%|█████████▏| 73/80 [2:27:47<14:12, 121.79s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 74 | training loss: -0.0737988084293902                 | training '
+                                                                             'acc: 0.99458 | Wass Loss 0.8928253476023674')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 74 | validation loss: 1.7159544442110002                 | '
+                                             'validation acc: 0.6519705414012739')
+ 92%|█████████▎| 74/80 [2:29:49<12:10, 121.81s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 75 | training loss: -0.07271422221139073                 | training '
+                                                                             'acc: 0.99426 | Wass Loss 0.8920462399125099')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 75 | validation loss: 1.8343624430856886                 | '
+                                             'validation acc: 0.6997412420382165')
+ 94%|█████████▍| 75/80 [2:31:51<10:09, 121.80s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 76 | training loss: -0.0737495314925909                 | training '
+                                                                             'acc: 0.99452 | Wass Loss 0.8928069939017296')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 76 | validation loss: 1.6011172365990414                 | '
+                                             'validation acc: 0.7374601910828026')
+ 95%|█████████▌| 76/80 [2:33:52<08:07, 121.78s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 77 | training loss: -0.07218178327381611                 | training '
+                                                                             'acc: 0.99468 | Wass Loss 0.8923032385110855')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 77 | validation loss: 1.6891640485471981                 | '
+                                             'validation acc: 0.7520899681528662')
+ 96%|█████████▋| 77/80 [2:35:54<06:05, 121.68s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 78 | training loss: -0.07441558992117643                 | training '
+                                                                             'acc: 0.9952000000000001 | Wass Loss 0.8930262394547462')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 78 | validation loss: 1.8111766311013775                 | '
+                                             'validation acc: 0.6413216560509554')
+ 98%|█████████▊| 78/80 [2:37:55<04:03, 121.61s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 79 | training loss: -0.06919452460855245                 | training '
+                                                                             'acc: 0.9930399999999999 | Wass Loss 0.8920729740262031')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 79 | validation loss: 1.6408480542480566                 | '
+                                             'validation acc: 0.7436305732484076')
+ 99%|█████████▉| 79/80 [2:39:57<02:01, 121.57s/it]ic| f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}": ('Epoch  # 80 | training loss: -0.07651271939277648                 | training '
+                                                                             'acc: 0.99568 | Wass Loss 0.8938097040057182')
+ic| f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+     | validation acc: {np.mean(val_acc)}": ('Epoch  # 80 | validation loss: 1.6905992114619843                 | '
+                                             'validation acc: 0.7083001592356688')
+100%|██████████| 80/80 [2:41:58<00:00, 121.52s/it]100%|██████████| 80/80 [2:41:58<00:00, 121.48s/it]
+  0%|          | 0/157 [00:00<?, ?it/s]/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/eval.py:103: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  label = torch.tensor(label, dtype=torch.int64).to(DEVICE)
+  1%|          | 1/157 [00:00<00:18,  8.63it/s]  3%|▎         | 4/157 [00:00<00:08, 17.68it/s]  4%|▍         | 7/157 [00:00<00:06, 21.45it/s]  6%|▋         | 10/157 [00:00<00:06, 23.34it/s]  8%|▊         | 13/157 [00:00<00:05, 24.45it/s] 10%|█         | 16/157 [00:00<00:05, 25.23it/s] 12%|█▏        | 19/157 [00:00<00:05, 25.75it/s] 14%|█▍        | 22/157 [00:00<00:05, 26.02it/s] 16%|█▌        | 25/157 [00:01<00:05, 26.24it/s] 18%|█▊        | 28/157 [00:01<00:04, 26.41it/s] 20%|█▉        | 31/157 [00:01<00:04, 26.58it/s] 22%|██▏       | 34/157 [00:01<00:04, 26.70it/s] 24%|██▎       | 37/157 [00:01<00:04, 26.76it/s] 25%|██▌       | 40/157 [00:01<00:04, 26.81it/s] 27%|██▋       | 43/157 [00:01<00:04, 26.85it/s] 29%|██▉       | 46/157 [00:01<00:04, 26.88it/s] 31%|███       | 49/157 [00:01<00:04, 26.91it/s] 33%|███▎      | 52/157 [00:02<00:03, 26.87it/s] 35%|███▌      | 55/157 [00:02<00:03, 26.90it/s] 37%|███▋      | 58/157 [00:02<00:03, 26.90it/s] 39%|███▉      | 61/157 [00:02<00:03, 26.86it/s] 41%|████      | 64/157 [00:02<00:03, 26.90it/s] 43%|████▎     | 67/157 [00:02<00:03, 26.88it/s] 45%|████▍     | 70/157 [00:02<00:03, 26.91it/s] 46%|████▋     | 73/157 [00:02<00:03, 26.94it/s] 48%|████▊     | 76/157 [00:02<00:03, 26.96it/s] 50%|█████     | 79/157 [00:03<00:02, 26.98it/s] 52%|█████▏    | 82/157 [00:03<00:02, 27.00it/s] 54%|█████▍    | 85/157 [00:03<00:02, 27.01it/s] 56%|█████▌    | 88/157 [00:03<00:02, 26.94it/s] 58%|█████▊    | 91/157 [00:03<00:02, 26.97it/s] 60%|█████▉    | 94/157 [00:03<00:02, 26.98it/s] 62%|██████▏   | 97/157 [00:03<00:02, 27.01it/s] 64%|██████▎   | 100/157 [00:03<00:02, 27.02it/s] 66%|██████▌   | 103/157 [00:03<00:01, 27.03it/s] 68%|██████▊   | 106/157 [00:04<00:01, 27.03it/s] 69%|██████▉   | 109/157 [00:04<00:01, 27.02it/s] 71%|███████▏  | 112/157 [00:04<00:01, 27.02it/s] 73%|███████▎  | 115/157 [00:04<00:01, 27.03it/s] 75%|███████▌  | 118/157 [00:04<00:01, 27.02it/s] 77%|███████▋  | 121/157 [00:04<00:01, 27.03it/s] 79%|███████▉  | 124/157 [00:04<00:01, 26.96it/s] 81%|████████  | 127/157 [00:04<00:01, 26.98it/s] 83%|████████▎ | 130/157 [00:04<00:01, 26.99it/s] 85%|████████▍ | 133/157 [00:05<00:00, 26.97it/s] 87%|████████▋ | 136/157 [00:05<00:00, 26.95it/s] 89%|████████▊ | 139/157 [00:05<00:00, 26.90it/s] 90%|█████████ | 142/157 [00:05<00:00, 26.97it/s] 92%|█████████▏| 145/157 [00:05<00:00, 26.95it/s] 94%|█████████▍| 148/157 [00:05<00:00, 26.97it/s] 96%|█████████▌| 151/157 [00:05<00:00, 26.99it/s] 98%|█████████▊| 154/157 [00:05<00:00, 26.92it/s]100%|██████████| 157/157 [00:05<00:00, 27.49it/s]100%|██████████| 157/157 [00:05<00:00, 26.51it/s]
+  0%|          | 0/407 [00:00<?, ?it/s]  1%|          | 3/407 [00:00<00:15, 26.67it/s]  1%|▏         | 6/407 [00:00<00:15, 26.52it/s]  2%|▏         | 9/407 [00:00<00:14, 26.64it/s]  3%|▎         | 12/407 [00:00<00:14, 26.70it/s]  4%|▎         | 15/407 [00:00<00:14, 26.73it/s]  4%|▍         | 18/407 [00:00<00:14, 26.75it/s]  5%|▌         | 21/407 [00:00<00:14, 26.64it/s]  6%|▌         | 24/407 [00:00<00:14, 26.69it/s]  7%|▋         | 27/407 [00:01<00:14, 26.72it/s]  7%|▋         | 30/407 [00:01<00:14, 26.48it/s]  8%|▊         | 33/407 [00:01<00:14, 26.58it/s]  9%|▉         | 36/407 [00:01<00:13, 26.63it/s] 10%|▉         | 39/407 [00:01<00:13, 26.63it/s] 10%|█         | 42/407 [00:01<00:13, 26.69it/s] 11%|█         | 45/407 [00:01<00:13, 26.73it/s] 12%|█▏        | 48/407 [00:01<00:13, 26.77it/s] 13%|█▎        | 51/407 [00:01<00:13, 26.72it/s] 13%|█▎        | 54/407 [00:02<00:13, 26.74it/s] 14%|█▍        | 57/407 [00:02<00:13, 26.76it/s] 15%|█▍        | 60/407 [00:02<00:12, 26.78it/s] 15%|█▌        | 63/407 [00:02<00:12, 26.79it/s] 16%|█▌        | 66/407 [00:02<00:12, 26.82it/s] 17%|█▋        | 69/407 [00:02<00:12, 26.83it/s] 18%|█▊        | 72/407 [00:02<00:12, 26.76it/s] 18%|█▊        | 75/407 [00:02<00:12, 26.77it/s] 19%|█▉        | 78/407 [00:02<00:12, 26.70it/s] 20%|█▉        | 81/407 [00:03<00:12, 26.71it/s] 21%|██        | 84/407 [00:03<00:12, 26.73it/s] 21%|██▏       | 87/407 [00:03<00:11, 26.76it/s] 22%|██▏       | 90/407 [00:03<00:11, 26.78it/s] 23%|██▎       | 93/407 [00:03<00:11, 26.79it/s] 24%|██▎       | 96/407 [00:03<00:11, 26.82it/s] 24%|██▍       | 99/407 [00:03<00:11, 26.82it/s] 25%|██▌       | 102/407 [00:03<00:11, 26.70it/s] 26%|██▌       | 105/407 [00:03<00:11, 26.73it/s] 27%|██▋       | 108/407 [00:04<00:11, 26.76it/s] 27%|██▋       | 111/407 [00:04<00:11, 26.78it/s] 28%|██▊       | 114/407 [00:04<00:10, 26.71it/s] 29%|██▊       | 117/407 [00:04<00:10, 26.75it/s] 29%|██▉       | 120/407 [00:04<00:10, 26.76it/s] 30%|███       | 123/407 [00:04<00:10, 26.78it/s] 31%|███       | 126/407 [00:04<00:10, 26.75it/s] 32%|███▏      | 129/407 [00:04<00:10, 26.78it/s] 32%|███▏      | 132/407 [00:04<00:10, 26.73it/s] 33%|███▎      | 135/407 [00:05<00:10, 26.66it/s] 34%|███▍      | 138/407 [00:05<00:10, 26.71it/s] 35%|███▍      | 141/407 [00:05<00:09, 26.75it/s] 35%|███▌      | 144/407 [00:05<00:09, 26.69it/s] 36%|███▌      | 147/407 [00:05<00:09, 26.38it/s] 37%|███▋      | 150/407 [00:05<00:09, 26.29it/s] 38%|███▊      | 153/407 [00:05<00:09, 26.46it/s] 38%|███▊      | 156/407 [00:05<00:09, 26.49it/s] 39%|███▉      | 159/407 [00:05<00:09, 26.58it/s] 40%|███▉      | 162/407 [00:06<00:09, 26.66it/s] 41%|████      | 165/407 [00:06<00:09, 26.70it/s] 41%|████▏     | 168/407 [00:06<00:08, 26.69it/s] 42%|████▏     | 171/407 [00:06<00:08, 26.73it/s] 43%|████▎     | 174/407 [00:06<00:08, 26.74it/s] 43%|████▎     | 177/407 [00:06<00:08, 26.77it/s] 44%|████▍     | 180/407 [00:06<00:08, 26.72it/s] 45%|████▍     | 183/407 [00:06<00:08, 26.72it/s] 46%|████▌     | 186/407 [00:06<00:08, 26.65it/s] 46%|████▋     | 189/407 [00:07<00:08, 26.69it/s] 47%|████▋     | 192/407 [00:07<00:08, 26.68it/s] 48%|████▊     | 195/407 [00:07<00:07, 26.72it/s] 49%|████▊     | 198/407 [00:07<00:07, 26.76it/s] 49%|████▉     | 201/407 [00:07<00:07, 26.78it/s] 50%|█████     | 204/407 [00:07<00:07, 26.79it/s] 51%|█████     | 207/407 [00:07<00:07, 26.78it/s] 52%|█████▏    | 210/407 [00:07<00:07, 26.74it/s] 52%|█████▏    | 213/407 [00:07<00:07, 26.75it/s] 53%|█████▎    | 216/407 [00:08<00:07, 26.77it/s] 54%|█████▍    | 219/407 [00:08<00:07, 26.78it/s] 55%|█████▍    | 222/407 [00:08<00:06, 26.78it/s] 55%|█████▌    | 225/407 [00:08<00:06, 26.77it/s] 56%|█████▌    | 228/407 [00:08<00:06, 26.78it/s] 57%|█████▋    | 231/407 [00:08<00:06, 26.78it/s] 57%|█████▋    | 234/407 [00:08<00:06, 26.78it/s] 58%|█████▊    | 237/407 [00:08<00:06, 26.79it/s] 59%|█████▉    | 240/407 [00:08<00:06, 26.78it/s] 60%|█████▉    | 243/407 [00:09<00:06, 26.75it/s] 60%|██████    | 246/407 [00:09<00:06, 26.78it/s] 61%|██████    | 249/407 [00:09<00:05, 26.77it/s] 62%|██████▏   | 252/407 [00:09<00:05, 26.73it/s] 63%|██████▎   | 255/407 [00:09<00:05, 26.75it/s] 63%|██████▎   | 258/407 [00:09<00:05, 26.76it/s] 64%|██████▍   | 261/407 [00:09<00:05, 26.80it/s] 65%|██████▍   | 264/407 [00:09<00:05, 26.79it/s] 66%|██████▌   | 267/407 [00:09<00:05, 26.76it/s] 66%|██████▋   | 270/407 [00:10<00:05, 26.78it/s] 67%|██████▋   | 273/407 [00:10<00:04, 26.80it/s] 68%|██████▊   | 276/407 [00:10<00:04, 26.81it/s] 69%|██████▊   | 279/407 [00:10<00:04, 26.82it/s] 69%|██████▉   | 282/407 [00:10<00:04, 26.81it/s] 70%|███████   | 285/407 [00:10<00:04, 26.80it/s] 71%|███████   | 288/407 [00:10<00:04, 26.81it/s] 71%|███████▏  | 291/407 [00:10<00:04, 26.80it/s] 72%|███████▏  | 294/407 [00:10<00:04, 26.79it/s] 73%|███████▎  | 297/407 [00:11<00:04, 26.79it/s] 74%|███████▎  | 300/407 [00:11<00:03, 26.78it/s] 74%|███████▍  | 303/407 [00:11<00:03, 26.72it/s] 75%|███████▌  | 306/407 [00:11<00:03, 26.75it/s] 76%|███████▌  | 309/407 [00:11<00:03, 26.76it/s] 77%|███████▋  | 312/407 [00:11<00:03, 26.81it/s] 77%|███████▋  | 315/407 [00:11<00:03, 26.79it/s] 78%|███████▊  | 318/407 [00:11<00:03, 26.81it/s] 79%|███████▉  | 321/407 [00:12<00:03, 26.81it/s] 80%|███████▉  | 324/407 [00:12<00:03, 26.73it/s] 80%|████████  | 327/407 [00:12<00:02, 26.75it/s] 81%|████████  | 330/407 [00:12<00:02, 26.75it/s] 82%|████████▏ | 333/407 [00:12<00:02, 26.76it/s] 83%|████████▎ | 336/407 [00:12<00:02, 26.78it/s] 83%|████████▎ | 339/407 [00:12<00:02, 26.78it/s] 84%|████████▍ | 342/407 [00:12<00:02, 26.78it/s] 85%|████████▍ | 345/407 [00:12<00:02, 26.78it/s] 86%|████████▌ | 348/407 [00:13<00:02, 26.76it/s] 86%|████████▌ | 351/407 [00:13<00:02, 26.80it/s] 87%|████████▋ | 354/407 [00:13<00:01, 26.80it/s] 88%|████████▊ | 357/407 [00:13<00:01, 26.80it/s] 88%|████████▊ | 360/407 [00:13<00:01, 26.78it/s] 89%|████████▉ | 363/407 [00:13<00:01, 26.76it/s] 90%|████████▉ | 366/407 [00:13<00:01, 26.78it/s] 91%|█████████ | 369/407 [00:13<00:01, 26.80it/s] 91%|█████████▏| 372/407 [00:13<00:01, 26.81it/s] 92%|█████████▏| 375/407 [00:14<00:01, 26.79it/s] 93%|█████████▎| 378/407 [00:14<00:01, 26.80it/s] 94%|█████████▎| 381/407 [00:14<00:00, 26.82it/s] 94%|█████████▍| 384/407 [00:14<00:00, 26.83it/s] 95%|█████████▌| 387/407 [00:14<00:00, 26.83it/s] 96%|█████████▌| 390/407 [00:14<00:00, 26.83it/s] 97%|█████████▋| 393/407 [00:14<00:00, 26.85it/s] 97%|█████████▋| 396/407 [00:14<00:00, 26.85it/s] 98%|█████████▊| 399/407 [00:14<00:00, 26.83it/s] 99%|█████████▉| 402/407 [00:15<00:00, 26.80it/s]100%|█████████▉| 405/407 [00:15<00:00, 26.76it/s]100%|██████████| 407/407 [00:15<00:00, 26.75it/s]
+  0%|          | 0/157 [00:00<?, ?it/s]  3%|▎         | 4/157 [00:00<00:04, 31.55it/s]  5%|▌         | 8/157 [00:00<00:04, 31.75it/s]  8%|▊         | 12/157 [00:00<00:04, 31.83it/s] 10%|█         | 16/157 [00:00<00:04, 31.88it/s] 13%|█▎        | 20/157 [00:00<00:04, 31.90it/s] 15%|█▌        | 24/157 [00:00<00:04, 31.91it/s] 18%|█▊        | 28/157 [00:00<00:04, 31.93it/s] 20%|██        | 32/157 [00:01<00:03, 31.87it/s] 23%|██▎       | 36/157 [00:01<00:03, 31.90it/s] 25%|██▌       | 40/157 [00:01<00:03, 31.91it/s] 28%|██▊       | 44/157 [00:01<00:03, 31.91it/s] 31%|███       | 48/157 [00:01<00:03, 31.89it/s] 33%|███▎      | 52/157 [00:01<00:03, 31.90it/s] 36%|███▌      | 56/157 [00:01<00:03, 31.92it/s] 38%|███▊      | 60/157 [00:01<00:03, 31.93it/s] 41%|████      | 64/157 [00:02<00:02, 31.94it/s] 43%|████▎     | 68/157 [00:02<00:02, 31.94it/s] 46%|████▌     | 72/157 [00:02<00:02, 31.94it/s] 48%|████▊     | 76/157 [00:02<00:02, 31.94it/s] 51%|█████     | 80/157 [00:02<00:02, 31.94it/s] 54%|█████▎    | 84/157 [00:02<00:02, 31.94it/s] 56%|█████▌    | 88/157 [00:02<00:02, 31.92it/s] 59%|█████▊    | 92/157 [00:02<00:02, 31.92it/s] 61%|██████    | 96/157 [00:03<00:01, 31.93it/s] 64%|██████▎   | 100/157 [00:03<00:01, 31.94it/s] 66%|██████▌   | 104/157 [00:03<00:01, 31.95it/s] 69%|██████▉   | 108/157 [00:03<00:01, 31.96it/s] 71%|███████▏  | 112/157 [00:03<00:01, 31.97it/s] 74%|███████▍  | 116/157 [00:03<00:01, 31.96it/s] 76%|███████▋  | 120/157 [00:03<00:01, 31.96it/s] 79%|███████▉  | 124/157 [00:03<00:01, 31.96it/s] 82%|████████▏ | 128/157 [00:04<00:00, 31.94it/s] 84%|████████▍ | 132/157 [00:04<00:00, 31.91it/s] 87%|████████▋ | 136/157 [00:04<00:00, 31.93it/s] 89%|████████▉ | 140/157 [00:04<00:00, 31.91it/s] 92%|█████████▏| 144/157 [00:04<00:00, 31.91it/s] 94%|█████████▍| 148/157 [00:04<00:00, 31.92it/s] 97%|█████████▋| 152/157 [00:04<00:00, 31.90it/s] 99%|█████████▉| 156/157 [00:04<00:00, 31.91it/s]100%|██████████| 157/157 [00:04<00:00, 32.02it/s]
