@@ -3,7 +3,7 @@ dataset:
   is_within_dset: True
   ind: [0, 1, 2, 3, 4, 5, 6, 7]
   ood: [8, 9]
-
+  
 path:
   root_dir: checkpoint/
   pretrained_dir: checkpoint/pretrained/
@@ -44,9 +44,9 @@ train_config:
     beta2: 0.999
   hp:
     ce: 1
-    wass: 1 # 0.1
+    wass: 0.1 # 0.1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 1 # 0.01
+  scaling: 0.01 # 0.01
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96

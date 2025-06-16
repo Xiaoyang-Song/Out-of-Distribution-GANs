@@ -1,8 +1,8 @@
 dataset:
   dset: MNIST
   is_within_dset: True
-  ind: [2, 3, 6, 8, 9]
-  ood: [1, 7]
+  ind: [0, 1, 2, 3, 4, 5, 6, 7]
+  ood: [8, 9]
 
 path:
   root_dir: checkpoint/
@@ -19,7 +19,7 @@ dset_info:
     H: 28
     W: 28
     C: 1
-  num_class: 5
+  num_class: 8
 
 model:
   D: "DenseNet"
@@ -30,26 +30,29 @@ model:
     noise_dim: 96
 
 train_config:
-  mc: 3
-  max_epochs: 10
-  bsz_tri: 50
-  bsz_val: 50 # this is used for evaluation
-  ood_bsz: 10
+  score: "Wasserstein"
+  mc: 1
+  T: 1
+  max_epochs: 25
+  bsz_tri: 64
+  bsz_val: 64 # this is used for evaluation
+  ood_bsz: 32
   optimizer:
     d_lr: 0.001
-    g_lr: 0.005
+    g_lr: 0.001
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
     ce: 1
-    wass: 0.1
+    wass: 1 # 0.1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 0.01
+  scaling: 1 # 0.01
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96
   logging:
     n_steps_log: 20
+    n_epochs_save: 4
 
 eval_config:
   each_cls: False

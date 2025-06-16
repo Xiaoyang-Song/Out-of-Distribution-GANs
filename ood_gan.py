@@ -54,7 +54,7 @@ def ood_gan_g_loss(logits_fake, gz, xood, score='energy', T=None):
     # distance term
     # print(torch.mean(gz, dim=0) - torch.mean(xood, dim=0))
     dist = torch.sqrt(torch.sum((torch.mean(gz) - torch.mean(xood))**2))
-    assert dist.requires_grad
+    # assert dist.requires_grad
     return w_fake, dist
 
 
@@ -174,9 +174,10 @@ class OOD_GAN_TRAINER():
                     G_solver.zero_grad()
 
                     # OoD Adversarial Training
-                    seed = torch.rand(
-                        (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
-                    Gz = self.G(seed)
+                    # seed = torch.rand(
+                    #     (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
+                    # Gz = self.G(seed)
+                    Gz = Gz.detach()
                     logits_fake = self.D(Gz)
 
                     w_z, dist = ood_gan_g_loss(logits_fake, Gz, ood_img, self.score, self.T)

@@ -38,7 +38,7 @@ train_config:
   mc: 1
   max_epochs: 25
   bsz_tri: 64
-  bsz_val: 32 # this is used for evaluation
+  bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
   optimizer:
     d_lr: 0.001
@@ -49,7 +49,7 @@ train_config:
     ce: 1
     wass: 1
     dist: 1 # Set to zero to check whether this is important
-  scaling: 1
+  scaling: 0.1
   d_step_ratio: 1
   g_step_ratio: 1
   noise_dim: 96
