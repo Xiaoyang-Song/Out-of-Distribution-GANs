@@ -1,18 +1,14 @@
 #!/bin/bash
 
-#SBATCH --account=jhjin1
+#SBATCH --account=sunwbgt0
 #SBATCH --job-name=GANSV256
 #SBATCH --mail-user=xysong@umich.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --nodes=1
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
-#SBATCH --mem-per-gpu=14GB
-#SBATCH --time=168:00:00
-#SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/GANSV256.log
-
-module purge
-conda init bash
-conda activate OoD
+#SBATCH --gpus=1
+#SBATCH --mem-per-gpu=16GB
+#SBATCH --time=5:00:00
+#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/SV-I-256.log
 
 python3 main/main_ood.py --config=config/GAN/OOD-GAN-SVHN.yaml --n_ood=256 > checkpoint/log/SVHN/OOD-GAN/log-256.txt
