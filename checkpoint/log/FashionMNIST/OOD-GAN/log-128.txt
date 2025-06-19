@@ -50,7 +50,7 @@ Experiment: FashionMNIST
 Experiment regime: Balanced
 Method: OOD-GAN
 ================================================================================
-Number of observed OoD samples (class-level): 64
+Number of observed OoD samples (class-level): 128
 Input Dimension: 28 x 28 x 1
 Number of InD classes: 8
 Number of Epochs: 16.

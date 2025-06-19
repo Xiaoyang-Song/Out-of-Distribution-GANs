@@ -23,8 +23,8 @@ Method: OOD-GAN
 Number of observed OoD samples (class-level): 8
 Input Dimension: 28 x 28 x 1
 Number of InD classes: 8
-Number of Epochs: 25.
-Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=10 & d_lr=0.001 & g_lr=0.001 & B_InD: 64 & B_OoD: 32 & n_d: 1 & n_g: 1
+Number of Epochs: 16.
+Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.001 & B_InD: 64 & B_OoD: 32 & n_d: 1 & n_g: 1
 Score Function: Wasserstein
 Finished Processing Input Arguments.
 -- Current Device: Tesla V100-PCIE-16GB

@@ -3,9 +3,10 @@ import numpy as np
 
 
 # GL
-ACCOUNT = 'jhjin1'
 # ACCOUNT = 'jhjin1'
-TIME = "24:00:00"
+ACCOUNT = 'sunwbgt0'
+# ACCOUNT = 'jhjin1'
+TIME = "5:00:00"
 # Configuration
 # EXP_DSET = 'CIFAR100-Places365'
 # EXP_DSET = 'CIFAR100-iSUN'
@@ -17,10 +18,12 @@ TIME = "24:00:00"
 # EXP_DSET = 'ImageNet100-INAT'
 # EXP_DSET = 'ImageNet100'
 # EXP_DSET = 'CIFAR100'
-EXP_DSET = '3DPC'
+# EXP_DSET = '3DPC'
+EXP_DSET = 'FashionMNIST'
 
 # N = [32, 64, 128, 256, 512, 1024]
-N = [50, 100, 500, 1000, 1500, 2000]
+# N = [50, 100, 500, 1000, 1500, 2000]
+N = [8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
 
 CMD_ONLY = False
 
@@ -49,7 +52,7 @@ if not CMD_ONLY:
         f.write("#SBATCH --mail-type=BEGIN,END,FAIL\n")
         f.write("#SBATCH --nodes=1\n")
         f.write("#SBATCH --partition=gpu\n")
-        f.write("#SBATCH --gres=gpu:1\n")
+        f.write("#SBATCH --gpus=1\n")
         f.write("#SBATCH --mem-per-gpu=16GB\n")
         f.write(f"#SBATCH --time={TIME}\n")
         f.write(f"#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/{EXP_DSET}-{n}.log\n\n")
