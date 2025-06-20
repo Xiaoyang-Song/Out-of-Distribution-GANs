@@ -107,7 +107,8 @@ def loader_wass(data_loader, D, loss_type='Dynamic_Wasserstein'):
             if loss_type == 'Dynamic_Wasserstein':
                 wass_dist = sink_dist_test(torch.softmax(out, dim=-1), label, out.shape[1]).cpu().detach()
             else:
-                wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
+                # wass_dist = ood_wass_loss(torch.softmax(out, dim=-1))
+                wass_dist = 1 - torch.max(torch.softmax(out, dim=-1), dim=-1)[0]
             # wass_dist = sink_dist_test_v2(torch.softmax(out, dim=-1), None, 8)
             # img = img.to('cpu')
             # wass_dist = ood_wass_loss(out)

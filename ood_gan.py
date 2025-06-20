@@ -174,8 +174,7 @@ class OOD_GAN_TRAINER():
                     G_solver.zero_grad()
 
                     # OoD Adversarial Training
-                    # seed = torch.rand(
-                    #     (self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
+                    # seed = torch.rand((self.bsz_tri, self.noise_dim, 1, 1), device=DEVICE)
                     # Gz = self.G(seed)
                     Gz = Gz.detach()
                     logits_fake = self.D(Gz)
