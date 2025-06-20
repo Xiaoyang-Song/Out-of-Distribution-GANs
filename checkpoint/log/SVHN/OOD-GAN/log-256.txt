@@ -1471,3 +1471,57 @@ AUROC: 0.9999902480653436
 
 Validation Accuracy: 0.9598679590479006
 Validation Classification Loss: 0.2088762355858481
+Step: 94   | D: -0.0709 | CE:  0.0148 | S_OoD:  0.8583 | S_z:  0.1278 | G: -0.0001 | S_z:  0.1240 | dist: 0.2385
+Step: 194  | D: -0.0459 | CE:  0.0399 | S_OoD:  0.8593 | S_z:  0.1600 | G: -0.0002 | S_z:  0.1566 | dist: 0.2541
+Step: 294  | D: -0.0849 | CE:  0.0010 | S_OoD:  0.8605 | S_z:  0.1083 | G: -0.0001 | S_z:  0.1090 | dist: 0.2402
+Step: 394  | D: -0.0853 | CE:  0.0004 | S_OoD:  0.8580 | S_z:  0.0988 | G: -0.0001 | S_z:  0.0982 | dist: 0.1550
+Step: 494  | D: -0.0832 | CE:  0.0008 | S_OoD:  0.8410 | S_z:  0.1324 | G: -0.0001 | S_z:  0.1330 | dist: 0.4174
+Step: 594  | D: -0.0855 | CE:  0.0003 | S_OoD:  0.8590 | S_z:  0.1679 | G: -0.0002 | S_z:  0.1651 | dist: 0.2234
+Step: 694  | D: -0.0823 | CE:  0.0036 | S_OoD:  0.8597 | S_z:  0.0848 | G: -0.0001 | S_z:  0.0837 | dist: 0.1106
+Step: 794  | D: -0.0709 | CE:  0.0149 | S_OoD:  0.8599 | S_z:  0.1385 | G: -0.0001 | S_z:  0.1344 | dist: 0.0139
+Step: 894  | D: -0.0845 | CE:  0.0008 | S_OoD:  0.8544 | S_z:  0.1432 | G: -0.0001 | S_z:  0.1399 | dist: 0.3765
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.0654790639877321
+mean: 0.06548 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3987229657173165
+mean: 0.39872 | std: 0.0 | MAD: 0.0
+AUROC: 0.9999978553836648
+
+Validation Accuracy: 0.9572399221368026
+Validation Classification Loss: 0.23362101515783834
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+Validation Accuracy: 0.9571136408436823
+Validation Classification Loss: 0.23327078437367244
+MC #0 time spent: 12980.57 seconds | About 216.34 minutes | About 3.61 hours
+
+================================================================================
+Overall Statistics
+TPR@95TNR: [1.0]
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: [0.06748367547988923]
+mean: 0.06748 | std: 0.0 | MAD: 0.0
+TPR@99TNR: [1.0]
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold: [0.40180844068527294]
+mean: 0.40181 | std: 0.0 | MAD: 0.0
+AUROC: [-0.0]
+mean: 0.0 | std: 0.0 | MAD: 0.0
+TPR@95RAW: [0.0]
+mean: 0.0 | std: 0.0 | MAD: 0.0
+TPR@99RAW: [0.0]
+mean: 0.0 | std: 0.0 | MAD: 0.0
+
+================================================================================
+EVALER & Stats saved successfully!
+Training time: 13006.66 seconds | About 216.78 minutes | About 3.61 hours

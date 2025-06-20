@@ -85,12 +85,12 @@ sbatch jobs/svhn/ood-gan/svhn-8.sh
 sbatch jobs/svhn/ood-gan/svhn-16.sh
 sbatch jobs/svhn/ood-gan/svhn-32.sh
 sbatch jobs/svhn/ood-gan/svhn-64.sh
-sbatch jobs/svhn/ood-gan/svhn-128.sh
-sbatch jobs/svhn/ood-gan/svhn-256.sh
-sbatch jobs/svhn/ood-gan/svhn-512.sh
+# sbatch jobs/svhn/ood-gan/svhn-128.sh
+# sbatch jobs/svhn/ood-gan/svhn-256.sh
+# sbatch jobs/svhn/ood-gan/svhn-512.sh
 sbatch jobs/svhn/ood-gan/svhn-1024.sh
-sbatch jobs/svhn/ood-gan/svhn-2048.sh
-sbatch jobs/svhn/ood-gan/svhn-4096.sh
+# sbatch jobs/svhn/ood-gan/svhn-2048.sh
+# sbatch jobs/svhn/ood-gan/svhn-4096.sh
 
 # FashionMNIST OoD GAN - Regime II
 # sbatch jobs/fashionmnist-r2/ood-gan/4.sh
