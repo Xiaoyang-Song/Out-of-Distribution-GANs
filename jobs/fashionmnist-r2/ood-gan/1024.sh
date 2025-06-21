@@ -16,3 +16,4 @@ conda init bash
 conda activate OoD
 
 python3 main/main_ood.py --config=config/GAN/OOD-GAN-FashionMNIST-R2.yaml --n_ood=1024 > checkpoint/log/FashionMNIST-R2/OOD-GAN/log-1024.txt
+

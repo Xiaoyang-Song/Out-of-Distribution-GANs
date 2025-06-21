@@ -7,7 +7,7 @@ dataset:
 path:
   root_dir: checkpoint/
   pretrained_dir: checkpoint/pretrained/
-  sample_dir: checkpoint/OOD-Sample/
+  sample_dir: /home/xysong/Out-of-Distribution-GANs/checkpoint/OOD-Sample/
 
 experiment:
   method: OOD-GAN
@@ -32,14 +32,17 @@ model:
     noise_dim: 96
 
 train_config:
-  mc: 3
-  max_epochs: 16
-  bsz_tri: 50
-  bsz_val: 50 # this is used for evaluation
-  ood_bsz: 10
+  # score: "Dynamic_Wasserstein"
+  score: "Wasserstein"
+  T: 1
+  mc: 1
+  max_epochs: 80
+  bsz_tri: 64
+  bsz_val: 64 # this is used for evaluation
+  ood_bsz: 32
   optimizer:
     d_lr: 0.001
-    g_lr: 0.01
+    g_lr: 0.001
     beta1: 0.5 # this is the default value used in WOOD
     beta2: 0.999
   hp:
@@ -51,9 +54,10 @@ train_config:
   g_step_ratio: 1
   noise_dim: 96
   logging:
-    n_steps_log: 20
+    n_steps_log: 100
+    n_epochs_save: 4
 
 eval_config:
-  each_cls: True
+  each_cls: False
   cls_idx: [8, 9]
   n_lr: 5000

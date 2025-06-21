@@ -6,7 +6,7 @@ import numpy as np
 # ACCOUNT = 'jhjin1'
 ACCOUNT = 'sunwbgt0'
 # ACCOUNT = 'jhjin1'
-TIME = "5:00:00"
+TIME = "8:00:00"
 # Configuration
 # EXP_DSET = 'CIFAR100-Places365'
 # EXP_DSET = 'CIFAR100-iSUN'
@@ -19,7 +19,10 @@ TIME = "5:00:00"
 # EXP_DSET = 'ImageNet100'
 # EXP_DSET = 'CIFAR100'
 # EXP_DSET = '3DPC'
-EXP_DSET = 'FashionMNIST'
+# EXP_DSET = 'FashionMNIST'
+# EXP_DSET = 'FashionMNIST-R2'
+# EXP_DSET = 'CIFAR10-SVHN'
+EXP_DSET = 'SVHN-R2'
 
 # N = [32, 64, 128, 256, 512, 1024]
 # N = [50, 100, 500, 1000, 1500, 2000]
@@ -57,5 +60,6 @@ if not CMD_ONLY:
         f.write(f"#SBATCH --time={TIME}\n")
         f.write(f"#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/{EXP_DSET}-{n}.log\n\n")
 
-        f.write(f"python3 main/main_ood.py --config=config/GAN/{EXP_DSET}.yaml --n_ood={n} > checkpoint/log/{EXP_DSET}/log-{n}.txt\n")
+        f.write(f"python3 main/main_ood.py --config=config/GAN/OOD-GAN-{EXP_DSET}.yaml --n_ood={n} > checkpoint/log/{EXP_DSET}/log-{n}.txt\n")
+        # f.write(f"python3 main/main_ood.py --config=config/GAN/{EXP_DSET}.yaml --n_ood={n} > checkpoint/log/{EXP_DSET}/log-{n}.txt\n")
         f.close()

@@ -81,14 +81,14 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 # SVHN OoD GAN
 # sbatch jobs/svhn/ood-gan/svhn-4.sh
-sbatch jobs/svhn/ood-gan/svhn-8.sh
-sbatch jobs/svhn/ood-gan/svhn-16.sh
-sbatch jobs/svhn/ood-gan/svhn-32.sh
-sbatch jobs/svhn/ood-gan/svhn-64.sh
+# sbatch jobs/svhn/ood-gan/svhn-8.sh
+# sbatch jobs/svhn/ood-gan/svhn-16.sh
+# sbatch jobs/svhn/ood-gan/svhn-32.sh
+# sbatch jobs/svhn/ood-gan/svhn-64.sh
 # sbatch jobs/svhn/ood-gan/svhn-128.sh
 # sbatch jobs/svhn/ood-gan/svhn-256.sh
 # sbatch jobs/svhn/ood-gan/svhn-512.sh
-sbatch jobs/svhn/ood-gan/svhn-1024.sh
+# sbatch jobs/svhn/ood-gan/svhn-1024.sh
 # sbatch jobs/svhn/ood-gan/svhn-2048.sh
 # sbatch jobs/svhn/ood-gan/svhn-4096.sh
 
@@ -104,6 +104,43 @@ sbatch jobs/svhn/ood-gan/svhn-1024.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/1024.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/2048.sh
 # sbatch jobs/fashionmnist-r2/ood-gan/4096.sh
+
+# Newly generated jobs for FashionMNIST-R2
+# sbatch jobs/FashionMNIST-R2/4.sh
+sbatch jobs/FashionMNIST-R2/8.sh
+sbatch jobs/FashionMNIST-R2/16.sh
+sbatch jobs/FashionMNIST-R2/32.sh
+sbatch jobs/FashionMNIST-R2/64.sh
+sbatch jobs/FashionMNIST-R2/128.sh
+sbatch jobs/FashionMNIST-R2/256.sh
+sbatch jobs/FashionMNIST-R2/512.sh
+sbatch jobs/FashionMNIST-R2/1024.sh
+sbatch jobs/FashionMNIST-R2/2048.sh
+sbatch jobs/FashionMNIST-R2/4096.sh
+
+# Newly generated jobs for CIFAR10-SVHN
+# sbatch jobs/CIFAR10-SVHN/8.sh
+# sbatch jobs/CIFAR10-SVHN/16.sh
+# sbatch jobs/CIFAR10-SVHN/32.sh
+# sbatch jobs/CIFAR10-SVHN/64.sh
+# sbatch jobs/CIFAR10-SVHN/128.sh
+# sbatch jobs/CIFAR10-SVHN/256.sh
+# sbatch jobs/CIFAR10-SVHN/512.sh
+# sbatch jobs/CIFAR10-SVHN/1024.sh
+# sbatch jobs/CIFAR10-SVHN/2048.sh
+# sbatch jobs/CIFAR10-SVHN/4096.sh
+
+# Newly generated jobs for SVHN-R2
+# sbatch jobs/SVHN-R2/8.sh
+# sbatch jobs/SVHN-R2/16.sh
+# sbatch jobs/SVHN-R2/32.sh
+# sbatch jobs/SVHN-R2/64.sh
+# sbatch jobs/SVHN-R2/128.sh
+# sbatch jobs/SVHN-R2/256.sh
+# sbatch jobs/SVHN-R2/512.sh
+# sbatch jobs/SVHN-R2/1024.sh
+# sbatch jobs/SVHN-R2/2048.sh
+# sbatch jobs/SVHN-R2/4096.sh
 
 # CIFAR10-SVHN OoD GAN - Regime II
 # sbatch jobs/cifar10-svhn-r2/ood-gan/4.sh
