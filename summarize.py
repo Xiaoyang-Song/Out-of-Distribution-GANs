@@ -20,9 +20,9 @@ for n in N:
     with open(file_path, 'r') as f:
             lines = f.readlines()
             # print(lines[index])
-            tpr95 = float(lines[-17].split(" ")[1].strip())
-            tpr99 = float(lines[-13].split(" ")[1].strip())
-            auc = float(lines[-9].split(" ")[1].strip())
+            tpr95 = float(lines[-13].split(" ")[1].strip())
+            tpr99 = float(lines[-9].split(" ")[1].strip())
+            auc = float(lines[-5].split(" ")[1].strip())
             # print(tpr95, tpr99, auc)
 
     AUCs.append(auc)

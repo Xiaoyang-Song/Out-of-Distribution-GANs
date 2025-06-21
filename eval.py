@@ -193,25 +193,25 @@ class EVALER():
         # self.tpr99_raw.append(tnr_at_tpr99)
         # yxoutv = None
 
-        w_lst, legend_lst = [winv], ['InD']
-        if each_class:
-            assert cls_idx is not None
-            for idx in cls_idx:
-                print(f"Class: {idx}")
-                mask = yxoutv == idx
-                woutv_idx = woutv[mask]
-                tpr_95, tpr_95_thresh = tpr(winv, woutv_idx, 0.95)
-                tpr_99, tpr_99_thresh = tpr(winv, woutv_idx, 0.99)
-                result = [tpr_95, tpr_95_thresh, tpr_99, tpr_99_thresh]
-                # plot
-                w_lst.append(woutv_idx)
-                legend_lst.append(f"OoD-[Class {idx}]")
-                self.cls_stats[idx].append(result)
-        else:
-            w_lst.append(woutv)
-            legend_lst.append(f"OoD")
-        plot_wass_dist_and_thresh(
-            w_lst, legend_lst, self.n_ood, self.log_dir, tag)
+        # w_lst, legend_lst = [winv], ['InD']
+        # if each_class:
+        #     assert cls_idx is not None
+        #     for idx in cls_idx:
+        #         print(f"Class: {idx}")
+        #         mask = yxoutv == idx
+        #         woutv_idx = woutv[mask]
+        #         tpr_95, tpr_95_thresh = tpr(winv, woutv_idx, 0.95)
+        #         tpr_99, tpr_99_thresh = tpr(winv, woutv_idx, 0.99)
+        #         result = [tpr_95, tpr_95_thresh, tpr_99, tpr_99_thresh]
+        #         # plot
+        #         w_lst.append(woutv_idx)
+        #         legend_lst.append(f"OoD-[Class {idx}]")
+        #         self.cls_stats[idx].append(result)
+        # else:
+        #     w_lst.append(woutv)
+        #     legend_lst.append(f"OoD")
+        # plot_wass_dist_and_thresh(
+        #     w_lst, legend_lst, self.n_ood, self.log_dir, tag)
 
     def display_stats(self):
         # Overall stats

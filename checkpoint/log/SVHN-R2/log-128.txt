@@ -1,0 +1,2354 @@
+
+[KeOps] Warning : There were warnings or errors compiling formula :
+<stdin>:1:10: fatal error: cuda.h: No such file or directory
+compilation terminated.
+
+[KeOps] Warning : 
+    The location of Cuda header files cuda.h and nvrtc.h could not be detected on your system.
+    You must determine their location and then define the environment variable CUDA_PATH,
+    either before launching Python or using os.environ before importing keops. For example
+    if these files are in /vol/cuda/10.2.89-cudnn7.6.4.38/include you can do :
+      import os
+      os.environ['CUDA_PATH'] = '/vol/cuda/10.2.89-cudnn7.6.4.38'
+    
+[KeOps] Compiling cuda jit compiler engine ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/nvrtc_jit.cpp:5:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+Experiment: SVHN
+Experiment regime: Imbalanced
+Method: OOD-GAN
+================================================================================
+Number of observed OoD samples (class-level): 128
+Input Dimension: 32 x 32 x 3
+Number of InD classes: 8
+Number of Epochs: 80.
+Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.001 & B_InD: 64 & B_OoD: 32 & n_d: 1 & n_g: 1
+Score Function: Wasserstein
+Finished Processing Input Arguments.
+-- Current Device: Tesla V100-PCIE-16GB
+-- Device Total Memory: 15.77 GB
+-- Let's use 1 GPUs!
+Using downloaded and verified file: ./Datasets/SVHN/train_32x32.mat
+Using downloaded and verified file: ./Datasets/SVHN/test_32x32.mat
+tensor([8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8])
+Counter({8: 128})
+Monte Carlo Iteration 0
+DenseNet
+Deep_G
+OoD sample shape: torch.Size([128, 3, 32, 32])
+Step: 0    | D:  2.0692 | CE:  2.1503 | S_OoD:  0.8199 | S_z:  0.8270 | G: -0.0008 | S_z:  0.8385 | dist: 0.3632
+Step: 100  | D:  1.5540 | CE:  1.6211 | S_OoD:  0.6791 | S_z:  0.7833 | G: -0.0008 | S_z:  0.7808 | dist: 0.3307
+Step: 200  | D:  0.6723 | CE:  0.7316 | S_OoD:  0.5993 | S_z:  0.6456 | G: -0.0006 | S_z:  0.6454 | dist: 0.2445
+Step: 300  | D:  0.3975 | CE:  0.4476 | S_OoD:  0.5059 | S_z:  0.5020 | G: -0.0005 | S_z:  0.4942 | dist: 0.3486
+Step: 400  | D:  0.5082 | CE:  0.5558 | S_OoD:  0.4805 | S_z:  0.3803 | G: -0.0004 | S_z:  0.3978 | dist: 0.4921
+Step: 500  | D:  0.2810 | CE:  0.3383 | S_OoD:  0.5769 | S_z:  0.4242 | G: -0.0004 | S_z:  0.4197 | dist: 0.3677
+Step: 600  | D:  0.3963 | CE:  0.4527 | S_OoD:  0.5669 | S_z:  0.3415 | G: -0.0004 | S_z:  0.3622 | dist: 0.4366
+Step: 700  | D:  0.3192 | CE:  0.3807 | S_OoD:  0.6196 | S_z:  0.3712 | G: -0.0004 | S_z:  0.3570 | dist: 0.4164
+Step: 800  | D:  0.0967 | CE:  0.1601 | S_OoD:  0.6373 | S_z:  0.3858 | G: -0.0004 | S_z:  0.3869 | dist: 0.2346
+Step: 900  | D:  0.3304 | CE:  0.3947 | S_OoD:  0.6459 | S_z:  0.3736 | G: -0.0004 | S_z:  0.3924 | dist: 0.2284
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.3029185867895545
+mean: 0.30292 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.5187748432159425
+mean: 0.51877 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.08417818740399385
+mean: 0.08418 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6647829723358156
+mean: 0.66478 | std: 0.0 | MAD: 0.0
+AUROC: 0.8412151423131656
+
+Validation Accuracy: 0.9150781404001576
+Validation Classification Loss: 0.2939724910878733
+Step: 6    | D:  0.0730 | CE:  0.1170 | S_OoD:  0.4427 | S_z:  0.3108 | G: -0.0003 | S_z:  0.3199 | dist: 0.3719
+Step: 106  | D:  0.1090 | CE:  0.1718 | S_OoD:  0.6329 | S_z:  0.4270 | G: -0.0004 | S_z:  0.4158 | dist: 0.3790
+Step: 206  | D:  0.0664 | CE:  0.1332 | S_OoD:  0.6723 | S_z:  0.3701 | G: -0.0004 | S_z:  0.3726 | dist: 0.2226
+Step: 306  | D:  0.1216 | CE:  0.1881 | S_OoD:  0.6698 | S_z:  0.4247 | G: -0.0004 | S_z:  0.4271 | dist: 0.4405
+Step: 406  | D:  0.2397 | CE:  0.3096 | S_OoD:  0.7028 | S_z:  0.3887 | G: -0.0004 | S_z:  0.3819 | dist: 0.4366
+Step: 506  | D:  0.2017 | CE:  0.2728 | S_OoD:  0.7152 | S_z:  0.4145 | G: -0.0004 | S_z:  0.4126 | dist: 0.2141
+Step: 606  | D:  0.1301 | CE:  0.2030 | S_OoD:  0.7321 | S_z:  0.3435 | G: -0.0004 | S_z:  0.3544 | dist: 0.2211
+Step: 706  | D:  0.2729 | CE:  0.3452 | S_OoD:  0.7264 | S_z:  0.3578 | G: -0.0004 | S_z:  0.3593 | dist: 0.2054
+Step: 806  | D:  0.2191 | CE:  0.2919 | S_OoD:  0.7317 | S_z:  0.3520 | G: -0.0004 | S_z:  0.3676 | dist: 0.6048
+Step: 906  | D:  0.0966 | CE:  0.1684 | S_OoD:  0.7226 | S_z:  0.4460 | G: -0.0004 | S_z:  0.4265 | dist: 0.5301
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.42242703533026116
+mean: 0.42243 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.4664336323738099
+mean: 0.46643 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.13149001536098315
+mean: 0.13149 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6291671967506413
+mean: 0.62917 | std: 0.0 | MAD: 0.0
+AUROC: 0.8962298319234504
+
+Validation Accuracy: 0.9120604794993101
+Validation Classification Loss: 0.28740648757875636
+Step: 12   | D:  0.1045 | CE:  0.1600 | S_OoD:  0.5575 | S_z:  0.3370 | G: -0.0003 | S_z:  0.3288 | dist: 0.0706
+Step: 112  | D: -0.0026 | CE:  0.0719 | S_OoD:  0.7491 | S_z:  0.3690 | G: -0.0004 | S_z:  0.3691 | dist: 0.5903
+Step: 212  | D:  0.0874 | CE:  0.1621 | S_OoD:  0.7513 | S_z:  0.3791 | G: -0.0004 | S_z:  0.3643 | dist: 0.1203
+Step: 312  | D:  0.0630 | CE:  0.1351 | S_OoD:  0.7244 | S_z:  0.3390 | G: -0.0003 | S_z:  0.3457 | dist: 0.3650
+Step: 412  | D:  0.2056 | CE:  0.2800 | S_OoD:  0.7478 | S_z:  0.3796 | G: -0.0004 | S_z:  0.3765 | dist: 0.2203
+Step: 512  | D:  0.2483 | CE:  0.3243 | S_OoD:  0.7629 | S_z:  0.3515 | G: -0.0004 | S_z:  0.3588 | dist: 0.3540
+Step: 612  | D:  0.0765 | CE:  0.1531 | S_OoD:  0.7698 | S_z:  0.4003 | G: -0.0004 | S_z:  0.3967 | dist: 0.2175
+Step: 712  | D:  0.0303 | CE:  0.1078 | S_OoD:  0.7784 | S_z:  0.3706 | G: -0.0004 | S_z:  0.3630 | dist: 0.2738
+Step: 812  | D:  0.1179 | CE:  0.1918 | S_OoD:  0.7423 | S_z:  0.3908 | G: -0.0004 | S_z:  0.4005 | dist: 0.5833
+Step: 912  | D:  0.0333 | CE:  0.1040 | S_OoD:  0.7101 | S_z:  0.3203 | G: -0.0003 | S_z:  0.3101 | dist: 0.2417
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.6485407066052227
+mean: 0.64854 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.3842950105667116
+mean: 0.3843 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.26113671274961603
+mean: 0.26114 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5775826120376588
+mean: 0.57758 | std: 0.0 | MAD: 0.0
+AUROC: 0.9410413811814772
+
+Validation Accuracy: 0.9221991733195348
+Validation Classification Loss: 0.2669322622019086
+Step: 18   | D:  0.0026 | CE:  0.0759 | S_OoD:  0.7359 | S_z:  0.3448 | G: -0.0003 | S_z:  0.3317 | dist: 0.2105
+Step: 118  | D:  0.0869 | CE:  0.1637 | S_OoD:  0.7718 | S_z:  0.3766 | G: -0.0004 | S_z:  0.3751 | dist: 0.4834
+Step: 218  | D: -0.0157 | CE:  0.0585 | S_OoD:  0.7455 | S_z:  0.3482 | G: -0.0003 | S_z:  0.3414 | dist: 0.3162
+Step: 318  | D:  0.2587 | CE:  0.3360 | S_OoD:  0.7764 | S_z:  0.3885 | G: -0.0004 | S_z:  0.3805 | dist: 0.4704
+Step: 418  | D: -0.0140 | CE:  0.0612 | S_OoD:  0.7556 | S_z:  0.3800 | G: -0.0004 | S_z:  0.3690 | dist: 0.3404
+Step: 518  | D:  0.0806 | CE:  0.1544 | S_OoD:  0.7414 | S_z:  0.3029 | G: -0.0003 | S_z:  0.3073 | dist: 0.3281
+Step: 618  | D:  0.1586 | CE:  0.2345 | S_OoD:  0.7629 | S_z:  0.3322 | G: -0.0003 | S_z:  0.3347 | dist: 0.2349
+Step: 718  | D:  0.0041 | CE:  0.0820 | S_OoD:  0.7823 | S_z:  0.3277 | G: -0.0003 | S_z:  0.3207 | dist: 0.3403
+Step: 818  | D:  0.0051 | CE:  0.0812 | S_OoD:  0.7637 | S_z:  0.3431 | G: -0.0003 | S_z:  0.3344 | dist: 0.5181
+Step: 918  | D:  0.0338 | CE:  0.1095 | S_OoD:  0.7607 | S_z:  0.3433 | G: -0.0003 | S_z:  0.3460 | dist: 0.4670
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.7499231950844854
+mean: 0.74992 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.33855042457580575
+mean: 0.33855 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.4420890937019969
+mean: 0.44209 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5605163884162913
+mean: 0.56052 | std: 0.0 | MAD: 0.0
+AUROC: 0.9618170551895434
+
+Validation Accuracy: 0.9451207680366646
+Validation Classification Loss: 0.19373098778632586
+New checkpoint created at the end of epoch 3.
+Step: 24   | D:  0.1110 | CE:  0.1889 | S_OoD:  0.7824 | S_z:  0.3013 | G: -0.0003 | S_z:  0.3018 | dist: 0.1647
+Step: 124  | D:  0.1813 | CE:  0.2577 | S_OoD:  0.7666 | S_z:  0.2901 | G: -0.0003 | S_z:  0.2968 | dist: 0.3406
+Step: 224  | D: -0.0149 | CE:  0.0627 | S_OoD:  0.7793 | S_z:  0.3507 | G: -0.0004 | S_z:  0.3515 | dist: 0.2848
+Step: 324  | D:  0.0469 | CE:  0.1235 | S_OoD:  0.7690 | S_z:  0.2920 | G: -0.0003 | S_z:  0.3098 | dist: 0.4159
+Step: 424  | D:  0.0733 | CE:  0.1506 | S_OoD:  0.7770 | S_z:  0.3669 | G: -0.0004 | S_z:  0.3666 | dist: 0.3547
+Step: 524  | D:  0.0384 | CE:  0.1154 | S_OoD:  0.7732 | S_z:  0.3446 | G: -0.0003 | S_z:  0.3471 | dist: 0.4078
+Step: 624  | D:  0.0290 | CE:  0.1088 | S_OoD:  0.8011 | S_z:  0.3148 | G: -0.0003 | S_z:  0.3167 | dist: 0.3503
+Step: 724  | D:  0.0189 | CE:  0.0977 | S_OoD:  0.7916 | S_z:  0.3281 | G: -0.0003 | S_z:  0.3226 | dist: 0.3093
+Step: 824  | D:  0.0348 | CE:  0.1132 | S_OoD:  0.7879 | S_z:  0.3874 | G: -0.0004 | S_z:  0.3853 | dist: 0.3154
+Step: 924  | D:  0.0965 | CE:  0.1746 | S_OoD:  0.7846 | S_z:  0.3516 | G: -0.0003 | S_z:  0.3495 | dist: 0.1079
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.35238095238095235
+mean: 0.35238 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.39204554557800303
+mean: 0.39205 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.1050691244239631
+mean: 0.10507 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5663190746307376
+mean: 0.56632 | std: 0.0 | MAD: 0.0
+AUROC: 0.897054679691097
+
+Validation Accuracy: 0.9225941873644787
+Validation Classification Loss: 0.26099609456998246
+Step: 30   | D: -0.0588 | CE:  0.0168 | S_OoD:  0.7593 | S_z:  0.3025 | G: -0.0003 | S_z:  0.3005 | dist: 0.3636
+Step: 130  | D: -0.0682 | CE:  0.0099 | S_OoD:  0.7834 | S_z:  0.3119 | G: -0.0003 | S_z:  0.3143 | dist: 0.1790
+Step: 230  | D: -0.0193 | CE:  0.0614 | S_OoD:  0.8094 | S_z:  0.3080 | G: -0.0003 | S_z:  0.3113 | dist: 0.3367
+Step: 330  | D: -0.0380 | CE:  0.0406 | S_OoD:  0.7894 | S_z:  0.3237 | G: -0.0003 | S_z:  0.3337 | dist: 0.2525
+Step: 430  | D: -0.0388 | CE:  0.0413 | S_OoD:  0.8033 | S_z:  0.2958 | G: -0.0003 | S_z:  0.2913 | dist: 0.3875
+Step: 530  | D:  0.0131 | CE:  0.0910 | S_OoD:  0.7828 | S_z:  0.3385 | G: -0.0003 | S_z:  0.3419 | dist: 0.3869
+Step: 630  | D:  0.3467 | CE:  0.4257 | S_OoD:  0.7935 | S_z:  0.3365 | G: -0.0003 | S_z:  0.3389 | dist: 0.3164
+Step: 730  | D: -0.0260 | CE:  0.0520 | S_OoD:  0.7825 | S_z:  0.3073 | G: -0.0003 | S_z:  0.3074 | dist: 0.5137
+Step: 830  | D:  0.0430 | CE:  0.1205 | S_OoD:  0.7781 | S_z:  0.3219 | G: -0.0003 | S_z:  0.3215 | dist: 0.2573
+Step: 930  | D:  0.1220 | CE:  0.2018 | S_OoD:  0.8010 | S_z:  0.3770 | G: -0.0004 | S_z:  0.3798 | dist: 0.2318
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.4110599078341014
+mean: 0.41106 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.3645589590072632
+mean: 0.36456 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.1913978494623656
+mean: 0.1914 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5459577608108526
+mean: 0.54596 | std: 0.0 | MAD: 0.0
+AUROC: 0.8944917215449035
+
+Validation Accuracy: 0.9338409225310467
+Validation Classification Loss: 0.2293367933984218
+Step: 36   | D:  0.1505 | CE:  0.2240 | S_OoD:  0.7393 | S_z:  0.3660 | G: -0.0004 | S_z:  0.3643 | dist: 0.3755
+Step: 136  | D:  0.0438 | CE:  0.1232 | S_OoD:  0.7965 | S_z:  0.3185 | G: -0.0003 | S_z:  0.3118 | dist: 0.3761
+Step: 236  | D:  0.0346 | CE:  0.1119 | S_OoD:  0.7762 | S_z:  0.2886 | G: -0.0003 | S_z:  0.2925 | dist: 0.4464
+Step: 336  | D: -0.0148 | CE:  0.0631 | S_OoD:  0.7823 | S_z:  0.2996 | G: -0.0003 | S_z:  0.2975 | dist: 0.2751
+Step: 436  | D:  0.0170 | CE:  0.0953 | S_OoD:  0.7858 | S_z:  0.2841 | G: -0.0003 | S_z:  0.2814 | dist: 0.3277
+Step: 536  | D:  0.1453 | CE:  0.2235 | S_OoD:  0.7841 | S_z:  0.2592 | G: -0.0003 | S_z:  0.2529 | dist: 0.2578
+Step: 636  | D:  0.1204 | CE:  0.1985 | S_OoD:  0.7842 | S_z:  0.3597 | G: -0.0004 | S_z:  0.3630 | dist: 0.2574
+Step: 736  | D:  0.0231 | CE:  0.1015 | S_OoD:  0.7877 | S_z:  0.3356 | G: -0.0003 | S_z:  0.3184 | dist: 0.2773
+Step: 836  | D:  0.1735 | CE:  0.2540 | S_OoD:  0.8072 | S_z:  0.2780 | G: -0.0003 | S_z:  0.2748 | dist: 0.3776
+Step: 936  | D:  0.0894 | CE:  0.1695 | S_OoD:  0.8038 | S_z:  0.3137 | G: -0.0003 | S_z:  0.3150 | dist: 0.4569
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8288786482334869
+mean: 0.82888 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.28953647613525413
+mean: 0.28954 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.4875576036866359
+mean: 0.48756 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5203332424163822
+mean: 0.52033 | std: 0.0 | MAD: 0.0
+AUROC: 0.9695142046100214
+
+Validation Accuracy: 0.9452524393849793
+Validation Classification Loss: 0.20576452891855093
+Step: 42   | D:  0.0002 | CE:  0.0810 | S_OoD:  0.8114 | S_z:  0.3026 | G: -0.0003 | S_z:  0.2956 | dist: 0.2727
+Step: 142  | D:  0.0403 | CE:  0.1201 | S_OoD:  0.8009 | S_z:  0.2766 | G: -0.0003 | S_z:  0.2819 | dist: 0.2591
+Step: 242  | D:  0.0326 | CE:  0.1116 | S_OoD:  0.7928 | S_z:  0.2598 | G: -0.0003 | S_z:  0.2572 | dist: 0.3287
+Step: 342  | D: -0.0461 | CE:  0.0331 | S_OoD:  0.7950 | S_z:  0.3008 | G: -0.0003 | S_z:  0.2997 | dist: 0.3652
+Step: 442  | D: -0.0485 | CE:  0.0318 | S_OoD:  0.8061 | S_z:  0.3047 | G: -0.0003 | S_z:  0.3000 | dist: 0.3661
+Step: 542  | D:  0.0428 | CE:  0.1206 | S_OoD:  0.7805 | S_z:  0.2660 | G: -0.0003 | S_z:  0.2592 | dist: 0.2751
+Step: 642  | D: -0.0535 | CE:  0.0260 | S_OoD:  0.7971 | S_z:  0.2539 | G: -0.0003 | S_z:  0.2525 | dist: 0.4805
+Step: 742  | D:  0.0313 | CE:  0.1091 | S_OoD:  0.7816 | S_z:  0.3198 | G: -0.0003 | S_z:  0.3308 | dist: 0.2662
+Step: 842  | D: -0.0137 | CE:  0.0645 | S_OoD:  0.7852 | S_z:  0.3279 | G: -0.0003 | S_z:  0.3211 | dist: 0.3059
+Step: 942  | D:  0.0407 | CE:  0.1191 | S_OoD:  0.7857 | S_z:  0.2368 | G: -0.0002 | S_z:  0.2274 | dist: 0.3462
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.41290322580645167
+mean: 0.4129 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.375163769721985
+mean: 0.37516 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.23102918586789556
+mean: 0.23103 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5670802927017213
+mean: 0.56708 | std: 0.0 | MAD: 0.0
+AUROC: 0.8733577549832487
+
+Validation Accuracy: 0.9329138330376503
+Validation Classification Loss: 0.23824129574879838
+New checkpoint created at the end of epoch 7.
+Step: 48   | D:  0.0061 | CE:  0.0837 | S_OoD:  0.7783 | S_z:  0.2529 | G: -0.0003 | S_z:  0.2684 | dist: 0.5643
+Step: 148  | D: -0.0620 | CE:  0.0193 | S_OoD:  0.8159 | S_z:  0.2800 | G: -0.0003 | S_z:  0.2892 | dist: 0.3517
+Step: 248  | D: -0.0216 | CE:  0.0584 | S_OoD:  0.8028 | S_z:  0.2693 | G: -0.0003 | S_z:  0.2650 | dist: 0.4443
+Step: 348  | D:  0.0255 | CE:  0.1064 | S_OoD:  0.8122 | S_z:  0.3086 | G: -0.0003 | S_z:  0.2995 | dist: 0.1814
+Step: 448  | D: -0.0259 | CE:  0.0550 | S_OoD:  0.8113 | S_z:  0.2299 | G: -0.0002 | S_z:  0.2379 | dist: 0.1402
+Step: 548  | D: -0.0048 | CE:  0.0762 | S_OoD:  0.8129 | S_z:  0.2615 | G: -0.0003 | S_z:  0.2686 | dist: 0.5200
+Step: 648  | D: -0.0070 | CE:  0.0732 | S_OoD:  0.8045 | S_z:  0.2966 | G: -0.0003 | S_z:  0.2927 | dist: 0.6490
+Step: 748  | D:  0.0775 | CE:  0.1570 | S_OoD:  0.7981 | S_z:  0.2348 | G: -0.0002 | S_z:  0.2489 | dist: 0.0973
+Step: 848  | D:  0.0194 | CE:  0.0990 | S_OoD:  0.7991 | S_z:  0.2802 | G: -0.0003 | S_z:  0.2835 | dist: 0.3672
+Step: 948  | D:  0.2146 | CE:  0.2926 | S_OoD:  0.7827 | S_z:  0.2711 | G: -0.0003 | S_z:  0.2721 | dist: 0.1075
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.35791090629800304
+mean: 0.35791 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.3763982295989995
+mean: 0.3764 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.14101382488479264
+mean: 0.14101 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5636684274673467
+mean: 0.56367 | std: 0.0 | MAD: 0.0
+AUROC: 0.8780020160742367
+
+Validation Accuracy: 0.9318550721959393
+Validation Classification Loss: 0.2503993014041125
+Step: 54   | D: -0.0360 | CE:  0.0421 | S_OoD:  0.7834 | S_z:  0.2434 | G: -0.0002 | S_z:  0.2382 | dist: 0.3741
+Step: 154  | D: -0.0555 | CE:  0.0241 | S_OoD:  0.7986 | S_z:  0.2715 | G: -0.0003 | S_z:  0.2733 | dist: 0.2578
+Step: 254  | D: -0.0292 | CE:  0.0520 | S_OoD:  0.8142 | S_z:  0.2603 | G: -0.0003 | S_z:  0.2612 | dist: 0.1814
+Step: 354  | D: -0.0508 | CE:  0.0293 | S_OoD:  0.8035 | S_z:  0.2358 | G: -0.0002 | S_z:  0.2347 | dist: 0.3749
+Step: 454  | D:  0.0406 | CE:  0.1213 | S_OoD:  0.8098 | S_z:  0.2428 | G: -0.0002 | S_z:  0.2446 | dist: 0.3591
+Step: 554  | D: -0.0134 | CE:  0.0681 | S_OoD:  0.8174 | S_z:  0.2562 | G: -0.0003 | S_z:  0.2540 | dist: 0.2747
+Step: 654  | D:  0.1213 | CE:  0.2007 | S_OoD:  0.7967 | S_z:  0.2630 | G: -0.0003 | S_z:  0.2524 | dist: 0.2786
+Step: 754  | D: -0.0585 | CE:  0.0228 | S_OoD:  0.8158 | S_z:  0.2684 | G: -0.0003 | S_z:  0.2616 | dist: 0.4305
+Step: 854  | D: -0.0321 | CE:  0.0486 | S_OoD:  0.8093 | S_z:  0.2667 | G: -0.0003 | S_z:  0.2626 | dist: 0.3061
+Step: 954  | D: -0.0234 | CE:  0.0573 | S_OoD:  0.8102 | S_z:  0.2939 | G: -0.0003 | S_z:  0.2982 | dist: 0.3997
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5490015360983103
+mean: 0.549 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.36378350257873565
+mean: 0.36378 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.24362519201228883
+mean: 0.24363 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5372493219375615
+mean: 0.53725 | std: 0.0 | MAD: 0.0
+AUROC: 0.9320748077246923
+
+Validation Accuracy: 0.9198398691602602
+Validation Classification Loss: 0.29842962840509213
+Step: 60   | D: -0.0388 | CE:  0.0420 | S_OoD:  0.8099 | S_z:  0.2391 | G: -0.0002 | S_z:  0.2342 | dist: 0.2385
+Step: 160  | D: -0.0703 | CE:  0.0111 | S_OoD:  0.8165 | S_z:  0.2079 | G: -0.0002 | S_z:  0.2075 | dist: 0.3894
+Step: 260  | D: -0.0639 | CE:  0.0184 | S_OoD:  0.8251 | S_z:  0.2563 | G: -0.0003 | S_z:  0.2549 | dist: 0.3474
+Step: 360  | D: -0.0033 | CE:  0.0770 | S_OoD:  0.8048 | S_z:  0.2495 | G: -0.0003 | S_z:  0.2582 | dist: 0.1797
+Step: 460  | D: -0.0457 | CE:  0.0369 | S_OoD:  0.8284 | S_z:  0.2362 | G: -0.0002 | S_z:  0.2306 | dist: 0.2601
+Step: 560  | D: -0.0462 | CE:  0.0356 | S_OoD:  0.8208 | S_z:  0.2743 | G: -0.0003 | S_z:  0.2671 | dist: 0.3060
+Step: 660  | D: -0.0422 | CE:  0.0370 | S_OoD:  0.7944 | S_z:  0.2412 | G: -0.0002 | S_z:  0.2405 | dist: 0.4118
+Step: 760  | D: -0.0469 | CE:  0.0335 | S_OoD:  0.8065 | S_z:  0.2542 | G: -0.0002 | S_z:  0.2488 | dist: 0.4074
+Step: 860  | D:  0.0046 | CE:  0.0832 | S_OoD:  0.7893 | S_z:  0.2699 | G: -0.0003 | S_z:  0.2745 | dist: 0.3189
+Step: 960  | D:  0.0239 | CE:  0.1040 | S_OoD:  0.8038 | S_z:  0.2386 | G: -0.0002 | S_z:  0.2448 | dist: 0.4315
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.4187403993855606
+mean: 0.41874 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.32866650819778453
+mean: 0.32867 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.22980030721966205
+mean: 0.2298 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5263222217559838
+mean: 0.52632 | std: 0.0 | MAD: 0.0
+AUROC: 0.8739799499953703
+
+Validation Accuracy: 0.9314053875911689
+Validation Classification Loss: 0.266898418358119
+Step: 66   | D: -0.0675 | CE:  0.0090 | S_OoD:  0.7668 | S_z:  0.2546 | G: -0.0003 | S_z:  0.2502 | dist: 0.3119
+Step: 166  | D: -0.0439 | CE:  0.0389 | S_OoD:  0.8303 | S_z:  0.2338 | G: -0.0002 | S_z:  0.2235 | dist: 0.2314
+Step: 266  | D: -0.0127 | CE:  0.0692 | S_OoD:  0.8217 | S_z:  0.2646 | G: -0.0003 | S_z:  0.2732 | dist: 0.5516
+Step: 366  | D: -0.0738 | CE:  0.0081 | S_OoD:  0.8214 | S_z:  0.2044 | G: -0.0002 | S_z:  0.2079 | dist: 0.2384
+Step: 466  | D: -0.0398 | CE:  0.0420 | S_OoD:  0.8210 | S_z:  0.2743 | G: -0.0003 | S_z:  0.2672 | dist: 0.2802
+Step: 566  | D: -0.0305 | CE:  0.0513 | S_OoD:  0.8201 | S_z:  0.2088 | G: -0.0002 | S_z:  0.2066 | dist: 0.2037
+Step: 666  | D: -0.0612 | CE:  0.0172 | S_OoD:  0.7860 | S_z:  0.2413 | G: -0.0002 | S_z:  0.2329 | dist: 0.4250
+Step: 766  | D: -0.0555 | CE:  0.0244 | S_OoD:  0.8013 | S_z:  0.2556 | G: -0.0003 | S_z:  0.2561 | dist: 0.1929
+Step: 866  | D:  0.0594 | CE:  0.1396 | S_OoD:  0.8048 | S_z:  0.2535 | G: -0.0003 | S_z:  0.2553 | dist: 0.3515
+Step: 966  | D: -0.0291 | CE:  0.0513 | S_OoD:  0.8068 | S_z:  0.2407 | G: -0.0002 | S_z:  0.2286 | dist: 0.3270
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8218125960061444
+mean: 0.82181 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.2673823595046999
+mean: 0.26738 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.4881720430107527
+mean: 0.48817 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5117364597320565
+mean: 0.51174 | std: 0.0 | MAD: 0.0
+AUROC: 0.971854567766403
+
+Validation Accuracy: 0.944144398038636
+Validation Classification Loss: 0.22089442966265208
+New checkpoint created at the end of epoch 11.
+Step: 72   | D: -0.0230 | CE:  0.0583 | S_OoD:  0.8153 | S_z:  0.2709 | G: -0.0003 | S_z:  0.2709 | dist: 0.5562
+Step: 172  | D: -0.0736 | CE:  0.0086 | S_OoD:  0.8250 | S_z:  0.2697 | G: -0.0003 | S_z:  0.2624 | dist: 0.4690
+Step: 272  | D: -0.0452 | CE:  0.0359 | S_OoD:  0.8133 | S_z:  0.1760 | G: -0.0002 | S_z:  0.1791 | dist: 0.3412
+Step: 372  | D: -0.0656 | CE:  0.0153 | S_OoD:  0.8117 | S_z:  0.2547 | G: -0.0003 | S_z:  0.2515 | dist: 0.1459
+Step: 472  | D: -0.0542 | CE:  0.0263 | S_OoD:  0.8070 | S_z:  0.2331 | G: -0.0002 | S_z:  0.2253 | dist: 0.4301
+Step: 572  | D: -0.0616 | CE:  0.0181 | S_OoD:  0.8001 | S_z:  0.2520 | G: -0.0002 | S_z:  0.2482 | dist: 0.4099
+Step: 672  | D: -0.0251 | CE:  0.0568 | S_OoD:  0.8217 | S_z:  0.2598 | G: -0.0003 | S_z:  0.2533 | dist: 0.3820
+Step: 772  | D: -0.0012 | CE:  0.0813 | S_OoD:  0.8273 | S_z:  0.2362 | G: -0.0002 | S_z:  0.2317 | dist: 0.5382
+Step: 872  | D: -0.0767 | CE:  0.0054 | S_OoD:  0.8226 | S_z:  0.2077 | G: -0.0002 | S_z:  0.2065 | dist: 0.3300
+Step: 972  | D:  0.0335 | CE:  0.1141 | S_OoD:  0.8076 | S_z:  0.2024 | G: -0.0002 | S_z:  0.1894 | dist: 0.2447
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.42365591397849467
+mean: 0.42366 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.36427971124649067
+mean: 0.36428 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.2224270353302611
+mean: 0.22243 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.519977781772614
+mean: 0.51998 | std: 0.0 | MAD: 0.0
+AUROC: 0.9037412427323304
+
+Validation Accuracy: 0.8174935011334515
+Validation Classification Loss: 0.8279231044181278
+Step: 78   | D:  0.0211 | CE:  0.1020 | S_OoD:  0.8109 | S_z:  0.2423 | G: -0.0002 | S_z:  0.2453 | dist: 0.3734
+Step: 178  | D: -0.0737 | CE:  0.0079 | S_OoD:  0.8180 | S_z:  0.2300 | G: -0.0002 | S_z:  0.2304 | dist: 0.4715
+Step: 278  | D: -0.0411 | CE:  0.0402 | S_OoD:  0.8154 | S_z:  0.2097 | G: -0.0002 | S_z:  0.2167 | dist: 0.3558
+Step: 378  | D: -0.0762 | CE:  0.0047 | S_OoD:  0.8110 | S_z:  0.1955 | G: -0.0002 | S_z:  0.1943 | dist: 0.2228
+Step: 478  | D:  0.0063 | CE:  0.0878 | S_OoD:  0.8173 | S_z:  0.1736 | G: -0.0002 | S_z:  0.1724 | dist: 0.2996
+Step: 578  | D: -0.0200 | CE:  0.0610 | S_OoD:  0.8113 | S_z:  0.1901 | G: -0.0002 | S_z:  0.1905 | dist: 0.3942
+Step: 678  | D: -0.0392 | CE:  0.0430 | S_OoD:  0.8242 | S_z:  0.1925 | G: -0.0002 | S_z:  0.1931 | dist: 0.5001
+Step: 778  | D: -0.0599 | CE:  0.0219 | S_OoD:  0.8206 | S_z:  0.2309 | G: -0.0002 | S_z:  0.2294 | dist: 0.4362
+Step: 878  | D: -0.0509 | CE:  0.0311 | S_OoD:  0.8217 | S_z:  0.2349 | G: -0.0002 | S_z:  0.2387 | dist: 0.3328
+Step: 978  | D:  0.0044 | CE:  0.0868 | S_OoD:  0.8263 | S_z:  0.2130 | G: -0.0002 | S_z:  0.1991 | dist: 0.2818
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9302611367127496
+mean: 0.93026 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.18421075344085727
+mean: 0.18421 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7081413210445469
+mean: 0.70814 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4879030585289004
+mean: 0.4879 | std: 0.0 | MAD: 0.0
+AUROC: 0.9867862027254566
+
+Validation Accuracy: 0.9554950842696629
+Validation Classification Loss: 0.18065665781843276
+Step: 84   | D: -0.0387 | CE:  0.0442 | S_OoD:  0.8315 | S_z:  0.1877 | G: -0.0002 | S_z:  0.1828 | dist: 0.0544
+Step: 184  | D: -0.0020 | CE:  0.0801 | S_OoD:  0.8235 | S_z:  0.2173 | G: -0.0002 | S_z:  0.2138 | dist: 0.3485
+Step: 284  | D: -0.0670 | CE:  0.0149 | S_OoD:  0.8201 | S_z:  0.1826 | G: -0.0002 | S_z:  0.1806 | dist: 0.2898
+Step: 384  | D: -0.0592 | CE:  0.0205 | S_OoD:  0.7996 | S_z:  0.2253 | G: -0.0002 | S_z:  0.2253 | dist: 0.2864
+Step: 484  | D: -0.0639 | CE:  0.0164 | S_OoD:  0.8051 | S_z:  0.1969 | G: -0.0002 | S_z:  0.1973 | dist: 0.2655
+Step: 584  | D:  0.0033 | CE:  0.0821 | S_OoD:  0.7897 | S_z:  0.2111 | G: -0.0002 | S_z:  0.2284 | dist: 0.3369
+Step: 684  | D: -0.0554 | CE:  0.0254 | S_OoD:  0.8095 | S_z:  0.1944 | G: -0.0002 | S_z:  0.1952 | dist: 0.1466
+Step: 784  | D:  0.0213 | CE:  0.1011 | S_OoD:  0.7998 | S_z:  0.2153 | G: -0.0002 | S_z:  0.2037 | dist: 0.4573
+Step: 884  | D: -0.0455 | CE:  0.0341 | S_OoD:  0.7978 | S_z:  0.2005 | G: -0.0002 | S_z:  0.2006 | dist: 0.3651
+Step: 984  | D:  0.0870 | CE:  0.1688 | S_OoD:  0.8202 | S_z:  0.1946 | G: -0.0002 | S_z:  0.1992 | dist: 0.3371
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.6150537634408602
+mean: 0.61505 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.3042710542678833
+mean: 0.30427 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.37265745007680495
+mean: 0.37266 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5103649950027468
+mean: 0.51036 | std: 0.0 | MAD: 0.0
+AUROC: 0.9293623806104563
+
+Validation Accuracy: 0.9216832680366646
+Validation Classification Loss: 0.32677357314740507
+Step: 90   | D:  0.0298 | CE:  0.1121 | S_OoD:  0.8253 | S_z:  0.1716 | G: -0.0002 | S_z:  0.1540 | dist: 0.3307
+Step: 190  | D: -0.0686 | CE:  0.0138 | S_OoD:  0.8252 | S_z:  0.1983 | G: -0.0002 | S_z:  0.1992 | dist: 0.6244
+Step: 290  | D: -0.0755 | CE:  0.0075 | S_OoD:  0.8308 | S_z:  0.1645 | G: -0.0002 | S_z:  0.1636 | dist: 0.2490
+Step: 390  | D: -0.0641 | CE:  0.0178 | S_OoD:  0.8216 | S_z:  0.2126 | G: -0.0002 | S_z:  0.2089 | dist: 0.2175
+Step: 490  | D: -0.0340 | CE:  0.0487 | S_OoD:  0.8292 | S_z:  0.2174 | G: -0.0002 | S_z:  0.2140 | dist: 0.3981
+Step: 590  | D: -0.0535 | CE:  0.0268 | S_OoD:  0.8048 | S_z:  0.1826 | G: -0.0002 | S_z:  0.1740 | dist: 0.2514
+Step: 690  | D: -0.0704 | CE:  0.0107 | S_OoD:  0.8131 | S_z:  0.2379 | G: -0.0002 | S_z:  0.2336 | dist: 0.1413
+Step: 790  | D: -0.0714 | CE:  0.0099 | S_OoD:  0.8151 | S_z:  0.1800 | G: -0.0002 | S_z:  0.1775 | dist: 0.3804
+Step: 890  | D: -0.0307 | CE:  0.0501 | S_OoD:  0.8104 | S_z:  0.2025 | G: -0.0002 | S_z:  0.1989 | dist: 0.0743
+Step: 990  | D: -0.0582 | CE:  0.0239 | S_OoD:  0.8237 | S_z:  0.2180 | G: -0.0002 | S_z:  0.2177 | dist: 0.2304
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8457757296466974
+mean: 0.84578 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.2382256269454958
+mean: 0.23823 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.46697388632872505
+mean: 0.46697 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.49441205501556423
+mean: 0.49441 | std: 0.0 | MAD: 0.0
+AUROC: 0.9746990304108619
+
+Validation Accuracy: 0.9405122708456534
+Validation Classification Loss: 0.24571925137464082
+New checkpoint created at the end of epoch 15.
+Step: 96   | D: -0.0644 | CE:  0.0184 | S_OoD:  0.8300 | S_z:  0.2100 | G: -0.0002 | S_z:  0.2108 | dist: 0.4824
+Step: 196  | D: -0.0777 | CE:  0.0043 | S_OoD:  0.8214 | S_z:  0.1535 | G: -0.0001 | S_z:  0.1495 | dist: 0.3201
+Step: 296  | D: -0.0768 | CE:  0.0049 | S_OoD:  0.8183 | S_z:  0.1352 | G: -0.0001 | S_z:  0.1340 | dist: 0.5641
+Step: 396  | D: -0.0533 | CE:  0.0304 | S_OoD:  0.8387 | S_z:  0.1372 | G: -0.0001 | S_z:  0.1344 | dist: 0.3743
+Step: 496  | D: -0.0721 | CE:  0.0093 | S_OoD:  0.8163 | S_z:  0.1988 | G: -0.0002 | S_z:  0.2004 | dist: 0.3807
+Step: 596  | D: -0.0421 | CE:  0.0395 | S_OoD:  0.8185 | S_z:  0.1808 | G: -0.0002 | S_z:  0.1781 | dist: 0.3477
+Step: 696  | D: -0.0669 | CE:  0.0142 | S_OoD:  0.8132 | S_z:  0.1830 | G: -0.0002 | S_z:  0.1803 | dist: 0.5291
+Step: 796  | D:  0.0496 | CE:  0.1316 | S_OoD:  0.8212 | S_z:  0.1462 | G: -0.0002 | S_z:  0.1538 | dist: 0.5609
+Step: 896  | D: -0.0355 | CE:  0.0461 | S_OoD:  0.8175 | S_z:  0.1746 | G: -0.0002 | S_z:  0.1640 | dist: 0.2705
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9379416282642089
+mean: 0.93794 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.15157915353775034
+mean: 0.15158 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.6976958525345622
+mean: 0.6977 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4731726169586191
+mean: 0.47317 | std: 0.0 | MAD: 0.0
+AUROC: 0.9873408018585595
+
+Validation Accuracy: 0.955830037699586
+Validation Classification Loss: 0.19052139591566924
+Step: 2    | D: -0.0668 | CE:  0.0148 | S_OoD:  0.8181 | S_z:  0.1940 | G: -0.0002 | S_z:  0.1954 | dist: 0.3355
+Step: 102  | D: -0.0732 | CE:  0.0092 | S_OoD:  0.8261 | S_z:  0.2002 | G: -0.0002 | S_z:  0.1960 | dist: 0.4747
+Step: 202  | D: -0.0789 | CE:  0.0027 | S_OoD:  0.8176 | S_z:  0.1684 | G: -0.0002 | S_z:  0.1659 | dist: 0.3153
+Step: 302  | D: -0.0378 | CE:  0.0443 | S_OoD:  0.8221 | S_z:  0.1930 | G: -0.0002 | S_z:  0.1896 | dist: 0.1807
+Step: 402  | D:  0.0131 | CE:  0.0960 | S_OoD:  0.8301 | S_z:  0.1611 | G: -0.0002 | S_z:  0.1592 | dist: 0.4800
+Step: 502  | D: -0.0772 | CE:  0.0051 | S_OoD:  0.8247 | S_z:  0.2133 | G: -0.0002 | S_z:  0.2111 | dist: 0.2446
+Step: 602  | D: -0.0572 | CE:  0.0254 | S_OoD:  0.8283 | S_z:  0.2043 | G: -0.0002 | S_z:  0.2046 | dist: 0.3066
+Step: 702  | D: -0.0626 | CE:  0.0184 | S_OoD:  0.8125 | S_z:  0.2423 | G: -0.0002 | S_z:  0.2409 | dist: 0.3186
+Step: 802  | D: -0.0054 | CE:  0.0772 | S_OoD:  0.8278 | S_z:  0.1473 | G: -0.0002 | S_z:  0.1506 | dist: 0.4806
+Step: 902  | D: -0.0736 | CE:  0.0062 | S_OoD:  0.7995 | S_z:  0.1510 | G: -0.0002 | S_z:  0.1639 | dist: 0.2962
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5923195084485406
+mean: 0.59232 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.22486029863357554
+mean: 0.22486 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.2844854070660522
+mean: 0.28449 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4755492019653323
+mean: 0.47555 | std: 0.0 | MAD: 0.0
+AUROC: 0.9443087581207954
+
+Validation Accuracy: 0.9438094446087127
+Validation Classification Loss: 0.24786968080698396
+Step: 8    | D: -0.0129 | CE:  0.0298 | S_OoD:  0.4284 | S_z:  0.1935 | G: -0.0002 | S_z:  0.1916 | dist: 0.3851
+Step: 108  | D: -0.0454 | CE:  0.0371 | S_OoD:  0.8274 | S_z:  0.2282 | G: -0.0002 | S_z:  0.2214 | dist: 0.3519
+Step: 208  | D: -0.0408 | CE:  0.0423 | S_OoD:  0.8325 | S_z:  0.1823 | G: -0.0002 | S_z:  0.1776 | dist: 0.3193
+Step: 308  | D: -0.0675 | CE:  0.0144 | S_OoD:  0.8215 | S_z:  0.1770 | G: -0.0002 | S_z:  0.1775 | dist: 0.0778
+Step: 408  | D: -0.0442 | CE:  0.0380 | S_OoD:  0.8242 | S_z:  0.1711 | G: -0.0002 | S_z:  0.1837 | dist: 0.3521
+Step: 508  | D: -0.0710 | CE:  0.0119 | S_OoD:  0.8300 | S_z:  0.1778 | G: -0.0002 | S_z:  0.1799 | dist: 0.3553
+Step: 608  | D: -0.0740 | CE:  0.0097 | S_OoD:  0.8386 | S_z:  0.1686 | G: -0.0002 | S_z:  0.1676 | dist: 0.3140
+Step: 708  | D: -0.0659 | CE:  0.0170 | S_OoD:  0.8307 | S_z:  0.1674 | G: -0.0002 | S_z:  0.1699 | dist: 0.3057
+Step: 808  | D: -0.0798 | CE:  0.0027 | S_OoD:  0.8266 | S_z:  0.1691 | G: -0.0002 | S_z:  0.1684 | dist: 0.3531
+Step: 908  | D: -0.0541 | CE:  0.0291 | S_OoD:  0.8338 | S_z:  0.1352 | G: -0.0002 | S_z:  0.1524 | dist: 0.3999
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.634715821812596
+mean: 0.63472 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.23809326887130738
+mean: 0.23809 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.3615975422427036
+mean: 0.3616 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4843192148208619
+mean: 0.48432 | std: 0.0 | MAD: 0.0
+AUROC: 0.9516305187536921
+
+Validation Accuracy: 0.9279649923615217
+Validation Classification Loss: 0.3171255449931859
+Step: 14   | D: -0.0617 | CE:  0.0103 | S_OoD:  0.7222 | S_z:  0.1512 | G: -0.0002 | S_z:  0.1503 | dist: 0.2196
+Step: 114  | D: -0.0407 | CE:  0.0418 | S_OoD:  0.8257 | S_z:  0.1409 | G: -0.0001 | S_z:  0.1330 | dist: 0.2816
+Step: 214  | D: -0.0770 | CE:  0.0067 | S_OoD:  0.8385 | S_z:  0.1792 | G: -0.0002 | S_z:  0.1756 | dist: 0.2315
+Step: 314  | D: -0.0738 | CE:  0.0072 | S_OoD:  0.8115 | S_z:  0.2117 | G: -0.0002 | S_z:  0.2011 | dist: 0.3502
+Step: 414  | D: -0.0771 | CE:  0.0066 | S_OoD:  0.8389 | S_z:  0.1763 | G: -0.0002 | S_z:  0.1669 | dist: 0.5487
+Step: 514  | D: -0.0688 | CE:  0.0138 | S_OoD:  0.8281 | S_z:  0.1958 | G: -0.0002 | S_z:  0.1950 | dist: 0.4146
+Step: 614  | D: -0.0693 | CE:  0.0130 | S_OoD:  0.8242 | S_z:  0.1211 | G: -0.0001 | S_z:  0.1200 | dist: 0.1884
+Step: 714  | D: -0.0460 | CE:  0.0364 | S_OoD:  0.8264 | S_z:  0.1729 | G: -0.0002 | S_z:  0.1897 | dist: 0.5895
+Step: 814  | D:  0.0151 | CE:  0.0981 | S_OoD:  0.8307 | S_z:  0.1609 | G: -0.0002 | S_z:  0.1571 | dist: 0.4091
+Step: 914  | D: -0.0047 | CE:  0.0777 | S_OoD:  0.8262 | S_z:  0.1557 | G: -0.0002 | S_z:  0.1701 | dist: 0.3689
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9539170506912442
+mean: 0.95392 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.15745912790298516
+mean: 0.15746 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7244239631336405
+mean: 0.72442 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.45930718183517494
+mean: 0.45931 | std: 0.0 | MAD: 0.0
+AUROC: 0.9893905020607536
+
+Validation Accuracy: 0.956010989552533
+Validation Classification Loss: 0.19063257435572156
+New checkpoint created at the end of epoch 19.
+Step: 20   | D: -0.0790 | CE:  0.0041 | S_OoD:  0.8330 | S_z:  0.2095 | G: -0.0002 | S_z:  0.2093 | dist: 0.2521
+Step: 120  | D: -0.0544 | CE:  0.0297 | S_OoD:  0.8425 | S_z:  0.1664 | G: -0.0002 | S_z:  0.1626 | dist: 0.3090
+Step: 220  | D: -0.0352 | CE:  0.0483 | S_OoD:  0.8358 | S_z:  0.1109 | G: -0.0001 | S_z:  0.1270 | dist: 0.3074
+Step: 320  | D:  0.0051 | CE:  0.0848 | S_OoD:  0.7986 | S_z:  0.1627 | G: -0.0001 | S_z:  0.1335 | dist: 0.2365
+Step: 420  | D: -0.0319 | CE:  0.0499 | S_OoD:  0.8203 | S_z:  0.1996 | G: -0.0002 | S_z:  0.2076 | dist: 0.5069
+Step: 520  | D: -0.0027 | CE:  0.0804 | S_OoD:  0.8326 | S_z:  0.1912 | G: -0.0002 | S_z:  0.1876 | dist: 0.1391
+Step: 620  | D: -0.0819 | CE:  0.0010 | S_OoD:  0.8303 | S_z:  0.1282 | G: -0.0001 | S_z:  0.1283 | dist: 0.3453
+Step: 720  | D: -0.0598 | CE:  0.0220 | S_OoD:  0.8205 | S_z:  0.1992 | G: -0.0002 | S_z:  0.1990 | dist: 0.5196
+Step: 820  | D: -0.0489 | CE:  0.0344 | S_OoD:  0.8342 | S_z:  0.1636 | G: -0.0002 | S_z:  0.1622 | dist: 0.3418
+Step: 920  | D: -0.0800 | CE:  0.0019 | S_OoD:  0.8203 | S_z:  0.1560 | G: -0.0002 | S_z:  0.1589 | dist: 0.3859
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.738863287250384
+mean: 0.73886 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.22515335083007815
+mean: 0.22515 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.39539170506912447
+mean: 0.39539 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.48956123352050807
+mean: 0.48956 | std: 0.0 | MAD: 0.0
+AUROC: 0.9612979973397314
+
+Validation Accuracy: 0.9436392728661542
+Validation Classification Loss: 0.24371580459083314
+Step: 26   | D: -0.0453 | CE:  0.0333 | S_OoD:  0.7873 | S_z:  0.1879 | G: -0.0002 | S_z:  0.1907 | dist: 0.5169
+Step: 126  | D: -0.0343 | CE:  0.0479 | S_OoD:  0.8233 | S_z:  0.1685 | G: -0.0002 | S_z:  0.1747 | dist: 0.2790
+Step: 226  | D: -0.0782 | CE:  0.0050 | S_OoD:  0.8342 | S_z:  0.1939 | G: -0.0002 | S_z:  0.1932 | dist: 0.2902
+Step: 326  | D: -0.0676 | CE:  0.0145 | S_OoD:  0.8229 | S_z:  0.1553 | G: -0.0002 | S_z:  0.1543 | dist: 0.1376
+Step: 426  | D: -0.0771 | CE:  0.0064 | S_OoD:  0.8369 | S_z:  0.1467 | G: -0.0001 | S_z:  0.1415 | dist: 0.4207
+Step: 526  | D: -0.0765 | CE:  0.0067 | S_OoD:  0.8329 | S_z:  0.1703 | G: -0.0002 | S_z:  0.1629 | dist: 0.1797
+Step: 626  | D:  0.0233 | CE:  0.1055 | S_OoD:  0.8234 | S_z:  0.1749 | G: -0.0002 | S_z:  0.2022 | dist: 0.3572
+Step: 726  | D: -0.0362 | CE:  0.0470 | S_OoD:  0.8336 | S_z:  0.1506 | G: -0.0002 | S_z:  0.1635 | dist: 0.3984
+Step: 826  | D: -0.0720 | CE:  0.0102 | S_OoD:  0.8237 | S_z:  0.1556 | G: -0.0002 | S_z:  0.1587 | dist: 0.1019
+Step: 926  | D: -0.0377 | CE:  0.0438 | S_OoD:  0.8163 | S_z:  0.1569 | G: -0.0001 | S_z:  0.1407 | dist: 0.4109
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9788018433179724
+mean: 0.9788 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.13613969087600708
+mean: 0.13614 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7990783410138249
+mean: 0.79908 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4661336946487429
+mean: 0.46613 | std: 0.0 | MAD: 0.0
+AUROC: 0.9930846913711631
+
+Validation Accuracy: 0.9563675032032328
+Validation Classification Loss: 0.1935146864153068
+Step: 32   | D: -0.0797 | CE:  0.0036 | S_OoD:  0.8337 | S_z:  0.1320 | G: -0.0001 | S_z:  0.1304 | dist: 0.4437
+Step: 132  | D: -0.0809 | CE:  0.0034 | S_OoD:  0.8449 | S_z:  0.1216 | G: -0.0001 | S_z:  0.1207 | dist: 0.3873
+Step: 232  | D: -0.0677 | CE:  0.0167 | S_OoD:  0.8456 | S_z:  0.1663 | G: -0.0002 | S_z:  0.1641 | dist: 0.3426
+Step: 332  | D: -0.0804 | CE:  0.0013 | S_OoD:  0.8190 | S_z:  0.1349 | G: -0.0001 | S_z:  0.1341 | dist: 0.2892
+Step: 432  | D: -0.0799 | CE:  0.0040 | S_OoD:  0.8402 | S_z:  0.1682 | G: -0.0002 | S_z:  0.1611 | dist: 0.4473
+Step: 532  | D:  0.0201 | CE:  0.1025 | S_OoD:  0.8262 | S_z:  0.1637 | G: -0.0001 | S_z:  0.1473 | dist: 0.3690
+Step: 632  | D: -0.0817 | CE:  0.0018 | S_OoD:  0.8370 | S_z:  0.1352 | G: -0.0001 | S_z:  0.1363 | dist: 0.4155
+Step: 732  | D: -0.0807 | CE:  0.0029 | S_OoD:  0.8371 | S_z:  0.1538 | G: -0.0002 | S_z:  0.1541 | dist: 0.3264
+Step: 832  | D: -0.0772 | CE:  0.0057 | S_OoD:  0.8307 | S_z:  0.1669 | G: -0.0002 | S_z:  0.1643 | dist: 0.3362
+Step: 932  | D: -0.0811 | CE:  0.0017 | S_OoD:  0.8305 | S_z:  0.1937 | G: -0.0002 | S_z:  0.1924 | dist: 0.2957
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9594470046082949
+mean: 0.95945 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.14099025726318373
+mean: 0.14099 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.743778801843318
+mean: 0.74378 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.46582298994064353
+mean: 0.46582 | std: 0.0 | MAD: 0.0
+AUROC: 0.9904015740135085
+
+Validation Accuracy: 0.9544640437118076
+Validation Classification Loss: 0.2086604791222496
+Step: 38   | D: -0.0804 | CE:  0.0037 | S_OoD:  0.8416 | S_z:  0.1255 | G: -0.0001 | S_z:  0.1244 | dist: 0.4035
+Step: 138  | D: -0.0790 | CE:  0.0053 | S_OoD:  0.8446 | S_z:  0.1249 | G: -0.0001 | S_z:  0.1240 | dist: 0.2752
+Step: 238  | D: -0.0770 | CE:  0.0070 | S_OoD:  0.8413 | S_z:  0.1613 | G: -0.0002 | S_z:  0.1646 | dist: 0.1050
+Step: 338  | D: -0.0777 | CE:  0.0065 | S_OoD:  0.8437 | S_z:  0.1405 | G: -0.0001 | S_z:  0.1393 | dist: 0.6187
+Step: 438  | D: -0.0571 | CE:  0.0252 | S_OoD:  0.8240 | S_z:  0.1423 | G: -0.0001 | S_z:  0.1471 | dist: 0.4618
+Step: 538  | D: -0.0427 | CE:  0.0398 | S_OoD:  0.8269 | S_z:  0.1923 | G: -0.0002 | S_z:  0.1764 | dist: 0.2137
+Step: 638  | D: -0.0655 | CE:  0.0163 | S_OoD:  0.8193 | S_z:  0.1666 | G: -0.0002 | S_z:  0.1598 | dist: 0.3412
+Step: 738  | D: -0.0765 | CE:  0.0064 | S_OoD:  0.8303 | S_z:  0.1430 | G: -0.0001 | S_z:  0.1363 | dist: 0.3397
+Step: 838  | D: -0.0731 | CE:  0.0099 | S_OoD:  0.8309 | S_z:  0.1465 | G: -0.0001 | S_z:  0.1447 | dist: 0.1609
+Step: 938  | D: -0.0534 | CE:  0.0287 | S_OoD:  0.8233 | S_z:  0.1617 | G: -0.0002 | S_z:  0.1592 | dist: 0.3553
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9253456221198156
+mean: 0.92535 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.13673372268676762
+mean: 0.13673 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.6497695852534562
+mean: 0.64977 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4528995990753175
+mean: 0.4529 | std: 0.0 | MAD: 0.0
+AUROC: 0.9853404548083816
+
+Validation Accuracy: 0.9537232961265523
+Validation Classification Loss: 0.20930460004562387
+New checkpoint created at the end of epoch 23.
+Step: 44   | D: -0.0811 | CE:  0.0027 | S_OoD:  0.8389 | S_z:  0.1462 | G: -0.0001 | S_z:  0.1396 | dist: 0.2229
+Step: 144  | D: -0.0572 | CE:  0.0262 | S_OoD:  0.8348 | S_z:  0.1442 | G: -0.0001 | S_z:  0.1356 | dist: 0.3692
+Step: 244  | D: -0.0389 | CE:  0.0437 | S_OoD:  0.8274 | S_z:  0.1277 | G: -0.0001 | S_z:  0.1246 | dist: 0.2475
+Step: 344  | D: -0.0806 | CE:  0.0024 | S_OoD:  0.8319 | S_z:  0.1644 | G: -0.0002 | S_z:  0.1655 | dist: 0.4247
+Step: 444  | D: -0.0483 | CE:  0.0322 | S_OoD:  0.8071 | S_z:  0.1915 | G: -0.0002 | S_z:  0.1906 | dist: 0.2478
+Step: 544  | D: -0.0776 | CE:  0.0055 | S_OoD:  0.8321 | S_z:  0.1567 | G: -0.0002 | S_z:  0.1540 | dist: 0.3355
+Step: 644  | D: -0.0611 | CE:  0.0221 | S_OoD:  0.8331 | S_z:  0.1267 | G: -0.0001 | S_z:  0.1237 | dist: 0.3361
+Step: 744  | D: -0.0773 | CE:  0.0066 | S_OoD:  0.8408 | S_z:  0.1334 | G: -0.0001 | S_z:  0.1350 | dist: 0.2958
+Step: 844  | D: -0.0615 | CE:  0.0226 | S_OoD:  0.8425 | S_z:  0.1584 | G: -0.0002 | S_z:  0.1528 | dist: 0.3701
+Step: 944  | D: -0.0242 | CE:  0.0594 | S_OoD:  0.8375 | S_z:  0.1432 | G: -0.0002 | S_z:  0.1513 | dist: 0.3551
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.7649769585253456
+mean: 0.76498 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.18797791004180925
+mean: 0.18798 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.4460829493087558
+mean: 0.44608 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.46715618133544984
+mean: 0.46716 | std: 0.0 | MAD: 0.0
+AUROC: 0.9711994481726823
+
+Validation Accuracy: 0.9424488406761286
+Validation Classification Loss: 0.26698222416296097
+Step: 50   | D: -0.0782 | CE:  0.0019 | S_OoD:  0.8023 | S_z:  0.1177 | G: -0.0001 | S_z:  0.1211 | dist: 0.1115
+Step: 150  | D: -0.0602 | CE:  0.0206 | S_OoD:  0.8097 | S_z:  0.1275 | G: -0.0001 | S_z:  0.1312 | dist: 0.4644
+Step: 250  | D: -0.0761 | CE:  0.0078 | S_OoD:  0.8412 | S_z:  0.1739 | G: -0.0002 | S_z:  0.1672 | dist: 0.2894
+Step: 350  | D: -0.0667 | CE:  0.0161 | S_OoD:  0.8310 | S_z:  0.2134 | G: -0.0002 | S_z:  0.2163 | dist: 0.3537
+Step: 450  | D: -0.0731 | CE:  0.0094 | S_OoD:  0.8259 | S_z:  0.1147 | G: -0.0001 | S_z:  0.1178 | dist: 0.2523
+Step: 550  | D: -0.0553 | CE:  0.0286 | S_OoD:  0.8407 | S_z:  0.1607 | G: -0.0002 | S_z:  0.1586 | dist: 0.2461
+Step: 650  | D: -0.0799 | CE:  0.0042 | S_OoD:  0.8421 | S_z:  0.1232 | G: -0.0001 | S_z:  0.1226 | dist: 0.2827
+Step: 750  | D:  0.0244 | CE:  0.1069 | S_OoD:  0.8255 | S_z:  0.1042 | G: -0.0001 | S_z:  0.1035 | dist: 0.4230
+Step: 850  | D: -0.0833 | CE:  0.0011 | S_OoD:  0.8458 | S_z:  0.1571 | G: -0.0002 | S_z:  0.1557 | dist: 0.4922
+Step: 950  | D: -0.0737 | CE:  0.0097 | S_OoD:  0.8360 | S_z:  0.1770 | G: -0.0002 | S_z:  0.1792 | dist: 0.2546
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.7695852534562212
+mean: 0.76959 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.1673038721084595
+mean: 0.1673 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.36067588325652844
+mean: 0.36068 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.45290542602539074
+mean: 0.45291 | std: 0.0 | MAD: 0.0
+AUROC: 0.968642175283
+
+Validation Accuracy: 0.9461687487679874
+Validation Classification Loss: 0.2633963517211587
+Step: 56   | D:  0.0501 | CE:  0.1291 | S_OoD:  0.7914 | S_z:  0.1498 | G: -0.0001 | S_z:  0.1498 | dist: 0.3119
+Step: 156  | D: -0.0303 | CE:  0.0523 | S_OoD:  0.8272 | S_z:  0.1382 | G: -0.0001 | S_z:  0.1239 | dist: 0.3143
+Step: 256  | D: -0.0180 | CE:  0.0646 | S_OoD:  0.8275 | S_z:  0.1887 | G: -0.0002 | S_z:  0.1934 | dist: 0.4293
+Step: 356  | D: -0.0777 | CE:  0.0060 | S_OoD:  0.8380 | S_z:  0.1469 | G: -0.0001 | S_z:  0.1458 | dist: 0.3610
+Step: 456  | D: -0.0793 | CE:  0.0019 | S_OoD:  0.8135 | S_z:  0.1584 | G: -0.0002 | S_z:  0.1570 | dist: 0.2090
+Step: 556  | D: -0.0817 | CE:  0.0006 | S_OoD:  0.8248 | S_z:  0.1771 | G: -0.0002 | S_z:  0.1737 | dist: 0.4820
+Step: 656  | D: -0.0700 | CE:  0.0135 | S_OoD:  0.8368 | S_z:  0.1800 | G: -0.0002 | S_z:  0.1770 | dist: 0.2764
+Step: 756  | D: -0.0826 | CE:  0.0015 | S_OoD:  0.8426 | S_z:  0.1296 | G: -0.0001 | S_z:  0.1273 | dist: 0.2881
+Step: 856  | D: -0.0279 | CE:  0.0549 | S_OoD:  0.8292 | S_z:  0.1413 | G: -0.0002 | S_z:  0.1509 | dist: 0.3306
+Step: 956  | D: -0.0805 | CE:  0.0029 | S_OoD:  0.8358 | S_z:  0.1364 | G: -0.0001 | S_z:  0.1359 | dist: 0.1497
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9717357910906298
+mean: 0.97174 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.10576862096786506
+mean: 0.10577 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7855606758832565
+mean: 0.78556 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4530298852920535
+mean: 0.45303 | std: 0.0 | MAD: 0.0
+AUROC: 0.9923884666310174
+
+Validation Accuracy: 0.9575856556771141
+Validation Classification Loss: 0.204643294448687
+Step: 62   | D: -0.0774 | CE:  0.0069 | S_OoD:  0.8446 | S_z:  0.2043 | G: -0.0002 | S_z:  0.2020 | dist: 0.2082
+Step: 162  | D: -0.0688 | CE:  0.0155 | S_OoD:  0.8449 | S_z:  0.1423 | G: -0.0001 | S_z:  0.1395 | dist: 0.2825
+Step: 262  | D: -0.0728 | CE:  0.0124 | S_OoD:  0.8529 | S_z:  0.1112 | G: -0.0001 | S_z:  0.1081 | dist: 0.3601
+Step: 362  | D: -0.0365 | CE:  0.0473 | S_OoD:  0.8403 | S_z:  0.1734 | G: -0.0002 | S_z:  0.1860 | dist: 0.4688
+Step: 462  | D: -0.0808 | CE:  0.0029 | S_OoD:  0.8383 | S_z:  0.1216 | G: -0.0001 | S_z:  0.1210 | dist: 0.3160
+Step: 562  | D: -0.0642 | CE:  0.0192 | S_OoD:  0.8348 | S_z:  0.1353 | G: -0.0001 | S_z:  0.1440 | dist: 0.3006
+Step: 662  | D: -0.0251 | CE:  0.0584 | S_OoD:  0.8359 | S_z:  0.1203 | G: -0.0001 | S_z:  0.1241 | dist: 0.4358
+Step: 762  | D: -0.0638 | CE:  0.0203 | S_OoD:  0.8422 | S_z:  0.1335 | G: -0.0001 | S_z:  0.1271 | dist: 0.5019
+Step: 862  | D: -0.0758 | CE:  0.0076 | S_OoD:  0.8358 | S_z:  0.1417 | G: -0.0001 | S_z:  0.1437 | dist: 0.4221
+Step: 962  | D: -0.0803 | CE:  0.0033 | S_OoD:  0.8362 | S_z:  0.0862 | G: -0.0001 | S_z:  0.0998 | dist: 0.2852
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.976036866359447
+mean: 0.97604 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.1355307579040531
+mean: 0.13553 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.6645161290322581
+mean: 0.66452 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4671528530120857
+mean: 0.46715 | std: 0.0 | MAD: 0.0
+AUROC: 0.9897846865896129
+
+Validation Accuracy: 0.9551824610684014
+Validation Classification Loss: 0.21982291634874732
+New checkpoint created at the end of epoch 27.
+Step: 68   | D: -0.0545 | CE:  0.0294 | S_OoD:  0.8400 | S_z:  0.1049 | G: -0.0001 | S_z:  0.0962 | dist: 0.3686
+Step: 168  | D: -0.0806 | CE:  0.0027 | S_OoD:  0.8336 | S_z:  0.1202 | G: -0.0001 | S_z:  0.1227 | dist: 0.3815
+Step: 268  | D: -0.0818 | CE:  0.0023 | S_OoD:  0.8423 | S_z:  0.1421 | G: -0.0001 | S_z:  0.1401 | dist: 0.3740
+Step: 368  | D: -0.0705 | CE:  0.0126 | S_OoD:  0.8328 | S_z:  0.1456 | G: -0.0001 | S_z:  0.1487 | dist: 0.4351
+Step: 468  | D: -0.0595 | CE:  0.0229 | S_OoD:  0.8259 | S_z:  0.1593 | G: -0.0001 | S_z:  0.1486 | dist: 0.3011
+Step: 568  | D: -0.0722 | CE:  0.0109 | S_OoD:  0.8327 | S_z:  0.1291 | G: -0.0001 | S_z:  0.1367 | dist: 0.2923
+Step: 668  | D:  0.0328 | CE:  0.1160 | S_OoD:  0.8333 | S_z:  0.1425 | G: -0.0001 | S_z:  0.1360 | dist: 0.3370
+Step: 768  | D: -0.0694 | CE:  0.0148 | S_OoD:  0.8435 | S_z:  0.1713 | G: -0.0002 | S_z:  0.1785 | dist: 0.4203
+Step: 868  | D: -0.0836 | CE:  0.0010 | S_OoD:  0.8478 | S_z:  0.1740 | G: -0.0002 | S_z:  0.1724 | dist: 0.2661
+Step: 968  | D: -0.0842 | CE:  0.0005 | S_OoD:  0.8491 | S_z:  0.1579 | G: -0.0002 | S_z:  0.1570 | dist: 0.2967
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9480798771121351
+mean: 0.94808 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.13801126480102546
+mean: 0.13801 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7410138248847926
+mean: 0.74101 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.45709924697876
+mean: 0.4571 | std: 0.0 | MAD: 0.0
+AUROC: 0.9901049695279018
+
+Validation Accuracy: 0.9534984538241672
+Validation Classification Loss: 0.2229567826853076
+Step: 74   | D: -0.0829 | CE:  0.0005 | S_OoD:  0.8346 | S_z:  0.1172 | G: -0.0001 | S_z:  0.1180 | dist: 0.3635
+Step: 174  | D: -0.0753 | CE:  0.0086 | S_OoD:  0.8405 | S_z:  0.1550 | G: -0.0002 | S_z:  0.1538 | dist: 0.3545
+Step: 274  | D: -0.0817 | CE:  0.0008 | S_OoD:  0.8270 | S_z:  0.1495 | G: -0.0001 | S_z:  0.1452 | dist: 0.3050
+Step: 374  | D: -0.0792 | CE:  0.0051 | S_OoD:  0.8444 | S_z:  0.1208 | G: -0.0001 | S_z:  0.1217 | dist: 0.2777
+Step: 474  | D: -0.0790 | CE:  0.0053 | S_OoD:  0.8448 | S_z:  0.1586 | G: -0.0002 | S_z:  0.1569 | dist: 0.1509
+Step: 574  | D:  0.0420 | CE:  0.1247 | S_OoD:  0.8284 | S_z:  0.1383 | G: -0.0001 | S_z:  0.1391 | dist: 0.4479
+Step: 674  | D: -0.0506 | CE:  0.0333 | S_OoD:  0.8414 | S_z:  0.1542 | G: -0.0002 | S_z:  0.1525 | dist: 0.3097
+Step: 774  | D: -0.0816 | CE:  0.0017 | S_OoD:  0.8344 | S_z:  0.1272 | G: -0.0001 | S_z:  0.1210 | dist: 0.3998
+Step: 874  | D: -0.0813 | CE:  0.0019 | S_OoD:  0.8328 | S_z:  0.1296 | G: -0.0001 | S_z:  0.1138 | dist: 0.3721
+Step: 974  | D: -0.0781 | CE:  0.0047 | S_OoD:  0.8297 | S_z:  0.1413 | G: -0.0001 | S_z:  0.1380 | dist: 0.3811
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9576036866359448
+mean: 0.9576 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.1645406723022461
+mean: 0.16454 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7370199692780338
+mean: 0.73702 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4603646993637085
+mean: 0.46036 | std: 0.0 | MAD: 0.0
+AUROC: 0.9899891939661826
+
+Validation Accuracy: 0.9481823193869506
+Validation Classification Loss: 0.2524527666195599
+Step: 80   | D: -0.0833 | CE:  0.0013 | S_OoD:  0.8478 | S_z:  0.1478 | G: -0.0001 | S_z:  0.1477 | dist: 0.3178
+Step: 180  | D: -0.0833 | CE:  0.0010 | S_OoD:  0.8439 | S_z:  0.1566 | G: -0.0002 | S_z:  0.1604 | dist: 0.4006
+Step: 280  | D: -0.0805 | CE:  0.0040 | S_OoD:  0.8464 | S_z:  0.1588 | G: -0.0002 | S_z:  0.1508 | dist: 0.3693
+Step: 380  | D: -0.0817 | CE:  0.0027 | S_OoD:  0.8452 | S_z:  0.1347 | G: -0.0001 | S_z:  0.1354 | dist: 0.2406
+Step: 480  | D: -0.0840 | CE:  0.0001 | S_OoD:  0.8430 | S_z:  0.1157 | G: -0.0001 | S_z:  0.1182 | dist: 0.1935
+Step: 580  | D: -0.0809 | CE:  0.0023 | S_OoD:  0.8335 | S_z:  0.1358 | G: -0.0001 | S_z:  0.1384 | dist: 0.4792
+Step: 680  | D: -0.0795 | CE:  0.0039 | S_OoD:  0.8358 | S_z:  0.1655 | G: -0.0002 | S_z:  0.1640 | dist: 0.3494
+Step: 780  | D: -0.0612 | CE:  0.0225 | S_OoD:  0.8373 | S_z:  0.0998 | G: -0.0001 | S_z:  0.1026 | dist: 0.2634
+Step: 880  | D: -0.0253 | CE:  0.0588 | S_OoD:  0.8421 | S_z:  0.1220 | G: -0.0001 | S_z:  0.1223 | dist: 0.3812
+Step: 980  | D: -0.0686 | CE:  0.0160 | S_OoD:  0.8475 | S_z:  0.1344 | G: -0.0001 | S_z:  0.1350 | dist: 0.3696
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8270353302611367
+mean: 0.82704 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.23738541603088398
+mean: 0.23739 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.4961597542242704
+mean: 0.49616 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4883563828468339
+mean: 0.48836 | std: 0.0 | MAD: 0.0
+AUROC: 0.9758928196289315
+
+Validation Accuracy: 0.927827930958013
+Validation Classification Loss: 0.345734481393684
+Step: 86   | D: -0.0812 | CE:  0.0017 | S_OoD:  0.8303 | S_z:  0.1415 | G: -0.0001 | S_z:  0.1422 | dist: 0.4266
+Step: 186  | D: -0.0773 | CE:  0.0059 | S_OoD:  0.8339 | S_z:  0.1295 | G: -0.0001 | S_z:  0.1271 | dist: 0.2879
+Step: 286  | D: -0.0803 | CE:  0.0034 | S_OoD:  0.8393 | S_z:  0.1714 | G: -0.0002 | S_z:  0.1712 | dist: 0.4857
+Step: 386  | D: -0.0806 | CE:  0.0042 | S_OoD:  0.8488 | S_z:  0.1318 | G: -0.0001 | S_z:  0.1285 | dist: 0.3528
+Step: 486  | D: -0.0839 | CE:  0.0011 | S_OoD:  0.8518 | S_z:  0.1368 | G: -0.0001 | S_z:  0.1344 | dist: 0.3317
+Step: 586  | D: -0.0779 | CE:  0.0057 | S_OoD:  0.8374 | S_z:  0.1677 | G: -0.0002 | S_z:  0.1722 | dist: 0.2990
+Step: 686  | D: -0.0825 | CE:  0.0003 | S_OoD:  0.8289 | S_z:  0.0992 | G: -0.0001 | S_z:  0.0899 | dist: 0.2958
+Step: 786  | D: -0.0811 | CE:  0.0034 | S_OoD:  0.8466 | S_z:  0.1535 | G: -0.0002 | S_z:  0.1514 | dist: 0.1725
+Step: 886  | D: -0.0013 | CE:  0.0827 | S_OoD:  0.8405 | S_z:  0.0992 | G: -0.0001 | S_z:  0.1055 | dist: 0.3105
+Step: 986  | D: -0.0702 | CE:  0.0123 | S_OoD:  0.8261 | S_z:  0.1335 | G: -0.0001 | S_z:  0.1270 | dist: 0.2109
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5235023041474655
+mean: 0.5235 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.30389419794082645
+mean: 0.30389 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.27035330261136714
+mean: 0.27035 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.49757498264312755
+mean: 0.49757 | std: 0.0 | MAD: 0.0
+AUROC: 0.9334720252670874
+
+Validation Accuracy: 0.8821656933767001
+Validation Classification Loss: 0.5795578969370448
+New checkpoint created at the end of epoch 31.
+Step: 92   | D: -0.0669 | CE:  0.0148 | S_OoD:  0.8185 | S_z:  0.1320 | G: -0.0001 | S_z:  0.1281 | dist: 0.2720
+Step: 192  | D: -0.0716 | CE:  0.0112 | S_OoD:  0.8298 | S_z:  0.1776 | G: -0.0002 | S_z:  0.1692 | dist: 0.3430
+Step: 292  | D: -0.0764 | CE:  0.0073 | S_OoD:  0.8383 | S_z:  0.1303 | G: -0.0001 | S_z:  0.1298 | dist: 0.6262
+Step: 392  | D: -0.0650 | CE:  0.0176 | S_OoD:  0.8283 | S_z:  0.1575 | G: -0.0002 | S_z:  0.1547 | dist: 0.1299
+Step: 492  | D: -0.0796 | CE:  0.0045 | S_OoD:  0.8425 | S_z:  0.1292 | G: -0.0001 | S_z:  0.1287 | dist: 0.3700
+Step: 592  | D: -0.0457 | CE:  0.0386 | S_OoD:  0.8452 | S_z:  0.1486 | G: -0.0002 | S_z:  0.1542 | dist: 0.4799
+Step: 692  | D: -0.0548 | CE:  0.0304 | S_OoD:  0.8527 | S_z:  0.1032 | G: -0.0001 | S_z:  0.1088 | dist: 0.4346
+Step: 792  | D: -0.0029 | CE:  0.0819 | S_OoD:  0.8488 | S_z:  0.1000 | G: -0.0001 | S_z:  0.0979 | dist: 0.2576
+Step: 892  | D: -0.0829 | CE:  0.0010 | S_OoD:  0.8400 | S_z:  0.1170 | G: -0.0001 | S_z:  0.1153 | dist: 0.2219
+Step: 992  | D: -0.0832 | CE:  0.0012 | S_OoD:  0.8463 | S_z:  0.1370 | G: -0.0001 | S_z:  0.1345 | dist: 0.4032
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9179723502304148
+mean: 0.91797 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.1411462426185611
+mean: 0.14115 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.5923195084485406
+mean: 0.59232 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4471004080772404
+mean: 0.4471 | std: 0.0 | MAD: 0.0
+AUROC: 0.9840750367535311
+
+Validation Accuracy: 0.9486212238813326
+Validation Classification Loss: 0.25035217959234973
+Step: 98   | D: -0.0311 | CE:  0.0519 | S_OoD:  0.8307 | S_z:  0.1454 | G: -0.0001 | S_z:  0.1336 | dist: 0.2830
+Step: 198  | D: -0.0830 | CE:  0.0025 | S_OoD:  0.8562 | S_z:  0.1150 | G: -0.0001 | S_z:  0.1138 | dist: 0.3096
+Step: 298  | D: -0.0840 | CE:  0.0017 | S_OoD:  0.8582 | S_z:  0.1246 | G: -0.0001 | S_z:  0.1243 | dist: 0.3237
+Step: 398  | D: -0.0540 | CE:  0.0315 | S_OoD:  0.8564 | S_z:  0.1056 | G: -0.0001 | S_z:  0.1042 | dist: 0.3675
+Step: 498  | D: -0.0808 | CE:  0.0035 | S_OoD:  0.8446 | S_z:  0.1389 | G: -0.0001 | S_z:  0.1406 | dist: 0.4289
+Step: 598  | D: -0.0829 | CE:  0.0017 | S_OoD:  0.8475 | S_z:  0.1295 | G: -0.0001 | S_z:  0.1285 | dist: 0.3238
+Step: 698  | D: -0.0838 | CE:  0.0009 | S_OoD:  0.8475 | S_z:  0.1230 | G: -0.0001 | S_z:  0.1219 | dist: 0.4339
+Step: 798  | D: -0.0812 | CE:  0.0023 | S_OoD:  0.8366 | S_z:  0.1253 | G: -0.0001 | S_z:  0.1259 | dist: 0.2575
+Step: 898  | D: -0.0791 | CE:  0.0053 | S_OoD:  0.8447 | S_z:  0.1207 | G: -0.0001 | S_z:  0.1188 | dist: 0.6406
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9920122887864823
+mean: 0.99201 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.12133133411407489
+mean: 0.12133 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8602150537634409
+mean: 0.86022 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.458452746868134
+mean: 0.45845 | std: 0.0 | MAD: 0.0
+AUROC: 0.9953941464248268
+
+Validation Accuracy: 0.9528069867435442
+Validation Classification Loss: 0.23992284416061502
+Step: 4    | D: -0.0226 | CE:  0.0605 | S_OoD:  0.8323 | S_z:  0.1129 | G: -0.0001 | S_z:  0.1200 | dist: 0.3701
+Step: 104  | D: -0.0838 | CE:  0.0003 | S_OoD:  0.8425 | S_z:  0.1361 | G: -0.0001 | S_z:  0.1348 | dist: 0.1911
+Step: 204  | D: -0.0841 | CE:  0.0012 | S_OoD:  0.8544 | S_z:  0.1121 | G: -0.0001 | S_z:  0.1102 | dist: 0.2069
+Step: 304  | D: -0.0651 | CE:  0.0196 | S_OoD:  0.8483 | S_z:  0.1161 | G: -0.0001 | S_z:  0.1201 | dist: 0.3862
+Step: 404  | D: -0.0816 | CE:  0.0030 | S_OoD:  0.8476 | S_z:  0.1149 | G: -0.0001 | S_z:  0.1126 | dist: 0.2619
+Step: 504  | D: -0.0828 | CE:  0.0021 | S_OoD:  0.8505 | S_z:  0.1349 | G: -0.0001 | S_z:  0.1297 | dist: 0.3285
+Step: 604  | D: -0.0826 | CE:  0.0015 | S_OoD:  0.8421 | S_z:  0.1347 | G: -0.0001 | S_z:  0.1360 | dist: 0.3330
+Step: 704  | D: -0.0742 | CE:  0.0100 | S_OoD:  0.8431 | S_z:  0.0956 | G: -0.0001 | S_z:  0.0972 | dist: 0.2432
+Step: 804  | D: -0.0833 | CE:  0.0002 | S_OoD:  0.8363 | S_z:  0.1333 | G: -0.0001 | S_z:  0.1293 | dist: 0.6706
+Step: 904  | D: -0.0727 | CE:  0.0113 | S_OoD:  0.8405 | S_z:  0.1110 | G: -0.0001 | S_z:  0.1154 | dist: 0.3986
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9877112135176651
+mean: 0.98771 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.11229234933853165
+mean: 0.11229 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7766513056835638
+mean: 0.77665 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4459643888473524
+mean: 0.44596 | std: 0.0 | MAD: 0.0
+AUROC: 0.9933638759071034
+
+Validation Accuracy: 0.9529771584861028
+Validation Classification Loss: 0.22935612380159287
+Step: 10   | D: -0.0695 | CE:  0.0125 | S_OoD:  0.8218 | S_z:  0.1346 | G: -0.0001 | S_z:  0.1300 | dist: 0.4502
+Step: 110  | D: -0.0779 | CE:  0.0066 | S_OoD:  0.8460 | S_z:  0.1223 | G: -0.0001 | S_z:  0.1180 | dist: 0.3584
+Step: 210  | D: -0.0396 | CE:  0.0430 | S_OoD:  0.8275 | S_z:  0.2136 | G: -0.0002 | S_z:  0.1999 | dist: 0.4264
+Step: 310  | D: -0.0598 | CE:  0.0245 | S_OoD:  0.8443 | S_z:  0.1662 | G: -0.0002 | S_z:  0.1565 | dist: 0.4166
+Step: 410  | D: -0.0793 | CE:  0.0054 | S_OoD:  0.8487 | S_z:  0.1694 | G: -0.0002 | S_z:  0.1676 | dist: 0.6210
+Step: 510  | D: -0.0308 | CE:  0.0539 | S_OoD:  0.8487 | S_z:  0.1227 | G: -0.0001 | S_z:  0.1177 | dist: 0.5524
+Step: 610  | D: -0.0741 | CE:  0.0097 | S_OoD:  0.8392 | S_z:  0.0943 | G: -0.0001 | S_z:  0.0932 | dist: 0.4281
+Step: 710  | D: -0.0809 | CE:  0.0032 | S_OoD:  0.8413 | S_z:  0.1278 | G: -0.0001 | S_z:  0.1241 | dist: 0.2376
+Step: 810  | D: -0.0822 | CE:  0.0021 | S_OoD:  0.8440 | S_z:  0.1334 | G: -0.0001 | S_z:  0.1325 | dist: 0.1175
+Step: 910  | D: -0.0821 | CE:  0.0031 | S_OoD:  0.8541 | S_z:  0.1275 | G: -0.0001 | S_z:  0.1275 | dist: 0.3393
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9923195084485407
+mean: 0.99232 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.11145812273025517
+mean: 0.11146 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8592933947772657
+mean: 0.85929 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.43341761827468894
+mean: 0.43342 | std: 0.0 | MAD: 0.0
+AUROC: 0.9955941892227363
+
+Validation Accuracy: 0.9559778792134831
+Validation Classification Loss: 0.21965262292115165
+New checkpoint created at the end of epoch 35.
+Step: 16   | D: -0.0651 | CE:  0.0193 | S_OoD:  0.8448 | S_z:  0.1301 | G: -0.0001 | S_z:  0.1248 | dist: 0.2981
+Step: 116  | D: -0.0675 | CE:  0.0165 | S_OoD:  0.8415 | S_z:  0.1298 | G: -0.0001 | S_z:  0.1267 | dist: 0.1397
+Step: 216  | D: -0.0754 | CE:  0.0097 | S_OoD:  0.8520 | S_z:  0.1619 | G: -0.0002 | S_z:  0.1580 | dist: 0.2728
+Step: 316  | D: -0.0839 | CE:  0.0015 | S_OoD:  0.8559 | S_z:  0.1256 | G: -0.0001 | S_z:  0.1241 | dist: 0.2627
+Step: 416  | D: -0.0795 | CE:  0.0048 | S_OoD:  0.8445 | S_z:  0.1098 | G: -0.0001 | S_z:  0.1057 | dist: 0.4838
+Step: 516  | D: -0.0280 | CE:  0.0561 | S_OoD:  0.8425 | S_z:  0.1270 | G: -0.0001 | S_z:  0.1245 | dist: 0.4948
+Step: 616  | D: -0.0812 | CE:  0.0014 | S_OoD:  0.8279 | S_z:  0.1109 | G: -0.0001 | S_z:  0.1121 | dist: 0.4920
+Step: 716  | D: -0.0559 | CE:  0.0279 | S_OoD:  0.8408 | S_z:  0.1854 | G: -0.0002 | S_z:  0.1718 | dist: 0.2740
+Step: 816  | D: -0.0303 | CE:  0.0542 | S_OoD:  0.8458 | S_z:  0.1261 | G: -0.0001 | S_z:  0.1248 | dist: 0.4412
+Step: 916  | D: -0.0799 | CE:  0.0048 | S_OoD:  0.8483 | S_z:  0.1207 | G: -0.0001 | S_z:  0.1220 | dist: 0.3477
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9846390168970814
+mean: 0.98464 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.11206269264221211
+mean: 0.11206 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7511520737327189
+mean: 0.75115 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4369148683547984
+mean: 0.43691 | std: 0.0 | MAD: 0.0
+AUROC: 0.9922417087817385
+
+Validation Accuracy: 0.9540251392174256
+Validation Classification Loss: 0.2320793333104151
+Step: 22   | D: -0.0630 | CE:  0.0202 | S_OoD:  0.8336 | S_z:  0.1403 | G: -0.0001 | S_z:  0.1343 | dist: 0.4441
+Step: 122  | D: -0.0488 | CE:  0.0357 | S_OoD:  0.8457 | S_z:  0.0841 | G: -0.0001 | S_z:  0.0810 | dist: 0.1316
+Step: 222  | D: -0.0768 | CE:  0.0079 | S_OoD:  0.8483 | S_z:  0.1304 | G: -0.0001 | S_z:  0.1292 | dist: 0.5681
+Step: 322  | D: -0.0542 | CE:  0.0301 | S_OoD:  0.8442 | S_z:  0.1208 | G: -0.0001 | S_z:  0.1186 | dist: 0.5856
+Step: 422  | D: -0.0468 | CE:  0.0382 | S_OoD:  0.8508 | S_z:  0.1266 | G: -0.0001 | S_z:  0.1270 | dist: 0.3977
+Step: 522  | D: -0.0850 | CE:  0.0001 | S_OoD:  0.8521 | S_z:  0.0952 | G: -0.0001 | S_z:  0.0933 | dist: 0.2448
+Step: 622  | D: -0.0834 | CE:  0.0019 | S_OoD:  0.8542 | S_z:  0.1146 | G: -0.0001 | S_z:  0.1152 | dist: 0.4295
+Step: 722  | D: -0.0819 | CE:  0.0013 | S_OoD:  0.8337 | S_z:  0.1467 | G: -0.0001 | S_z:  0.1448 | dist: 0.2912
+Step: 822  | D: -0.0662 | CE:  0.0168 | S_OoD:  0.8314 | S_z:  0.1530 | G: -0.0001 | S_z:  0.1469 | dist: 0.1859
+Step: 922  | D: -0.0765 | CE:  0.0069 | S_OoD:  0.8345 | S_z:  0.1327 | G: -0.0001 | S_z:  0.1313 | dist: 0.2240
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9917050691244239
+mean: 0.99171 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.09034365415573126
+mean: 0.09034 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8153609831029186
+mean: 0.81536 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4351685810089121
+mean: 0.43517 | std: 0.0 | MAD: 0.0
+AUROC: 0.994478085022168
+
+Validation Accuracy: 0.9555828651685393
+Validation Classification Loss: 0.226577842145049
+Step: 28   | D: -0.0822 | CE:  0.0015 | S_OoD:  0.8379 | S_z:  0.1512 | G: -0.0002 | S_z:  0.1519 | dist: 0.5104
+Step: 128  | D: -0.0837 | CE:  0.0014 | S_OoD:  0.8518 | S_z:  0.1537 | G: -0.0002 | S_z:  0.1530 | dist: 0.2634
+Step: 228  | D: -0.0806 | CE:  0.0031 | S_OoD:  0.8381 | S_z:  0.1014 | G: -0.0001 | S_z:  0.0989 | dist: 0.2572
+Step: 328  | D: -0.0840 | CE:  0.0010 | S_OoD:  0.8518 | S_z:  0.1302 | G: -0.0001 | S_z:  0.1299 | dist: 0.3245
+Step: 428  | D: -0.0752 | CE:  0.0101 | S_OoD:  0.8545 | S_z:  0.1199 | G: -0.0001 | S_z:  0.1111 | dist: 0.4068
+Step: 528  | D: -0.0336 | CE:  0.0505 | S_OoD:  0.8425 | S_z:  0.1250 | G: -0.0001 | S_z:  0.1269 | dist: 0.3378
+Step: 628  | D: -0.0649 | CE:  0.0191 | S_OoD:  0.8408 | S_z:  0.1332 | G: -0.0001 | S_z:  0.1213 | dist: 0.3356
+Step: 728  | D: -0.0610 | CE:  0.0240 | S_OoD:  0.8510 | S_z:  0.1038 | G: -0.0001 | S_z:  0.0896 | dist: 0.1307
+Step: 828  | D: -0.0841 | CE:  0.0015 | S_OoD:  0.8565 | S_z:  0.0845 | G: -0.0001 | S_z:  0.0842 | dist: 0.4279
+Step: 928  | D: -0.0768 | CE:  0.0074 | S_OoD:  0.8429 | S_z:  0.1057 | G: -0.0001 | S_z:  0.1105 | dist: 0.3459
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9889400921658986
+mean: 0.98894 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.07181799411773702
+mean: 0.07182 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8829493087557604
+mean: 0.88295 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.41581809282302945
+mean: 0.41582 | std: 0.0 | MAD: 0.0
+AUROC: 0.9960199630060426
+
+Validation Accuracy: 0.955863148038636
+Validation Classification Loss: 0.24140266226107526
+Step: 34   | D: -0.0803 | CE:  0.0049 | S_OoD:  0.8523 | S_z:  0.0924 | G: -0.0001 | S_z:  0.0879 | dist: 0.4728
+Step: 134  | D: -0.0855 | CE:  0.0003 | S_OoD:  0.8582 | S_z:  0.0914 | G: -0.0001 | S_z:  0.0904 | dist: 0.1264
+Step: 234  | D: -0.0845 | CE:  0.0008 | S_OoD:  0.8542 | S_z:  0.1152 | G: -0.0001 | S_z:  0.1159 | dist: 0.4928
+Step: 334  | D: -0.0734 | CE:  0.0094 | S_OoD:  0.8293 | S_z:  0.1326 | G: -0.0001 | S_z:  0.1332 | dist: 0.1658
+Step: 434  | D: -0.0833 | CE:  0.0021 | S_OoD:  0.8561 | S_z:  0.1379 | G: -0.0001 | S_z:  0.1357 | dist: 0.3171
+Step: 534  | D: -0.0832 | CE:  0.0002 | S_OoD:  0.8345 | S_z:  0.1211 | G: -0.0001 | S_z:  0.1222 | dist: 0.4170
+Step: 634  | D: -0.0811 | CE:  0.0031 | S_OoD:  0.8444 | S_z:  0.1540 | G: -0.0001 | S_z:  0.1497 | dist: 0.3237
+Step: 734  | D: -0.0803 | CE:  0.0032 | S_OoD:  0.8364 | S_z:  0.1432 | G: -0.0001 | S_z:  0.1422 | dist: 0.2938
+Step: 834  | D: -0.0790 | CE:  0.0058 | S_OoD:  0.8485 | S_z:  0.1043 | G: -0.0001 | S_z:  0.1039 | dist: 0.4990
+Step: 934  | D:  0.0181 | CE:  0.1023 | S_OoD:  0.8428 | S_z:  0.1024 | G: -0.0001 | S_z:  0.1116 | dist: 0.3887
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9849462365591398
+mean: 0.98495 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.12481164932250977
+mean: 0.12481 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8018433179723502
+mean: 0.80184 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4394311022758488
+mean: 0.43943 | std: 0.0 | MAD: 0.0
+AUROC: 0.9936024341260523
+
+Validation Accuracy: 0.94976776562192
+Validation Classification Loss: 0.2526686854576797
+New checkpoint created at the end of epoch 39.
+Step: 40   | D: -0.0804 | CE:  0.0037 | S_OoD:  0.8422 | S_z:  0.1427 | G: -0.0001 | S_z:  0.1435 | dist: 0.3697
+Step: 140  | D: -0.0317 | CE:  0.0531 | S_OoD:  0.8487 | S_z:  0.0963 | G: -0.0001 | S_z:  0.1058 | dist: 0.3031
+Step: 240  | D: -0.0838 | CE:  0.0012 | S_OoD:  0.8514 | S_z:  0.1049 | G: -0.0001 | S_z:  0.1091 | dist: 0.3487
+Step: 340  | D: -0.0700 | CE:  0.0147 | S_OoD:  0.8482 | S_z:  0.1254 | G: -0.0001 | S_z:  0.1308 | dist: 0.2794
+Step: 440  | D: -0.0844 | CE:  0.0009 | S_OoD:  0.8540 | S_z:  0.1460 | G: -0.0001 | S_z:  0.1428 | dist: 0.2942
+Step: 540  | D: -0.0846 | CE:  0.0005 | S_OoD:  0.8510 | S_z:  0.0811 | G: -0.0001 | S_z:  0.0803 | dist: 0.2951
+Step: 640  | D: -0.0817 | CE:  0.0030 | S_OoD:  0.8480 | S_z:  0.0755 | G: -0.0001 | S_z:  0.0758 | dist: 0.5069
+Step: 740  | D: -0.0858 | CE:  0.0002 | S_OoD:  0.8615 | S_z:  0.0990 | G: -0.0001 | S_z:  0.0976 | dist: 0.4134
+Step: 840  | D: -0.0633 | CE:  0.0221 | S_OoD:  0.8553 | S_z:  0.1162 | G: -0.0001 | S_z:  0.1022 | dist: 0.2738
+Step: 940  | D: -0.0738 | CE:  0.0112 | S_OoD:  0.8518 | S_z:  0.1178 | G: -0.0001 | S_z:  0.1185 | dist: 0.3924
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8205837173579109
+mean: 0.82058 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.2638986349105836
+mean: 0.2639 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.528110599078341
+mean: 0.52811 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4896353030204782
+mean: 0.48964 | std: 0.0 | MAD: 0.0
+AUROC: 0.9759868725201609
+
+Validation Accuracy: 0.8992552483737433
+Validation Classification Loss: 0.4884730305629285
+Step: 46   | D: -0.0743 | CE:  0.0052 | S_OoD:  0.7957 | S_z:  0.1245 | G: -0.0001 | S_z:  0.1219 | dist: 0.2614
+Step: 146  | D: -0.0353 | CE:  0.0476 | S_OoD:  0.8299 | S_z:  0.1169 | G: -0.0001 | S_z:  0.1129 | dist: 0.2597
+Step: 246  | D: -0.0817 | CE:  0.0024 | S_OoD:  0.8420 | S_z:  0.1297 | G: -0.0001 | S_z:  0.1289 | dist: 0.4486
+Step: 346  | D: -0.0822 | CE:  0.0019 | S_OoD:  0.8418 | S_z:  0.1107 | G: -0.0001 | S_z:  0.1067 | dist: 0.3563
+Step: 446  | D: -0.0832 | CE:  0.0020 | S_OoD:  0.8530 | S_z:  0.0981 | G: -0.0001 | S_z:  0.0964 | dist: 0.3752
+Step: 546  | D: -0.0815 | CE:  0.0030 | S_OoD:  0.8464 | S_z:  0.1151 | G: -0.0001 | S_z:  0.1144 | dist: 0.3381
+Step: 646  | D: -0.0737 | CE:  0.0111 | S_OoD:  0.8499 | S_z:  0.1378 | G: -0.0001 | S_z:  0.1388 | dist: 0.2223
+Step: 746  | D: -0.0817 | CE:  0.0040 | S_OoD:  0.8584 | S_z:  0.0921 | G: -0.0001 | S_z:  0.0909 | dist: 0.5188
+Step: 846  | D: -0.0813 | CE:  0.0035 | S_OoD:  0.8493 | S_z:  0.1489 | G: -0.0001 | S_z:  0.1474 | dist: 0.2921
+Step: 946  | D: -0.0476 | CE:  0.0373 | S_OoD:  0.8498 | S_z:  0.1414 | G: -0.0001 | S_z:  0.1244 | dist: 0.3172
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8682027649769586
+mean: 0.8682 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.19001891613006597
+mean: 0.19002 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.6015360983102919
+mean: 0.60154 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.46181355237960897
+mean: 0.46181 | std: 0.0 | MAD: 0.0
+AUROC: 0.9826442809185729
+
+Validation Accuracy: 0.9366830216341416
+Validation Classification Loss: 0.3204843171328055
+Step: 52   | D: -0.0681 | CE:  0.0144 | S_OoD:  0.8260 | S_z:  0.1296 | G: -0.0001 | S_z:  0.1320 | dist: 0.3811
+Step: 152  | D: -0.0742 | CE:  0.0106 | S_OoD:  0.8497 | S_z:  0.1293 | G: -0.0001 | S_z:  0.1330 | dist: 0.3321
+Step: 252  | D: -0.0849 | CE:  0.0002 | S_OoD:  0.8527 | S_z:  0.1093 | G: -0.0001 | S_z:  0.1086 | dist: 0.4783
+Step: 352  | D: -0.0818 | CE:  0.0026 | S_OoD:  0.8454 | S_z:  0.1241 | G: -0.0001 | S_z:  0.1216 | dist: 0.3372
+Step: 452  | D: -0.0815 | CE:  0.0032 | S_OoD:  0.8483 | S_z:  0.1019 | G: -0.0001 | S_z:  0.1009 | dist: 0.4640
+Step: 552  | D: -0.0708 | CE:  0.0136 | S_OoD:  0.8449 | S_z:  0.1125 | G: -0.0001 | S_z:  0.1225 | dist: 0.4625
+Step: 652  | D: -0.0829 | CE:  0.0023 | S_OoD:  0.8528 | S_z:  0.1314 | G: -0.0001 | S_z:  0.1294 | dist: 0.3568
+Step: 752  | D: -0.0677 | CE:  0.0171 | S_OoD:  0.8501 | S_z:  0.1418 | G: -0.0001 | S_z:  0.1474 | dist: 0.5264
+Step: 852  | D: -0.0842 | CE:  0.0012 | S_OoD:  0.8553 | S_z:  0.1015 | G: -0.0001 | S_z:  0.1011 | dist: 0.4142
+Step: 952  | D: -0.0749 | CE:  0.0103 | S_OoD:  0.8528 | S_z:  0.1066 | G: -0.0001 | S_z:  0.1071 | dist: 0.2972
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9459293394777266
+mean: 0.94593 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.16719317436218273
+mean: 0.16719 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7382488479262672
+mean: 0.73825 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.45612041711807283
+mean: 0.45612 | std: 0.0 | MAD: 0.0
+AUROC: 0.9895998921487283
+
+Validation Accuracy: 0.9411213470825941
+Validation Classification Loss: 0.30322662855529886
+Step: 58   | D: -0.0764 | CE:  0.0083 | S_OoD:  0.8475 | S_z:  0.1132 | G: -0.0001 | S_z:  0.1153 | dist: 0.2554
+Step: 158  | D: -0.0822 | CE:  0.0024 | S_OoD:  0.8474 | S_z:  0.1398 | G: -0.0001 | S_z:  0.1380 | dist: 0.6709
+Step: 258  | D: -0.0837 | CE:  0.0017 | S_OoD:  0.8547 | S_z:  0.1071 | G: -0.0001 | S_z:  0.1064 | dist: 0.4649
+Step: 358  | D: -0.0844 | CE:  0.0011 | S_OoD:  0.8564 | S_z:  0.1335 | G: -0.0001 | S_z:  0.1336 | dist: 0.3137
+Step: 458  | D: -0.0856 | CE:  0.0002 | S_OoD:  0.8590 | S_z:  0.1363 | G: -0.0001 | S_z:  0.1360 | dist: 0.3551
+Step: 558  | D: -0.0810 | CE:  0.0039 | S_OoD:  0.8500 | S_z:  0.0967 | G: -0.0001 | S_z:  0.0978 | dist: 0.2951
+Step: 658  | D: -0.0839 | CE:  0.0012 | S_OoD:  0.8527 | S_z:  0.0780 | G: -0.0001 | S_z:  0.0770 | dist: 0.4599
+Step: 758  | D: -0.0562 | CE:  0.0291 | S_OoD:  0.8545 | S_z:  0.1210 | G: -0.0001 | S_z:  0.1253 | dist: 0.2189
+Step: 858  | D: -0.0342 | CE:  0.0504 | S_OoD:  0.8480 | S_z:  0.1840 | G: -0.0002 | S_z:  0.1680 | dist: 0.5410
+Step: 958  | D: -0.0601 | CE:  0.0248 | S_OoD:  0.8503 | S_z:  0.1154 | G: -0.0001 | S_z:  0.0877 | dist: 0.4439
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9950844854070661
+mean: 0.99508 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.08947182893753058
+mean: 0.08947 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8592933947772657
+mean: 0.85929 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4273509788513198
+mean: 0.42735 | std: 0.0 | MAD: 0.0
+AUROC: 0.9957937464471363
+
+Validation Accuracy: 0.9561480509560418
+Validation Classification Loss: 0.2388238481390146
+New checkpoint created at the end of epoch 43.
+Step: 64   | D: -0.0825 | CE:  0.0027 | S_OoD:  0.8530 | S_z:  0.1081 | G: -0.0001 | S_z:  0.1048 | dist: 0.2850
+Step: 164  | D: -0.0722 | CE:  0.0121 | S_OoD:  0.8445 | S_z:  0.1301 | G: -0.0001 | S_z:  0.1264 | dist: 0.5251
+Step: 264  | D: -0.0583 | CE:  0.0272 | S_OoD:  0.8568 | S_z:  0.1276 | G: -0.0001 | S_z:  0.1216 | dist: 0.3552
+Step: 364  | D: -0.0695 | CE:  0.0160 | S_OoD:  0.8559 | S_z:  0.0882 | G: -0.0001 | S_z:  0.0808 | dist: 0.6414
+Step: 464  | D: -0.0641 | CE:  0.0207 | S_OoD:  0.8487 | S_z:  0.0939 | G: -0.0001 | S_z:  0.0988 | dist: 0.2237
+Step: 564  | D: -0.0358 | CE:  0.0481 | S_OoD:  0.8408 | S_z:  0.0963 | G: -0.0001 | S_z:  0.0963 | dist: 0.4371
+Step: 664  | D: -0.0805 | CE:  0.0047 | S_OoD:  0.8537 | S_z:  0.1309 | G: -0.0001 | S_z:  0.1350 | dist: 0.2895
+Step: 764  | D: -0.0834 | CE:  0.0017 | S_OoD:  0.8523 | S_z:  0.1279 | G: -0.0001 | S_z:  0.1127 | dist: 0.3195
+Step: 864  | D: -0.0837 | CE:  0.0017 | S_OoD:  0.8558 | S_z:  0.1454 | G: -0.0001 | S_z:  0.1446 | dist: 0.3076
+Step: 964  | D: -0.0737 | CE:  0.0120 | S_OoD:  0.8577 | S_z:  0.0516 | G: -0.0000 | S_z:  0.0498 | dist: 0.5387
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9953917050691244
+mean: 0.99539 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.08557040691375756
+mean: 0.08557 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9155145929339478
+mean: 0.91551 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.41521594524383615
+mean: 0.41522 | std: 0.0 | MAD: 0.0
+AUROC: 0.9970116727150917
+
+Validation Accuracy: 0.9548644478119455
+Validation Classification Loss: 0.2506487768595833
+Step: 70   | D: -0.0581 | CE:  0.0262 | S_OoD:  0.8444 | S_z:  0.1101 | G: -0.0001 | S_z:  0.1111 | dist: 0.2522
+Step: 170  | D: -0.0827 | CE:  0.0023 | S_OoD:  0.8514 | S_z:  0.1426 | G: -0.0001 | S_z:  0.1398 | dist: 0.0670
+Step: 270  | D: -0.0751 | CE:  0.0102 | S_OoD:  0.8538 | S_z:  0.0995 | G: -0.0001 | S_z:  0.0965 | dist: 0.3111
+Step: 370  | D: -0.0844 | CE:  0.0007 | S_OoD:  0.8525 | S_z:  0.1245 | G: -0.0001 | S_z:  0.1240 | dist: 0.3665
+Step: 470  | D: -0.0596 | CE:  0.0246 | S_OoD:  0.8432 | S_z:  0.1220 | G: -0.0001 | S_z:  0.1176 | dist: 0.2685
+Step: 570  | D: -0.0837 | CE:  0.0019 | S_OoD:  0.8563 | S_z:  0.0907 | G: -0.0001 | S_z:  0.0894 | dist: 0.2071
+Step: 670  | D: -0.0846 | CE:  0.0005 | S_OoD:  0.8525 | S_z:  0.1489 | G: -0.0001 | S_z:  0.1483 | dist: 0.4713
+Step: 770  | D: -0.0848 | CE:  0.0007 | S_OoD:  0.8561 | S_z:  0.1004 | G: -0.0001 | S_z:  0.0978 | dist: 0.3737
+Step: 870  | D: -0.0811 | CE:  0.0018 | S_OoD:  0.8305 | S_z:  0.1291 | G: -0.0001 | S_z:  0.1276 | dist: 0.4385
+Step: 970  | D: -0.0796 | CE:  0.0049 | S_OoD:  0.8462 | S_z:  0.1361 | G: -0.0001 | S_z:  0.1328 | dist: 0.2315
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9874039938556067
+mean: 0.9874 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.10848233699798585
+mean: 0.10848 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8470046082949308
+mean: 0.847 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4301155757904054
+mean: 0.43012 | std: 0.0 | MAD: 0.0
+AUROC: 0.9948130363269009
+
+Validation Accuracy: 0.9482423800019713
+Validation Classification Loss: 0.27472629099548007
+Step: 76   | D: -0.0798 | CE:  0.0050 | S_OoD:  0.8496 | S_z:  0.1108 | G: -0.0001 | S_z:  0.1105 | dist: 0.3493
+Step: 176  | D: -0.0736 | CE:  0.0113 | S_OoD:  0.8507 | S_z:  0.1502 | G: -0.0002 | S_z:  0.1547 | dist: 0.3294
+Step: 276  | D: -0.0757 | CE:  0.0098 | S_OoD:  0.8553 | S_z:  0.0668 | G: -0.0001 | S_z:  0.0660 | dist: 0.6168
+Step: 376  | D: -0.0259 | CE:  0.0591 | S_OoD:  0.8514 | S_z:  0.1247 | G: -0.0001 | S_z:  0.1316 | dist: 0.3250
+Step: 476  | D: -0.0844 | CE:  0.0012 | S_OoD:  0.8570 | S_z:  0.1237 | G: -0.0001 | S_z:  0.1213 | dist: 0.4176
+Step: 576  | D: -0.0825 | CE:  0.0027 | S_OoD:  0.8532 | S_z:  0.1185 | G: -0.0001 | S_z:  0.1170 | dist: 0.5913
+Step: 676  | D: -0.0802 | CE:  0.0046 | S_OoD:  0.8484 | S_z:  0.1194 | G: -0.0001 | S_z:  0.1166 | dist: 0.4962
+Step: 776  | D: -0.0833 | CE:  0.0022 | S_OoD:  0.8557 | S_z:  0.1318 | G: -0.0001 | S_z:  0.1303 | dist: 0.2444
+Step: 876  | D: -0.0839 | CE:  0.0006 | S_OoD:  0.8469 | S_z:  0.1221 | G: -0.0001 | S_z:  0.1207 | dist: 0.3843
+Step: 976  | D: -0.0703 | CE:  0.0143 | S_OoD:  0.8475 | S_z:  0.1204 | G: -0.0001 | S_z:  0.1149 | dist: 0.4062
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8660522273425499
+mean: 0.86605 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.17456867694854744
+mean: 0.17457 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.5594470046082949
+mean: 0.55945 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.46045906305313156
+mean: 0.46046 | std: 0.0 | MAD: 0.0
+AUROC: 0.9774859593384789
+
+Validation Accuracy: 0.920854739552533
+Validation Classification Loss: 0.45619627288045633
+Step: 82   | D: -0.0791 | CE:  0.0055 | S_OoD:  0.8475 | S_z:  0.1100 | G: -0.0001 | S_z:  0.1073 | dist: 0.2636
+Step: 182  | D:  0.0051 | CE:  0.0900 | S_OoD:  0.8497 | S_z:  0.0951 | G: -0.0001 | S_z:  0.1021 | dist: 0.2122
+Step: 282  | D: -0.0828 | CE:  0.0012 | S_OoD:  0.8402 | S_z:  0.0975 | G: -0.0001 | S_z:  0.0915 | dist: 0.2913
+Step: 382  | D: -0.0850 | CE:  0.0003 | S_OoD:  0.8549 | S_z:  0.0972 | G: -0.0001 | S_z:  0.0965 | dist: 0.3053
+Step: 482  | D: -0.0758 | CE:  0.0084 | S_OoD:  0.8429 | S_z:  0.1030 | G: -0.0001 | S_z:  0.1059 | dist: 0.3454
+Step: 582  | D: -0.0853 | CE:  0.0004 | S_OoD:  0.8580 | S_z:  0.0929 | G: -0.0001 | S_z:  0.0911 | dist: 0.5997
+Step: 682  | D: -0.0855 | CE:  0.0002 | S_OoD:  0.8581 | S_z:  0.1345 | G: -0.0001 | S_z:  0.1337 | dist: 0.2173
+Step: 782  | D: -0.0243 | CE:  0.0610 | S_OoD:  0.8541 | S_z:  0.1074 | G: -0.0001 | S_z:  0.1092 | dist: 0.4118
+Step: 882  | D: -0.0854 | CE:  0.0002 | S_OoD:  0.8569 | S_z:  0.0985 | G: -0.0001 | S_z:  0.0973 | dist: 0.3055
+Step: 982  | D: -0.0834 | CE:  0.0020 | S_OoD:  0.8560 | S_z:  0.1171 | G: -0.0001 | S_z:  0.1148 | dist: 0.2510
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8414746543778802
+mean: 0.84147 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.3673478960990907
+mean: 0.36735 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.5929339477726574
+mean: 0.59293 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.5343566560745246
+mean: 0.53436 | std: 0.0 | MAD: 0.0
+AUROC: 0.9774972826429658
+
+Validation Accuracy: 0.8365304060713582
+Validation Classification Loss: 0.9006947508563151
+New checkpoint created at the end of epoch 47.
+Step: 88   | D: -0.0799 | CE:  0.0027 | S_OoD:  0.8269 | S_z:  0.1141 | G: -0.0001 | S_z:  0.1192 | dist: 0.1754
+Step: 188  | D: -0.0764 | CE:  0.0077 | S_OoD:  0.8419 | S_z:  0.1386 | G: -0.0001 | S_z:  0.1382 | dist: 0.2858
+Step: 288  | D: -0.0765 | CE:  0.0078 | S_OoD:  0.8447 | S_z:  0.0995 | G: -0.0001 | S_z:  0.0943 | dist: 0.3670
+Step: 388  | D: -0.0788 | CE:  0.0062 | S_OoD:  0.8508 | S_z:  0.0932 | G: -0.0001 | S_z:  0.0916 | dist: 0.3386
+Step: 488  | D: -0.0769 | CE:  0.0086 | S_OoD:  0.8561 | S_z:  0.1030 | G: -0.0001 | S_z:  0.1023 | dist: 0.3120
+Step: 588  | D: -0.0838 | CE:  0.0013 | S_OoD:  0.8518 | S_z:  0.1317 | G: -0.0001 | S_z:  0.1313 | dist: 0.4941
+Step: 688  | D: -0.0823 | CE:  0.0032 | S_OoD:  0.8555 | S_z:  0.1228 | G: -0.0001 | S_z:  0.1216 | dist: 0.4342
+Step: 788  | D: -0.0832 | CE:  0.0025 | S_OoD:  0.8591 | S_z:  0.1096 | G: -0.0001 | S_z:  0.1087 | dist: 0.3378
+Step: 888  | D: -0.0837 | CE:  0.0012 | S_OoD:  0.8509 | S_z:  0.1355 | G: -0.0001 | S_z:  0.1360 | dist: 0.4007
+Step: 988  | D: -0.0849 | CE:  0.0010 | S_OoD:  0.8601 | S_z:  0.1619 | G: -0.0002 | S_z:  0.1599 | dist: 0.3475
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9981566820276497
+mean: 0.99816 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.05922913551330586
+mean: 0.05923 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9591397849462365
+mean: 0.95914 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.40055855989456296
+mean: 0.40056 | std: 0.0 | MAD: 0.0
+AUROC: 0.9986631756628939
+
+Validation Accuracy: 0.9578104979794994
+Validation Classification Loss: 0.23498915341418508
+Step: 94   | D: -0.0831 | CE:  0.0026 | S_OoD:  0.8580 | S_z:  0.1354 | G: -0.0001 | S_z:  0.1340 | dist: 0.6113
+Step: 194  | D: -0.0850 | CE:  0.0007 | S_OoD:  0.8582 | S_z:  0.1254 | G: -0.0001 | S_z:  0.1231 | dist: 0.3878
+Step: 294  | D: -0.0855 | CE:  0.0002 | S_OoD:  0.8583 | S_z:  0.1230 | G: -0.0001 | S_z:  0.1216 | dist: 0.4517
+Step: 394  | D: -0.0863 | CE:  0.0002 | S_OoD:  0.8657 | S_z:  0.1426 | G: -0.0001 | S_z:  0.1406 | dist: 0.1639
+Step: 494  | D: -0.0852 | CE:  0.0002 | S_OoD:  0.8546 | S_z:  0.0910 | G: -0.0001 | S_z:  0.0892 | dist: 0.2097
+Step: 594  | D: -0.0857 | CE:  0.0004 | S_OoD:  0.8619 | S_z:  0.1403 | G: -0.0001 | S_z:  0.1385 | dist: 0.2109
+Step: 694  | D: -0.0854 | CE:  0.0002 | S_OoD:  0.8575 | S_z:  0.1317 | G: -0.0001 | S_z:  0.1263 | dist: 0.3679
+Step: 794  | D: -0.0853 | CE:  0.0005 | S_OoD:  0.8593 | S_z:  0.1010 | G: -0.0001 | S_z:  0.0999 | dist: 0.2774
+Step: 894  | D: -0.0725 | CE:  0.0116 | S_OoD:  0.8425 | S_z:  0.1288 | G: -0.0001 | S_z:  0.1239 | dist: 0.2999
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9938556067588326
+mean: 0.99386 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.05948572158813496
+mean: 0.05949 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8918586789554531
+mean: 0.89186 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3817592191696175
+mean: 0.38176 | std: 0.0 | MAD: 0.0
+AUROC: 0.9965335446657154
+
+Validation Accuracy: 0.9549853390498719
+Validation Classification Loss: 0.2548142455108176
+Step: 0    | D: -0.0649 | CE:  0.0083 | S_OoD:  0.7340 | S_z:  0.1459 | G: -0.0002 | S_z:  0.1588 | dist: 0.3116
+Step: 100  | D: -0.0856 | CE:  0.0001 | S_OoD:  0.8587 | S_z:  0.1212 | G: -0.0001 | S_z:  0.1196 | dist: 0.2930
+Step: 200  | D: -0.0834 | CE:  0.0016 | S_OoD:  0.8512 | S_z:  0.1078 | G: -0.0001 | S_z:  0.1091 | dist: 0.2910
+Step: 300  | D: -0.0130 | CE:  0.0719 | S_OoD:  0.8505 | S_z:  0.1135 | G: -0.0001 | S_z:  0.1208 | dist: 0.3116
+Step: 400  | D: -0.0573 | CE:  0.0271 | S_OoD:  0.8449 | S_z:  0.1245 | G: -0.0001 | S_z:  0.1215 | dist: 0.2764
+Step: 500  | D: -0.0839 | CE:  0.0015 | S_OoD:  0.8547 | S_z:  0.0905 | G: -0.0001 | S_z:  0.0899 | dist: 0.1590
+Step: 600  | D: -0.0849 | CE:  0.0002 | S_OoD:  0.8522 | S_z:  0.1161 | G: -0.0001 | S_z:  0.1107 | dist: 0.3967
+Step: 700  | D: -0.0801 | CE:  0.0047 | S_OoD:  0.8499 | S_z:  0.1393 | G: -0.0001 | S_z:  0.1415 | dist: 0.3237
+Step: 800  | D: -0.0814 | CE:  0.0039 | S_OoD:  0.8545 | S_z:  0.1494 | G: -0.0001 | S_z:  0.1495 | dist: 0.3526
+Step: 900  | D: -0.0819 | CE:  0.0038 | S_OoD:  0.8590 | S_z:  0.1273 | G: -0.0001 | S_z:  0.1251 | dist: 0.2290
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9247311827956989
+mean: 0.92473 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.14449521303176918
+mean: 0.1445 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.6073732718894009
+mean: 0.60737 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.44082018852233995
+mean: 0.44082 | std: 0.0 | MAD: 0.0
+AUROC: 0.9855067502473559
+
+Validation Accuracy: 0.9423995601714961
+Validation Classification Loss: 0.30669267854379917
+Step: 6    | D:  0.0998 | CE:  0.1484 | S_OoD:  0.4871 | S_z:  0.1094 | G: -0.0001 | S_z:  0.1034 | dist: 0.3596
+Step: 106  | D: -0.0312 | CE:  0.0524 | S_OoD:  0.8367 | S_z:  0.1368 | G: -0.0001 | S_z:  0.1338 | dist: 0.2097
+Step: 206  | D:  0.0091 | CE:  0.0930 | S_OoD:  0.8395 | S_z:  0.0860 | G: -0.0001 | S_z:  0.0810 | dist: 0.4262
+Step: 306  | D: -0.0793 | CE:  0.0041 | S_OoD:  0.8348 | S_z:  0.1191 | G: -0.0001 | S_z:  0.1191 | dist: 0.3678
+Step: 406  | D: -0.0841 | CE:  0.0009 | S_OoD:  0.8513 | S_z:  0.0939 | G: -0.0001 | S_z:  0.0908 | dist: 0.3329
+Step: 506  | D: -0.0832 | CE:  0.0023 | S_OoD:  0.8562 | S_z:  0.1214 | G: -0.0001 | S_z:  0.1193 | dist: 0.1433
+Step: 606  | D: -0.0818 | CE:  0.0029 | S_OoD:  0.8485 | S_z:  0.1247 | G: -0.0001 | S_z:  0.1307 | dist: 0.4597
+Step: 706  | D: -0.0499 | CE:  0.0348 | S_OoD:  0.8485 | S_z:  0.1033 | G: -0.0001 | S_z:  0.1038 | dist: 0.3228
+Step: 806  | D: -0.0828 | CE:  0.0021 | S_OoD:  0.8505 | S_z:  0.0989 | G: -0.0001 | S_z:  0.0948 | dist: 0.1948
+Step: 906  | D: -0.0835 | CE:  0.0021 | S_OoD:  0.8569 | S_z:  0.0998 | G: -0.0001 | S_z:  0.0982 | dist: 0.3889
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9963133640552996
+mean: 0.99631 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.07468339204788219
+mean: 0.07468 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9274961597542243
+mean: 0.9275 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4138476562500002
+mean: 0.41385 | std: 0.0 | MAD: 0.0
+AUROC: 0.9976582947723899
+
+Validation Accuracy: 0.9563290028089888
+Validation Classification Loss: 0.2524584029075883
+New checkpoint created at the end of epoch 51.
+Step: 12   | D: -0.0665 | CE:  0.0186 | S_OoD:  0.8520 | S_z:  0.1083 | G: -0.0001 | S_z:  0.1072 | dist: 0.2666
+Step: 112  | D: -0.0841 | CE:  0.0015 | S_OoD:  0.8572 | S_z:  0.0880 | G: -0.0001 | S_z:  0.0864 | dist: 0.1018
+Step: 212  | D: -0.0853 | CE:  0.0004 | S_OoD:  0.8580 | S_z:  0.0956 | G: -0.0001 | S_z:  0.0937 | dist: 0.4986
+Step: 312  | D: -0.0853 | CE:  0.0004 | S_OoD:  0.8586 | S_z:  0.1416 | G: -0.0001 | S_z:  0.1408 | dist: 0.2381
+Step: 412  | D: -0.0826 | CE:  0.0014 | S_OoD:  0.8416 | S_z:  0.1373 | G: -0.0001 | S_z:  0.1421 | dist: 0.1528
+Step: 512  | D: -0.0837 | CE:  0.0017 | S_OoD:  0.8553 | S_z:  0.1309 | G: -0.0001 | S_z:  0.1271 | dist: 0.3286
+Step: 612  | D: -0.0722 | CE:  0.0136 | S_OoD:  0.8595 | S_z:  0.1416 | G: -0.0001 | S_z:  0.1352 | dist: 0.3425
+Step: 712  | D: -0.0770 | CE:  0.0086 | S_OoD:  0.8565 | S_z:  0.1077 | G: -0.0001 | S_z:  0.1105 | dist: 0.4218
+Step: 812  | D: -0.0857 | CE:  0.0001 | S_OoD:  0.8588 | S_z:  0.1282 | G: -0.0001 | S_z:  0.1255 | dist: 0.2283
+Step: 912  | D: -0.0847 | CE:  0.0006 | S_OoD:  0.8541 | S_z:  0.1247 | G: -0.0001 | S_z:  0.1261 | dist: 0.3544
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9674347158218126
+mean: 0.96743 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.15711805820465108
+mean: 0.15712 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7311827956989247
+mean: 0.73118 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.45283186912536705
+mean: 0.45283 | std: 0.0 | MAD: 0.0
+AUROC: 0.9910571994129685
+
+Validation Accuracy: 0.9404683803962152
+Validation Classification Loss: 0.3249951068094796
+Step: 18   | D: -0.0750 | CE:  0.0075 | S_OoD:  0.8261 | S_z:  0.0932 | G: -0.0001 | S_z:  0.0951 | dist: 0.2086
+Step: 118  | D: -0.0826 | CE:  0.0027 | S_OoD:  0.8546 | S_z:  0.1443 | G: -0.0001 | S_z:  0.1414 | dist: 0.4092
+Step: 218  | D: -0.0845 | CE:  0.0005 | S_OoD:  0.8509 | S_z:  0.1104 | G: -0.0001 | S_z:  0.1050 | dist: 0.4031
+Step: 318  | D: -0.0841 | CE:  0.0012 | S_OoD:  0.8543 | S_z:  0.1416 | G: -0.0001 | S_z:  0.1406 | dist: 0.2778
+Step: 418  | D: -0.0824 | CE:  0.0031 | S_OoD:  0.8564 | S_z:  0.1238 | G: -0.0001 | S_z:  0.1237 | dist: 0.2982
+Step: 518  | D: -0.0830 | CE:  0.0029 | S_OoD:  0.8600 | S_z:  0.1358 | G: -0.0001 | S_z:  0.1318 | dist: 0.3648
+Step: 618  | D: -0.0846 | CE:  0.0007 | S_OoD:  0.8543 | S_z:  0.0852 | G: -0.0001 | S_z:  0.0839 | dist: 0.4129
+Step: 718  | D: -0.0795 | CE:  0.0062 | S_OoD:  0.8584 | S_z:  0.1451 | G: -0.0001 | S_z:  0.1415 | dist: 0.3490
+Step: 818  | D: -0.0811 | CE:  0.0044 | S_OoD:  0.8553 | S_z:  0.0840 | G: -0.0001 | S_z:  0.0835 | dist: 0.2964
+Step: 918  | D: -0.0532 | CE:  0.0324 | S_OoD:  0.8576 | S_z:  0.1401 | G: -0.0001 | S_z:  0.1295 | dist: 0.3268
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9987711213517665
+mean: 0.99877 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.07557049989700346
+mean: 0.07557 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9662058371735791
+mean: 0.96621 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4075257062911987
+mean: 0.40753 | std: 0.0 | MAD: 0.0
+AUROC: 0.9988650393614655
+
+Validation Accuracy: 0.9591272114626453
+Validation Classification Loss: 0.22568784191291466
+Step: 24   | D: -0.0852 | CE:  0.0002 | S_OoD:  0.8547 | S_z:  0.0687 | G: -0.0001 | S_z:  0.0821 | dist: 0.3252
+Step: 124  | D: -0.0844 | CE:  0.0010 | S_OoD:  0.8552 | S_z:  0.0811 | G: -0.0001 | S_z:  0.0796 | dist: 0.2834
+Step: 224  | D: -0.0742 | CE:  0.0117 | S_OoD:  0.8597 | S_z:  0.0765 | G: -0.0001 | S_z:  0.0807 | dist: 0.2810
+Step: 324  | D: -0.0845 | CE:  0.0003 | S_OoD:  0.8495 | S_z:  0.1112 | G: -0.0001 | S_z:  0.1095 | dist: 0.3031
+Step: 424  | D: -0.0784 | CE:  0.0064 | S_OoD:  0.8500 | S_z:  0.1268 | G: -0.0001 | S_z:  0.1211 | dist: 0.5150
+Step: 524  | D: -0.0598 | CE:  0.0254 | S_OoD:  0.8531 | S_z:  0.0839 | G: -0.0001 | S_z:  0.0784 | dist: 0.5039
+Step: 624  | D: -0.0758 | CE:  0.0095 | S_OoD:  0.8547 | S_z:  0.0944 | G: -0.0001 | S_z:  0.0952 | dist: 0.3060
+Step: 724  | D: -0.0830 | CE:  0.0026 | S_OoD:  0.8575 | S_z:  0.0945 | G: -0.0001 | S_z:  0.0920 | dist: 0.2802
+Step: 824  | D: -0.0630 | CE:  0.0219 | S_OoD:  0.8498 | S_z:  0.1149 | G: -0.0001 | S_z:  0.0982 | dist: 0.4467
+Step: 924  | D: -0.0651 | CE:  0.0201 | S_OoD:  0.8530 | S_z:  0.1322 | G: -0.0001 | S_z:  0.1272 | dist: 0.3798
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9741935483870968
+mean: 0.97419 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.10731441974639896
+mean: 0.10731 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7422427035330261
+mean: 0.74224 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4295219635963445
+mean: 0.42952 | std: 0.0 | MAD: 0.0
+AUROC: 0.991614010603172
+
+Validation Accuracy: 0.9468548257934161
+Validation Classification Loss: 0.29308197120619217
+Step: 30   | D: -0.0847 | CE:  0.0001 | S_OoD:  0.8491 | S_z:  0.0911 | G: -0.0001 | S_z:  0.0880 | dist: 0.3938
+Step: 130  | D: -0.0645 | CE:  0.0212 | S_OoD:  0.8579 | S_z:  0.0993 | G: -0.0001 | S_z:  0.1059 | dist: 0.5137
+Step: 230  | D: -0.0847 | CE:  0.0006 | S_OoD:  0.8542 | S_z:  0.1298 | G: -0.0001 | S_z:  0.1281 | dist: 0.3348
+Step: 330  | D: -0.0819 | CE:  0.0037 | S_OoD:  0.8563 | S_z:  0.0984 | G: -0.0001 | S_z:  0.0987 | dist: 0.2642
+Step: 430  | D: -0.0706 | CE:  0.0149 | S_OoD:  0.8551 | S_z:  0.0802 | G: -0.0001 | S_z:  0.0825 | dist: 0.4687
+Step: 530  | D: -0.0848 | CE:  0.0007 | S_OoD:  0.8567 | S_z:  0.1299 | G: -0.0001 | S_z:  0.1269 | dist: 0.3785
+Step: 630  | D: -0.0851 | CE:  0.0006 | S_OoD:  0.8588 | S_z:  0.1308 | G: -0.0001 | S_z:  0.1285 | dist: 0.4235
+Step: 730  | D: -0.0697 | CE:  0.0161 | S_OoD:  0.8583 | S_z:  0.0913 | G: -0.0001 | S_z:  0.0882 | dist: 0.4189
+Step: 830  | D: -0.0849 | CE:  0.0002 | S_OoD:  0.8524 | S_z:  0.0892 | G: -0.0001 | S_z:  0.0886 | dist: 0.3311
+Step: 930  | D: -0.0851 | CE:  0.0001 | S_OoD:  0.8529 | S_z:  0.0909 | G: -0.0001 | S_z:  0.0905 | dist: 0.2418
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.943778801843318
+mean: 0.94378 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.1341387867927554
+mean: 0.13414 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.717357910906298
+mean: 0.71736 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.43565539836883554
+mean: 0.43566 | std: 0.0 | MAD: 0.0
+AUROC: 0.9894235750120364
+
+Validation Accuracy: 0.9351522459589986
+Validation Classification Loss: 0.36349617489456626
+New checkpoint created at the end of epoch 55.
+Step: 36   | D: -0.0510 | CE:  0.0304 | S_OoD:  0.8156 | S_z:  0.1320 | G: -0.0001 | S_z:  0.1345 | dist: 0.3771
+Step: 136  | D: -0.0745 | CE:  0.0090 | S_OoD:  0.8356 | S_z:  0.1017 | G: -0.0001 | S_z:  0.1019 | dist: 0.3928
+Step: 236  | D: -0.0774 | CE:  0.0067 | S_OoD:  0.8418 | S_z:  0.1087 | G: -0.0001 | S_z:  0.1069 | dist: 0.1903
+Step: 336  | D: -0.0181 | CE:  0.0672 | S_OoD:  0.8538 | S_z:  0.1041 | G: -0.0001 | S_z:  0.0931 | dist: 0.2584
+Step: 436  | D: -0.0805 | CE:  0.0053 | S_OoD:  0.8589 | S_z:  0.0811 | G: -0.0001 | S_z:  0.0828 | dist: 0.4297
+Step: 536  | D: -0.0824 | CE:  0.0031 | S_OoD:  0.8566 | S_z:  0.1199 | G: -0.0001 | S_z:  0.1171 | dist: 0.4558
+Step: 636  | D:  0.0038 | CE:  0.0887 | S_OoD:  0.8495 | S_z:  0.1132 | G: -0.0001 | S_z:  0.1094 | dist: 0.2796
+Step: 736  | D: -0.0817 | CE:  0.0036 | S_OoD:  0.8538 | S_z:  0.0886 | G: -0.0001 | S_z:  0.0855 | dist: 0.3834
+Step: 836  | D: -0.0800 | CE:  0.0051 | S_OoD:  0.8524 | S_z:  0.1320 | G: -0.0001 | S_z:  0.1301 | dist: 0.3379
+Step: 936  | D: -0.0827 | CE:  0.0028 | S_OoD:  0.8556 | S_z:  0.0751 | G: -0.0001 | S_z:  0.0727 | dist: 0.3633
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9987711213517665
+mean: 0.99877 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.05497165918350225
+mean: 0.05497 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9588325652841782
+mean: 0.95883 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.38873192548751984
+mean: 0.38873 | std: 0.0 | MAD: 0.0
+AUROC: 0.9986891538456714
+
+Validation Accuracy: 0.9603014734870885
+Validation Classification Loss: 0.22544732293260566
+Step: 42   | D: -0.0824 | CE:  0.0036 | S_OoD:  0.8604 | S_z:  0.0988 | G: -0.0001 | S_z:  0.0951 | dist: 0.3756
+Step: 142  | D: -0.0854 | CE:  0.0004 | S_OoD:  0.8593 | S_z:  0.0841 | G: -0.0001 | S_z:  0.0830 | dist: 0.4307
+Step: 242  | D: -0.0856 | CE:  0.0008 | S_OoD:  0.8651 | S_z:  0.0975 | G: -0.0001 | S_z:  0.0984 | dist: 0.4256
+Step: 342  | D: -0.0856 | CE:  0.0003 | S_OoD:  0.8602 | S_z:  0.1291 | G: -0.0001 | S_z:  0.1263 | dist: 0.3584
+Step: 442  | D: -0.0757 | CE:  0.0105 | S_OoD:  0.8631 | S_z:  0.1370 | G: -0.0001 | S_z:  0.1416 | dist: 0.2097
+Step: 542  | D: -0.0858 | CE:  0.0002 | S_OoD:  0.8614 | S_z:  0.0763 | G: -0.0001 | S_z:  0.0757 | dist: 0.2117
+Step: 642  | D: -0.0859 | CE:  0.0001 | S_OoD:  0.8607 | S_z:  0.1183 | G: -0.0001 | S_z:  0.1161 | dist: 0.3625
+Step: 742  | D: -0.0772 | CE:  0.0090 | S_OoD:  0.8626 | S_z:  0.0766 | G: -0.0001 | S_z:  0.0743 | dist: 0.2396
+Step: 842  | D: -0.0836 | CE:  0.0015 | S_OoD:  0.8515 | S_z:  0.1224 | G: -0.0001 | S_z:  0.1198 | dist: 0.3492
+Step: 942  | D: -0.0246 | CE:  0.0605 | S_OoD:  0.8514 | S_z:  0.0908 | G: -0.0001 | S_z:  0.0824 | dist: 0.2986
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9972350230414746
+mean: 0.99724 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.06089954376220706
+mean: 0.0609 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9529953917050691
+mean: 0.953 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4091889739036561
+mean: 0.40919 | std: 0.0 | MAD: 0.0
+AUROC: 0.9985306006065489
+
+Validation Accuracy: 0.9584087941060517
+Validation Classification Loss: 0.23602252339455693
+Step: 48   | D: -0.0857 | CE:  0.0002 | S_OoD:  0.8602 | S_z:  0.1355 | G: -0.0001 | S_z:  0.1336 | dist: 0.3017
+Step: 148  | D: -0.0820 | CE:  0.0039 | S_OoD:  0.8602 | S_z:  0.0946 | G: -0.0001 | S_z:  0.0925 | dist: 0.1920
+Step: 248  | D: -0.0850 | CE:  0.0010 | S_OoD:  0.8610 | S_z:  0.1125 | G: -0.0001 | S_z:  0.1094 | dist: 0.3181
+Step: 348  | D: -0.0838 | CE:  0.0023 | S_OoD:  0.8622 | S_z:  0.1078 | G: -0.0001 | S_z:  0.1069 | dist: 0.2748
+Step: 448  | D: -0.0409 | CE:  0.0449 | S_OoD:  0.8591 | S_z:  0.0921 | G: -0.0001 | S_z:  0.0866 | dist: 0.2568
+Step: 548  | D: -0.0857 | CE:  0.0003 | S_OoD:  0.8614 | S_z:  0.1286 | G: -0.0001 | S_z:  0.1265 | dist: 0.2886
+Step: 648  | D: -0.0854 | CE:  0.0001 | S_OoD:  0.8566 | S_z:  0.1091 | G: -0.0001 | S_z:  0.1006 | dist: 0.3542
+Step: 748  | D: -0.0834 | CE:  0.0013 | S_OoD:  0.8485 | S_z:  0.1100 | G: -0.0001 | S_z:  0.1093 | dist: 0.3388
+Step: 848  | D: -0.0841 | CE:  0.0007 | S_OoD:  0.8489 | S_z:  0.1150 | G: -0.0001 | S_z:  0.1127 | dist: 0.3705
+Step: 948  | D: -0.0819 | CE:  0.0029 | S_OoD:  0.8486 | S_z:  0.0988 | G: -0.0001 | S_z:  0.0969 | dist: 0.1680
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9944700460829493
+mean: 0.99447 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.06100143194198611
+mean: 0.061 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9357910906298003
+mean: 0.93579 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.40231321811676096
+mean: 0.40231 | std: 0.0 | MAD: 0.0
+AUROC: 0.9978690539078987
+
+Validation Accuracy: 0.9560879903410211
+Validation Classification Loss: 0.26122262211270586
+Step: 54   | D: -0.0840 | CE:  0.0012 | S_OoD:  0.8523 | S_z:  0.0731 | G: -0.0001 | S_z:  0.0664 | dist: 0.4823
+Step: 154  | D: -0.0755 | CE:  0.0104 | S_OoD:  0.8599 | S_z:  0.0871 | G: -0.0001 | S_z:  0.0838 | dist: 0.1994
+Step: 254  | D: -0.0562 | CE:  0.0291 | S_OoD:  0.8535 | S_z:  0.0924 | G: -0.0001 | S_z:  0.1069 | dist: 0.1514
+Step: 354  | D:  0.0156 | CE:  0.1009 | S_OoD:  0.8546 | S_z:  0.1181 | G: -0.0001 | S_z:  0.1210 | dist: 0.2624
+Step: 454  | D: -0.0843 | CE:  0.0009 | S_OoD:  0.8531 | S_z:  0.1101 | G: -0.0001 | S_z:  0.1075 | dist: 0.5651
+Step: 554  | D: -0.0553 | CE:  0.0308 | S_OoD:  0.8613 | S_z:  0.1126 | G: -0.0001 | S_z:  0.1122 | dist: 0.3748
+Step: 654  | D: -0.0858 | CE:  0.0002 | S_OoD:  0.8598 | S_z:  0.0543 | G: -0.0001 | S_z:  0.0537 | dist: 0.2615
+Step: 754  | D: -0.0861 | CE:  0.0001 | S_OoD:  0.8634 | S_z:  0.1053 | G: -0.0001 | S_z:  0.1043 | dist: 0.6262
+Step: 854  | D: -0.0628 | CE:  0.0232 | S_OoD:  0.8612 | S_z:  0.1200 | G: -0.0001 | S_z:  0.1176 | dist: 0.5776
+Step: 954  | D: -0.0841 | CE:  0.0019 | S_OoD:  0.8617 | S_z:  0.1416 | G: -0.0001 | S_z:  0.1412 | dist: 0.5177
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9963133640552996
+mean: 0.99631 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.051130497455596946
+mean: 0.05113 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9612903225806452
+mean: 0.96129 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.38939196109771795
+mean: 0.38939 | std: 0.0 | MAD: 0.0
+AUROC: 0.9987298678356579
+
+Validation Accuracy: 0.9587706978119455
+Validation Classification Loss: 0.24948606378885427
+New checkpoint created at the end of epoch 59.
+Step: 60   | D: -0.0862 | CE:  0.0003 | S_OoD:  0.8653 | S_z:  0.0905 | G: -0.0001 | S_z:  0.0883 | dist: 0.2649
+Step: 160  | D: -0.0847 | CE:  0.0009 | S_OoD:  0.8573 | S_z:  0.0855 | G: -0.0001 | S_z:  0.0885 | dist: 0.2442
+Step: 260  | D: -0.0857 | CE:  0.0004 | S_OoD:  0.8621 | S_z:  0.1015 | G: -0.0001 | S_z:  0.1008 | dist: 0.4040
+Step: 360  | D:  0.0471 | CE:  0.1323 | S_OoD:  0.8534 | S_z:  0.1212 | G: -0.0001 | S_z:  0.1015 | dist: 0.3555
+Step: 460  | D: -0.0721 | CE:  0.0134 | S_OoD:  0.8567 | S_z:  0.1233 | G: -0.0001 | S_z:  0.1170 | dist: 0.2847
+Step: 560  | D: -0.0013 | CE:  0.0833 | S_OoD:  0.8475 | S_z:  0.1317 | G: -0.0001 | S_z:  0.1148 | dist: 0.3095
+Step: 660  | D: -0.0503 | CE:  0.0354 | S_OoD:  0.8580 | S_z:  0.0688 | G: -0.0001 | S_z:  0.0720 | dist: 0.2579
+Step: 760  | D:  0.0022 | CE:  0.0874 | S_OoD:  0.8532 | S_z:  0.1216 | G: -0.0001 | S_z:  0.1287 | dist: 0.5061
+Step: 860  | D: -0.0656 | CE:  0.0196 | S_OoD:  0.8533 | S_z:  0.1267 | G: -0.0001 | S_z:  0.1319 | dist: 0.3651
+Step: 960  | D: -0.0208 | CE:  0.0646 | S_OoD:  0.8561 | S_z:  0.1469 | G: -0.0001 | S_z:  0.1361 | dist: 0.3004
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9419354838709677
+mean: 0.94194 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.1720791220664981
+mean: 0.17208 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7311827956989247
+mean: 0.73118 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.46221708059311034
+mean: 0.46222 | std: 0.0 | MAD: 0.0
+AUROC: 0.9896269763600561
+
+Validation Accuracy: 0.9369240341021093
+Validation Classification Loss: 0.34940288140925085
+Step: 66   | D: -0.0830 | CE:  0.0014 | S_OoD:  0.8455 | S_z:  0.1463 | G: -0.0001 | S_z:  0.1467 | dist: 0.3680
+Step: 166  | D: -0.0821 | CE:  0.0035 | S_OoD:  0.8566 | S_z:  0.1058 | G: -0.0001 | S_z:  0.1049 | dist: 0.1456
+Step: 266  | D: -0.0724 | CE:  0.0136 | S_OoD:  0.8610 | S_z:  0.1165 | G: -0.0001 | S_z:  0.1147 | dist: 0.1097
+Step: 366  | D: -0.0850 | CE:  0.0001 | S_OoD:  0.8531 | S_z:  0.1574 | G: -0.0002 | S_z:  0.1568 | dist: 0.2222
+Step: 466  | D: -0.0859 | CE:  0.0001 | S_OoD:  0.8613 | S_z:  0.1026 | G: -0.0001 | S_z:  0.1006 | dist: 0.3458
+Step: 566  | D: -0.0799 | CE:  0.0062 | S_OoD:  0.8626 | S_z:  0.1306 | G: -0.0001 | S_z:  0.1286 | dist: 0.4693
+Step: 666  | D: -0.0766 | CE:  0.0093 | S_OoD:  0.8594 | S_z:  0.1044 | G: -0.0001 | S_z:  0.1013 | dist: 0.2614
+Step: 766  | D: -0.0722 | CE:  0.0137 | S_OoD:  0.8606 | S_z:  0.1278 | G: -0.0001 | S_z:  0.1235 | dist: 0.3868
+Step: 866  | D: -0.0821 | CE:  0.0030 | S_OoD:  0.8525 | S_z:  0.1038 | G: -0.0001 | S_z:  0.1014 | dist: 0.2532
+Step: 966  | D: -0.0839 | CE:  0.0020 | S_OoD:  0.8595 | S_z:  0.1037 | G: -0.0001 | S_z:  0.1026 | dist: 0.4012
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9987711213517665
+mean: 0.99877 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.0476630449295044
+mean: 0.04766 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.978494623655914
+mean: 0.97849 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.38957563877105755
+mean: 0.38958 | std: 0.0 | MAD: 0.0
+AUROC: 0.9992286260151267
+
+Validation Accuracy: 0.960795048541297
+Validation Classification Loss: 0.23008943218123062
+Step: 72   | D: -0.0860 | CE:  0.0003 | S_OoD:  0.8636 | S_z:  0.0935 | G: -0.0001 | S_z:  0.0922 | dist: 0.3997
+Step: 172  | D: -0.0844 | CE:  0.0019 | S_OoD:  0.8645 | S_z:  0.1755 | G: -0.0002 | S_z:  0.1740 | dist: 0.4948
+Step: 272  | D: -0.0859 | CE:  0.0002 | S_OoD:  0.8621 | S_z:  0.0781 | G: -0.0001 | S_z:  0.0772 | dist: 0.3750
+Step: 372  | D: -0.0859 | CE:  0.0004 | S_OoD:  0.8639 | S_z:  0.0914 | G: -0.0001 | S_z:  0.0902 | dist: 0.2118
+Step: 472  | D: -0.0841 | CE:  0.0018 | S_OoD:  0.8590 | S_z:  0.0712 | G: -0.0001 | S_z:  0.0698 | dist: 0.3228
+Step: 572  | D: -0.0855 | CE:  0.0003 | S_OoD:  0.8593 | S_z:  0.1151 | G: -0.0001 | S_z:  0.1140 | dist: 0.4020
+Step: 672  | D: -0.0532 | CE:  0.0333 | S_OoD:  0.8656 | S_z:  0.1078 | G: -0.0001 | S_z:  0.1160 | dist: 0.4581
+Step: 772  | D: -0.0839 | CE:  0.0009 | S_OoD:  0.8495 | S_z:  0.0776 | G: -0.0001 | S_z:  0.0917 | dist: 0.3267
+Step: 872  | D: -0.0812 | CE:  0.0040 | S_OoD:  0.8535 | S_z:  0.0921 | G: -0.0001 | S_z:  0.0995 | dist: 0.3409
+Step: 972  | D: -0.0800 | CE:  0.0054 | S_OoD:  0.8555 | S_z:  0.1102 | G: -0.0001 | S_z:  0.1050 | dist: 0.3124
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.8098310291858679
+mean: 0.80983 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.154242753982544
+mean: 0.15424 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.6009216589861751
+mean: 0.60092 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.445159423351288
+mean: 0.44516 | std: 0.0 | MAD: 0.0
+AUROC: 0.9753038189614702
+
+Validation Accuracy: 0.9393380088212104
+Validation Classification Loss: 0.3313081051880923
+Step: 78   | D: -0.0374 | CE:  0.0461 | S_OoD:  0.8363 | S_z:  0.1290 | G: -0.0001 | S_z:  0.1246 | dist: 0.3014
+Step: 178  | D: -0.0763 | CE:  0.0093 | S_OoD:  0.8566 | S_z:  0.0737 | G: -0.0001 | S_z:  0.0686 | dist: 0.5333
+Step: 278  | D: -0.0834 | CE:  0.0025 | S_OoD:  0.8595 | S_z:  0.0960 | G: -0.0001 | S_z:  0.0974 | dist: 0.4314
+Step: 378  | D: -0.0610 | CE:  0.0250 | S_OoD:  0.8614 | S_z:  0.1201 | G: -0.0001 | S_z:  0.1196 | dist: 0.4565
+Step: 478  | D: -0.0860 | CE:  0.0004 | S_OoD:  0.8649 | S_z:  0.0841 | G: -0.0001 | S_z:  0.0831 | dist: 0.3462
+Step: 578  | D: -0.0837 | CE:  0.0012 | S_OoD:  0.8498 | S_z:  0.1074 | G: -0.0001 | S_z:  0.1098 | dist: 0.3498
+Step: 678  | D: -0.0546 | CE:  0.0311 | S_OoD:  0.8574 | S_z:  0.0639 | G: -0.0001 | S_z:  0.0645 | dist: 0.2570
+Step: 778  | D: -0.0823 | CE:  0.0033 | S_OoD:  0.8573 | S_z:  0.1103 | G: -0.0001 | S_z:  0.1193 | dist: 0.2172
+Step: 878  | D: -0.0214 | CE:  0.0644 | S_OoD:  0.8587 | S_z:  0.1017 | G: -0.0001 | S_z:  0.1063 | dist: 0.1205
+Step: 978  | D: -0.0843 | CE:  0.0012 | S_OoD:  0.8554 | S_z:  0.0852 | G: -0.0001 | S_z:  0.0868 | dist: 0.3461
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9984639016897081
+mean: 0.99846 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.06926605701446542
+mean: 0.06927 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9631336405529954
+mean: 0.96313 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4079705572128296
+mean: 0.40797 | std: 0.0 | MAD: 0.0
+AUROC: 0.9987512802786276
+
+Validation Accuracy: 0.956669346294106
+Validation Classification Loss: 0.25229492077010085
+New checkpoint created at the end of epoch 63.
+Step: 84   | D: -0.0849 | CE:  0.0011 | S_OoD:  0.8612 | S_z:  0.0985 | G: -0.0001 | S_z:  0.0975 | dist: 0.2421
+Step: 184  | D: -0.0820 | CE:  0.0033 | S_OoD:  0.8542 | S_z:  0.1257 | G: -0.0001 | S_z:  0.1251 | dist: 0.4279
+Step: 284  | D: -0.0836 | CE:  0.0024 | S_OoD:  0.8607 | S_z:  0.0803 | G: -0.0001 | S_z:  0.0783 | dist: 0.3987
+Step: 384  | D: -0.0858 | CE:  0.0002 | S_OoD:  0.8606 | S_z:  0.1086 | G: -0.0001 | S_z:  0.1073 | dist: 0.2855
+Step: 484  | D: -0.0718 | CE:  0.0142 | S_OoD:  0.8602 | S_z:  0.0919 | G: -0.0001 | S_z:  0.0816 | dist: 0.4368
+Step: 584  | D:  0.0067 | CE:  0.0901 | S_OoD:  0.8337 | S_z:  0.0398 | G: -0.0001 | S_z:  0.0510 | dist: 0.3763
+Step: 684  | D: -0.0770 | CE:  0.0091 | S_OoD:  0.8615 | S_z:  0.0912 | G: -0.0001 | S_z:  0.0866 | dist: 0.2559
+Step: 784  | D: -0.0837 | CE:  0.0021 | S_OoD:  0.8588 | S_z:  0.0911 | G: -0.0001 | S_z:  0.0890 | dist: 0.3864
+Step: 884  | D: -0.0788 | CE:  0.0065 | S_OoD:  0.8543 | S_z:  0.0942 | G: -0.0001 | S_z:  0.0944 | dist: 0.3916
+Step: 984  | D: -0.0822 | CE:  0.0037 | S_OoD:  0.8598 | S_z:  0.0719 | G: -0.0001 | S_z:  0.0724 | dist: 0.4277
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9996927803379416
+mean: 0.99969 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.04398808479309086
+mean: 0.04399 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9640552995391705
+mean: 0.96406 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3887301015853899
+mean: 0.38873 | std: 0.0 | MAD: 0.0
+AUROC: 0.9989527528207607
+
+Validation Accuracy: 0.9589516496648925
+Validation Classification Loss: 0.24755348500764923
+Step: 90   | D: -0.0854 | CE:  0.0001 | S_OoD:  0.8559 | S_z:  0.0671 | G: -0.0001 | S_z:  0.0652 | dist: 0.3159
+Step: 190  | D: -0.0289 | CE:  0.0569 | S_OoD:  0.8587 | S_z:  0.0981 | G: -0.0001 | S_z:  0.1068 | dist: 0.2906
+Step: 290  | D: -0.0857 | CE:  0.0005 | S_OoD:  0.8634 | S_z:  0.0997 | G: -0.0001 | S_z:  0.0988 | dist: 0.3265
+Step: 390  | D: -0.0514 | CE:  0.0348 | S_OoD:  0.8627 | S_z:  0.1360 | G: -0.0001 | S_z:  0.1306 | dist: 0.2353
+Step: 490  | D: -0.0819 | CE:  0.0024 | S_OoD:  0.8443 | S_z:  0.1175 | G: -0.0001 | S_z:  0.1142 | dist: 0.3081
+Step: 590  | D: -0.0775 | CE:  0.0082 | S_OoD:  0.8586 | S_z:  0.0948 | G: -0.0001 | S_z:  0.0936 | dist: 0.2380
+Step: 690  | D: -0.0852 | CE:  0.0004 | S_OoD:  0.8575 | S_z:  0.1085 | G: -0.0001 | S_z:  0.1079 | dist: 0.2162
+Step: 790  | D: -0.0845 | CE:  0.0003 | S_OoD:  0.8491 | S_z:  0.1059 | G: -0.0001 | S_z:  0.1069 | dist: 0.4405
+Step: 890  | D: -0.0830 | CE:  0.0031 | S_OoD:  0.8620 | S_z:  0.1012 | G: -0.0001 | S_z:  0.1010 | dist: 0.2636
+Step: 990  | D: -0.0849 | CE:  0.0007 | S_OoD:  0.8571 | S_z:  0.1119 | G: -0.0001 | S_z:  0.1074 | dist: 0.3486
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9990783410138249
+mean: 0.99908 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.10600323677063006
+mean: 0.106 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9062980030721967
+mean: 0.9063 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.42885283946991126
+mean: 0.42885 | std: 0.0 | MAD: 0.0
+AUROC: 0.9973177054196816
+
+Validation Accuracy: 0.948198489552533
+Validation Classification Loss: 0.3095560133315916
+Step: 96   | D: -0.0813 | CE:  0.0035 | S_OoD:  0.8494 | S_z:  0.1067 | G: -0.0001 | S_z:  0.1055 | dist: 0.5721
+Step: 196  | D: -0.0726 | CE:  0.0127 | S_OoD:  0.8539 | S_z:  0.1134 | G: -0.0001 | S_z:  0.1143 | dist: 0.3266
+Step: 296  | D:  0.0402 | CE:  0.1249 | S_OoD:  0.8480 | S_z:  0.1104 | G: -0.0001 | S_z:  0.1082 | dist: 0.4855
+Step: 396  | D: -0.0840 | CE:  0.0019 | S_OoD:  0.8600 | S_z:  0.0950 | G: -0.0001 | S_z:  0.0932 | dist: 0.4711
+Step: 496  | D: -0.0858 | CE:  0.0003 | S_OoD:  0.8617 | S_z:  0.0839 | G: -0.0001 | S_z:  0.0826 | dist: 0.3596
+Step: 596  | D: -0.0797 | CE:  0.0065 | S_OoD:  0.8632 | S_z:  0.0954 | G: -0.0001 | S_z:  0.0984 | dist: 0.4233
+Step: 696  | D: -0.0861 | CE:  0.0002 | S_OoD:  0.8634 | S_z:  0.1006 | G: -0.0001 | S_z:  0.0986 | dist: 0.2728
+Step: 796  | D: -0.0448 | CE:  0.0410 | S_OoD:  0.8589 | S_z:  0.1113 | G: -0.0001 | S_z:  0.0938 | dist: 0.2523
+Step: 896  | D: -0.0695 | CE:  0.0169 | S_OoD:  0.8649 | S_z:  0.0805 | G: -0.0001 | S_z:  0.0717 | dist: 0.5449
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9262672811059908
+mean: 0.92627 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.17316271066665673
+mean: 0.17316 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7680491551459293
+mean: 0.76805 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4609103202819829
+mean: 0.46091 | std: 0.0 | MAD: 0.0
+AUROC: 0.9879668409943007
+
+Validation Accuracy: 0.9372258771929824
+Validation Classification Loss: 0.32438001242136644
+Step: 2    | D:  0.3823 | CE:  0.4368 | S_OoD:  0.5475 | S_z:  0.1920 | G: -0.0002 | S_z:  0.2022 | dist: 0.4765
+Step: 102  | D: -0.0257 | CE:  0.0593 | S_OoD:  0.8510 | S_z:  0.1012 | G: -0.0001 | S_z:  0.0988 | dist: 0.3078
+Step: 202  | D: -0.0854 | CE:  0.0003 | S_OoD:  0.8581 | S_z:  0.0987 | G: -0.0001 | S_z:  0.0989 | dist: 0.1887
+Step: 302  | D: -0.0842 | CE:  0.0018 | S_OoD:  0.8612 | S_z:  0.0975 | G: -0.0001 | S_z:  0.0965 | dist: 0.4326
+Step: 402  | D: -0.0849 | CE:  0.0013 | S_OoD:  0.8636 | S_z:  0.0802 | G: -0.0001 | S_z:  0.0800 | dist: 0.2951
+Step: 502  | D: -0.0853 | CE:  0.0010 | S_OoD:  0.8637 | S_z:  0.1030 | G: -0.0001 | S_z:  0.1022 | dist: 0.2715
+Step: 602  | D: -0.0818 | CE:  0.0045 | S_OoD:  0.8637 | S_z:  0.0677 | G: -0.0001 | S_z:  0.0663 | dist: 0.2390
+Step: 702  | D: -0.0859 | CE:  0.0005 | S_OoD:  0.8651 | S_z:  0.0814 | G: -0.0001 | S_z:  0.0803 | dist: 0.4357
+Step: 802  | D: -0.0856 | CE:  0.0002 | S_OoD:  0.8595 | S_z:  0.1144 | G: -0.0001 | S_z:  0.1128 | dist: 0.3884
+Step: 902  | D: -0.0861 | CE:  0.0002 | S_OoD:  0.8650 | S_z:  0.1228 | G: -0.0001 | S_z:  0.1215 | dist: 0.4179
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9990783410138249
+mean: 0.99908 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.03591482639312745
+mean: 0.03591 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9800307219662059
+mean: 0.98003 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3737009191513087
+mean: 0.3737 | std: 0.0 | MAD: 0.0
+AUROC: 0.9993109037487421
+
+Validation Accuracy: 0.9621887628129312
+Validation Classification Loss: 0.2287874884990579
+New checkpoint created at the end of epoch 67.
+Step: 8    | D: -0.0860 | CE:  0.0005 | S_OoD:  0.8656 | S_z:  0.0518 | G: -0.0001 | S_z:  0.0506 | dist: 0.2802
+Step: 108  | D: -0.0814 | CE:  0.0049 | S_OoD:  0.8642 | S_z:  0.0852 | G: -0.0001 | S_z:  0.0886 | dist: 0.2516
+Step: 208  | D: -0.0863 | CE:  0.0002 | S_OoD:  0.8662 | S_z:  0.0978 | G: -0.0001 | S_z:  0.0964 | dist: 0.2165
+Step: 308  | D: -0.0813 | CE:  0.0051 | S_OoD:  0.8645 | S_z:  0.0727 | G: -0.0001 | S_z:  0.0720 | dist: 0.5937
+Step: 408  | D: -0.0857 | CE:  0.0007 | S_OoD:  0.8646 | S_z:  0.0859 | G: -0.0001 | S_z:  0.0842 | dist: 0.2988
+Step: 508  | D: -0.0863 | CE:  0.0003 | S_OoD:  0.8664 | S_z:  0.0869 | G: -0.0001 | S_z:  0.0856 | dist: 0.2793
+Step: 608  | D: -0.0863 | CE:  0.0004 | S_OoD:  0.8678 | S_z:  0.0757 | G: -0.0001 | S_z:  0.0739 | dist: 0.4037
+Step: 708  | D: -0.0862 | CE:  0.0001 | S_OoD:  0.8642 | S_z:  0.0983 | G: -0.0001 | S_z:  0.0944 | dist: 0.2689
+Step: 808  | D: -0.0812 | CE:  0.0044 | S_OoD:  0.8571 | S_z:  0.0828 | G: -0.0001 | S_z:  0.0803 | dist: 0.1841
+Step: 908  | D: -0.0773 | CE:  0.0080 | S_OoD:  0.8546 | S_z:  0.0976 | G: -0.0001 | S_z:  0.1037 | dist: 0.5318
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9996927803379416
+mean: 0.99969 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.06158860921859747
+mean: 0.06159 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9855606758832566
+mean: 0.98556 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.39330824375152773
+mean: 0.39331 | std: 0.0 | MAD: 0.0
+AUROC: 0.9994803149510714
+
+Validation Accuracy: 0.9564006135422826
+Validation Classification Loss: 0.2553711445734632
+Step: 14   | D: -0.0458 | CE:  0.0389 | S_OoD:  0.8483 | S_z:  0.1090 | G: -0.0001 | S_z:  0.0963 | dist: 0.0638
+Step: 114  | D: -0.0852 | CE:  0.0005 | S_OoD:  0.8573 | S_z:  0.0843 | G: -0.0001 | S_z:  0.0845 | dist: 0.6083
+Step: 214  | D: -0.0848 | CE:  0.0010 | S_OoD:  0.8594 | S_z:  0.0947 | G: -0.0001 | S_z:  0.0950 | dist: 0.2578
+Step: 314  | D: -0.0858 | CE:  0.0004 | S_OoD:  0.8623 | S_z:  0.0858 | G: -0.0001 | S_z:  0.0856 | dist: 0.4085
+Step: 414  | D: -0.0840 | CE:  0.0016 | S_OoD:  0.8568 | S_z:  0.0724 | G: -0.0001 | S_z:  0.0675 | dist: 0.3611
+Step: 514  | D: -0.0724 | CE:  0.0135 | S_OoD:  0.8596 | S_z:  0.0755 | G: -0.0001 | S_z:  0.0735 | dist: 0.2455
+Step: 614  | D: -0.0506 | CE:  0.0348 | S_OoD:  0.8545 | S_z:  0.0720 | G: -0.0001 | S_z:  0.0723 | dist: 0.4534
+Step: 714  | D: -0.0856 | CE:  0.0003 | S_OoD:  0.8608 | S_z:  0.1162 | G: -0.0001 | S_z:  0.1150 | dist: 0.3774
+Step: 814  | D: -0.0815 | CE:  0.0045 | S_OoD:  0.8611 | S_z:  0.0980 | G: -0.0001 | S_z:  0.0998 | dist: 0.3719
+Step: 914  | D: -0.0841 | CE:  0.0018 | S_OoD:  0.8605 | S_z:  0.0978 | G: -0.0001 | S_z:  0.0977 | dist: 0.4781
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9987711213517665
+mean: 0.99877 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.06509354114532473
+mean: 0.06509 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9075268817204301
+mean: 0.90753 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3981697702407837
+mean: 0.39817 | std: 0.0 | MAD: 0.0
+AUROC: 0.9973553103903897
+
+Validation Accuracy: 0.9551824610684014
+Validation Classification Loss: 0.25592184371054644
+Step: 20   | D: -0.0839 | CE:  0.0011 | S_OoD:  0.8518 | S_z:  0.1038 | G: -0.0001 | S_z:  0.1029 | dist: 0.3362
+Step: 120  | D: -0.0800 | CE:  0.0063 | S_OoD:  0.8636 | S_z:  0.0901 | G: -0.0001 | S_z:  0.0896 | dist: 0.4690
+Step: 220  | D: -0.0860 | CE:  0.0003 | S_OoD:  0.8632 | S_z:  0.1098 | G: -0.0001 | S_z:  0.1091 | dist: 0.4524
+Step: 320  | D: -0.0817 | CE:  0.0049 | S_OoD:  0.8669 | S_z:  0.0798 | G: -0.0001 | S_z:  0.0793 | dist: 0.3130
+Step: 420  | D: -0.0865 | CE:  0.0001 | S_OoD:  0.8666 | S_z:  0.1180 | G: -0.0001 | S_z:  0.1157 | dist: 0.3154
+Step: 520  | D: -0.0847 | CE:  0.0013 | S_OoD:  0.8612 | S_z:  0.0967 | G: -0.0001 | S_z:  0.0950 | dist: 0.3794
+Step: 620  | D: -0.0794 | CE:  0.0060 | S_OoD:  0.8549 | S_z:  0.1071 | G: -0.0001 | S_z:  0.1069 | dist: 0.4288
+Step: 720  | D: -0.0782 | CE:  0.0073 | S_OoD:  0.8560 | S_z:  0.1042 | G: -0.0001 | S_z:  0.0947 | dist: 0.2560
+Step: 820  | D: -0.0848 | CE:  0.0007 | S_OoD:  0.8562 | S_z:  0.1111 | G: -0.0001 | S_z:  0.1102 | dist: 0.3128
+Step: 920  | D: -0.0849 | CE:  0.0009 | S_OoD:  0.8597 | S_z:  0.0917 | G: -0.0001 | S_z:  0.0902 | dist: 0.3363
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9987711213517665
+mean: 0.99877 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.05296365022659335
+mean: 0.05296 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9662058371735791
+mean: 0.96621 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.38855521917343155
+mean: 0.38856 | std: 0.0 | MAD: 0.0
+AUROC: 0.9989720408796244
+
+Validation Accuracy: 0.9574100938793613
+Validation Classification Loss: 0.2577748667492742
+Step: 26   | D: -0.0822 | CE:  0.0036 | S_OoD:  0.8594 | S_z:  0.0768 | G: -0.0001 | S_z:  0.0781 | dist: 0.3355
+Step: 126  | D: -0.0767 | CE:  0.0086 | S_OoD:  0.8545 | S_z:  0.1413 | G: -0.0001 | S_z:  0.1419 | dist: 0.5228
+Step: 226  | D: -0.0710 | CE:  0.0152 | S_OoD:  0.8629 | S_z:  0.0649 | G: -0.0001 | S_z:  0.0770 | dist: 0.3712
+Step: 326  | D: -0.0843 | CE:  0.0017 | S_OoD:  0.8608 | S_z:  0.1041 | G: -0.0001 | S_z:  0.1026 | dist: 0.4150
+Step: 426  | D: -0.0861 | CE:  0.0001 | S_OoD:  0.8627 | S_z:  0.0848 | G: -0.0001 | S_z:  0.0851 | dist: 0.3622
+Step: 526  | D: -0.0643 | CE:  0.0189 | S_OoD:  0.8327 | S_z:  0.0731 | G: -0.0001 | S_z:  0.0847 | dist: 0.3402
+Step: 626  | D: -0.0853 | CE:  0.0005 | S_OoD:  0.8591 | S_z:  0.0568 | G: -0.0001 | S_z:  0.0561 | dist: 0.2778
+Step: 726  | D: -0.0843 | CE:  0.0011 | S_OoD:  0.8553 | S_z:  0.1284 | G: -0.0001 | S_z:  0.1288 | dist: 0.5332
+Step: 826  | D: -0.0829 | CE:  0.0027 | S_OoD:  0.8578 | S_z:  0.1133 | G: -0.0001 | S_z:  0.1138 | dist: 0.4767
+Step: 926  | D: -0.0857 | CE:  0.0006 | S_OoD:  0.8632 | S_z:  0.0875 | G: -0.0001 | S_z:  0.0870 | dist: 0.2474
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9026113671274961
+mean: 0.90261 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.2633337974548341
+mean: 0.26333 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.7526881720430108
+mean: 0.75269 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4877384161949159
+mean: 0.48774 | std: 0.0 | MAD: 0.0
+AUROC: 0.9866334224158401
+
+Validation Accuracy: 0.9021912884387936
+Validation Classification Loss: 0.5294227337339119
+New checkpoint created at the end of epoch 71.
+Step: 32   | D:  0.0133 | CE:  0.0950 | S_OoD:  0.8184 | S_z:  0.1394 | G: -0.0001 | S_z:  0.1226 | dist: 0.3693
+Step: 132  | D: -0.0833 | CE:  0.0014 | S_OoD:  0.8481 | S_z:  0.1249 | G: -0.0001 | S_z:  0.1243 | dist: 0.4011
+Step: 232  | D: -0.0803 | CE:  0.0040 | S_OoD:  0.8433 | S_z:  0.0981 | G: -0.0001 | S_z:  0.0979 | dist: 0.5354
+Step: 332  | D: -0.0836 | CE:  0.0018 | S_OoD:  0.8542 | S_z:  0.0756 | G: -0.0001 | S_z:  0.0745 | dist: 0.3424
+Step: 432  | D: -0.0724 | CE:  0.0131 | S_OoD:  0.8556 | S_z:  0.0929 | G: -0.0001 | S_z:  0.0902 | dist: 0.2499
+Step: 532  | D: -0.0855 | CE:  0.0006 | S_OoD:  0.8618 | S_z:  0.0607 | G: -0.0001 | S_z:  0.0598 | dist: 0.4789
+Step: 632  | D: -0.0860 | CE:  0.0005 | S_OoD:  0.8655 | S_z:  0.1063 | G: -0.0001 | S_z:  0.1057 | dist: 0.4669
+Step: 732  | D: -0.0836 | CE:  0.0028 | S_OoD:  0.8647 | S_z:  0.1226 | G: -0.0001 | S_z:  0.1209 | dist: 0.2709
+Step: 832  | D: -0.0419 | CE:  0.0444 | S_OoD:  0.8644 | S_z:  0.1296 | G: -0.0001 | S_z:  0.1408 | dist: 0.3960
+Step: 932  | D: -0.0857 | CE:  0.0004 | S_OoD:  0.8615 | S_z:  0.0823 | G: -0.0001 | S_z:  0.0813 | dist: 0.3428
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9990783410138249
+mean: 0.99908 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.04559252262115487
+mean: 0.04559 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9741935483870968
+mean: 0.97419 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3901764798164371
+mean: 0.39018 | std: 0.0 | MAD: 0.0
+AUROC: 0.9991445273808495
+
+Validation Accuracy: 0.9617552483737433
+Validation Classification Loss: 0.22859928271212626
+Step: 38   | D: -0.0853 | CE:  0.0012 | S_OoD:  0.8663 | S_z:  0.0779 | G: -0.0001 | S_z:  0.0771 | dist: 0.2038
+Step: 138  | D: -0.0865 | CE:  0.0001 | S_OoD:  0.8667 | S_z:  0.0754 | G: -0.0001 | S_z:  0.0747 | dist: 0.4538
+Step: 238  | D: -0.0864 | CE:  0.0001 | S_OoD:  0.8671 | S_z:  0.1236 | G: -0.0001 | S_z:  0.1213 | dist: 0.4323
+Step: 338  | D: -0.0854 | CE:  0.0008 | S_OoD:  0.8627 | S_z:  0.0813 | G: -0.0001 | S_z:  0.0803 | dist: 0.1421
+Step: 438  | D: -0.0842 | CE:  0.0022 | S_OoD:  0.8640 | S_z:  0.0527 | G: -0.0001 | S_z:  0.0524 | dist: 0.4576
+Step: 538  | D: -0.0767 | CE:  0.0097 | S_OoD:  0.8656 | S_z:  0.1108 | G: -0.0001 | S_z:  0.1012 | dist: 0.3149
+Step: 638  | D: -0.0863 | CE:  0.0004 | S_OoD:  0.8682 | S_z:  0.1178 | G: -0.0001 | S_z:  0.1157 | dist: 0.0994
+Step: 738  | D: -0.0835 | CE:  0.0032 | S_OoD:  0.8681 | S_z:  0.0778 | G: -0.0001 | S_z:  0.0766 | dist: 0.2824
+Step: 838  | D: -0.0860 | CE:  0.0001 | S_OoD:  0.8624 | S_z:  0.0806 | G: -0.0001 | S_z:  0.0786 | dist: 0.4846
+Step: 938  | D: -0.0845 | CE:  0.0018 | S_OoD:  0.8636 | S_z:  0.0775 | G: -0.0001 | S_z:  0.0756 | dist: 0.4014
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9993855606758832
+mean: 0.99939 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.04125646352767959
+mean: 0.04126 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9757296466973886
+mean: 0.97573 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.38353762388229423
+mean: 0.38354 | std: 0.0 | MAD: 0.0
+AUROC: 0.9992303929631767
+
+Validation Accuracy: 0.9607511580918588
+Validation Classification Loss: 0.24731829143225756
+Step: 44   | D: -0.0749 | CE:  0.0114 | S_OoD:  0.8638 | S_z:  0.0577 | G: -0.0001 | S_z:  0.0565 | dist: 0.3969
+Step: 144  | D: -0.0825 | CE:  0.0038 | S_OoD:  0.8634 | S_z:  0.0879 | G: -0.0001 | S_z:  0.0876 | dist: 0.4561
+Step: 244  | D: -0.0862 | CE:  0.0002 | S_OoD:  0.8647 | S_z:  0.1193 | G: -0.0001 | S_z:  0.1187 | dist: 0.4391
+Step: 344  | D: -0.0752 | CE:  0.0110 | S_OoD:  0.8630 | S_z:  0.1008 | G: -0.0001 | S_z:  0.0925 | dist: 0.2088
+Step: 444  | D: -0.0732 | CE:  0.0106 | S_OoD:  0.8386 | S_z:  0.1104 | G: -0.0001 | S_z:  0.1139 | dist: 0.3802
+Step: 544  | D: -0.0657 | CE:  0.0204 | S_OoD:  0.8622 | S_z:  0.1265 | G: -0.0001 | S_z:  0.1195 | dist: 0.2521
+Step: 644  | D: -0.0702 | CE:  0.0153 | S_OoD:  0.8561 | S_z:  0.1060 | G: -0.0001 | S_z:  0.1095 | dist: 0.6431
+Step: 744  | D: -0.0856 | CE:  0.0006 | S_OoD:  0.8633 | S_z:  0.0857 | G: -0.0001 | S_z:  0.0848 | dist: 0.3290
+Step: 844  | D: -0.0841 | CE:  0.0018 | S_OoD:  0.8604 | S_z:  0.0787 | G: -0.0001 | S_z:  0.0783 | dist: 0.3861
+Step: 944  | D: -0.0618 | CE:  0.0243 | S_OoD:  0.8614 | S_z:  0.0700 | G: -0.0001 | S_z:  0.0766 | dist: 0.5269
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9990783410138249
+mean: 0.99908 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.042473578453064
+mean: 0.04247 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9781874039938556
+mean: 0.97819 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3737560296058658
+mean: 0.37376 | std: 0.0 | MAD: 0.0
+AUROC: 0.9992950416807533
+
+Validation Accuracy: 0.9597308976443919
+Validation Classification Loss: 0.2514555460932498
+Step: 50   | D: -0.0862 | CE:  0.0003 | S_OoD:  0.8655 | S_z:  0.0829 | G: -0.0001 | S_z:  0.0818 | dist: 0.3903
+Step: 150  | D: -0.0488 | CE:  0.0368 | S_OoD:  0.8567 | S_z:  0.0751 | G: -0.0001 | S_z:  0.0717 | dist: 0.4253
+Step: 250  | D: -0.0841 | CE:  0.0014 | S_OoD:  0.8557 | S_z:  0.0869 | G: -0.0001 | S_z:  0.0873 | dist: 0.2302
+Step: 350  | D: -0.0229 | CE:  0.0621 | S_OoD:  0.8511 | S_z:  0.1090 | G: -0.0001 | S_z:  0.1063 | dist: 0.4301
+Step: 450  | D:  0.0153 | CE:  0.1013 | S_OoD:  0.8619 | S_z:  0.1165 | G: -0.0001 | S_z:  0.1334 | dist: 0.3182
+Step: 550  | D: -0.0832 | CE:  0.0022 | S_OoD:  0.8541 | S_z:  0.0892 | G: -0.0001 | S_z:  0.0879 | dist: 0.4672
+Step: 650  | D: -0.0658 | CE:  0.0194 | S_OoD:  0.8534 | S_z:  0.1020 | G: -0.0001 | S_z:  0.0979 | dist: 0.3697
+Step: 750  | D: -0.0854 | CE:  0.0001 | S_OoD:  0.8557 | S_z:  0.0789 | G: -0.0001 | S_z:  0.0798 | dist: 0.2089
+Step: 850  | D: -0.0752 | CE:  0.0105 | S_OoD:  0.8575 | S_z:  0.1079 | G: -0.0001 | S_z:  0.1048 | dist: 0.4495
+Step: 950  | D: -0.0853 | CE:  0.0007 | S_OoD:  0.8611 | S_z:  0.1183 | G: -0.0001 | S_z:  0.1163 | dist: 0.2637
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9996927803379416
+mean: 0.99969 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.052173876762390624
+mean: 0.05217 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9821812596006144
+mean: 0.98218 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.39325446844101003
+mean: 0.39325 | std: 0.0 | MAD: 0.0
+AUROC: 0.9994072361378373
+
+Validation Accuracy: 0.9597524578651685
+Validation Classification Loss: 0.24471357190789225
+New checkpoint created at the end of epoch 75.
+Step: 56   | D: -0.0847 | CE:  0.0015 | S_OoD:  0.8629 | S_z:  0.0964 | G: -0.0001 | S_z:  0.0953 | dist: 0.3052
+Step: 156  | D: -0.0686 | CE:  0.0178 | S_OoD:  0.8653 | S_z:  0.0948 | G: -0.0001 | S_z:  0.0935 | dist: 0.3288
+Step: 256  | D: -0.0860 | CE:  0.0005 | S_OoD:  0.8658 | S_z:  0.0735 | G: -0.0001 | S_z:  0.0727 | dist: 0.3085
+Step: 356  | D: -0.0865 | CE:  0.0001 | S_OoD:  0.8666 | S_z:  0.0855 | G: -0.0001 | S_z:  0.0839 | dist: 0.4054
+Step: 456  | D: -0.0684 | CE:  0.0167 | S_OoD:  0.8524 | S_z:  0.0907 | G: -0.0001 | S_z:  0.0869 | dist: 0.2637
+Step: 556  | D: -0.0810 | CE:  0.0053 | S_OoD:  0.8635 | S_z:  0.0873 | G: -0.0001 | S_z:  0.0938 | dist: 0.1150
+Step: 656  | D: -0.0856 | CE:  0.0008 | S_OoD:  0.8637 | S_z:  0.0682 | G: -0.0001 | S_z:  0.0670 | dist: 0.0854
+Step: 756  | D: -0.0852 | CE:  0.0005 | S_OoD:  0.8568 | S_z:  0.0492 | G: -0.0000 | S_z:  0.0490 | dist: 0.4431
+Step: 856  | D: -0.0859 | CE:  0.0002 | S_OoD:  0.8620 | S_z:  0.1093 | G: -0.0001 | S_z:  0.1022 | dist: 0.4960
+Step: 956  | D: -0.0856 | CE:  0.0003 | S_OoD:  0.8596 | S_z:  0.0607 | G: -0.0001 | S_z:  0.0664 | dist: 0.4223
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9996927803379416
+mean: 0.99969 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.05547887086868288
+mean: 0.05548 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9701996927803379
+mean: 0.9702 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.3975725340843209
+mean: 0.39757 | std: 0.0 | MAD: 0.0
+AUROC: 0.9991368795980692
+
+Validation Accuracy: 0.9565430650009857
+Validation Classification Loss: 0.26328054135081586
+Step: 62   | D: -0.0862 | CE:  0.0000 | S_OoD:  0.8629 | S_z:  0.0934 | G: -0.0001 | S_z:  0.0922 | dist: 0.2370
+Step: 162  | D: -0.0815 | CE:  0.0044 | S_OoD:  0.8601 | S_z:  0.0838 | G: -0.0001 | S_z:  0.0817 | dist: 0.3922
+Step: 262  | D: -0.0850 | CE:  0.0011 | S_OoD:  0.8610 | S_z:  0.0785 | G: -0.0001 | S_z:  0.0775 | dist: 0.2282
+Step: 362  | D: -0.0441 | CE:  0.0416 | S_OoD:  0.8580 | S_z:  0.0893 | G: -0.0001 | S_z:  0.0934 | dist: 0.5682
+Step: 462  | D: -0.0844 | CE:  0.0017 | S_OoD:  0.8612 | S_z:  0.0643 | G: -0.0001 | S_z:  0.0629 | dist: 0.3696
+Step: 562  | D: -0.0861 | CE:  0.0001 | S_OoD:  0.8624 | S_z:  0.1119 | G: -0.0001 | S_z:  0.1100 | dist: 0.3863
+Step: 662  | D: -0.0859 | CE:  0.0001 | S_OoD:  0.8606 | S_z:  0.0694 | G: -0.0001 | S_z:  0.0684 | dist: 0.4755
+Step: 762  | D: -0.0852 | CE:  0.0008 | S_OoD:  0.8612 | S_z:  0.1083 | G: -0.0001 | S_z:  0.1055 | dist: 0.4775
+Step: 862  | D: -0.0859 | CE:  0.0003 | S_OoD:  0.8635 | S_z:  0.1156 | G: -0.0001 | S_z:  0.1113 | dist: 0.3472
+Step: 962  | D: -0.0859 | CE:  0.0003 | S_OoD:  0.8622 | S_z:  0.0801 | G: -0.0001 | S_z:  0.0781 | dist: 0.1019
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9062980030721967
+mean: 0.9063 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.14654986858367927
+mean: 0.14655 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.6466973886328725
+mean: 0.6467 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4442777967453008
+mean: 0.44428 | std: 0.0 | MAD: 0.0
+AUROC: 0.9846130656906099
+
+Validation Accuracy: 0.9344553888231815
+Validation Classification Loss: 0.3566952222438916
+Step: 68   | D: -0.0673 | CE:  0.0181 | S_OoD:  0.8543 | S_z:  0.1124 | G: -0.0001 | S_z:  0.1072 | dist: 0.2461
+Step: 168  | D: -0.0837 | CE:  0.0026 | S_OoD:  0.8639 | S_z:  0.0925 | G: -0.0001 | S_z:  0.0912 | dist: 0.1891
+Step: 268  | D: -0.0858 | CE:  0.0006 | S_OoD:  0.8643 | S_z:  0.1061 | G: -0.0001 | S_z:  0.1048 | dist: 0.5464
+Step: 368  | D: -0.0846 | CE:  0.0010 | S_OoD:  0.8569 | S_z:  0.0802 | G: -0.0001 | S_z:  0.0792 | dist: 0.2929
+Step: 468  | D: -0.0833 | CE:  0.0030 | S_OoD:  0.8638 | S_z:  0.0601 | G: -0.0001 | S_z:  0.0592 | dist: 0.4102
+Step: 568  | D: -0.0854 | CE:  0.0012 | S_OoD:  0.8660 | S_z:  0.0597 | G: -0.0001 | S_z:  0.0585 | dist: 0.3956
+Step: 668  | D: -0.0859 | CE:  0.0006 | S_OoD:  0.8661 | S_z:  0.1143 | G: -0.0001 | S_z:  0.1122 | dist: 0.4536
+Step: 768  | D: -0.0861 | CE:  0.0002 | S_OoD:  0.8639 | S_z:  0.0909 | G: -0.0001 | S_z:  0.0869 | dist: 0.5592
+Step: 868  | D: -0.0670 | CE:  0.0187 | S_OoD:  0.8580 | S_z:  0.0720 | G: -0.0001 | S_z:  0.0786 | dist: 0.4792
+Step: 968  | D: -0.0859 | CE:  0.0002 | S_OoD:  0.8618 | S_z:  0.0903 | G: -0.0001 | S_z:  0.0892 | dist: 0.2162
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9993855606758832
+mean: 0.99939 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.059131753444671885
+mean: 0.05913 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9751152073732718
+mean: 0.97512 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.39121405363083134
+mean: 0.39121 | std: 0.0 | MAD: 0.0
+AUROC: 0.9992557506909137
+
+Validation Accuracy: 0.9569326889907352
+Validation Classification Loss: 0.24911303565893197
+Step: 74   | D: -0.0818 | CE:  0.0047 | S_OoD:  0.8650 | S_z:  0.0689 | G: -0.0001 | S_z:  0.0665 | dist: 0.3477
+Step: 174  | D: -0.0863 | CE:  0.0002 | S_OoD:  0.8651 | S_z:  0.1003 | G: -0.0001 | S_z:  0.0990 | dist: 0.4228
+Step: 274  | D: -0.0863 | CE:  0.0003 | S_OoD:  0.8676 | S_z:  0.1062 | G: -0.0001 | S_z:  0.1051 | dist: 0.2011
+Step: 374  | D: -0.0866 | CE:  0.0001 | S_OoD:  0.8679 | S_z:  0.0779 | G: -0.0001 | S_z:  0.0764 | dist: 0.3832
+Step: 474  | D: -0.0859 | CE:  0.0001 | S_OoD:  0.8605 | S_z:  0.1108 | G: -0.0001 | S_z:  0.1042 | dist: 0.3340
+Step: 574  | D: -0.0839 | CE:  0.0027 | S_OoD:  0.8665 | S_z:  0.0922 | G: -0.0001 | S_z:  0.0901 | dist: 0.2081
+Step: 674  | D: -0.0780 | CE:  0.0065 | S_OoD:  0.8453 | S_z:  0.0845 | G: -0.0001 | S_z:  0.0885 | dist: 0.3926
+Step: 774  | D: -0.0852 | CE:  0.0011 | S_OoD:  0.8643 | S_z:  0.1314 | G: -0.0001 | S_z:  0.1284 | dist: 0.3153
+Step: 874  | D: -0.0859 | CE:  0.0003 | S_OoD:  0.8624 | S_z:  0.0635 | G: -0.0001 | S_z:  0.0632 | dist: 0.2971
+Step: 974  | D: -0.0775 | CE:  0.0088 | S_OoD:  0.8639 | S_z:  0.0985 | G: -0.0001 | S_z:  0.0978 | dist: 0.4243
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.9849462365591398
+mean: 0.98495 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.1288467526435854
+mean: 0.12885 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.8811059907834101
+mean: 0.88111 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.4386480522155764
+mean: 0.43865 | std: 0.0 | MAD: 0.0
+AUROC: 0.9958703996209288
+
+Validation Accuracy: 0.9437547740488863
+Validation Classification Loss: 0.32861386220476274
+New checkpoint created at the end of epoch 79.
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+Validation Accuracy: 0.9421585477035284
+Validation Classification Loss: 0.3331172896982066
+MC #0 time spent: 21676.51 seconds | About 361.28 minutes | About 6.02 hours
+
+================================================================================
+Overall Statistics
+TPR@95TNR: [0.9840245775729647]
+mean: 0.98402 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: [0.12299432754516629]
+mean: 0.12299 | std: 0.0 | MAD: 0.0
+TPR@99TNR: [0.8804915514592934]
+mean: 0.88049 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold: [0.4410090780258185]
+mean: 0.44101 | std: 0.0 | MAD: 0.0
+AUROC: [0.9959354260067912]
+mean: 0.99594 | std: 0.0 | MAD: 0.0
+
+================================================================================
+EVALER & Stats saved successfully!
+Training time: 21707.97 seconds | About 361.8 minutes | About 6.03 hours

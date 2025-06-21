@@ -3,8 +3,8 @@ import numpy as np
 
 
 # GL
-# ACCOUNT = 'jhjin1'
-ACCOUNT = 'sunwbgt0'
+ACCOUNT = 'jhjin1'
+# ACCOUNT = 'sunwbgt0'
 # ACCOUNT = 'jhjin1'
 TIME = "8:00:00"
 # Configuration
@@ -21,8 +21,8 @@ TIME = "8:00:00"
 # EXP_DSET = '3DPC'
 # EXP_DSET = 'FashionMNIST'
 # EXP_DSET = 'FashionMNIST-R2'
-# EXP_DSET = 'CIFAR10-SVHN'
-EXP_DSET = 'SVHN-R2'
+EXP_DSET = 'CIFAR10-SVHN'
+# EXP_DSET = 'SVHN-R2'
 
 # N = [32, 64, 128, 256, 512, 1024]
 # N = [50, 100, 500, 1000, 1500, 2000]
