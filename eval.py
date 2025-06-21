@@ -185,10 +185,12 @@ class EVALER():
         self.tpr95_thresh.append(tpr_95_thresh)
         self.tpr99.append(tpr_99)
         self.tpr99_thresh.append(tpr_99_thresh)
-        auroc, tnr_at_tpr95, tnr_at_tpr99 = auroc_log(winv, woutv)
-        self.auroc.append(auroc)
-        self.tpr95_raw.append(tnr_at_tpr95)
-        self.tpr99_raw.append(tnr_at_tpr99)
+        auc = naive_auroc(-winv.cpu(), -woutv.cpu())
+        self.auroc.append(auc)
+        # auroc, tnr_at_tpr95, tnr_at_tpr99 = auroc_log(winv, woutv)
+        # self.auroc.append(auroc)
+        # self.tpr95_raw.append(tnr_at_tpr95)
+        # self.tpr99_raw.append(tnr_at_tpr99)
         # yxoutv = None
 
         w_lst, legend_lst = [winv], ['InD']
@@ -220,8 +222,9 @@ class EVALER():
         print_stats(self.tpr99, "TPR@99TNR")
         print_stats(self.tpr99_thresh, "TPR@99TNR-Threshold")
         print_stats(self.auroc, "AUROC")
-        print_stats(self.tpr95_raw, "TPR@95RAW")
-        print_stats(self.tpr99_raw, "TPR@99RAW")
+        # print_stats(self.auroc, "AUROC")
+        # print_stats(self.tpr95_raw, "TPR@95RAW")
+        # print_stats(self.tpr99_raw, "TPR@99RAW")
         print("\n" + line())
 
 
