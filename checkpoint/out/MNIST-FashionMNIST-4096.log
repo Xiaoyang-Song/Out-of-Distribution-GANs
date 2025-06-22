@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/gpfs/accounts/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/main/main_ood.py", line 94, in <module>
+    dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
+  File "/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/dataset.py", line 230, in __init__
+    self.initialize()
+  File "/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/dataset.py", line 235, in initialize
+    assert self.ind is not None and self.ood is not None
+AssertionError

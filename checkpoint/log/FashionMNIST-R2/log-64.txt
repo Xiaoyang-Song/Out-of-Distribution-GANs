@@ -2873,11 +2873,7 @@ mean: 0.8955 | std: 0.0 | MAD: 0.0
 TPR@99TNR-Threshold: [0.41469905555248293]
 mean: 0.4147 | std: 0.0 | MAD: 0.0
 AUROC: [0.0007006874999999844]
-mean: 0.0007 | std: 0.0 | MAD: 0.0
-TPR@95RAW: [0.0]
-mean: 0.0 | std: 0.0 | MAD: 0.0
-TPR@99RAW: [0.0]
-mean: 0.0 | std: 0.0 | MAD: 0.0
+mean: 0.0007 | std: 0.0 | MAD: 0.0∂
 
 ================================================================================
 EVALER & Stats saved successfully!

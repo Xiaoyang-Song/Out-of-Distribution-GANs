@@ -3,25 +3,18 @@ import numpy as np
 
 
 # GL
-ACCOUNT = 'jhjin1'
-# ACCOUNT = 'sunwbgt0'
 # ACCOUNT = 'jhjin1'
-TIME = "8:00:00"
+ACCOUNT = 'sunwbgt0'
+
+
+TIME = "7:00:00"
 # Configuration
-# EXP_DSET = 'CIFAR100-Places365'
-# EXP_DSET = 'CIFAR100-iSUN'
-# EXP_DSET = 'CIFAR100-Texture'
-# EXP_DSET = 'CIFAR100-LSUN-C'
-# EXP_DSET = 'ImageNet100-SUN'
-# EXP_DSET = 'ImageNet100-Places365-224'
-# EXP_DSET = 'ImageNet100-Texture-224'
-# EXP_DSET = 'ImageNet100-INAT'
-# EXP_DSET = 'ImageNet100'
-# EXP_DSET = 'CIFAR100'
+# EXP_DSET = 'MNIST-FashionMNIST'
 # EXP_DSET = '3DPC'
 # EXP_DSET = 'FashionMNIST'
 # EXP_DSET = 'FashionMNIST-R2'
-EXP_DSET = 'CIFAR10-SVHN'
+# EXP_DSET = 'CIFAR10-SVHN'
+EXP_DSET = 'SVHN'
 # EXP_DSET = 'SVHN-R2'
 
 # N = [32, 64, 128, 256, 512, 1024]

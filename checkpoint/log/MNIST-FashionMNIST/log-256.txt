@@ -1,0 +1,329 @@
+
+[KeOps] Warning : There were warnings or errors compiling formula :
+<stdin>:1:10: fatal error: cuda.h: No such file or directory
+compilation terminated.
+
+[KeOps] Warning : 
+    The location of Cuda header files cuda.h and nvrtc.h could not be detected on your system.
+    You must determine their location and then define the environment variable CUDA_PATH,
+    either before launching Python or using os.environ before importing keops. For example
+    if these files are in /vol/cuda/10.2.89-cudnn7.6.4.38/include you can do :
+      import os
+      os.environ['CUDA_PATH'] = '/vol/cuda/10.2.89-cudnn7.6.4.38'
+    
+[KeOps] Compiling cuda jit compiler engine ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/nvrtc_jit.cpp:5:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+Experiment: MNIST-FashionMNIST
+Experiment regime: Balanced
+Method: OOD-GAN
+================================================================================
+Number of observed OoD samples (class-level): 256
+Input Dimension: 28 x 28 x 1
+Number of InD classes: 10
+Number of Epochs: 50.
+Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.001 & B_InD: 64 & B_OoD: 32 & n_d: 1 & n_g: 1
+Score Function: Wasserstein
+Finished Processing Input Arguments.
+-- Current Device: Tesla V100-PCIE-16GB
+-- Device Total Memory: 15.77 GB
+-- Let's use 1 GPUs!
+tensor([0, 0, 0,  ..., 9, 9, 9])
+Counter({0: 256, 1: 256, 2: 256, 3: 256, 4: 256, 5: 256, 6: 256, 7: 256, 8: 256, 9: 256})
+Monte Carlo Iteration 0
+DenseNet
+Deep_G
+OoD sample shape: torch.Size([2560, 1, 28, 28])
+Step: 0    | D:  2.2922 | CE:  2.3749 | S_OoD:  0.8361 | S_z:  0.8438 | G: -0.0009 | S_z:  0.8629 | dist: 0.7461
+Step: 20   | D:  1.3945 | CE:  1.4749 | S_OoD:  0.8130 | S_z:  0.8512 | G: -0.0009 | S_z:  0.8520 | dist: 0.7327
+Step: 40   | D:  0.5336 | CE:  0.6010 | S_OoD:  0.6820 | S_z:  0.8064 | G: -0.0008 | S_z:  0.8011 | dist: 0.7346
+Step: 60   | D:  0.3893 | CE:  0.4573 | S_OoD:  0.6868 | S_z:  0.7308 | G: -0.0007 | S_z:  0.7316 | dist: 0.7568
+Step: 80   | D:  0.1183 | CE:  0.1829 | S_OoD:  0.6533 | S_z:  0.7145 | G: -0.0007 | S_z:  0.7088 | dist: 0.7904
+Step: 100  | D:  0.1946 | CE:  0.2647 | S_OoD:  0.7073 | S_z:  0.6755 | G: -0.0007 | S_z:  0.6730 | dist: 0.7779
+Step: 120  | D:  0.1257 | CE:  0.1886 | S_OoD:  0.6360 | S_z:  0.6818 | G: -0.0007 | S_z:  0.6783 | dist: 0.7316
+Step: 140  | D: -0.0092 | CE:  0.0652 | S_OoD:  0.7506 | S_z:  0.6402 | G: -0.0006 | S_z:  0.6381 | dist: 0.7634
+Step: 160  | D:  0.1232 | CE:  0.1918 | S_OoD:  0.6920 | S_z:  0.6101 | G: -0.0006 | S_z:  0.6053 | dist: 0.7396
+Step: 180  | D:  0.1722 | CE:  0.2434 | S_OoD:  0.7172 | S_z:  0.6099 | G: -0.0006 | S_z:  0.5991 | dist: 0.7431
+Step: 200  | D:  0.0180 | CE:  0.0932 | S_OoD:  0.7587 | S_z:  0.6386 | G: -0.0006 | S_z:  0.6377 | dist: 0.7489
+Step: 220  | D: -0.0446 | CE:  0.0299 | S_OoD:  0.7507 | S_z:  0.5723 | G: -0.0006 | S_z:  0.5811 | dist: 0.7357
+Step: 240  | D: -0.0163 | CE:  0.0597 | S_OoD:  0.7664 | S_z:  0.5880 | G: -0.0006 | S_z:  0.5796 | dist: 0.7798
+Step: 260  | D:  0.0305 | CE:  0.1095 | S_OoD:  0.7960 | S_z:  0.5856 | G: -0.0006 | S_z:  0.5790 | dist: 0.7328
+Step: 280  | D: -0.0494 | CE:  0.0326 | S_OoD:  0.8259 | S_z:  0.5702 | G: -0.0006 | S_z:  0.5620 | dist: 0.7712
+Step: 300  | D: -0.0191 | CE:  0.0603 | S_OoD:  0.7999 | S_z:  0.6014 | G: -0.0006 | S_z:  0.6110 | dist: 0.7701
+Step: 320  | D:  0.0867 | CE:  0.1662 | S_OoD:  0.8002 | S_z:  0.5632 | G: -0.0006 | S_z:  0.5597 | dist: 0.7352
+Step: 340  | D: -0.0630 | CE:  0.0187 | S_OoD:  0.8226 | S_z:  0.5313 | G: -0.0005 | S_z:  0.5351 | dist: 0.7349
+Step: 360  | D:  0.0085 | CE:  0.0895 | S_OoD:  0.8157 | S_z:  0.5862 | G: -0.0006 | S_z:  0.5777 | dist: 0.7464
+Step: 380  | D: -0.0275 | CE:  0.0539 | S_OoD:  0.8202 | S_z:  0.5856 | G: -0.0006 | S_z:  0.5811 | dist: 0.7579
+Step: 400  | D:  0.0523 | CE:  0.1330 | S_OoD:  0.8124 | S_z:  0.5571 | G: -0.0006 | S_z:  0.5568 | dist: 0.7898
+Step: 420  | D:  0.0383 | CE:  0.1198 | S_OoD:  0.8213 | S_z:  0.5869 | G: -0.0006 | S_z:  0.5843 | dist: 0.7436
+Step: 440  | D:  0.0062 | CE:  0.0876 | S_OoD:  0.8201 | S_z:  0.5589 | G: -0.0006 | S_z:  0.5615 | dist: 0.7935
+Step: 460  | D: -0.0278 | CE:  0.0548 | S_OoD:  0.8315 | S_z:  0.5722 | G: -0.0006 | S_z:  0.5679 | dist: 0.7195
+Step: 480  | D:  0.0449 | CE:  0.1247 | S_OoD:  0.8031 | S_z:  0.5134 | G: -0.0005 | S_z:  0.5148 | dist: 0.7147
+Step: 500  | D:  0.0318 | CE:  0.1122 | S_OoD:  0.8095 | S_z:  0.5508 | G: -0.0005 | S_z:  0.5440 | dist: 0.7113
+Step: 520  | D: -0.0357 | CE:  0.0422 | S_OoD:  0.7844 | S_z:  0.5603 | G: -0.0006 | S_z:  0.5559 | dist: 0.7357
+Step: 540  | D: -0.0258 | CE:  0.0566 | S_OoD:  0.8297 | S_z:  0.5235 | G: -0.0005 | S_z:  0.5122 | dist: 0.7750
+Step: 560  | D: -0.0404 | CE:  0.0412 | S_OoD:  0.8223 | S_z:  0.5515 | G: -0.0005 | S_z:  0.5434 | dist: 0.7256
+Step: 580  | D:  0.0048 | CE:  0.0880 | S_OoD:  0.8369 | S_z:  0.5189 | G: -0.0005 | S_z:  0.5181 | dist: 0.7550
+Step: 600  | D: -0.0584 | CE:  0.0206 | S_OoD:  0.7951 | S_z:  0.5480 | G: -0.0005 | S_z:  0.5462 | dist: 0.7488
+Step: 620  | D: -0.0698 | CE:  0.0130 | S_OoD:  0.8334 | S_z:  0.4929 | G: -0.0005 | S_z:  0.4892 | dist: 0.7365
+Step: 640  | D: -0.0619 | CE:  0.0226 | S_OoD:  0.8494 | S_z:  0.5083 | G: -0.0005 | S_z:  0.5052 | dist: 0.7568
+Step: 660  | D: -0.0659 | CE:  0.0187 | S_OoD:  0.8509 | S_z:  0.5176 | G: -0.0005 | S_z:  0.5137 | dist: 0.7805
+Step: 680  | D: -0.0727 | CE:  0.0118 | S_OoD:  0.8499 | S_z:  0.4828 | G: -0.0005 | S_z:  0.4782 | dist: 0.7675
+Step: 700  | D: -0.0522 | CE:  0.0312 | S_OoD:  0.8389 | S_z:  0.4854 | G: -0.0005 | S_z:  0.4988 | dist: 0.7143
+Step: 720  | D: -0.0608 | CE:  0.0232 | S_OoD:  0.8455 | S_z:  0.5184 | G: -0.0005 | S_z:  0.5063 | dist: 0.7728
+Step: 740  | D: -0.0558 | CE:  0.0264 | S_OoD:  0.8272 | S_z:  0.5101 | G: -0.0005 | S_z:  0.5026 | dist: 0.7535
+Step: 760  | D: -0.0617 | CE:  0.0225 | S_OoD:  0.8467 | S_z:  0.5013 | G: -0.0005 | S_z:  0.5040 | dist: 0.7114
+Step: 780  | D:  0.0288 | CE:  0.1126 | S_OoD:  0.8429 | S_z:  0.5256 | G: -0.0005 | S_z:  0.5188 | dist: 0.7053
+Step: 800  | D: -0.0634 | CE:  0.0221 | S_OoD:  0.8593 | S_z:  0.4907 | G: -0.0005 | S_z:  0.4874 | dist: 0.7566
+Step: 820  | D:  0.0861 | CE:  0.1697 | S_OoD:  0.8409 | S_z:  0.4833 | G: -0.0005 | S_z:  0.4805 | dist: 0.6992
+Step: 840  | D:  0.0852 | CE:  0.1681 | S_OoD:  0.8351 | S_z:  0.5560 | G: -0.0006 | S_z:  0.5534 | dist: 0.7525
+Step: 860  | D:  0.0858 | CE:  0.1696 | S_OoD:  0.8428 | S_z:  0.5175 | G: -0.0005 | S_z:  0.5353 | dist: 0.7416
+Step: 880  | D: -0.0374 | CE:  0.0467 | S_OoD:  0.8461 | S_z:  0.4913 | G: -0.0005 | S_z:  0.4832 | dist: 0.7499
+Step: 900  | D: -0.0717 | CE:  0.0141 | S_OoD:  0.8637 | S_z:  0.5127 | G: -0.0005 | S_z:  0.5125 | dist: 0.7716
+Step: 920  | D: -0.0584 | CE:  0.0273 | S_OoD:  0.8620 | S_z:  0.5479 | G: -0.0005 | S_z:  0.5304 | dist: 0.7693
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.15490444600582098
+mean: 0.1549 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.9998
+mean: 0.9998 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.47045064687728916
+mean: 0.47045 | std: 0.0 | MAD: 0.0
+AUROC: 0.99998226
+
+Validation Accuracy: 0.9820859872611465
+Validation Classification Loss: 0.05732005021896711
+Step: 2    | D: -0.0712 | CE:  0.0122 | S_OoD:  0.8384 | S_z:  0.4545 | G: -0.0005 | S_z:  0.4564 | dist: 0.7752
+Step: 22   | D: -0.0488 | CE:  0.0363 | S_OoD:  0.8557 | S_z:  0.4690 | G: -0.0005 | S_z:  0.4585 | dist: 0.7514
+Step: 42   | D: -0.0542 | CE:  0.0293 | S_OoD:  0.8406 | S_z:  0.5190 | G: -0.0005 | S_z:  0.5118 | dist: 0.7070
+Step: 62   | D: -0.0773 | CE:  0.0086 | S_OoD:  0.8634 | S_z:  0.4638 | G: -0.0005 | S_z:  0.4625 | dist: 0.7462
+Step: 82   | D: -0.0436 | CE:  0.0380 | S_OoD:  0.8207 | S_z:  0.4908 | G: -0.0005 | S_z:  0.4887 | dist: 0.7646
+Step: 102  | D: -0.0199 | CE:  0.0644 | S_OoD:  0.8476 | S_z:  0.4937 | G: -0.0005 | S_z:  0.4795 | dist: 0.7473
+Step: 122  | D: -0.0377 | CE:  0.0467 | S_OoD:  0.8490 | S_z:  0.4851 | G: -0.0005 | S_z:  0.4858 | dist: 0.7199
+Step: 142  | D: -0.0782 | CE:  0.0062 | S_OoD:  0.8492 | S_z:  0.4572 | G: -0.0005 | S_z:  0.4538 | dist: 0.7443
+Step: 162  | D: -0.0614 | CE:  0.0242 | S_OoD:  0.8610 | S_z:  0.4814 | G: -0.0005 | S_z:  0.4791 | dist: 0.7950
+Step: 182  | D: -0.0650 | CE:  0.0207 | S_OoD:  0.8619 | S_z:  0.5041 | G: -0.0005 | S_z:  0.4950 | dist: 0.7284
+Step: 202  | D: -0.0738 | CE:  0.0117 | S_OoD:  0.8592 | S_z:  0.4659 | G: -0.0005 | S_z:  0.4659 | dist: 0.7488
+Step: 222  | D:  0.0626 | CE:  0.1481 | S_OoD:  0.8600 | S_z:  0.4955 | G: -0.0005 | S_z:  0.4969 | dist: 0.7576
+Step: 242  | D: -0.0670 | CE:  0.0157 | S_OoD:  0.8326 | S_z:  0.4971 | G: -0.0005 | S_z:  0.4909 | dist: 0.7088
+Step: 262  | D:  0.0295 | CE:  0.1144 | S_OoD:  0.8544 | S_z:  0.5249 | G: -0.0005 | S_z:  0.5319 | dist: 0.7929
+Step: 282  | D:  0.0465 | CE:  0.1321 | S_OoD:  0.8603 | S_z:  0.4512 | G: -0.0005 | S_z:  0.4684 | dist: 0.7198
+Step: 302  | D: -0.0642 | CE:  0.0210 | S_OoD:  0.8561 | S_z:  0.4785 | G: -0.0005 | S_z:  0.4757 | dist: 0.7686
+Step: 322  | D: -0.0582 | CE:  0.0265 | S_OoD:  0.8520 | S_z:  0.5039 | G: -0.0005 | S_z:  0.4939 | dist: 0.7459
+Step: 342  | D:  0.0510 | CE:  0.1361 | S_OoD:  0.8551 | S_z:  0.4550 | G: -0.0005 | S_z:  0.4531 | dist: 0.7437
+Step: 362  | D: -0.0300 | CE:  0.0541 | S_OoD:  0.8461 | S_z:  0.4432 | G: -0.0004 | S_z:  0.4274 | dist: 0.7253
+Step: 382  | D: -0.0654 | CE:  0.0197 | S_OoD:  0.8554 | S_z:  0.4581 | G: -0.0005 | S_z:  0.4515 | dist: 0.7108
+Step: 402  | D: -0.0503 | CE:  0.0350 | S_OoD:  0.8574 | S_z:  0.4925 | G: -0.0005 | S_z:  0.4823 | dist: 0.7532
+Step: 422  | D: -0.0505 | CE:  0.0349 | S_OoD:  0.8585 | S_z:  0.4344 | G: -0.0004 | S_z:  0.4290 | dist: 0.7484
+Step: 442  | D: -0.0404 | CE:  0.0445 | S_OoD:  0.8535 | S_z:  0.4589 | G: -0.0004 | S_z:  0.4445 | dist: 0.7476
+Step: 462  | D: -0.0810 | CE:  0.0055 | S_OoD:  0.8708 | S_z:  0.5371 | G: -0.0005 | S_z:  0.5272 | dist: 0.7777
+Step: 482  | D: -0.0730 | CE:  0.0122 | S_OoD:  0.8568 | S_z:  0.4951 | G: -0.0005 | S_z:  0.4947 | dist: 0.7396
+Step: 502  | D: -0.0536 | CE:  0.0312 | S_OoD:  0.8522 | S_z:  0.4548 | G: -0.0004 | S_z:  0.4494 | dist: 0.7761
+Step: 522  | D: -0.0628 | CE:  0.0218 | S_OoD:  0.8515 | S_z:  0.4780 | G: -0.0005 | S_z:  0.4771 | dist: 0.7057
+Step: 542  | D: -0.0787 | CE:  0.0068 | S_OoD:  0.8591 | S_z:  0.4317 | G: -0.0004 | S_z:  0.4271 | dist: 0.7274
+Step: 562  | D: -0.0795 | CE:  0.0066 | S_OoD:  0.8659 | S_z:  0.4708 | G: -0.0005 | S_z:  0.4737 | dist: 0.7477
+Step: 582  | D: -0.0832 | CE:  0.0027 | S_OoD:  0.8646 | S_z:  0.5012 | G: -0.0005 | S_z:  0.4912 | dist: 0.7665
+Step: 602  | D: -0.0166 | CE:  0.0690 | S_OoD:  0.8609 | S_z:  0.4964 | G: -0.0005 | S_z:  0.5023 | dist: 0.7294
+Step: 622  | D: -0.0004 | CE:  0.0856 | S_OoD:  0.8648 | S_z:  0.4526 | G: -0.0004 | S_z:  0.4438 | dist: 0.7451
+Step: 642  | D: -0.0816 | CE:  0.0046 | S_OoD:  0.8666 | S_z:  0.4683 | G: -0.0005 | S_z:  0.4677 | dist: 0.7827
+Step: 662  | D: -0.0582 | CE:  0.0277 | S_OoD:  0.8638 | S_z:  0.4805 | G: -0.0005 | S_z:  0.4845 | dist: 0.7246
+Step: 682  | D: -0.0527 | CE:  0.0326 | S_OoD:  0.8568 | S_z:  0.4315 | G: -0.0004 | S_z:  0.4122 | dist: 0.7305
+Step: 702  | D:  0.0086 | CE:  0.0930 | S_OoD:  0.8477 | S_z:  0.3901 | G: -0.0004 | S_z:  0.3987 | dist: 0.7243
+Step: 722  | D: -0.0487 | CE:  0.0367 | S_OoD:  0.8575 | S_z:  0.3977 | G: -0.0004 | S_z:  0.3965 | dist: 0.7297
+Step: 742  | D: -0.0765 | CE:  0.0085 | S_OoD:  0.8545 | S_z:  0.4398 | G: -0.0004 | S_z:  0.4385 | dist: 0.7178
+Step: 762  | D: -0.0205 | CE:  0.0638 | S_OoD:  0.8470 | S_z:  0.4508 | G: -0.0004 | S_z:  0.4455 | dist: 0.7535
+Step: 782  | D:  0.0100 | CE:  0.0963 | S_OoD:  0.8666 | S_z:  0.4436 | G: -0.0004 | S_z:  0.4367 | dist: 0.7629
+Step: 802  | D: -0.0533 | CE:  0.0324 | S_OoD:  0.8622 | S_z:  0.4329 | G: -0.0004 | S_z:  0.4464 | dist: 0.7595
+Step: 822  | D: -0.0837 | CE:  0.0028 | S_OoD:  0.8696 | S_z:  0.4987 | G: -0.0005 | S_z:  0.4978 | dist: 0.7752
+Step: 842  | D:  0.0481 | CE:  0.1340 | S_OoD:  0.8636 | S_z:  0.4467 | G: -0.0005 | S_z:  0.4616 | dist: 0.7296
+Step: 862  | D: -0.0826 | CE:  0.0019 | S_OoD:  0.8493 | S_z:  0.4166 | G: -0.0004 | S_z:  0.4132 | dist: 0.7513
+Step: 882  | D:  0.0277 | CE:  0.1139 | S_OoD:  0.8667 | S_z:  0.4437 | G: -0.0004 | S_z:  0.4419 | dist: 0.7848
+Step: 902  | D: -0.0694 | CE:  0.0164 | S_OoD:  0.8623 | S_z:  0.4459 | G: -0.0004 | S_z:  0.4402 | dist: 0.7711
+Step: 922  | D: -0.0759 | CE:  0.0090 | S_OoD:  0.8538 | S_z:  0.4695 | G: -0.0005 | S_z:  0.4665 | dist: 0.7281
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.05545260310173032
+mean: 0.05545 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.33012138962745685
+mean: 0.33012 | std: 0.0 | MAD: 0.0
+AUROC: 0.99999953
+
+Validation Accuracy: 0.9893511146496815
+Validation Classification Loss: 0.03212817240162355
+Step: 4    | D: -0.0714 | CE:  0.0135 | S_OoD:  0.8527 | S_z:  0.4182 | G: -0.0004 | S_z:  0.4022 | dist: 0.7244
+Step: 24   | D: -0.0618 | CE:  0.0249 | S_OoD:  0.8718 | S_z:  0.4519 | G: -0.0004 | S_z:  0.4464 | dist: 0.7756
+Step: 44   | D: -0.0705 | CE:  0.0150 | S_OoD:  0.8591 | S_z:  0.3959 | G: -0.0004 | S_z:  0.4001 | dist: 0.7434
+Step: 64   | D:  0.0289 | CE:  0.1156 | S_OoD:  0.8711 | S_z:  0.4275 | G: -0.0004 | S_z:  0.4138 | dist: 0.7835
+Step: 84   | D: -0.0833 | CE:  0.0027 | S_OoD:  0.8648 | S_z:  0.4746 | G: -0.0005 | S_z:  0.4702 | dist: 0.7421
+Step: 104  | D: -0.0753 | CE:  0.0106 | S_OoD:  0.8636 | S_z:  0.4696 | G: -0.0005 | S_z:  0.4645 | dist: 0.7270
+Step: 124  | D: -0.0771 | CE:  0.0089 | S_OoD:  0.8652 | S_z:  0.5143 | G: -0.0005 | S_z:  0.5112 | dist: 0.7005
+Step: 144  | D: -0.0037 | CE:  0.0815 | S_OoD:  0.8567 | S_z:  0.4350 | G: -0.0004 | S_z:  0.4151 | dist: 0.7592
+Step: 164  | D: -0.0743 | CE:  0.0117 | S_OoD:  0.8643 | S_z:  0.4535 | G: -0.0005 | S_z:  0.4559 | dist: 0.7678
+Step: 184  | D: -0.0487 | CE:  0.0369 | S_OoD:  0.8604 | S_z:  0.4379 | G: -0.0004 | S_z:  0.4458 | dist: 0.7388
+Step: 204  | D: -0.0779 | CE:  0.0081 | S_OoD:  0.8654 | S_z:  0.4965 | G: -0.0005 | S_z:  0.4907 | dist: 0.7601
+Step: 224  | D: -0.0584 | CE:  0.0278 | S_OoD:  0.8662 | S_z:  0.4330 | G: -0.0004 | S_z:  0.4288 | dist: 0.7633
+Step: 244  | D: -0.0846 | CE:  0.0025 | S_OoD:  0.8758 | S_z:  0.4265 | G: -0.0004 | S_z:  0.4247 | dist: 0.7672
+Step: 264  | D:  0.0090 | CE:  0.0956 | S_OoD:  0.8704 | S_z:  0.4461 | G: -0.0005 | S_z:  0.4640 | dist: 0.7479
+Step: 284  | D: -0.0815 | CE:  0.0047 | S_OoD:  0.8658 | S_z:  0.4127 | G: -0.0004 | S_z:  0.4005 | dist: 0.7384
+Step: 304  | D: -0.0443 | CE:  0.0405 | S_OoD:  0.8515 | S_z:  0.4185 | G: -0.0004 | S_z:  0.4040 | dist: 0.7811
+Step: 324  | D: -0.0758 | CE:  0.0099 | S_OoD:  0.8616 | S_z:  0.4497 | G: -0.0004 | S_z:  0.4458 | dist: 0.7523
+Step: 344  | D: -0.0585 | CE:  0.0272 | S_OoD:  0.8618 | S_z:  0.4350 | G: -0.0004 | S_z:  0.4265 | dist: 0.7549
+Step: 364  | D: -0.0676 | CE:  0.0180 | S_OoD:  0.8598 | S_z:  0.3790 | G: -0.0004 | S_z:  0.3827 | dist: 0.7072
+Step: 384  | D: -0.0822 | CE:  0.0047 | S_OoD:  0.8724 | S_z:  0.4160 | G: -0.0004 | S_z:  0.4114 | dist: 0.7334
+Step: 404  | D: -0.0324 | CE:  0.0539 | S_OoD:  0.8666 | S_z:  0.4037 | G: -0.0004 | S_z:  0.4135 | dist: 0.7785
+Step: 424  | D: -0.0631 | CE:  0.0231 | S_OoD:  0.8659 | S_z:  0.4285 | G: -0.0004 | S_z:  0.4141 | dist: 0.7705
+Step: 444  | D: -0.0804 | CE:  0.0062 | S_OoD:  0.8703 | S_z:  0.4233 | G: -0.0004 | S_z:  0.4133 | dist: 0.7701
+Step: 464  | D: -0.0661 | CE:  0.0197 | S_OoD:  0.8612 | S_z:  0.4075 | G: -0.0004 | S_z:  0.4072 | dist: 0.7450
+Step: 484  | D: -0.0160 | CE:  0.0698 | S_OoD:  0.8625 | S_z:  0.4209 | G: -0.0004 | S_z:  0.4174 | dist: 0.7309
+Step: 504  | D: -0.0127 | CE:  0.0739 | S_OoD:  0.8711 | S_z:  0.4910 | G: -0.0005 | S_z:  0.4787 | dist: 0.7506
+Step: 524  | D: -0.0245 | CE:  0.0615 | S_OoD:  0.8654 | S_z:  0.4756 | G: -0.0005 | S_z:  0.4687 | dist: 0.7301
+Step: 544  | D: -0.0105 | CE:  0.0758 | S_OoD:  0.8672 | S_z:  0.4356 | G: -0.0004 | S_z:  0.4271 | dist: 0.8051
+Step: 564  | D: -0.0288 | CE:  0.0573 | S_OoD:  0.8662 | S_z:  0.4701 | G: -0.0005 | S_z:  0.4578 | dist: 0.7418
+Step: 584  | D: -0.0696 | CE:  0.0172 | S_OoD:  0.8725 | S_z:  0.4787 | G: -0.0005 | S_z:  0.4686 | dist: 0.7685
+Step: 604  | D: -0.0493 | CE:  0.0371 | S_OoD:  0.8679 | S_z:  0.3934 | G: -0.0004 | S_z:  0.3942 | dist: 0.7677
+Step: 624  | D: -0.0731 | CE:  0.0133 | S_OoD:  0.8675 | S_z:  0.3615 | G: -0.0004 | S_z:  0.3620 | dist: 0.7599
+Step: 644  | D: -0.0317 | CE:  0.0553 | S_OoD:  0.8741 | S_z:  0.3584 | G: -0.0004 | S_z:  0.3610 | dist: 0.7528
+Step: 664  | D: -0.0747 | CE:  0.0117 | S_OoD:  0.8680 | S_z:  0.4150 | G: -0.0004 | S_z:  0.4099 | dist: 0.7531
+Step: 684  | D: -0.0692 | CE:  0.0169 | S_OoD:  0.8657 | S_z:  0.4272 | G: -0.0004 | S_z:  0.4189 | dist: 0.7326
+Step: 704  | D: -0.0794 | CE:  0.0065 | S_OoD:  0.8630 | S_z:  0.3877 | G: -0.0004 | S_z:  0.3839 | dist: 0.7630
+Step: 724  | D: -0.0616 | CE:  0.0252 | S_OoD:  0.8717 | S_z:  0.4089 | G: -0.0004 | S_z:  0.4091 | dist: 0.7695
+Step: 744  | D:  0.0703 | CE:  0.1560 | S_OoD:  0.8612 | S_z:  0.3855 | G: -0.0004 | S_z:  0.4044 | dist: 0.7215
+Step: 764  | D: -0.0835 | CE:  0.0033 | S_OoD:  0.8731 | S_z:  0.4588 | G: -0.0005 | S_z:  0.4570 | dist: 0.7237
+Step: 784  | D: -0.0158 | CE:  0.0718 | S_OoD:  0.8802 | S_z:  0.4290 | G: -0.0004 | S_z:  0.4382 | dist: 0.7339
+Step: 804  | D: -0.0207 | CE:  0.0648 | S_OoD:  0.8594 | S_z:  0.4498 | G: -0.0004 | S_z:  0.4376 | dist: 0.7373
+Step: 824  | D: -0.0067 | CE:  0.0787 | S_OoD:  0.8582 | S_z:  0.3784 | G: -0.0004 | S_z:  0.3775 | dist: 0.7497
+Step: 844  | D: -0.0190 | CE:  0.0670 | S_OoD:  0.8636 | S_z:  0.4020 | G: -0.0004 | S_z:  0.4017 | dist: 0.7894
+Step: 864  | D: -0.0507 | CE:  0.0363 | S_OoD:  0.8743 | S_z:  0.4153 | G: -0.0004 | S_z:  0.4078 | dist: 0.7566
+Step: 884  | D: -0.0653 | CE:  0.0208 | S_OoD:  0.8650 | S_z:  0.4170 | G: -0.0004 | S_z:  0.4158 | dist: 0.7496
+Step: 904  | D: -0.0575 | CE:  0.0284 | S_OoD:  0.8626 | S_z:  0.3617 | G: -0.0004 | S_z:  0.3539 | dist: 0.7803
+Step: 924  | D: -0.0543 | CE:  0.0311 | S_OoD:  0.8580 | S_z:  0.4121 | G: -0.0004 | S_z:  0.4105 | dist: 0.7222
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.038553026318550024
+mean: 0.03855 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.29589774787426043
+mean: 0.2959 | std: 0.0 | MAD: 0.0
+AUROC: 0.99999971
+
+Validation Accuracy: 0.9907444267515924
+Validation Classification Loss: 0.029664566685522722
+Step: 6    | D: -0.0716 | CE:  0.0149 | S_OoD:  0.8690 | S_z:  0.4211 | G: -0.0004 | S_z:  0.4162 | dist: 0.7473
+Step: 26   | D: -0.0837 | CE:  0.0031 | S_OoD:  0.8724 | S_z:  0.3880 | G: -0.0004 | S_z:  0.3833 | dist: 0.7524
+Step: 46   | D: -0.0853 | CE:  0.0023 | S_OoD:  0.8803 | S_z:  0.4189 | G: -0.0004 | S_z:  0.4089 | dist: 0.7565
+Step: 66   | D: -0.0767 | CE:  0.0100 | S_OoD:  0.8715 | S_z:  0.4093 | G: -0.0004 | S_z:  0.4025 | dist: 0.7173
+Step: 86   | D: -0.0854 | CE:  0.0014 | S_OoD:  0.8715 | S_z:  0.3805 | G: -0.0004 | S_z:  0.3752 | dist: 0.7417
+Step: 106  | D: -0.0584 | CE:  0.0283 | S_OoD:  0.8711 | S_z:  0.3875 | G: -0.0004 | S_z:  0.3753 | dist: 0.7134
+Step: 126  | D: -0.0751 | CE:  0.0120 | S_OoD:  0.8752 | S_z:  0.4166 | G: -0.0004 | S_z:  0.4160 | dist: 0.7653
+Step: 146  | D: -0.0721 | CE:  0.0150 | S_OoD:  0.8745 | S_z:  0.3783 | G: -0.0004 | S_z:  0.3772 | dist: 0.7880
+Step: 166  | D: -0.0656 | CE:  0.0211 | S_OoD:  0.8708 | S_z:  0.3545 | G: -0.0003 | S_z:  0.3447 | dist: 0.7652
+Step: 186  | D: -0.0840 | CE:  0.0025 | S_OoD:  0.8685 | S_z:  0.4241 | G: -0.0004 | S_z:  0.4203 | dist: 0.7385
+Step: 206  | D: -0.0856 | CE:  0.0012 | S_OoD:  0.8721 | S_z:  0.4020 | G: -0.0004 | S_z:  0.3959 | dist: 0.7672
+Step: 226  | D: -0.0363 | CE:  0.0498 | S_OoD:  0.8647 | S_z:  0.3787 | G: -0.0004 | S_z:  0.3749 | dist: 0.7405
+Step: 246  | D: -0.0549 | CE:  0.0311 | S_OoD:  0.8641 | S_z:  0.3976 | G: -0.0004 | S_z:  0.3890 | dist: 0.7325
+Step: 266  | D: -0.0714 | CE:  0.0144 | S_OoD:  0.8622 | S_z:  0.4175 | G: -0.0004 | S_z:  0.4178 | dist: 0.7421
+Step: 286  | D: -0.0391 | CE:  0.0481 | S_OoD:  0.8753 | S_z:  0.3913 | G: -0.0004 | S_z:  0.3841 | dist: 0.7297
+Step: 306  | D: -0.0052 | CE:  0.0805 | S_OoD:  0.8609 | S_z:  0.4000 | G: -0.0004 | S_z:  0.3892 | dist: 0.7301
+Step: 326  | D: -0.0828 | CE:  0.0034 | S_OoD:  0.8663 | S_z:  0.4075 | G: -0.0004 | S_z:  0.4006 | dist: 0.7681
+Step: 346  | D: -0.0689 | CE:  0.0167 | S_OoD:  0.8593 | S_z:  0.3848 | G: -0.0004 | S_z:  0.3854 | dist: 0.7486
+Step: 366  | D: -0.0757 | CE:  0.0077 | S_OoD:  0.8372 | S_z:  0.3583 | G: -0.0004 | S_z:  0.3588 | dist: 0.7757
+Step: 386  | D: -0.0676 | CE:  0.0180 | S_OoD:  0.8598 | S_z:  0.3680 | G: -0.0004 | S_z:  0.3722 | dist: 0.7375
+Step: 406  | D: -0.0777 | CE:  0.0086 | S_OoD:  0.8659 | S_z:  0.3450 | G: -0.0003 | S_z:  0.3397 | dist: 0.7381
+Step: 426  | D: -0.0264 | CE:  0.0607 | S_OoD:  0.8736 | S_z:  0.3475 | G: -0.0004 | S_z:  0.3519 | dist: 0.7657
+Step: 446  | D:  0.0275 | CE:  0.1145 | S_OoD:  0.8739 | S_z:  0.3931 | G: -0.0004 | S_z:  0.3920 | dist: 0.7831
+Step: 466  | D: -0.0716 | CE:  0.0157 | S_OoD:  0.8767 | S_z:  0.3635 | G: -0.0004 | S_z:  0.3564 | dist: 0.7745
+Step: 486  | D: -0.0610 | CE:  0.0259 | S_OoD:  0.8733 | S_z:  0.4145 | G: -0.0004 | S_z:  0.4082 | dist: 0.7383
+Step: 506  | D: -0.0799 | CE:  0.0065 | S_OoD:  0.8687 | S_z:  0.3951 | G: -0.0004 | S_z:  0.3916 | dist: 0.7924
+Step: 526  | D:  0.1134 | CE:  0.2000 | S_OoD:  0.8703 | S_z:  0.3885 | G: -0.0004 | S_z:  0.3855 | dist: 0.7523
+Step: 546  | D: -0.0689 | CE:  0.0172 | S_OoD:  0.8647 | S_z:  0.3670 | G: -0.0004 | S_z:  0.3624 | dist: 0.7160
+Step: 566  | D: -0.0100 | CE:  0.0740 | S_OoD:  0.8445 | S_z:  0.3776 | G: -0.0004 | S_z:  0.3644 | dist: 0.7125
+Step: 586  | D: -0.0419 | CE:  0.0446 | S_OoD:  0.8684 | S_z:  0.3504 | G: -0.0004 | S_z:  0.3558 | dist: 0.7516
+Step: 606  | D: -0.0637 | CE:  0.0225 | S_OoD:  0.8655 | S_z:  0.3071 | G: -0.0003 | S_z:  0.3117 | dist: 0.7293
+Step: 626  | D: -0.0817 | CE:  0.0045 | S_OoD:  0.8664 | S_z:  0.3638 | G: -0.0004 | S_z:  0.3566 | dist: 0.7266
+Step: 646  | D: -0.0764 | CE:  0.0101 | S_OoD:  0.8687 | S_z:  0.3533 | G: -0.0003 | S_z:  0.3373 | dist: 0.7221
+Step: 666  | D: -0.0787 | CE:  0.0086 | S_OoD:  0.8762 | S_z:  0.3688 | G: -0.0004 | S_z:  0.3664 | dist: 0.7193
+Step: 686  | D: -0.0591 | CE:  0.0255 | S_OoD:  0.8495 | S_z:  0.3582 | G: -0.0004 | S_z:  0.3655 | dist: 0.7289
+Step: 706  | D: -0.0724 | CE:  0.0133 | S_OoD:  0.8603 | S_z:  0.3663 | G: -0.0004 | S_z:  0.3587 | dist: 0.7319
+Step: 726  | D: -0.0818 | CE:  0.0057 | S_OoD:  0.8786 | S_z:  0.3610 | G: -0.0004 | S_z:  0.3685 | dist: 0.7349
+Step: 746  | D: -0.0037 | CE:  0.0837 | S_OoD:  0.8779 | S_z:  0.3548 | G: -0.0004 | S_z:  0.3556 | dist: 0.7503
+Step: 766  | D: -0.0844 | CE:  0.0023 | S_OoD:  0.8695 | S_z:  0.3117 | G: -0.0003 | S_z:  0.3108 | dist: 0.7485
+Step: 786  | D: -0.0862 | CE:  0.0011 | S_OoD:  0.8769 | S_z:  0.3510 | G: -0.0004 | S_z:  0.3527 | dist: 0.7354
+Step: 806  | D: -0.0854 | CE:  0.0021 | S_OoD:  0.8792 | S_z:  0.3691 | G: -0.0004 | S_z:  0.3635 | dist: 0.7812
+Step: 826  | D: -0.0592 | CE:  0.0275 | S_OoD:  0.8702 | S_z:  0.3865 | G: -0.0004 | S_z:  0.3883 | dist: 0.7436
+Step: 846  | D: -0.0821 | CE:  0.0052 | S_OoD:  0.8769 | S_z:  0.3381 | G: -0.0003 | S_z:  0.3368 | dist: 0.7434
+Step: 866  | D:  0.0039 | CE:  0.0899 | S_OoD:  0.8636 | S_z:  0.3711 | G: -0.0004 | S_z:  0.3521 | dist: 0.7223
+Step: 886  | D: -0.0801 | CE:  0.0065 | S_OoD:  0.8689 | S_z:  0.3589 | G: -0.0004 | S_z:  0.3593 | dist: 0.7453
+Step: 906  | D: -0.0840 | CE:  0.0023 | S_OoD:  0.8664 | S_z:  0.3454 | G: -0.0003 | S_z:  0.3421 | dist: 0.7749
+Step: 926  | D: -0.0259 | CE:  0.0607 | S_OoD:  0.8691 | S_z:  0.3541 | G: -0.0003 | S_z:  0.3409 | dist: 0.7456
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.028897568583488385
+mean: 0.0289 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.2836551368236545
+mean: 0.28366 | std: 0.0 | MAD: 0.0
+AUROC: 1.0
+
+Validation Accuracy: 0.9929339171974523
+Validation Classification Loss: 0.024398838624782315
+New checkpoint created at the end of epoch 3.
