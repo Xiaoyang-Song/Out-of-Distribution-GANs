@@ -6,7 +6,7 @@ from tqdm import tqdm
 from matplotlib import pyplot as plt
 from config import DEVICE
 from itertools import product
-from wasserstein import batch_wasserstein, ood_wass_loss
+from wasserstein import batch_wasserstein, ood_wass_loss, batch_wasserstein_og
 # For argument processing
 import argparse
 import time
@@ -173,7 +173,7 @@ def wood_training(D, OOD_BATCH, ood_bsz, beta, criterion, optimizer, ind_tri_loa
             ood_logits = D(ood_samples)
             # print(torch.softmax(ood_logits, dim=-1))
             # ic(ood_logits.shape)
-            wass_loss = batch_wasserstein(ood_logits)
+            wass_loss = batch_wasserstein_og(ood_logits)
             loss = criterion(logits, labels) - beta * wass_loss
             # loss = criterion(logits, labels)
             loss.backward()
@@ -226,16 +226,16 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
         ind_ce_loss = criterion(logits_real, labels_real)
         # 2. W_ood
         assert logits_ood.requires_grad
-        w_ood = batch_wasserstein(logits_ood)
+        w_ood = batch_wasserstein_og(logits_ood)
         # 3. W_z
         assert logits_fake.requires_grad
-        w_fake = batch_wasserstein(logits_fake)
+        w_fake = batch_wasserstein_og(logits_fake)
         return ind_ce_loss, w_ood, w_fake
     
     def ood_gan_g_loss(logits_fake, gz, xood):
         # 1. Wasserstein distance of G(z)
         assert logits_fake.requires_grad
-        w_fake = batch_wasserstein(logits_fake)
+        w_fake = batch_wasserstein_og(logits_fake)
         # distance term
         # print(torch.mean(gz, dim=0) - torch.mean(xood, dim=0))
         dist = torch.sqrt(torch.sum((torch.mean(gz) - torch.mean(xood))**2))
@@ -310,13 +310,13 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
         
         D_loss.append((ind_ce_loss.detach().item(), w_ood.detach().item(), w_fake.detach().item()))
         G_loss.append((w_z.detach().item(), dist.detach().item()))
-        trajectory.append(np.array(torch.mean(Gz.detach(), dim=0)))
+        trajectory.append(np.array(torch.mean(Gz.detach(), dim=0).cpu()))
 
         D.eval()
         with torch.no_grad():
             val_acc = []
             for idx, (img, labels) in enumerate(ind_val_loader):
-                img, labels = img.to(torch.float32), labels.to(DEVICE)
+                img, labels = img.to(torch.float32).to(DEVICE), labels.to(DEVICE)
                 logits = D(img)
                 acc = (torch.argmax(logits, dim=1) ==
                     labels).sum().item() / labels.shape[0]
@@ -328,22 +328,29 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
     
     return D, G, (D_loss, G_loss, np.array(trajectory))
 
-def calculate_accuracy(D, ind, ood, tnr):
-    z = torch.softmax(D(torch.tensor(ind, dtype=torch.float32)), dim=-1)
+def calculate_accuracy(D, ind, ood, tnr, simplified=False):
+    z = torch.softmax(D(torch.tensor(ind, dtype=torch.float32).to(DEVICE)), dim=-1)
     # print(z.shape)
-    s = ood_wass_loss(z)
+    if simplified:
+        s = 1 - torch.max(z, dim=-1)[0]
+    else:
+        s = ood_wass_loss(z)
+
     # print(s.shape)
-    threshold = np.quantile(s, tnr)
+    threshold = np.quantile(s.cpu().detach().numpy(), tnr)
     # print(threshold)
-    z_ood = torch.softmax(D(torch.tensor(ood, dtype=torch.float32)), dim=-1)
+    z_ood = torch.softmax(D(torch.tensor(ood, dtype=torch.float32).to(DEVICE)), dim=-1)
     # print(z_ood.shape)
-    s_ood = ood_wass_loss(z_ood)
+    if simplified:
+        s_ood = 1 - torch.max(z_ood, dim=-1)[0]
+    else:
+        s_ood = ood_wass_loss(z_ood)
     tpr = sum(s_ood > threshold) / len(s_ood)
     # print(f"{tnr}: {tpr}")
     return threshold, tpr
 
 def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method, ind_cls, ood_cls, 
-                 ind_idx, ood_idx, path=None, tnr=0.99, lb=0, ub=7,m=100, f=None):
+                 ind_idx, ood_idx, path=None, tnr=0.99, lb=0, ub=7,m=100, f=None, simplified=False):
     # print(m)
     fig, ax = plt.subplots()
     with torch.no_grad():
@@ -351,7 +358,7 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, 
         if G is not None:
             n_gen = 10
             seed = torch.rand((n_gen, 2), device=DEVICE)
-            Gz = G(seed).detach().numpy()
+            Gz = G(seed).detach().cpu().numpy()
             lb_g = np.floor(np.min(Gz)) - 1
             ub_g = np.floor(np.max(Gz)) + 1
             lb = min(lb_g, lb)
@@ -360,9 +367,14 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, 
         xi = np.linspace(lb, ub, m, endpoint=True)
         yi = np.linspace(lb, ub, m, endpoint=True)
         xy_pos = np.array(list(product(xi, yi)))
-        zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
+        zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32).to(DEVICE)), dim=-1)
         # print(zi.shape)
-        si = ood_wass_loss(zi)
+        if simplified:
+        # si = ood_wass_loss(zi)
+            si = 1 - torch.max(zi, dim=-1)[0].cpu()  # Simplified wasserstein score
+        else:
+            si = ood_wass_loss(zi).cpu()
+
         threshold, _ = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=tnr)
         mask = si > threshold
     print(f"Rejection Threshold: {threshold}")
@@ -551,8 +563,6 @@ def simulate(args, config):
                  path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
     wood_stop = time.time()
     f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
-    
-
     
     # OoD GAN Simulation
     gan_start = time.time()
@@ -767,6 +777,8 @@ def generate_ind_ood_settings(config):
 # --g_lr=0.0001 --bsz_tri=256 --bsz_val=256 --bsz_ood=4 --n_d=1 --n_g=1
 
 if __name__ == '__main__':
+    # torch.manual_seed(0)
+    # np.random.seed(0)
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode', help='G - Generation | R - Run')
     parser.add_argument('--config', help='Configuration file')

@@ -18,6 +18,11 @@ def batch_wasserstein(x):
     # Shortcut way
     return torch.mean(score)
 
+def batch_wasserstein_og(x):
+    WLoss = Wasserstein.apply
+    return WLoss(torch.softmax(x, dim=-1))
+
+
 def batch_dynamic_wasserstein(x):
     # Input to this function is a batch of logits
     WLoss = Dynamic_Wasserstein.apply
@@ -108,7 +113,7 @@ class Wasserstein(Function):
         # Save for backward pass
         ctx.save_for_backward(all1hot, p, idx)
         # print(values)
-        ic(values)
+        # ic(values)
         return values.mean()
 
     @staticmethod
