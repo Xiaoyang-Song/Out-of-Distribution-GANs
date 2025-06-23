@@ -282,6 +282,7 @@ class DSET():
             self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
             self.ood_val = torch.load(os.path.join('Datasets', '3DPC',  'ood-test.pt'))
             self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+
         else:
             assert False, 'Unrecognized Dataset Combination.'
 
@@ -346,6 +347,8 @@ def set_loader(bsz_tri, bsz_val):
     testloader = torch.utils.data.DataLoader(test_data, batch_size=bsz_val, shuffle=True, num_workers=4, pin_memory=True)
     return train_data, test_data, labeled_trainloader, testloader
 
+
+# DEPRECATED!
 def process_large_ood_dataset(name, reserved_training=2048):
     normalize = transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761))
     if name == 'Texture':
@@ -416,6 +419,30 @@ def process_large_ood_dataset(name, reserved_training=2048):
     os.makedirs(os.path.join('Datasets','OOD', name), exist_ok=True)
     torch.save(train_data, os.path.join('Datasets','OOD', name, 'train.pt'))
     torch.save(test_data, os.path.join('Datasets','OOD', name, 'test.pt'))
+
+def sample_3DPC(sizes, regime):
+    # Load 3DPC OOD data
+    corner_crack = torch.load(os.path.join('Datasets', '3DPC', 'ood-train-corner-crack.pt'))
+    long_crack = torch.load(os.path.join('Datasets', '3DPC', 'ood-train-long-crack.pt'))
+    print(f"Corner Crack: {len(corner_crack)}, Long Crack: {len(long_crack)}")
+
+    os.makedirs(f'checkpoint/OOD-Sample/3DPC/', exist_ok=True)
+    if regime == 'Balanced':
+        for n in sizes:
+            idx_corner = np.random.choice(len(corner_crack), n, False)
+            idx_long = np.random.choice(len(long_crack), n, False)
+            data_corner = [(corner_crack[i][0], torch.tensor(corner_crack[i][1], dtype=torch.int64)) for i in idx_corner]
+            data_long = [(long_crack[i][0], torch.tensor(long_crack[i][1], dtype=torch.int64)) for i in idx_long]
+            data = data_corner + data_long
+            print(f"Sampled {len(data)} samples for setting {n}.")
+            torch.save(tuple_list_to_tensor(data), f'checkpoint/OOD-Sample/3DPC/OOD-Balanced-{n}.pt')
+    elif regime == 'Imbalanced':
+        for n in sizes:
+            idx_corner = np.random.choice(len(corner_crack), n, False)
+            data_corner = [(corner_crack[i][0], torch.tensor(corner_crack[i][1], dtype=torch.int64)) for i in idx_corner]
+            print(f"Sampled {len(data_corner)} samples for {n} size.")
+            torch.save(tuple_list_to_tensor(data_corner), f'checkpoint/OOD-Sample/3DPC/OOD-Imbalanced-{n}.pt')
+
 
 def sample_large_ood_dataset(ood_name, exp_name, sizes):
     np.random.seed(2024)
@@ -494,3 +521,7 @@ if __name__ == '__main__':
     # for x, y, in labeled_trainloader:
     #     print(y)
     # print(Counter(label))
+
+    sizes = [100, 200, 500, 1000, 1500, 2000]
+    sample_3DPC(sizes, 'Balanced')
+    sample_3DPC(sizes, 'Imbalanced')

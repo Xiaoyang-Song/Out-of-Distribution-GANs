@@ -101,7 +101,22 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/FashionMNIST-InD-SA/64-20000.sh
 # sbatch jobs/FashionMNIST-InD-SA/64-40000.sh
 # sbatch jobs/FashionMNIST-InD-SA/64-60000.sh # (not necessary, since 60000 is the full dataset)
-sbatch jobs/FashionMNIST-InD-SA/64-all.sh
+# sbatch jobs/FashionMNIST-InD-SA/64-all.sh
+
+# Case study for 3DPC-R1
+sbatch jobs/3DPC-R1/100.sh
+sbatch jobs/3DPC-R1/200.sh
+sbatch jobs/3DPC-R1/500.sh
+sbatch jobs/3DPC-R1/1000.sh
+sbatch jobs/3DPC-R1/1500.sh
+sbatch jobs/3DPC-R1/2000.sh
+
+# sbatch jobs/3DPC-R2/100.sh
+# sbatch jobs/3DPC-R2/200.sh
+# sbatch jobs/3DPC-R2/500.sh
+# sbatch jobs/3DPC-R2/1000.sh
+# sbatch jobs/3DPC-R2/1500.sh
+# sbatch jobs/3DPC-R2/2000.sh
 
 # Check memory on disk
 # home-quota

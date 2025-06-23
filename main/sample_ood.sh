@@ -9,7 +9,7 @@
 #SBATCH --mem=50GB
 #SBATCH --cpus-per-task=4
 #SBATCH --time=1:00:00
-#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/sample_ood.log
+#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/sample_ood.log
 
 
 # Run Sampling Script
