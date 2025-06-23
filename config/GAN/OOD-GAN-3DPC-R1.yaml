@@ -27,7 +27,7 @@ model:
     depth: 100
   G: "3DPC"
   G_config:
-    noise_dim: 96
+    noise_dim: 16
 
 train_config:
   score: "Wasserstein"
@@ -49,7 +49,7 @@ train_config:
   scaling: 0.01
   d_step_ratio: 1
   g_step_ratio: 1
-  noise_dim: 32
+  noise_dim: 16
   logging:
     n_steps_log: 25
     n_epochs_save: 4
