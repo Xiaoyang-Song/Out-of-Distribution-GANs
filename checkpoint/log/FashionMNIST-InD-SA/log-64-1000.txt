@@ -1,0 +1,407 @@
+
+[KeOps] Warning : There were warnings or errors compiling formula :
+<stdin>:1:10: fatal error: cuda.h: No such file or directory
+compilation terminated.
+
+[KeOps] Warning : 
+    The location of Cuda header files cuda.h and nvrtc.h could not be detected on your system.
+    You must determine their location and then define the environment variable CUDA_PATH,
+    either before launching Python or using os.environ before importing keops. For example
+    if these files are in /vol/cuda/10.2.89-cudnn7.6.4.38/include you can do :
+      import os
+      os.environ['CUDA_PATH'] = '/vol/cuda/10.2.89-cudnn7.6.4.38'
+    
+[KeOps] Compiling cuda jit compiler engine ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/nvrtc_jit.cpp:5:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+Experiment: FashionMNIST
+Experiment regime: Balanced
+Method: OOD-GAN
+================================================================================
+Number of observed OoD samples (class-level): 64
+InD Sensitivity Analysis experiment for 1000 InD samples.
+Input Dimension: 28 x 28 x 1
+Number of InD classes: 8
+Number of Epochs: 16.
+Hyperparameters: lambda_ce=1 & lambda_w=0.1 & scaling=0.01 & d_lr=0.001 & g_lr=0.001 & B_InD: 64 & B_OoD: 32 & n_d: 1 & n_g: 1
+Score Function: Wasserstein
+Finished Processing Input Arguments.
+-- Current Device: Tesla V100-PCIE-16GB
+-- Device Total Memory: 15.77 GB
+-- Let's use 1 GPUs!
+================================================================================
+Conducting Sensitivity Analysis with 1000 InD samples.
+Verifying InD training set size: 1000
+Verifying InD class distribution: Counter({6: 140, 0: 137, 1: 127, 3: 123, 2: 123, 7: 120, 4: 119, 5: 111})
+================================================================================
+Verifying OOD set labels: tensor([8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9])
+Verifying OOD class distribution: Counter({8: 64, 9: 64})
+Monte Carlo Iteration 0
+DenseNet
+Deep_G
+OoD sample shape: torch.Size([128, 1, 28, 28])
+Step: 0    | D:  2.0615 | CE:  2.1412 | S_OoD:  0.8044 | S_z:  0.8016 | G: -0.0008 | S_z:  0.8256 | dist: 0.0933
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.4195
+mean: 0.4195 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.7848691254854202
+mean: 0.78487 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.19799999999999995
+mean: 0.198 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.815674923658371
+mean: 0.81567 | std: 0.0 | MAD: 0.0
+AUROC: 0.8099576562499999
+
+Validation Accuracy: 0.602
+Validation Classification Loss: 1.204273175239563
+Step: 4    | D:  0.9387 | CE:  1.0114 | S_OoD:  0.7360 | S_z:  0.8200 | G: -0.0008 | S_z:  0.8141 | dist: 0.0775
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.522
+mean: 0.522 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.7164916336536405
+mean: 0.71649 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.35350000000000004
+mean: 0.3535 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.7519941806793213
+mean: 0.75199 | std: 0.0 | MAD: 0.0
+AUROC: 0.85259815625
+
+Validation Accuracy: 0.664625
+Validation Classification Loss: 0.9126952962875367
+Step: 8    | D:  0.8006 | CE:  0.8654 | S_OoD:  0.6558 | S_z:  0.7947 | G: -0.0008 | S_z:  0.7935 | dist: 0.0892
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.6005
+mean: 0.6005 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.6801297008991242
+mean: 0.68013 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.392
+mean: 0.392 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.7367971241474152
+mean: 0.7368 | std: 0.0 | MAD: 0.0
+AUROC: 0.89668403125
+
+Validation Accuracy: 0.707875
+Validation Classification Loss: 0.7896195459365845
+Step: 12   | D:  0.6233 | CE:  0.6913 | S_OoD:  0.6874 | S_z:  0.7650 | G: -0.0008 | S_z:  0.7681 | dist: 0.0727
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.631
+mean: 0.631 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.6578854322433471
+mean: 0.65789 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.4195
+mean: 0.4195 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.7217808020114899
+mean: 0.72178 | std: 0.0 | MAD: 0.0
+AUROC: 0.8974614375
+
+Validation Accuracy: 0.722625
+Validation Classification Loss: 0.7324716715812684
+New checkpoint created at the end of epoch 3.
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.48850000000000005
+mean: 0.4885 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.6513394266366958
+mean: 0.65134 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.2995
+mean: 0.2995 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.7058828735351563
+mean: 0.70588 | std: 0.0 | MAD: 0.0
+AUROC: 0.8536406875
+
+Validation Accuracy: 0.691375
+Validation Classification Loss: 0.7919154415130615
+Step: 0    | D:  0.4866 | CE:  0.5542 | S_OoD:  0.6829 | S_z:  0.7332 | G: -0.0007 | S_z:  0.7336 | dist: 0.0962
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.6054999999999999
+mean: 0.6055 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.6311892062425613
+mean: 0.63119 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.4075
+mean: 0.4075 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6942580807209016
+mean: 0.69426 | std: 0.0 | MAD: 0.0
+AUROC: 0.8970319999999999
+
+Validation Accuracy: 0.756
+Validation Classification Loss: 0.6543762063980103
+Step: 4    | D:  0.2879 | CE:  0.3543 | S_OoD:  0.6714 | S_z:  0.7127 | G: -0.0007 | S_z:  0.7174 | dist: 0.0988
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5880000000000001
+mean: 0.588 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.623613092303276
+mean: 0.62361 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.386
+mean: 0.386 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6910222148895264
+mean: 0.69102 | std: 0.0 | MAD: 0.0
+AUROC: 0.90327396875
+
+Validation Accuracy: 0.7095
+Validation Classification Loss: 0.7521156091690063
+Step: 8    | D:  0.3602 | CE:  0.4237 | S_OoD:  0.6428 | S_z:  0.7267 | G: -0.0007 | S_z:  0.7328 | dist: 0.0701
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5885
+mean: 0.5885 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.5989378601312636
+mean: 0.59894 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.375
+mean: 0.375 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6804449319839478
+mean: 0.68044 | std: 0.0 | MAD: 0.0
+AUROC: 0.90079959375
+
+Validation Accuracy: 0.7575
+Validation Classification Loss: 0.6453886754512786
+New checkpoint created at the end of epoch 7.
+Step: 12   | D:  0.3942 | CE:  0.4588 | S_OoD:  0.6533 | S_z:  0.6771 | G: -0.0007 | S_z:  0.6885 | dist: 0.0940
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5
+mean: 0.5 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.6026292622089382
+mean: 0.60263 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.29200000000000004
+mean: 0.292 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6851092565059663
+mean: 0.68511 | std: 0.0 | MAD: 0.0
+AUROC: 0.8683301875
+
+Validation Accuracy: 0.737875
+Validation Classification Loss: 0.7049593193531036
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5435
+mean: 0.5435 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.5981606364250183
+mean: 0.59816 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.3345
+mean: 0.3345 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6776569825410843
+mean: 0.67766 | std: 0.0 | MAD: 0.0
+AUROC: 0.8920939999999999
+
+Validation Accuracy: 0.773125
+Validation Classification Loss: 0.6072539405822754
+Step: 0    | D:  0.1995 | CE:  0.2600 | S_OoD:  0.6109 | S_z:  0.6418 | G: -0.0006 | S_z:  0.6416 | dist: 0.1149
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5660000000000001
+mean: 0.566 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.5442898273468016
+mean: 0.54429 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.35550000000000004
+mean: 0.3555 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6482578659057618
+mean: 0.64826 | std: 0.0 | MAD: 0.0
+AUROC: 0.8976558125
+
+Validation Accuracy: 0.732375
+Validation Classification Loss: 0.7865035376548767
+Step: 4    | D:  0.0823 | CE:  0.1430 | S_OoD:  0.6139 | S_z:  0.6199 | G: -0.0006 | S_z:  0.6309 | dist: 0.0899
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.6074999999999999
+mean: 0.6075 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.553779405355453
+mean: 0.55378 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.41200000000000003
+mean: 0.412 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.644312534928322
+mean: 0.64431 | std: 0.0 | MAD: 0.0
+AUROC: 0.90613525
+
+Validation Accuracy: 0.77025
+Validation Classification Loss: 0.6691929225921631
+New checkpoint created at the end of epoch 11.
+Step: 8    | D:  0.0906 | CE:  0.1545 | S_OoD:  0.6460 | S_z:  0.6387 | G: -0.0006 | S_z:  0.6349 | dist: 0.0707
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.562
+mean: 0.562 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.539532822370529
+mean: 0.53953 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.36150000000000004
+mean: 0.3615 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6439831125736237
+mean: 0.64398 | std: 0.0 | MAD: 0.0
+AUROC: 0.9091070625
+
+Validation Accuracy: 0.771875
+Validation Classification Loss: 0.6737708580493927
+Step: 12   | D:  0.0246 | CE:  0.0906 | S_OoD:  0.6657 | S_z:  0.6210 | G: -0.0006 | S_z:  0.6163 | dist: 0.0950
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.5409999999999999
+mean: 0.541 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.545096617937088
+mean: 0.5451 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.3215
+mean: 0.3215 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6539539313316346
+mean: 0.65395 | std: 0.0 | MAD: 0.0
+AUROC: 0.9016978125000001
+
+Validation Accuracy: 0.758625
+Validation Classification Loss: 0.7326432332992554
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.6154999999999999
+mean: 0.6155 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.5213640391826627
+mean: 0.52136 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.41900000000000004
+mean: 0.419 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6261509120464327
+mean: 0.62615 | std: 0.0 | MAD: 0.0
+AUROC: 0.9145073125000001
+
+Validation Accuracy: 0.776375
+Validation Classification Loss: 0.6871046211719513
+Step: 0    | D:  0.1219 | CE:  0.1828 | S_OoD:  0.6152 | S_z:  0.6238 | G: -0.0006 | S_z:  0.6156 | dist: 0.1148
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 0.619
+mean: 0.619 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.5170300155878066
+mean: 0.51703 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 0.372
+mean: 0.372 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.631494369506836
+mean: 0.63149 | std: 0.0 | MAD: 0.0
+AUROC: 0.9129323125
+
+Validation Accuracy: 0.77775
+Validation Classification Loss: 0.6843488280773162
+New checkpoint created at the end of epoch 15.
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+Validation Accuracy: 0.778875
+Validation Classification Loss: 0.6932956469058991
+MC #0 time spent: 127.19 seconds | About 2.12 minutes | About 0.04 hours
+
+================================================================================
+Overall Statistics
+TPR@95TNR: [0.593]
+mean: 0.593 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: [0.5243701547384262]
+mean: 0.52437 | std: 0.0 | MAD: 0.0
+TPR@99TNR: [0.368]
+mean: 0.368 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold: [0.6333004289865494]
+mean: 0.6333 | std: 0.0 | MAD: 0.0
+AUROC: [0.9126560625]
+mean: 0.91266 | std: 0.0 | MAD: 0.0
+
+================================================================================
+EVALER & Stats saved successfully!
+Training time: 132.76 seconds | About 2.21 minutes | About 0.04 hours

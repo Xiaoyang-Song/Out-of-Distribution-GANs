@@ -92,6 +92,17 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/SVHN-R2/2048.sh
 # sbatch jobs/SVHN-R2/4096.sh
 
+# Sensitivity analysis for FashionMNIST experiments
+# sample_sizes = [1000, 2000, 5000, 10000, 20000, 40000, 60000]
+# sbatch jobs/FashionMNIST-InD-SA/64-1000.sh
+# sbatch jobs/FashionMNIST-InD-SA/64-2000.sh
+# sbatch jobs/FashionMNIST-InD-SA/64-5000.sh
+# sbatch jobs/FashionMNIST-InD-SA/64-10000.sh
+# sbatch jobs/FashionMNIST-InD-SA/64-20000.sh
+# sbatch jobs/FashionMNIST-InD-SA/64-40000.sh
+# sbatch jobs/FashionMNIST-InD-SA/64-60000.sh # (not necessary, since 60000 is the full dataset)
+sbatch jobs/FashionMNIST-InD-SA/64-all.sh
+
 # Check memory on disk
 # home-quota
 
