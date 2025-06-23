@@ -15,6 +15,7 @@ np.random.seed(0)
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', help='Training configuration file')
 parser.add_argument('--n_ood', help="Number of OoD samples", type=int)
+parser.add_argument('--n_ind', help="Number of InD samples", type=int, default=None)
 args = parser.parse_args()
 assert args.config is not None, 'Please specify the config .yml file to proceed.'
 config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
@@ -35,7 +36,10 @@ log_dir = root_dir + f"{method}/{dset}/{regime}/{n_ood}/"
 ckpt_dir = root_dir + f"{method}/{dset}/{regime}/{n_ood}/"
 os.makedirs(log_dir, exist_ok=True)
 
-
+# Number of InD samples: this is only used for InD sensitivity analysis experiment.
+n_ind = args.n_ind # None, except for ind sensitivity analysis
+if n_ind is not None:
+    print(f"InD Sensitivity Analysis experiment for {n_ind} InD samples.")
 #---------- Training Hyperparameters  ----------#
 
 ###---------- Image Info  ----------###
@@ -80,7 +84,6 @@ print("Finished Processing Input Arguments.")
 
 ########## Experiment Starts Here  ##########
 start = time.time()
-# ic("HELLO GL!")
 
 #---------- GPU information  ----------#
 if torch.cuda.is_available():
@@ -90,17 +93,15 @@ if torch.cuda.is_available():
 else:
     print("-- Unfortunately, we are only using CPUs now.")
 #---------- Dataset & Evaler  ----------#
-# note that ind and ood are deprecated for non-mnist experiment
-dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood)
+dset = DSET(dset, is_within_dset, bsz_tri, bsz_val, ind, ood, n_ind)
 evaler = EVALER(dset.ind_train, dset.ind_val, dset.ind_val_loader,
                 dset.ood_val, dset.ood_val_loader,
                 n_ood, log_dir, method, num_classes, n_lr, score)
-# Load OoD
-# fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
+# Load OoD samples
 fname = sample_dir + f"{dset.name}/OOD-{regime}-{n_ood}.pt"
 ood_img_batch, ood_img_label = torch.load(fname)
-print(ood_img_label)
-print(Counter(np.array(ood_img_label)))
+print(f"Verifying OOD set labels: {ood_img_label}")
+print(f"Verifying OOD class distribution: {Counter(np.array(ood_img_label))}")
 
 #---------- Monte Carlo Simulation  ----------#
 for mc in range(mc_num):
@@ -115,27 +116,10 @@ for mc in range(mc_num):
     print(D_model)
     print(G_model)
     D, G = model_getter(D_model, D_config, G_model, G_config)
-    # evaler.evaluate(D, f'mc={mc}', G, each_cls, cls_idx)
-    # ic("Test Done.")
 
-    ###---------- checkpoint loading (if necessary)  ----------###
-    # TODO: optimize the implementation later.
-    # ckpt = "/scratch/sunwbgt_root/sunwbgt98/xysong/energy_ood/CIFAR/snapshots/pretrained/[CIFAR100-SVHN]-pretrained-classifier.pt"
-    # D.load_state_dict(torch.load(ckpt))
-    # name = f"[{dset.name}]-[{n_ood}]-[{regime}]-[0]_[9]"
-    # ckpt = f"/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/OOD-GAN/{dset.name}/{regime}/{n_ood}/{name}.pt"
-
-    # D.load_state_dict(torch.load(ckpt)['D-state'])
-    # G.load_state_dict(torch.load(ckpt)['G-state'])
-    # print('Successfully Load checkpoints')
     ###---------- optimizers  ----------###
     D_solver = torch.optim.Adam(D.parameters(), lr=d_lr, betas=(beta1, beta2))
     G_solver = torch.optim.Adam(G.parameters(), lr=g_lr, betas=(beta1, beta2))
-    # D_solver = torch.optim.SGD(D.parameters(), lr=d_lr, momentum=0.9)
-    # G_solver = torch.optim.SGD(G.parameters(), lr=g_lr, momentum=0.9)
-
-    # D_scheduler = torch.optim.lr_scheduler.StepLR(D_solver, 10, gamma=0.1)
-    # G_scheduler = torch.optim.lr_scheduler.StepLR(G_solver, 10, gamma=0.1)
 
     ###---------- dataset  ----------###
     ind_loader = dset.ind_train_loader

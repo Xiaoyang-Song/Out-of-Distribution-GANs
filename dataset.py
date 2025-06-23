@@ -21,16 +21,18 @@ def FashionMNIST(bs_t, bs_v, sf):
     return tset, vset, t_loader, v_loader
 
 
-def MNIST(batch_size, test_batch_size, num_workers=0, shuffle=True):
+def MNIST(batch_size, test_batch_size, num_workers=0, shuffle=True, n_ind=None):
 
-    train_set = torchvision.datasets.MNIST(
-        "./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
-    val_set = torchvision.datasets.MNIST(
-        "./Datasets", download=True, train=False, transform=transforms.Compose([transforms.ToTensor()]))
-    train_loader = torch.utils.data.DataLoader(train_set, shuffle=shuffle,
-                                               batch_size=batch_size, num_workers=num_workers)
-    test_loader = torch.utils.data.DataLoader(val_set, shuffle=shuffle,
-                                              batch_size=test_batch_size,  num_workers=num_workers)
+    train_set = torchvision.datasets.MNIST("./Datasets", download=True, transform=transforms.Compose([transforms.ToTensor()]))
+
+    if n_ind is not None:
+        # If n_ind is specified, we sample n_ind samples for InD training.
+        idx_list = np.random.choice(len(train_set), n_ind, replace=False)
+        train_set = torch.utils.data.Subset(train_set, idx_list)
+
+    val_set = torchvision.datasets.MNIST("./Datasets", download=True, train=False, transform=transforms.Compose([transforms.ToTensor()]))
+    train_loader = torch.utils.data.DataLoader(train_set, shuffle=shuffle, batch_size=batch_size, num_workers=num_workers)
+    test_loader = torch.utils.data.DataLoader(val_set, shuffle=shuffle, batch_size=test_batch_size,  num_workers=num_workers)
 
     return train_set, val_set, train_loader, test_loader
 
@@ -107,7 +109,7 @@ def CIFAR100(batch_size, test_batch_size):
 
     return train_dataset, val_dataset, train_loader, val_loader
 
-def CIFAR10(batch_size, test_batch_size):
+def CIFAR10(batch_size, test_batch_size, n_ind=None):
 
     # Ground truth mean & std:
     # mean = torch.tensor([125.3072, 122.9505, 113.8654])
@@ -115,15 +117,16 @@ def CIFAR10(batch_size, test_batch_size):
     normalizer = transforms.Normalize(mean=[x/255.0 for x in [125.3, 123.0, 113.9]],
                                       std=[x/255.0 for x in [63.0, 62.1, 66.7]])
     transform = transforms.Compose([transforms.ToTensor(), normalizer])
-    train_dataset = datasets.CIFAR10('./Datasets/CIFAR-10', train=True,
-                                     download=True, transform=transform)
-    # ic(len(train_dataset))
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True)
-    val_dataset = datasets.CIFAR10('./Datasets/CIFAR-10', train=False, download=True,
-                                   transform=transform)
-    val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=test_batch_size, shuffle=True)
+    train_dataset = datasets.CIFAR10('./Datasets/CIFAR-10', train=True, download=True, transform=transform)
+
+    if n_ind is not None:
+        # If n_ind is specified, we sample n_ind samples for InD training.
+        idx_list = np.random.choice(len(train_dataset), n_ind, replace=False)
+        train_dataset = torch.utils.data.Subset(train_dataset, idx_list)
+
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_dataset = datasets.CIFAR10('./Datasets/CIFAR-10', train=False, download=True, transform=transform)
+    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=test_batch_size, shuffle=True)
 
     return train_dataset, val_dataset, train_loader, val_loader
 
@@ -138,14 +141,10 @@ def SVHN(bsz_tri, bsz_val, shuffle=True):
     transform = transforms.Compose([transforms.ToTensor(), normalizer])
 
     # Load dataset & Loader
-    train_dataset = datasets.SVHN('./Datasets/SVHN', split='train',
-                                  download=True, transform=transform)
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=bsz_tri, shuffle=shuffle)
-    val_dataset = datasets.SVHN('./Datasets/SVHN', split='test', download=True,
-                                transform=transform)
-    val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=bsz_val, shuffle=shuffle)
+    train_dataset = datasets.SVHN('./Datasets/SVHN', split='train', download=True, transform=transform)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=bsz_tri, shuffle=shuffle)
+    val_dataset = datasets.SVHN('./Datasets/SVHN', split='test', download=True, transform=transform)
+    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=bsz_val, shuffle=shuffle)
 
     return train_dataset, val_dataset, train_loader, val_loader
 
@@ -165,7 +164,7 @@ def Texture(bsz_tri, bsz_val, shuffle=True):
     # return train_data, test_data, tri_ldr, val_ldr
 
 def dset_by_class(dset, n_cls=10):
-    ic(len(dset))
+    # ic(len(dset))
     img_lst = defaultdict(list)
     label_lst = defaultdict(list)
     # Loop through each tuple
@@ -221,12 +220,13 @@ def tuple_list_to_tensor(dset):
 
 OOD_TEST_PATH = os.path.join('Datasets', 'OOD')
 class DSET():
-    def __init__(self, dset_name, is_within_dset, bsz_tri, bsz_val, ind=None, ood=None):
+    def __init__(self, dset_name, is_within_dset, bsz_tri, bsz_val, ind=None, ood=None, n_ind=None):
         self.within_dset = is_within_dset
         self.name = dset_name
         self.bsz_tri = bsz_tri
         self.bsz_val = bsz_val
         self.ind, self.ood = ind, ood
+        self.n_ind = n_ind
         self.initialize()
 
     def initialize(self):
@@ -239,138 +239,41 @@ class DSET():
             elif self.name == "SVHN":
                 dset_tri, dset_val, _, _ = SVHN(self.bsz_tri, self.bsz_val)
             else:
-                dset_tri, dset_val, _, _ = FashionMNIST(
-                    self.bsz_tri, self.bsz_val, True)
+                dset_tri, dset_val, _, _ = FashionMNIST(self.bsz_tri, self.bsz_val, True)
+            
+            # Form training and validation sets by classes (if needed)
             self.train = dset_by_class(dset_tri)
             self.val = dset_by_class(dset_val)
             # The following code is for within-dataset InD/OoD separation
             self.ind_train = form_ind_dsets(self.train, self.ind)
             self.ind_val = form_ind_dsets(self.val, self.ind)
+
+            if self.n_ind is not None:
+                # If n_ind is specified, we sample n_ind samples for InD training.
+                idx_list = np.random.choice(len(self.ind_train), self.n_ind, replace=False)
+                self.ind_train = torch.utils.data.Subset(self.ind_train, idx_list)
+
             self.ood_train = form_ind_dsets(self.train, self.ood)
             self.ood_val = form_ind_dsets(self.val, self.ood)
-            self.ind_train = relabel_tuples(
-                self.ind_train, self.ind, np.arange(len(self.ind)))
-            self.ind_val = relabel_tuples(
-                self.ind_val, self.ind, np.arange(len(self.ind)))
-            self.ind_train_loader = set_to_loader(
-                self.ind_train, self.bsz_tri, True)
-            self.ind_val_loader = set_to_loader(
-                self.ind_val, self.bsz_val, True)
-            self.ood_val_loader = set_to_loader(
-                self.ood_val, self.bsz_val, True)
+
+            # Relabel (if needed)
+            self.ind_train = relabel_tuples(self.ind_train, self.ind, np.arange(len(self.ind)))
+            self.ind_val = relabel_tuples(self.ind_val, self.ind, np.arange(len(self.ind)))
+
+            # Data loader definition
+            self.ind_train_loader = set_to_loader(self.ind_train, self.bsz_tri, True)
+            self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
+            self.ood_val_loader = set_to_loader(self.ood_val, self.bsz_val, True)
 
         elif self.name == 'MNIST-FashionMNIST':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = MNIST(
-                self.bsz_tri, self.bsz_val)
-            self.ood_train, self.ood_val, _, self.ood_val_loader = FashionMNIST(
-                self.bsz_tri, self.bsz_val, True)
-            self.ood_train_by_class = dset_by_class(
-                self.ood_train)  # this is used for sampling
-
-        elif self.name == 'FashionMNIST-MNIST':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = FashionMNIST(
-                self.bsz_tri, self.bsz_val, True)
-            self.ood_train, self.ood_val, _, self.ood_val_loader = MNIST(
-                self.bsz_tri, self.bsz_val)
-            self.ood_train_by_class = dset_by_class(
-                self.ood_train)  # this is used for sampling
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = MNIST(self.bsz_tri, self.bsz_val, n_ind=self.n_ind)
+            self.ood_train, self.ood_val, _, self.ood_val_loader = FashionMNIST(self.bsz_tri, self.bsz_val, True)
+            self.ood_train_by_class = dset_by_class(self.ood_train)  # this is used for sampling
 
         elif self.name == 'CIFAR10-SVHN':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(
-                self.bsz_tri, self.bsz_val)
-            self.ood_train, self.ood_val, _, self.ood_val_loader = SVHN(
-                self.bsz_tri, self.bsz_val)
-            self.ood_train_by_class = dset_by_class(
-                self.ood_train)  # this is used for sampling
-                
-        elif self.name == 'CIFAR100-SVHN':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR100(
-                self.bsz_tri, self.bsz_val)
-            self.ood_train, self.ood_val, _, self.ood_val_loader = SVHN(
-                self.bsz_tri, self.bsz_val)
-            self.ood_train_by_class = dset_by_class(
-                self.ood_train)  # this is used for sampling
-
-        elif self.name == 'CIFAR10-Texture':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(
-                self.bsz_tri, self.bsz_val)
-            
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'Texture', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'Texture', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-
-        elif self.name == 'CIFAR100-Texture':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR100(
-                self.bsz_tri, self.bsz_val)
-            
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'Texture', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'Texture', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'CIFAR100-Places365-32':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR100(
-                self.bsz_tri, self.bsz_val)
-            
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'Places365-32', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'Places365-32', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'CIFAR100-iSUN':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR100(
-                self.bsz_tri, self.bsz_val)
-            
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'iSUN', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'iSUN', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-    
-        elif self.name == 'CIFAR100-LSUN-C':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR100(
-                self.bsz_tri, self.bsz_val)
-            
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'LSUN-C', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'LSUN-C', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'ImageNet100-INAT':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'INAT', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'INAT', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'ImageNet100-SUN':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'SUN', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'SUN', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'ImageNet100-Places365-224':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'Places365-224', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'Places365-224', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'ImageNet100-Texture-224':
-            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = set_loader(self.bsz_tri, self.bsz_val)
-            self.ood_train = torch.load(os.path.join(OOD_TEST_PATH, 'Texture-224', 'train.pt'))
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'Texture-224', 'test.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'ImageNet100':
-            self.ind_train = torch.load(os.path.join(OOD_TEST_PATH, 'ImageNet100', 'ind-train.pt'))
-            self.ind_val = torch.load(os.path.join(OOD_TEST_PATH, 'ImageNet100', 'ind-val.pt'))
-            self.ind_train_loader = set_to_loader(self.ind_train, self.bsz_tri, True)
-            self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'ImageNet100', 'ood-val.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
-
-        elif self.name == 'CIFAR100':
-            self.ind_train = torch.load(os.path.join(OOD_TEST_PATH, 'CIFAR100', 'ind-train.pt'))
-            self.ind_val = torch.load(os.path.join(OOD_TEST_PATH, 'CIFAR100', 'ind-val.pt'))
-            self.ind_train_loader = set_to_loader(self.ind_train, self.bsz_tri, True)
-            self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
-            self.ood_val = torch.load(os.path.join(OOD_TEST_PATH, 'CIFAR100', 'ood-val.pt'))
-            self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+            self.ind_train, self.ind_val, self.ind_train_loader, self.ind_val_loader = CIFAR10(self.bsz_tri, self.bsz_val, n_ind=self.n_ind)
+            self.ood_train, self.ood_val, _, self.ood_val_loader = SVHN(self.bsz_tri, self.bsz_val)
+            self.ood_train_by_class = dset_by_class(self.ood_train)  # this is used for sampling
 
         elif self.name == '3DPC':
             self.ind_train = torch.load(os.path.join('Datasets', '3DPC', 'ind-train.pt'))
@@ -381,6 +284,14 @@ class DSET():
             self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
         else:
             assert False, 'Unrecognized Dataset Combination.'
+
+        # Print dataset information (for sensitivity analysis only)
+        if self.n_ind is not None:
+            print(line())
+            print(f"Conducting Sensitivity Analysis with {self.n_ind} InD samples.")
+            print(f"Verifying InD training set size: {len(self.ind_train)}")
+            print(f"Verifying InD class distribution: {Counter(list(zip(*self.ind_train))[1])}")
+            print(line())
 
     def ood_sample(self, n, regime, idx=None):
         dset = self.train if self.within_dset else self.ood_train_by_class
@@ -545,7 +456,7 @@ if __name__ == '__main__':
     # ImageNet32  iNaturalist  iSUN  LSUN  Places  SUN  train  val
 
     # sizes = [32, 64, 128, 256, 512, 1024]
-    sizes = [50, 100, 500, 1000, 1500, 2000]
+    # sizes = [50, 100, 500, 1000, 1500, 2000]
 
     # sample_large_ood_dataset('iSUN', 'CIFAR100-iSUN', sizes)
     # sample_large_ood_dataset('LSUN-C', 'CIFAR100-LSUN-C', sizes)
@@ -557,7 +468,7 @@ if __name__ == '__main__':
     # sample_large_ood_dataset('Texture-224', 'ImageNet-Texture-224', sizes)
     # sample_large_ood_dataset('ImageNet100', 'ImageNet100', sizes)
     # sample_large_ood_dataset('CIFAR100', 'CIFAR100', sizes)
-    sample_large_ood_dataset('3DPC', '3DPC', sizes)
+    # sample_large_ood_dataset('3DPC', '3DPC', sizes)
 
     # Test sampled dataset
     # OOD = 'Places365-32'
