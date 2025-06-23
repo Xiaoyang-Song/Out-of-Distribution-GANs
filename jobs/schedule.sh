@@ -45,11 +45,11 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 # Newly generated jobs for FashionMNIST-R2
 # sbatch jobs/FashionMNIST-R2/4.sh
-sbatch jobs/FashionMNIST-R2/8.sh
-sbatch jobs/FashionMNIST-R2/16.sh
-sbatch jobs/FashionMNIST-R2/32.sh
-sbatch jobs/FashionMNIST-R2/64.sh
-sbatch jobs/FashionMNIST-R2/128.sh
+# sbatch jobs/FashionMNIST-R2/8.sh
+# sbatch jobs/FashionMNIST-R2/16.sh
+# sbatch jobs/FashionMNIST-R2/32.sh
+# sbatch jobs/FashionMNIST-R2/64.sh
+# sbatch jobs/FashionMNIST-R2/128.sh
 # sbatch jobs/FashionMNIST-R2/256.sh
 # sbatch jobs/FashionMNIST-R2/512.sh
 # sbatch jobs/FashionMNIST-R2/1024.sh
@@ -69,16 +69,16 @@ sbatch jobs/FashionMNIST-R2/128.sh
 # sbatch jobs/CIFAR10-SVHN/4096.sh
 
 
-sbatch jobs/SVHN/8.sh
-sbatch jobs/SVHN/16.sh
-sbatch jobs/SVHN/32.sh
-sbatch jobs/SVHN/64.sh
-sbatch jobs/SVHN/128.sh
-sbatch jobs/SVHN/256.sh
-sbatch jobs/SVHN/512.sh
-sbatch jobs/SVHN/1024.sh
-sbatch jobs/SVHN/2048.sh
-sbatch jobs/SVHN/4096.sh
+# sbatch jobs/SVHN/8.sh
+# sbatch jobs/SVHN/16.sh
+# sbatch jobs/SVHN/32.sh
+# sbatch jobs/SVHN/64.sh
+# sbatch jobs/SVHN/128.sh
+# sbatch jobs/SVHN/256.sh
+# sbatch jobs/SVHN/512.sh
+# sbatch jobs/SVHN/1024.sh
+# sbatch jobs/SVHN/2048.sh
+# sbatch jobs/SVHN/4096.sh
 
 # Newly generated jobs for SVHN-R2
 # sbatch jobs/SVHN-R2/8.sh

@@ -36,7 +36,7 @@ train_config:
   score: "Wasserstein"
   T: 1
   mc: 1
-  max_epochs: 80
+  max_epochs: 60
   bsz_tri: 64
   bsz_val: 64 # this is used for evaluation
   ood_bsz: 32
