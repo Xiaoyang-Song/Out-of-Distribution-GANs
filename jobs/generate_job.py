@@ -7,7 +7,7 @@ import numpy as np
 ACCOUNT = 'sunwbgt0'
 
 
-TIME = "2:00:00"
+TIME = "00:30:00"
 # Configuration
 # EXP_DSET = 'MNIST-FashionMNIST'
 # EXP_DSET = 'FashionMNIST'
@@ -15,7 +15,7 @@ TIME = "2:00:00"
 # EXP_DSET = 'CIFAR10-SVHN'
 # EXP_DSET = 'SVHN'
 # EXP_DSET = 'SVHN-R2'
-EXP_DSET = '3DPC-R2'
+EXP_DSET = '3DPC-R1'
 # EXP_DSET = '3DPC-R2'
 
 # N = [32, 64, 128, 256, 512, 1024]

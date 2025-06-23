@@ -8,7 +8,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gpus=1
 #SBATCH --mem-per-gpu=16GB
-#SBATCH --time=2:00:00
+#SBATCH --time=00:30:00
 #SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/3DPC-R2-200.log
 
 python3 main/main_ood.py --config=config/GAN/OOD-GAN-3DPC-R2.yaml --n_ood=200 > checkpoint/log/3DPC-R2/log-200.txt

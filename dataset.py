@@ -282,6 +282,15 @@ class DSET():
             self.ind_val_loader = set_to_loader(self.ind_val, self.bsz_val, True)
             self.ood_val = torch.load(os.path.join('Datasets', '3DPC',  'ood-test.pt'))
             self.ood_val_loader = torch.utils.data.DataLoader(self.ood_val, batch_size=self.bsz_val, shuffle=True)
+            print(line())
+            print(f"Verification for 3DPC case study.")
+            print(f"Verifying InD training set size: {len(self.ind_train)}")
+            print(f"Verifying InD training class distribution: {Counter(np.array(list(zip(*self.ind_train))[1]))}")
+            print(f"Verifying InD testing set size: {len(self.ind_val)}")
+            print(f"Verifying InD testing class distribution: {Counter(np.array(list(zip(*self.ind_val))[1]))}")
+            print(f"Verifying OOD testing set size: {len(self.ood_val)}")
+            print(f"Verifying OOD testing class distribution: {Counter(np.array(list(zip(*self.ood_val))[1]))}")
+            print(line())
 
         else:
             assert False, 'Unrecognized Dataset Combination.'
