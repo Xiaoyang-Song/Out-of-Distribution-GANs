@@ -11,4 +11,7 @@ python summarize.py --name MNIST-FashionMNIST
 python summarize.py --name FashionMNIST-R2
 python summarize.py --name SVHN-R2
 
+python summarize.py --name 3DPC-R1
+python summarize.py --name 3DPC-R2
+
 
