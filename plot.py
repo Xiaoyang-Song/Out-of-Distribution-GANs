@@ -1,0 +1,173 @@
+import numpy as np
+from matplotlib import pyplot as plt
+import argparse
+import os
+from collections import defaultdict
+
+parser = argparse.ArgumentParser(description="details")
+parser.add_argument('--name', type=str)
+parser.add_argument('--type', type=str, default="SEE-OOD")
+parser.add_argument('--regime', type=str, default='I')
+args = parser.parse_args()
+
+save_dir = os.path.join('Document', args.name)
+os.makedirs(save_dir, exist_ok=True)
+
+# method_list = ['SEE-OOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha']
+method_list = ['SEE-OOD', 'Energy-FT', 'OE', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha']
+# method_list = ['SEE-OOD', 'Energy-FT', 'OE', 'ATD']
+
+N = np.arange(4, 13, 1)
+
+# Result Dict:
+RESULTS = {
+    'TPR95': {},
+    'TPR99': {},
+    'AUC': {}
+}
+
+# File path:
+LOGS = {
+    'SEE-OOD': os.path.join('checkpoint', 'log', 'summary.txt'),
+    'Energy-FT': os.path.join('..', 'energy_ood', 'CIFAR', 'out', 'energy_summary.txt'),
+    'OE': os.path.join('..', 'energy_ood', 'CIFAR', 'out', 'oe_summary.txt'),
+    'Energy': os.path.join('..', 'energy_ood', 'CIFAR', 'out', 'energy_baseline_summary.txt'),
+    'DeepSAD': os.path.join('..', 'Deep-SAD-PyTorch', 'src', 'summary.txt'),
+    'ATD': os.path.join('..', 'ATD', 'summary.txt'),
+    'VOS': os.path.join('..', 'vos', 'classification', 'CIFAR', 'jobs', 'SEEOOD_baselines', 'summary.txt'),
+    'ODIN': os.path.join('..', 'deep_Mahalanobis_detector', 'jobs', 'SEEOOD_Baselines', 'summary.txt'),
+    'Maha': os.path.join('..', 'deep_Mahalanobis_detector', 'jobs', 'SEEOOD_Baselines', 'summary.txt'),
+    'MSP': os.path.join('..', 'deep_Mahalanobis_detector', 'jobs', 'SEEOOD_Baselines', 'summary.txt') 
+}
+
+UNSUPERVISED_LIST = ['Energy', 'VOS', 'ODIN', 'Maha', 'MSP']
+
+UNSUPERVISED_INDEX = {
+    'MSP': {
+    'MNIST': 2,
+    'FashionMNIST': 7,
+    'MNIST-FashionMNIST': 12,
+    'SVHN': 17,
+    'CIFAR10-SVHN': 22
+    },
+    'ODIN': {
+    'MNIST': 33,
+    'FashionMNIST': 38,
+    'MNIST-FashionMNIST': 43,
+    'SVHN': 48,
+    'CIFAR10-SVHN': 53
+    },
+    'Maha': {
+    'MNIST': 64,
+    'FashionMNIST': 69,
+    'MNIST-FashionMNIST': 74,
+    'SVHN': 79,
+    'CIFAR10-SVHN': 84
+    },
+    'VOS': {
+    'MNIST': 0,
+    'FashionMNIST': 6,
+    'MNIST-FashionMNIST': 12,
+    'SVHN': 18,
+    'CIFAR10-SVHN': 24
+    },
+    'Energy': {
+    'MNIST': 0,
+    'FashionMNIST': 6,
+    'MNIST-FashionMNIST': 12,
+    'SVHN': 18,
+    'CIFAR10-SVHN': 24
+    }
+}
+
+INDEX = {
+    'MNIST': 0,
+    'FashionMNIST': 7,
+    'MNIST-FashionMNIST': 14,
+    'SVHN': 21,
+    'CIFAR10-SVHN': 28,
+    'FashionMNIST-R2': 35,
+    'SVHN-R2': 42
+}
+
+for method in method_list:
+    if method in UNSUPERVISED_LIST:
+        with open(LOGS[method], 'r') as f:
+            lines = f.readlines()
+            target = UNSUPERVISED_INDEX[method][args.name]
+            if method in ['VOS', 'Energy']:
+                auc_list = [float(lines[target+1][4:].strip())] * len(N)
+                tpr95_list = [float(lines[target+2][6:].strip())] * len(N)
+                tpr99_list = [float(lines[target+3][6:].strip())] * len(N)
+            else:
+                tpr95_list = [float(lines[target+1][6:].strip())] * len(N)
+                tpr99_list = [float(lines[target+2][6:].strip())] * len(N)
+                auc_list = [float(lines[target+3][6:].strip())] * len(N)
+    else:
+        with open(LOGS[method], 'r') as f:
+            lines = f.readlines()
+            target = INDEX[args.name]
+            auc_list = np.array(lines[target + 2][6:].strip().split(", "), dtype=np.float32)
+            tpr95_list = np.array(lines[target + 3][6:].strip().split(", "), dtype=np.float32)
+            tpr99_list = np.array(lines[target + 4][6:].strip().split(", "), dtype=np.float32)
+            # Append results
+    RESULTS['TPR95'][method] = tpr95_list
+    RESULTS['TPR99'][method] = tpr99_list
+    RESULTS['AUC'][method] = auc_list
+
+# print(RESULTS)
+
+# Plot TPR95
+# Config
+mksz = 6
+lw = 1.8
+fontsize=10
+
+markers = ['s', 'x', 'o', 'v', '^', '>', '<', '+', 'D', 'p', '*', 'h', '|']
+NEXP = [r'$\mathregular{2^4}$',
+        r'$\mathregular{2^5}$',
+        r'$\mathregular{2^6}$',
+        r'$\mathregular{2^7}$',
+        r'$\mathregular{2^8}$',
+        r'$\mathregular{2^9}$',
+        r'$\mathregular{2^{10}}$',
+        r'$\mathregular{2^{11}}$',
+        r'$\mathregular{2^{12}}$']
+
+for i, method in enumerate(method_list):
+    print(RESULTS['TPR95'][method][1:])
+    if method in UNSUPERVISED_LIST:
+        plt.plot(N, RESULTS['TPR95'][method], label=method, linestyle='solid', marker=markers[i], linewidth=lw, markersize=mksz, alpha=1)
+    else:
+        plt.plot(N, RESULTS['TPR95'][method][1:], label=method, linestyle='solid', marker=markers[i], linewidth=lw, markersize=mksz, alpha=1)
+
+plt.legend(loc=4)
+plt.xticks(N, NEXP, fontdict={'fontsize': 12})
+if args.name not in ['FashionMNIST-R2', 'SVHN-R2']:
+    plt.xlabel("Number of OoD samples for EACH class", fontdict={'fontsize': 14})
+else:
+    plt.xlabel("Number of OoD samples for SELECTED class", fontdict={'fontsize': 14})
+plt.ylabel("TPR (%)", fontdict={'fontsize': 13})
+plt.title(f"Regime {args.regime} - {args.name} - TPR at 95 TNR", fontdict={'fontsize': 16})
+plt.savefig(f"Document/{args.name}-Regime-{args.regime}.jpg", dpi=500)
+# plt.show()
+plt.close()
+
+# TPR99
+for i, method in enumerate(method_list):
+    if method in UNSUPERVISED_LIST:
+        plt.plot(N, RESULTS['TPR99'][method], label=method, linestyle='solid', marker=markers[i], linewidth=lw, markersize=mksz, alpha=1)
+    else:
+        plt.plot(N, RESULTS['TPR99'][method][1:], label=method, linestyle='solid', marker=markers[i], linewidth=lw, markersize=mksz, alpha=1)
+
+plt.legend(loc=4)
+plt.xticks(N, NEXP, fontdict={'fontsize': 12})
+if args.name not in ['FashionMNIST-R2', 'SVHN-R2']:
+    plt.xlabel("Number of OoD samples for EACH class", fontdict={'fontsize': 14})
+else:
+    plt.xlabel("Number of OoD samples for SELECTED class", fontdict={'fontsize': 14})
+plt.ylabel("TPR (%)", fontdict={'fontsize': 13})
+plt.title(f"Regime {args.regime} - {args.name} - TPR at 99 TNR", fontdict={'fontsize': 16})
+plt.savefig(f"Document/{args.name}-Regime-{args.regime}-99.jpg", dpi=500)
+# plt.show()
+plt.close()

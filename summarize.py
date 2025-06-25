@@ -5,6 +5,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description="details")
 parser.add_argument('--name', type=str)
+parser.add_argument('--type', type=str, default="SEE-OOD")
 args = parser.parse_args()
 
 name = args.name
@@ -35,7 +36,7 @@ for n in N:
 
 print(f"Summary for {args.name} experiments")
 print(f"N: {N}")
-print(f"AUCs: {', '.join(f'{f:.4f}' for f in AUCs)}")
-print(f"TPR95: {', '.join(f'{f:.4f}' for f in TPR95)}")
-print(f"TPR99: {', '.join(f'{f:.4f}' for f in TPR99)}\n\n")
+print(f"AUCs: {', '.join(f'{f*100:.4f}' for f in AUCs)}")
+print(f"TPR95: {', '.join(f'{f*100:.4f}' for f in TPR95)}")
+print(f"TPR99: {', '.join(f'{f*100:.4f}' for f in TPR99)}\n\n")
 
