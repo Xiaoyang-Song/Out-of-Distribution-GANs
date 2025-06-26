@@ -1,7 +1,6 @@
 from wass_loss import *
 from torch.autograd import Function
 from dataset import *
-from utils import *
 
 
 def batch_wasserstein(x):

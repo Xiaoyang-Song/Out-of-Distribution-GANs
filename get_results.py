@@ -3,16 +3,53 @@ from matplotlib import pyplot as plt
 import argparse
 import os
 from collections import defaultdict
+from simulation import plot_heatmap_v2, DSIM, GSIM
+import torch
 
 parser = argparse.ArgumentParser(description="details")
-parser.add_argument('--name', type=str)
+parser.add_argument('--name', type=str, default=None)
 parser.add_argument('--type', type=str, default="SEE-OOD")
 parser.add_argument('--regime', type=str, default='I')
+
+# Simulation results
+# python get_results.py --sim --setting=I
+# python get_results.py --sim --setting=II
+parser.add_argument('--sim', action='store_true', default=False)
+parser.add_argument('--setting', type=str, default=None)
 args = parser.parse_args()
 
+
+if args.sim:
+    assert args.setting in ['I', 'II']
+    setting = args.setting
+    ckpt_dir = os.path.join('checkpoint', 'Simulation')
+    IND_DATA, IND_X, IND_Y = torch.load(os.path.join(ckpt_dir, 'data', 'ind_data.pt'))
+    OOD_DATA, OOD_X, OOD_Y = torch.load(os.path.join(ckpt_dir, 'data', 'ood_data.pt'))
+    IND_DATA_TEST, IND_X_TEST, IND_Y_TEST = torch.load(os.path.join(ckpt_dir, 'data', 'ind_data_test.pt'))
+    IND_CLS, OOD_CLS = torch.load(os.path.join(ckpt_dir, 'data', 'ind_ood_cls.pt'))
+    OOD_BATCH = torch.load(os.path.join(ckpt_dir, 'data', 'OoDs' ,'OOD_2.pt'))
+    # Load models
+    D_GAN = DSIM(128)
+    G_GAN = GSIM(128)
+    D_WOOD = DSIM(128)
+    D_GAN.load_state_dict(torch.load(os.path.join(ckpt_dir, 'checkpoint', setting, 'D_GAN.pt')))
+    G_GAN.load_state_dict(torch.load(os.path.join(ckpt_dir, 'checkpoint', setting, 'G_GAN.pt')))
+    D_WOOD.load_state_dict(torch.load(os.path.join(ckpt_dir, 'checkpoint', setting, 'D_WOOD.pt')))
+    # Start testing
+    print(f"Testing and getting results for simulation setting {setting}...")
+    save_dir = os.path.join('Document', 'Simulation')
+    os.makedirs(save_dir, exist_ok=True)
+    plot_heatmap_v2(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
+            IND_CLS, OOD_CLS, [0, 1, 2], [3], title="WOOD Wasserstein Score Heatmap",
+            path=os.path.join(save_dir, 'WOOD.jpg'), tnr=0.95, lb=-1, ub=7, m=300)
+    plot_heatmap_v2(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'SEE-OOD', 
+            IND_CLS, OOD_CLS, [0, 1, 2], [3], title=f"SEE-OoD Wasserstein Score Heatmap - Setting {setting}",
+            path=os.path.join(save_dir, f'{setting}.jpg'), tnr=0.95, lb=-1, ub=7, m=300)
+    exit()
+
+# FOR Baselines
 save_dir = os.path.join('Document', args.name)
 os.makedirs(save_dir, exist_ok=True)
-
 # method_list = ['SEE-OOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha']
 method_list = ['SEE-OOD', 'Energy-FT', 'OE', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha']
 # method_list = ['SEE-OOD', 'Energy-FT', 'OE', 'ATD']

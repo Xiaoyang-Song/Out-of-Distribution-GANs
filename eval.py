@@ -9,7 +9,6 @@ from dataset import *
 from models.gans import *
 from models.dc_gan_model import *
 from models.model import *
-from utils import *
 from models.ood_gan_backbone import *
 from ood_gan import *
 from sklearn.linear_model import LogisticRegression

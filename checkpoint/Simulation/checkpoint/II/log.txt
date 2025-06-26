@@ -475,6 +475,6 @@ TPR at 95.0% TNR: 1.0000 | Threshold at 95.0% TNR: 9.334311471320677e-06
 TPR at 99.0% TNR: 1.0000 | Threshold at 95.0% TNR: 0.00016175423283129882
 TPR at 99.9% TNR: 0.9950 | Threshold at 95.0% TNR: 0.003970071401447612
 Rejection Threshold: 0.00016175423283129882
-Rejection Region Proportion: 30.21%
+Rejection Region Proportion: 30.21% # this is dependent on points sampled, and is not accurate.
 OoD GAN (w/ pretraining) Training time: 38609.58 s | About 643.49 mins | About 10.72 hrs
 Total time: 80389.28 s | About 1339.82 mins | About 22.33 hrs

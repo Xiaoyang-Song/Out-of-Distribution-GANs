@@ -632,67 +632,69 @@ def simulate(args, config):
     gan_stop = time.time()
     f.write(f"OoD GAN Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
     
+    OOD_GAN_PRETRAIN = False
+    if OOD_GAN_PRETRAIN:
     # OoD GAN with WOOD pretraining
-    # gan_start = time.time()
-    # f.write("\n------------- Out-of-Distribution GANs Training (With WOOD Pretraining) -------------\n") 
-    # D_GAN = DSIM(args.h).to(DEVICE)
-    # G_GAN = GSIM(args.h).to(DEVICE)
-    # D_GAN.load_state_dict(D_WOOD.state_dict()) # Use pretrained weight from wood as starting point
-    # D_solver = torch.optim.Adam(D_GAN.parameters(), lr=args.d_lr, betas=(0.9, 0.999))
-    # G_solver = torch.optim.Adam(G_GAN.parameters(), lr=args.g_lr, betas=(0.9, 0.999))
-    # criterion = nn.CrossEntropyLoss()
-    # ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
-    # ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
-    # # Training
-    # D_GAN, G_GAN, loss = oodgan_training(D=D_GAN, G=G_GAN, 
-    #                                 D_solver=D_solver, 
-    #                                 G_solver=G_solver, 
-    #                                 OOD_BATCH=OOD_BATCH, 
-    #                                 ood_bsz=args.bsz_ood, 
-    #                                 bsz_tri=args.bsz_tri, 
-    #                                 w_ce=args.w_ce, 
-    #                                 w_wass_ood=args.w_ood,
-    #                                 w_wass_gz=args.w_z,
-    #                                 w_dist=None,
-    #                                 d_step_ratio=args.n_d,
-    #                                 g_step_ratio=args.n_g,
-    #                                 ind_tri_loader=ind_tri_loader,
-    #                                 ind_val_loader=ind_val_loader,
-    #                                 max_epoch=max_epochs,
-    #                                 n_epoch=n_epochs_log,
-    #                                 n_step_log=25,
-    #                                 f=f)
-    
-    # # Plot loss relevant curve
-    # d_loss, g_loss, trajectory = loss
-    # d_loss, g_loss = np.array(d_loss), np.array(g_loss)
-    # loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Pretraining_Loss_Curves.jpg")
-    # plot_loss_curve(d_loss, g_loss, loss_path)
-    
-    # # Save model checkpoints
-    # torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN_pretrain.pt'))
-    # torch.save(G_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'G_GAN_pretrain.pt'))
+        gan_start = time.time()
+        f.write("\n------------- Out-of-Distribution GANs Training (With WOOD Pretraining) -------------\n") 
+        D_GAN = DSIM(args.h).to(DEVICE)
+        G_GAN = GSIM(args.h).to(DEVICE)
+        D_GAN.load_state_dict(D_WOOD.state_dict()) # Use pretrained weight from wood as starting point
+        D_solver = torch.optim.Adam(D_GAN.parameters(), lr=args.d_lr, betas=(0.9, 0.999))
+        G_solver = torch.optim.Adam(G_GAN.parameters(), lr=args.g_lr, betas=(0.9, 0.999))
+        criterion = nn.CrossEntropyLoss()
+        ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
+        ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
+        # Training
+        D_GAN, G_GAN, loss = oodgan_training(D=D_GAN, G=G_GAN, 
+                                        D_solver=D_solver, 
+                                        G_solver=G_solver, 
+                                        OOD_BATCH=OOD_BATCH, 
+                                        ood_bsz=args.bsz_ood, 
+                                        bsz_tri=args.bsz_tri, 
+                                        w_ce=args.w_ce, 
+                                        w_wass_ood=args.w_ood,
+                                        w_wass_gz=args.w_z,
+                                        w_dist=None,
+                                        d_step_ratio=args.n_d,
+                                        g_step_ratio=args.n_g,
+                                        ind_tri_loader=ind_tri_loader,
+                                        ind_val_loader=ind_val_loader,
+                                        max_epoch=max_epochs,
+                                        n_epoch=n_epochs_log,
+                                        n_step_log=25,
+                                        f=f)
+        
+        # Plot loss relevant curve
+        d_loss, g_loss, trajectory = loss
+        d_loss, g_loss = np.array(d_loss), np.array(g_loss)
+        loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Pretraining_Loss_Curves.jpg")
+        plot_loss_curve(d_loss, g_loss, loss_path)
+        
+        # Save model checkpoints
+        torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN_pretrain.pt'))
+        torch.save(G_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'G_GAN_pretrain.pt'))
 
-    # f.write("\nOoD GAN w/ Pretraining Performance\n")
-    # threshold_95, tpr_95 = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.95)
-    # f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
-    # threshold_99, tpr_99  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.99)
-    # f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
-    # threshold_999, tpr_999  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.999)
-    # f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n") 
+        f.write("\nOoD GAN w/ Pretraining Performance\n")
+        threshold_95, tpr_95 = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.95)
+        f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
+        threshold_99, tpr_99  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.99)
+        f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
+        threshold_999, tpr_999  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.999)
+        f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n") 
 
-    # # Plot
-    # plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap_Pretraining.jpg")
-    # plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN with Pretraining', 
-    #              IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-    #              path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
-    
-    # # Plot Gz trajectory plots
-    # plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_G_Trajectory_Pretraining.jpg")
-    # plot_trajectory(trajectory, IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, IND_CLS, OOD_CLS, plt_path)
+        # Plot
+        plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap_Pretraining.jpg")
+        plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN with Pretraining', 
+                    IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+                    path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
+        
+        # Plot Gz trajectory plots
+        plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_G_Trajectory_Pretraining.jpg")
+        plot_trajectory(trajectory, IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, IND_CLS, OOD_CLS, plt_path)
 
-    # gan_stop = time.time()
-    # f.write(f"OoD GAN (w/ pretraining) Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
+        gan_stop = time.time()
+        f.write(f"OoD GAN (w/ pretraining) Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
     
     # Stop time logging
     stop = time.time()
@@ -772,6 +774,81 @@ def generate_ind_ood_settings(config):
     )
     torch.save(plotting_config, os.path.join(ckpt_dir, setting_id, 'plt_config.pt'))
 
+def plot_heatmap_v2(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D, G, method, ind_cls, ood_cls, 
+                 ind_idx, ood_idx, title, path=None, tnr=0.99, lb=0, ub=7,m=100, f=None):
+    # print(m)
+    fig, ax = plt.subplots()
+    with torch.no_grad():
+        # Generated samples
+        if G is not None:
+            n_gen = 10
+            seed = torch.rand((n_gen, 2), device=DEVICE)
+            Gz = G(seed).detach().numpy()
+            lb_g = np.floor(np.min(Gz)) - 1
+            ub_g = np.floor(np.max(Gz)) + 1
+            lb = min(lb_g, lb)
+            ub = max(ub_g, ub)
+        
+        xi = np.linspace(lb, ub, m, endpoint=True)
+        yi = np.linspace(lb, ub, m, endpoint=True)
+        xy_pos = np.array(list(product(xi, yi)))
+        zi = torch.softmax(D(torch.tensor(xy_pos, dtype=torch.float32)), dim=-1)
+        # print(zi.shape)
+        si = ood_wass_loss(zi)
+        threshold, _ = calculate_accuracy(D=D, ind=IND_X, ood=OOD_X, tnr=tnr)
+        mask = si > threshold
+    print(f"Rejection Threshold: {threshold}")
+    print(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%")
+    if f is not None:
+        f.write(f"Rejection Threshold: {threshold}\n")
+        f.write(f"Rejection Region Proportion: {100 * sum(mask) / len(mask):.2f}%\n")
+    # Plot
+    # Heatmap
+    plt.pcolormesh(xi, yi, si.reshape((m, m)).T, shading='auto',cmap='inferno', alpha=1)
+    plt.colorbar()
+    plt.pcolormesh(xi, yi, mask.reshape((m, m)).T, shading='auto',cmap='gray', alpha=0.15)
+    # InD and OoD
+    # IND Training
+    for i, idx in enumerate(ind_cls):
+        if i == 0:
+            plt.scatter(IND_X[:,0][IND_Y==idx][ind_idx], IND_X[:,1][IND_Y==idx][ind_idx], c='white', label ="InD", marker='^',sizes=[30]*len(IND_X), alpha=1)
+        else:
+            plt.scatter(IND_X[:,0][IND_Y==idx][ind_idx], IND_X[:,1][IND_Y==idx][ind_idx], c='white', marker='^',sizes=[30]*len(IND_X), alpha=1)
+    # OOD BATCH
+    plt.scatter(OOD_BATCH[:,0], OOD_BATCH[:,1], c='navy', label="OoD",marker='^', sizes=[30]*len(OOD_X), alpha=1)
+    # IND Test
+    for idx in ind_cls:
+        plt.scatter(IND_X_TEST[:,0][IND_Y_TEST==idx][ind_idx], IND_X_TEST[:,1][IND_Y_TEST==idx][ind_idx], c='white', sizes=[30]*len(IND_X), alpha=0.3)
+    # OOD
+    for idx in ood_cls:
+        plt.scatter(OOD_X[:,0][OOD_Y==idx][ood_idx], OOD_X[:,1][OOD_Y==idx][ood_idx], c='navy', sizes=[30]*len(OOD_X), alpha=0.3)
+
+    if G is not None:
+        plt.scatter(Gz[:,0], Gz[:,1], marker='x', c='#00b384', sizes=[30]*n_gen, alpha=0.5)
+    # plt.title(f"{method} W-Score Heatmap", fontdict={'fontsize': 14.5})
+    plt.title(title, fontdict={'fontsize': 14.5})
+    plt.xlabel("X1", fontdict={'fontsize': 13})
+    plt.ylabel("X2", fontdict={'fontsize': 13})
+    # Legend Processing
+    leg = plt.legend()
+    ax.add_artist(leg)
+    if G is not None:
+        markers = ['^', 'o', 'x']
+        legends = ['Training Data', 'Testing Data', 'Generated Data']
+    else:
+        markers = ['^', 'o']
+        legends = ['Training Data', 'Testing Data']
+
+    h = [plt.plot([],[], color="navy", marker=mk, ls="",ms=5)[0] for mk in markers]
+    plt.legend(handles=h, labels=legends, loc='lower right')
+    # Save plots
+    if path is None:
+        plt.savefig(f"simulation_log/plot/{method}.jpg", dpi=1500)
+    else:
+        plt.savefig(path, dpi=1500)
+    # plt.show()
+    plt.close()
+
 # Example command for G mode:
 # python3 simulation.py --mode=G --config=config/simulation/setting_1_config.yaml
 
@@ -806,6 +883,7 @@ if __name__ == '__main__':
 
     # Productivity
     parser.add_argument('--JID', help='GL Job ID', type=int)
+
     
     args = parser.parse_args()
     assert args.config is not None, 'Please specify the config .yml file to proceed.'

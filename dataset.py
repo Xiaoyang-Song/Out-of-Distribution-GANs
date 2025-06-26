@@ -1,7 +1,6 @@
 from random import sample
 from config import *
 # Auxiliary imports
-from utils import visualize_img
 from collections import defaultdict, Counter
 import torchvision
 import torchvision.transforms as trn
