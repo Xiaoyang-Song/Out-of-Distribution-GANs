@@ -94,7 +94,7 @@ class Wasserstein(Function):
         all1hot = label_2_onehot(all_class, C, device)
         all1hot = torch.unsqueeze(all1hot, -1)
         # 2-Wasserstein distance with binary cost matrix
-        WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=0.05, cost=cost_matrix)
+        WASSLOSS = SamplesLoss("sinkhorn", p=2, blur=1, cost=cost_matrix)
         p = torch.unsqueeze(p, -1)
         # Compute Wasserstein distance
         loss = torch.zeros(B, C).to(device)

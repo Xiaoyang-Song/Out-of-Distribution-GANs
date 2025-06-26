@@ -250,7 +250,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
     for epoch in tqdm(range(max_epoch)):
         D.train()
         G.train()
-        for steps, (x, y) in enumerate(ind_tri_loader):
+        for steps, (x, y) in tqdm(enumerate(ind_tri_loader)):
             x,y = x.to(torch.float32).to(DEVICE), y.to(DEVICE)
             # ---------------------- #
             # DISCRIMINATOR TRAINING #
@@ -364,6 +364,7 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, 
             lb = min(lb_g, lb)
             ub = max(ub_g, ub)
         
+        m=100
         xi = np.linspace(lb, ub, m, endpoint=True)
         yi = np.linspace(lb, ub, m, endpoint=True)
         xy_pos = np.array(list(product(xi, yi)))
@@ -469,7 +470,7 @@ def plot_loss_curve(d_loss, g_loss, path):
     iters = range(0, len(d_loss), 1)
 
 
-    fig, axs = plt.subplots(3, sharex=True)
+    fig, axs = plt.subplots(2, sharex=True)
     fig.tight_layout(pad=2.0)
     # fig.suptitle('Training Loss Curves')
 
@@ -490,17 +491,18 @@ def plot_loss_curve(d_loss, g_loss, path):
     axs[1].set_title("Generator Loss Curve")
     axs[1].legend()
 
-    # Distance
-    axs[2].plot(iters, dist, label=r'Dist', marker='o', markersize=3)
-    axs[2].set_xlabel('Training Epochs')
-    axs[2].set_ylabel('Euclidean Distance')
-    axs[2].set_title("Distance Curve")
-    axs[2].legend()
+    # # Distance
+    # axs[2].plot(iters, dist, label=r'Dist', marker='o', markersize=3)
+    # axs[2].set_xlabel('Training Epochs')
+    # axs[2].set_ylabel('Euclidean Distance')
+    # axs[2].set_title("Distance Curve")
+    # axs[2].legend()
     fig.savefig(path, dpi=1500)
     plt.close()
 
 def simulate(args, config):
     # Path & Settings
+    print(DEVICE)
     ckpt_dir = config['path']['ckpt_dir']
     setting = config['setting']
     # Make checkpoint directory
@@ -531,38 +533,40 @@ def simulate(args, config):
     max_epochs = config['max_epochs']
     n_epochs_log = config['n_epochs_log']
 
+    WOOD=True
+    # WOOD=True
+    if WOOD:
+        f.write("\n------------- WOOD Baseline Training -------------\n") 
+        f.write("WOOD Training Hyperparameters\n")
+        f.write(f"h={args.h}, w_ood={args.beta}, lr={args.wood_lr}\n")
+        f.write(f"epochs={max_epochs}, bsz_tri={args.bsz_tri}, bsz_val={args.bsz_val}, bsz_ood={args.bsz_ood}\n\n")
+        D_WOOD = DSIM(args.h).to(DEVICE)
+        optimizer = torch.optim.Adam(D_WOOD.parameters(), lr=args.wood_lr, betas=(0.9, 0.999))
+        criterion = nn.CrossEntropyLoss()
+        # Dataloader
+        ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
+        ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
+        # Training
+        D_WOOD = wood_training(D_WOOD, OOD_BATCH, args.bsz_ood, args.beta, criterion, 
+                            optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log, f)
+        torch.save(D_WOOD.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_WOOD.pt'))
+        # Detection Performance
+        f.write("\nWOOD Performance\n")
+        threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
+        f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
+        threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
+        f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
+        threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
+        f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n")
 
-    f.write("\n------------- WOOD Baseline Training -------------\n") 
-    f.write("WOOD Training Hyperparameters\n")
-    f.write(f"h={args.h}, w_ood={args.beta}, lr={args.wood_lr}\n")
-    f.write(f"epochs={max_epochs}, bsz_tri={args.bsz_tri}, bsz_val={args.bsz_val}, bsz_ood={args.bsz_ood}\n\n")
-    D_WOOD = DSIM(args.h).to(DEVICE)
-    optimizer = torch.optim.Adam(D_WOOD.parameters(), lr=args.wood_lr, betas=(0.9, 0.999))
-    criterion = nn.CrossEntropyLoss()
-    # Dataloader
-    ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
-    ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
-    # Training
-    D_WOOD = wood_training(D_WOOD, OOD_BATCH, args.bsz_ood, args.beta, criterion, 
-                           optimizer, ind_tri_loader,ind_val_loader, max_epochs, n_epochs_log, f)
-    torch.save(D_WOOD.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_WOOD.pt'))
-    # Detection Performance
-    f.write("\nWOOD Performance\n")
-    threshold_95, tpr_95 = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.95)
-    f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
-    threshold_99, tpr_99  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.99)
-    f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
-    threshold_999, tpr_999  = calculate_accuracy(D=D_WOOD, ind=IND_X, ood=OOD_X, tnr=0.999)
-    f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n")
-
-    # Plot
-    pltargs = torch.load(os.path.join(ckpt_dir, setting, 'plt_config.pt'))
-    plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
-    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
-                 IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
-    wood_stop = time.time()
-    f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
+        # Plot
+        pltargs = torch.load(os.path.join(ckpt_dir, setting, 'plt_config.pt'))
+        plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
+        plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
+                    IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+                    path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
+        wood_stop = time.time()
+        f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
     
     # OoD GAN Simulation
     gan_start = time.time()
@@ -629,66 +633,66 @@ def simulate(args, config):
     f.write(f"OoD GAN Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
     
     # OoD GAN with WOOD pretraining
-    gan_start = time.time()
-    f.write("\n------------- Out-of-Distribution GANs Training (With WOOD Pretraining) -------------\n") 
-    D_GAN = DSIM(args.h).to(DEVICE)
-    G_GAN = GSIM(args.h).to(DEVICE)
-    D_GAN.load_state_dict(D_WOOD.state_dict()) # Use pretrained weight from wood as starting point
-    D_solver = torch.optim.Adam(D_GAN.parameters(), lr=args.d_lr, betas=(0.9, 0.999))
-    G_solver = torch.optim.Adam(G_GAN.parameters(), lr=args.g_lr, betas=(0.9, 0.999))
-    criterion = nn.CrossEntropyLoss()
-    ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
-    ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
-    # Training
-    D_GAN, G_GAN, loss = oodgan_training(D=D_GAN, G=G_GAN, 
-                                    D_solver=D_solver, 
-                                    G_solver=G_solver, 
-                                    OOD_BATCH=OOD_BATCH, 
-                                    ood_bsz=args.bsz_ood, 
-                                    bsz_tri=args.bsz_tri, 
-                                    w_ce=args.w_ce, 
-                                    w_wass_ood=args.w_ood,
-                                    w_wass_gz=args.w_z,
-                                    w_dist=None,
-                                    d_step_ratio=args.n_d,
-                                    g_step_ratio=args.n_g,
-                                    ind_tri_loader=ind_tri_loader,
-                                    ind_val_loader=ind_val_loader,
-                                    max_epoch=max_epochs,
-                                    n_epoch=n_epochs_log,
-                                    n_step_log=25,
-                                    f=f)
+    # gan_start = time.time()
+    # f.write("\n------------- Out-of-Distribution GANs Training (With WOOD Pretraining) -------------\n") 
+    # D_GAN = DSIM(args.h).to(DEVICE)
+    # G_GAN = GSIM(args.h).to(DEVICE)
+    # D_GAN.load_state_dict(D_WOOD.state_dict()) # Use pretrained weight from wood as starting point
+    # D_solver = torch.optim.Adam(D_GAN.parameters(), lr=args.d_lr, betas=(0.9, 0.999))
+    # G_solver = torch.optim.Adam(G_GAN.parameters(), lr=args.g_lr, betas=(0.9, 0.999))
+    # criterion = nn.CrossEntropyLoss()
+    # ind_tri_loader = torch.utils.data.DataLoader(IND_DATA, shuffle=True, batch_size=args.bsz_tri)
+    # ind_val_loader = torch.utils.data.DataLoader(IND_DATA_TEST, shuffle=True, batch_size=args.bsz_val)
+    # # Training
+    # D_GAN, G_GAN, loss = oodgan_training(D=D_GAN, G=G_GAN, 
+    #                                 D_solver=D_solver, 
+    #                                 G_solver=G_solver, 
+    #                                 OOD_BATCH=OOD_BATCH, 
+    #                                 ood_bsz=args.bsz_ood, 
+    #                                 bsz_tri=args.bsz_tri, 
+    #                                 w_ce=args.w_ce, 
+    #                                 w_wass_ood=args.w_ood,
+    #                                 w_wass_gz=args.w_z,
+    #                                 w_dist=None,
+    #                                 d_step_ratio=args.n_d,
+    #                                 g_step_ratio=args.n_g,
+    #                                 ind_tri_loader=ind_tri_loader,
+    #                                 ind_val_loader=ind_val_loader,
+    #                                 max_epoch=max_epochs,
+    #                                 n_epoch=n_epochs_log,
+    #                                 n_step_log=25,
+    #                                 f=f)
     
-    # Plot loss relevant curve
-    d_loss, g_loss, trajectory = loss
-    d_loss, g_loss = np.array(d_loss), np.array(g_loss)
-    loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Pretraining_Loss_Curves.jpg")
-    plot_loss_curve(d_loss, g_loss, loss_path)
+    # # Plot loss relevant curve
+    # d_loss, g_loss, trajectory = loss
+    # d_loss, g_loss = np.array(d_loss), np.array(g_loss)
+    # loss_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Pretraining_Loss_Curves.jpg")
+    # plot_loss_curve(d_loss, g_loss, loss_path)
     
-    # Save model checkpoints
-    torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN_pretrain.pt'))
-    torch.save(G_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'G_GAN_pretrain.pt'))
+    # # Save model checkpoints
+    # torch.save(D_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'D_GAN_pretrain.pt'))
+    # torch.save(G_GAN.state_dict(), os.path.join(ckpt_dir, setting, dir_name, 'G_GAN_pretrain.pt'))
 
-    f.write("\nOoD GAN w/ Pretraining Performance\n")
-    threshold_95, tpr_95 = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.95)
-    f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
-    threshold_99, tpr_99  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.99)
-    f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
-    threshold_999, tpr_999  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.999)
-    f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n") 
+    # f.write("\nOoD GAN w/ Pretraining Performance\n")
+    # threshold_95, tpr_95 = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.95)
+    # f.write(f"TPR at 95.0% TNR: {tpr_95:.4f} | Threshold at 95.0% TNR: {threshold_95}\n")
+    # threshold_99, tpr_99  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.99)
+    # f.write(f"TPR at 99.0% TNR: {tpr_99:.4f} | Threshold at 95.0% TNR: {threshold_99}\n")
+    # threshold_999, tpr_999  = calculate_accuracy(D=D_GAN, ind=IND_X, ood=OOD_X, tnr=0.999)
+    # f.write(f"TPR at 99.9% TNR: {tpr_999:.4f} | Threshold at 95.0% TNR: {threshold_999}\n") 
 
-    # Plot
-    plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap_Pretraining.jpg")
-    plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN with Pretraining', 
-                 IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
+    # # Plot
+    # plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap_Pretraining.jpg")
+    # plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN with Pretraining', 
+    #              IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
+    #              path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
     
-    # Plot Gz trajectory plots
-    plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_G_Trajectory_Pretraining.jpg")
-    plot_trajectory(trajectory, IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, IND_CLS, OOD_CLS, plt_path)
+    # # Plot Gz trajectory plots
+    # plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_G_Trajectory_Pretraining.jpg")
+    # plot_trajectory(trajectory, IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, IND_CLS, OOD_CLS, plt_path)
 
-    gan_stop = time.time()
-    f.write(f"OoD GAN (w/ pretraining) Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
+    # gan_stop = time.time()
+    # f.write(f"OoD GAN (w/ pretraining) Training time: {np.round(gan_stop - gan_start, 2)} s | About {np.round((gan_stop - gan_start)/60, 2)} mins | About {np.round((gan_stop - gan_start)/(60**2), 2)} hrs\n")
     
     # Stop time logging
     stop = time.time()

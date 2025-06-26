@@ -31,11 +31,11 @@ dset_info:
   num_class: 8
 
 train_config:
-  mc: 3
+  mc: 1
   max_epochs: 80
   bsz_tri: 50
   bsz_val: 64 # this is not used in general
-  beta: 0.01 # WOOD balancing factor
+  beta: 0.1 # WOOD balancing factor
   ood_bsz: 10
   optimizer:
     lr: 0.001
@@ -44,4 +44,4 @@ train_config:
 
 eval_config:
   each_cls: False
-  cls_idx:
+  cls_idx: null

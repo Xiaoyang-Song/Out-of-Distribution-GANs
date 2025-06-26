@@ -1,7 +1,6 @@
 from config import *
 from models.hparam import *
 from models.gans import *
-from metrics import *
 from wasserstein import *
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter

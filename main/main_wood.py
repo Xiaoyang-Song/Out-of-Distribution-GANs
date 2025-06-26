@@ -130,9 +130,7 @@ for mc in range(mc_num):
             optimizer.zero_grad()
             logits = model(img)
             # Sample ood image from the seen OoD set
-            # ood_idx = np.random.choice(
-            #     len(ood_img_batch), min(len(ood_img_batch), ood_bsz), replace=False)
-            # ood_img = ood_img_batch[ood_idx, :, :, :].to(DEVICE)
+            # print(ood_img.shape)
             ood_logits = model(ood_img)
             # ic(ood_logits.shape)
             wass_loss = batch_wasserstein(ood_logits)
@@ -141,8 +139,7 @@ for mc in range(mc_num):
             # ic(loss)
             optimizer.step()
             # Append training statistics
-            acc = (torch.argmax(logits, dim=1) ==
-                   labels).sum().item() / labels.shape[0]
+            acc = (torch.argmax(logits, dim=1) == labels).sum().item() / labels.shape[0]
             train_acc.append(acc)
             train_loss.append(loss.detach().item())
             wass.append(wass_loss.detach().item())
@@ -151,10 +148,9 @@ for mc in range(mc_num):
             # pretrain_writer.add_scalar("Training/Loss", loss.detach().item(), iter_count_train)
             iter_count_train += 1
 
-        print(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
-                | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
-        ic(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
-                | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}") # for slurm output
+        print(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}")
+        # ic(f"Epoch  # {epoch + 1} | training loss: {np.mean(train_loss)} \
+        #         | training acc: {np.mean(train_acc)} | Wass Loss {np.mean(wass)}") # for slurm output
         # Evaluation
         # scheduler.step()
         model.eval()
@@ -172,18 +168,19 @@ for mc in range(mc_num):
 
             print(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
                 | validation acc: {np.mean(val_acc)}")
-            ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
-                | validation acc: {np.mean(val_acc)}") # for slurm output
-    with torch.no_grad():
-        # Evaluation
-        torch.save(model.state_dict(),
-                   log_dir + f"model-[{n_ood}]-[{max_epoch}]-[{mc}].pt")
-        print("Model Checkpoint Saved!")
-        evaler.evaluate(model, f'mc={mc}', None,  False, ood)
-        test_backbone_D(model, dset.ind_val_loader)
-        mc_stop = time.time()
-        print(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
+            # ic(f"Epoch  # {epoch + 1} | validation loss: {np.mean(val_loss)} \
+            #     | validation acc: {np.mean(val_acc)}") # for slurm output
+        evaluate(model, dset.ind_val_loader, dset.ood_val_loader, 'Wasserstein')
 
+
+with torch.no_grad():
+    # Evaluation
+    evaler.evaluate(model, f'mc={mc}', None,  False, cls_idx)
+    test_backbone_D(model, dset.ind_val_loader)
+    torch.save(model.state_dict(), log_dir + f"model-[{n_ood}]-[{max_epoch}]-[{mc}].pt")
+    print("Model Checkpoint Saved!")
+    mc_stop = time.time()
+    print(f"MC #{mc} time spent: {np.round(mc_stop - mc_start, 2)}s | About {np.round((mc_stop-mc_start)/60, 1)} mins")
 # Display & save statistics
 evaler.display_stats()
 evaler.save(log_dir + "eval.pt")

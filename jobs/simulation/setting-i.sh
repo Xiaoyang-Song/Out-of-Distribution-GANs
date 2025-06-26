@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#SBATCH --account=jhjin1
+#SBATCH --job-name=sim1
+#SBATCH --mail-user=xysong@umich.edu
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --nodes=1
+#SBATCH --partition=gpu
+#SBATCH --gpus=1
+#SBATCH --mem-per-gpu=16GB
+#SBATCH --time=5:00:00
+#SBATCH --output=/scratch/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/checkpoint/out/sim-1.log
+
+python3 simulation.py --mode=R --config=config/simulation/run_config.yaml --JID=6 --n_ood=2 --h=128 --beta=1 --w_ce=1 --w_ood=1 --w_z=0.001 --wood_lr=0.001 --d_lr=0.0001 --g_lr=0.0001 --bsz_tri=256 --bsz_val=256 --bsz_ood=2 --n_d=2 --n_g=1

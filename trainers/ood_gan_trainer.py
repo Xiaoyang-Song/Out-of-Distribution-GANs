@@ -4,7 +4,6 @@ from models.hparam import *
 from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 from models.gans import *
-from metrics import *
 from wasserstein import *
 
 from time import gmtime, strftime

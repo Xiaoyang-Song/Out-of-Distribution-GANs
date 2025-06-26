@@ -25,6 +25,7 @@ ckpt/
 simulation_log/
 checkpoint/Simulation/
 checkpoint/OOD-GAN
+checkpoint/WOOD
 
 checkpoint/OOD-Sample/CIFAR10-SVHN
 checkpoint/OOD-Sample/SVHN

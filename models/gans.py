@@ -3,7 +3,6 @@ from dataset import MNIST, CIFAR10
 from models.hparam import *
 from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
-from metrics import *
 from wasserstein import *
 
 BATCH_SIZE = 128  # for training
