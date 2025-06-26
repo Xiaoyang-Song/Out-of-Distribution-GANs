@@ -250,7 +250,7 @@ def oodgan_training(D, G, D_solver, G_solver, OOD_BATCH, ood_bsz, bsz_tri, w_ce,
     for epoch in tqdm(range(max_epoch)):
         D.train()
         G.train()
-        for steps, (x, y) in tqdm(enumerate(ind_tri_loader)):
+        for steps, (x, y) in enumerate(ind_tri_loader):
             x,y = x.to(torch.float32).to(DEVICE), y.to(DEVICE)
             # ---------------------- #
             # DISCRIMINATOR TRAINING #
