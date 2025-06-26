@@ -23,7 +23,7 @@ other/
 # simulation example
 ckpt/
 simulation_log/
-checkpoint/Simulation/
+checkpoint/Simulation/SETTING-I/
 checkpoint/OOD-GAN
 checkpoint/WOOD
 

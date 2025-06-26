@@ -1,0 +1,418 @@
+Directory Name Format: Eg_[<n_ood>]_[<beta>]_[<CE>|<OoD>|<Z>]_[<WOOD_lr>|<GAN_lr>|<bsz_tri>|<bsz_val>|<bsz_ood>]_[<n_d>|<n_g>]
+Directory Name: Eg_2_[128]_[1.0]_[1.0|1.0|0.001]_[0.001|0.0001|256|256|2]_[2|1]
+Observed OoD data shape: torch.Size([2, 2])
+
+------------- WOOD Baseline Training -------------
+WOOD Training Hyperparameters
+h=128, w_ood=1.0, lr=0.001
+epochs=256, bsz_tri=256, bsz_val=256, bsz_ood=2
+
+Epoch  # 1 | Tri loss: 0.6722                     | Tri accuracy: 0.5129
+Wasserstein Scores: 0.29517021775245667
+Epoch  # 1 | Val loss: 0.8252                     | Val accuracy: 0.9363
+Epoch  # 11 | Tri loss: -0.2612                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.37554094195365906
+Epoch  # 11 | Val loss: 0.0928                     | Val accuracy: 1.0
+Epoch  # 21 | Tri loss: -0.3418                     | Tri accuracy: 0.9997
+Wasserstein Scores: 0.37043842673301697
+Epoch  # 21 | Val loss: 0.0266                     | Val accuracy: 1.0
+Epoch  # 31 | Tri loss: -0.3463                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3738500773906708
+Epoch  # 31 | Val loss: 0.0144                     | Val accuracy: 1.0
+Epoch  # 41 | Tri loss: -0.3615                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.37782540917396545
+Epoch  # 41 | Val loss: 0.01                     | Val accuracy: 1.0
+Epoch  # 51 | Tri loss: -0.3619                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3755478858947754
+Epoch  # 51 | Val loss: 0.0087                     | Val accuracy: 1.0
+Epoch  # 61 | Tri loss: -0.3519                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.35385632514953613
+Epoch  # 61 | Val loss: 0.0047                     | Val accuracy: 1.0
+Epoch  # 71 | Tri loss: -0.3679                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3738296926021576
+Epoch  # 71 | Val loss: 0.0043                     | Val accuracy: 1.0
+Epoch  # 81 | Tri loss: -0.3724                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3841839134693146
+Epoch  # 81 | Val loss: 0.0046                     | Val accuracy: 1.0
+Epoch  # 91 | Tri loss: -0.3695                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.37221187353134155
+Epoch  # 91 | Val loss: 0.0036                     | Val accuracy: 1.0
+Epoch  # 101 | Tri loss: -0.3774                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3777581453323364
+Epoch  # 101 | Val loss: 0.0039                     | Val accuracy: 1.0
+Epoch  # 111 | Tri loss: -0.3828                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3847312331199646
+Epoch  # 111 | Val loss: 0.0017                     | Val accuracy: 1.0
+Epoch  # 121 | Tri loss: -0.3713                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.36941564083099365
+Epoch  # 121 | Val loss: 0.002                     | Val accuracy: 1.0
+Epoch  # 131 | Tri loss: -0.3788                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3767479956150055
+Epoch  # 131 | Val loss: 0.0011                     | Val accuracy: 1.0
+Epoch  # 141 | Tri loss: -0.3836                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.38112306594848633
+Epoch  # 141 | Val loss: 0.0011                     | Val accuracy: 1.0
+Epoch  # 151 | Tri loss: -0.3751                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.37105661630630493
+Epoch  # 151 | Val loss: 0.0009                     | Val accuracy: 1.0
+Epoch  # 161 | Tri loss: -0.3818                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3769655227661133
+Epoch  # 161 | Val loss: 0.0008                     | Val accuracy: 1.0
+Epoch  # 171 | Tri loss: -0.383                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.386025607585907
+Epoch  # 171 | Val loss: 0.0007                     | Val accuracy: 1.0
+Epoch  # 181 | Tri loss: -0.3812                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3881731629371643
+Epoch  # 181 | Val loss: 0.0009                     | Val accuracy: 1.0
+Epoch  # 191 | Tri loss: -0.3844                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.38984549045562744
+Epoch  # 191 | Val loss: 0.0006                     | Val accuracy: 1.0
+Epoch  # 201 | Tri loss: -0.3851                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.380642294883728
+Epoch  # 201 | Val loss: 0.0006                     | Val accuracy: 1.0
+Epoch  # 211 | Tri loss: -0.3893                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.38928061723709106
+Epoch  # 211 | Val loss: 0.0005                     | Val accuracy: 1.0
+Epoch  # 221 | Tri loss: -0.3822                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.38104188442230225
+Epoch  # 221 | Val loss: 0.0004                     | Val accuracy: 1.0
+Epoch  # 231 | Tri loss: -0.3818                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.39083588123321533
+Epoch  # 231 | Val loss: 0.0004                     | Val accuracy: 1.0
+Epoch  # 241 | Tri loss: -0.3882                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3887310028076172
+Epoch  # 241 | Val loss: 0.0004                     | Val accuracy: 1.0
+Epoch  # 251 | Tri loss: -0.3868                     | Tri accuracy: 1.0
+Wasserstein Scores: 0.3887177109718323
+Epoch  # 251 | Val loss: 0.0006                     | Val accuracy: 1.0
+
+WOOD Performance
+TPR at 95.0% TNR: 1.0000 | Threshold at 95.0% TNR: 5.047931335866432e-06
+TPR at 99.0% TNR: 1.0000 | Threshold at 95.0% TNR: 8.308878284879024e-05
+TPR at 99.9% TNR: 0.9960 | Threshold at 95.0% TNR: 0.001716963503510139
+Rejection Threshold: 8.308878284879024e-05
+Rejection Region Proportion: 29.42%
+WOOD Training time: 931.12 s | About 15.5 mins
+
+------------- Out-of-Distribution GANs Training -------------
+OoD GAN Training Hyperparameters
+h=128, w_ce=1.0, w_ood=1.0, w_z=0.001, lr=0.0001, n_d=2, n_g=1
+epochs=256, bsz_tri=256, bsz_val=256, bsz_ood=2
+
+Step: 0    | D:  0.7641 | CE:  1.0788 | W_OoD:  0.3150 | W_z:  0.2871 | G: -0.0003 | W_z:  0.2893 | dist: 3.9717
+Epoch  # 1 | Val accuracy: 0.3636
+Step: 1    | D:  0.5833 | CE:  0.9745 | W_OoD:  0.3916 | W_z:  0.3187 | G: -0.0003 | W_z:  0.3179 | dist: 3.6282
+Step: 2    | D:  0.4992 | CE:  0.8897 | W_OoD:  0.3908 | W_z:  0.3358 | G: -0.0003 | W_z:  0.3356 | dist: 3.2845
+Step: 3    | D:  0.3844 | CE:  0.7755 | W_OoD:  0.3914 | W_z:  0.2045 | G: -0.0002 | W_z:  0.2020 | dist: 3.2024
+Step: 4    | D:  0.2954 | CE:  0.6861 | W_OoD:  0.3909 | W_z:  0.1386 | G: -0.0001 | W_z:  0.1379 | dist: 3.1774
+Step: 5    | D:  0.2231 | CE:  0.6132 | W_OoD:  0.3902 | W_z:  0.1100 | G: -0.0001 | W_z:  0.1083 | dist: 3.0578
+Epoch  # 11 | Val accuracy: 0.9772
+Step: 6    | D:  0.1541 | CE:  0.5440 | W_OoD:  0.3900 | W_z:  0.0942 | G: -0.0001 | W_z:  0.0932 | dist: 2.8878
+Step: 7    | D:  0.0961 | CE:  0.4841 | W_OoD:  0.3880 | W_z:  0.0896 | G: -0.0001 | W_z:  0.0890 | dist: 2.6469
+Step: 8    | D:  0.0441 | CE:  0.4319 | W_OoD:  0.3880 | W_z:  0.0967 | G: -0.0001 | W_z:  0.0963 | dist: 2.3346
+Step: 9    | D:  0.0067 | CE:  0.3916 | W_OoD:  0.3851 | W_z:  0.1435 | G: -0.0001 | W_z:  0.1435 | dist: 1.8721
+Step: 10   | D: -0.0405 | CE:  0.3468 | W_OoD:  0.3875 | W_z:  0.2778 | G: -0.0003 | W_z:  0.2756 | dist: 1.1607
+Epoch  # 21 | Val accuracy: 0.999
+Step: 11   | D: -0.0858 | CE:  0.3005 | W_OoD:  0.3866 | W_z:  0.3234 | G: -0.0003 | W_z:  0.3249 | dist: 0.8863
+Step: 0    | D: -0.1260 | CE:  0.2604 | W_OoD:  0.3867 | W_z:  0.3325 | G: -0.0003 | W_z:  0.3316 | dist: 0.9056
+Step: 1    | D: -0.1603 | CE:  0.2213 | W_OoD:  0.3820 | W_z:  0.3338 | G: -0.0003 | W_z:  0.3338 | dist: 0.8580
+Step: 2    | D: -0.1694 | CE:  0.2160 | W_OoD:  0.3857 | W_z:  0.3445 | G: -0.0003 | W_z:  0.3443 | dist: 0.8041
+Epoch  # 31 | Val accuracy: 1.0
+Step: 3    | D: -0.1964 | CE:  0.1860 | W_OoD:  0.3827 | W_z:  0.3431 | G: -0.0003 | W_z:  0.3423 | dist: 0.7433
+Step: 4    | D: -0.2141 | CE:  0.1697 | W_OoD:  0.3842 | W_z:  0.3300 | G: -0.0003 | W_z:  0.3310 | dist: 0.6941
+Step: 5    | D: -0.2354 | CE:  0.1471 | W_OoD:  0.3829 | W_z:  0.3440 | G: -0.0003 | W_z:  0.3444 | dist: 0.5653
+Step: 6    | D: -0.2549 | CE:  0.1288 | W_OoD:  0.3840 | W_z:  0.3551 | G: -0.0004 | W_z:  0.3559 | dist: 0.4883
+Step: 7    | D: -0.2612 | CE:  0.1193 | W_OoD:  0.3808 | W_z:  0.3524 | G: -0.0003 | W_z:  0.3486 | dist: 0.4271
+Epoch  # 41 | Val accuracy: 1.0
+Step: 8    | D: -0.2682 | CE:  0.1144 | W_OoD:  0.3830 | W_z:  0.3670 | G: -0.0004 | W_z:  0.3656 | dist: 0.2708
+Step: 9    | D: -0.2794 | CE:  0.1037 | W_OoD:  0.3835 | W_z:  0.3797 | G: -0.0004 | W_z:  0.3792 | dist: 0.1257
+Step: 10   | D: -0.2916 | CE:  0.0888 | W_OoD:  0.3808 | W_z:  0.3795 | G: -0.0004 | W_z:  0.3798 | dist: 0.0549
+Step: 11   | D: -0.2958 | CE:  0.0856 | W_OoD:  0.3818 | W_z:  0.3806 | G: -0.0004 | W_z:  0.3816 | dist: 0.0167
+Step: 0    | D: -0.3141 | CE:  0.0680 | W_OoD:  0.3825 | W_z:  0.3835 | G: -0.0004 | W_z:  0.3821 | dist: 0.0286
+Epoch  # 51 | Val accuracy: 1.0
+Step: 1    | D: -0.3175 | CE:  0.0653 | W_OoD:  0.3832 | W_z:  0.3818 | G: -0.0004 | W_z:  0.3832 | dist: 0.0402
+Step: 2    | D: -0.3210 | CE:  0.0609 | W_OoD:  0.3823 | W_z:  0.3734 | G: -0.0004 | W_z:  0.3734 | dist: 0.0623
+Step: 3    | D: -0.3239 | CE:  0.0586 | W_OoD:  0.3829 | W_z:  0.3817 | G: -0.0004 | W_z:  0.3817 | dist: 0.0308
+Step: 4    | D: -0.3251 | CE:  0.0558 | W_OoD:  0.3812 | W_z:  0.3799 | G: -0.0004 | W_z:  0.3804 | dist: 0.0355
+Step: 5    | D: -0.3314 | CE:  0.0506 | W_OoD:  0.3824 | W_z:  0.3792 | G: -0.0004 | W_z:  0.3804 | dist: 0.0771
+Epoch  # 61 | Val accuracy: 1.0
+Step: 6    | D: -0.3324 | CE:  0.0498 | W_OoD:  0.3825 | W_z:  0.3831 | G: -0.0004 | W_z:  0.3821 | dist: 0.0427
+Step: 7    | D: -0.3389 | CE:  0.0432 | W_OoD:  0.3826 | W_z:  0.3835 | G: -0.0004 | W_z:  0.3832 | dist: 0.0380
+Step: 8    | D: -0.3438 | CE:  0.0359 | W_OoD:  0.3801 | W_z:  0.3737 | G: -0.0004 | W_z:  0.3731 | dist: 0.0138
+Step: 9    | D: -0.3438 | CE:  0.0380 | W_OoD:  0.3822 | W_z:  0.3835 | G: -0.0004 | W_z:  0.3835 | dist: 0.0224
+Step: 10   | D: -0.3471 | CE:  0.0348 | W_OoD:  0.3823 | W_z:  0.3813 | G: -0.0004 | W_z:  0.3811 | dist: 0.0216
+Epoch  # 71 | Val accuracy: 1.0
+Step: 11   | D: -0.3481 | CE:  0.0330 | W_OoD:  0.3815 | W_z:  0.3816 | G: -0.0004 | W_z:  0.3816 | dist: 0.0332
+Step: 0    | D: -0.3464 | CE:  0.0359 | W_OoD:  0.3827 | W_z:  0.3838 | G: -0.0004 | W_z:  0.3849 | dist: 0.0416
+Step: 1    | D: -0.3508 | CE:  0.0315 | W_OoD:  0.3828 | W_z:  0.3810 | G: -0.0004 | W_z:  0.3820 | dist: 0.0322
+Step: 2    | D: -0.3578 | CE:  0.0250 | W_OoD:  0.3832 | W_z:  0.3859 | G: -0.0004 | W_z:  0.3838 | dist: 0.0230
+Epoch  # 81 | Val accuracy: 1.0
+Step: 3    | D: -0.3539 | CE:  0.0247 | W_OoD:  0.3790 | W_z:  0.3780 | G: -0.0004 | W_z:  0.3781 | dist: 0.0135
+Step: 4    | D: -0.3557 | CE:  0.0263 | W_OoD:  0.3824 | W_z:  0.3841 | G: -0.0004 | W_z:  0.3844 | dist: 0.0098
+Step: 5    | D: -0.3550 | CE:  0.0258 | W_OoD:  0.3811 | W_z:  0.3865 | G: -0.0004 | W_z:  0.3855 | dist: 0.0358
+Step: 6    | D: -0.3612 | CE:  0.0221 | W_OoD:  0.3837 | W_z:  0.3881 | G: -0.0004 | W_z:  0.3874 | dist: 0.0396
+Step: 7    | D: -0.3604 | CE:  0.0211 | W_OoD:  0.3819 | W_z:  0.3839 | G: -0.0004 | W_z:  0.3838 | dist: 0.0144
+Epoch  # 91 | Val accuracy: 1.0
+Step: 8    | D: -0.3637 | CE:  0.0191 | W_OoD:  0.3832 | W_z:  0.3818 | G: -0.0004 | W_z:  0.3797 | dist: 0.0277
+Step: 9    | D: -0.3604 | CE:  0.0184 | W_OoD:  0.3792 | W_z:  0.3860 | G: -0.0004 | W_z:  0.3848 | dist: 0.0272
+Step: 10   | D: -0.3611 | CE:  0.0221 | W_OoD:  0.3836 | W_z:  0.3848 | G: -0.0004 | W_z:  0.3857 | dist: 0.0195
+Step: 11   | D: -0.3630 | CE:  0.0159 | W_OoD:  0.3792 | W_z:  0.3728 | G: -0.0004 | W_z:  0.3721 | dist: 0.0201
+Step: 0    | D: -0.3664 | CE:  0.0164 | W_OoD:  0.3832 | W_z:  0.3836 | G: -0.0004 | W_z:  0.3833 | dist: 0.0283
+Epoch  # 101 | Val accuracy: 1.0
+Step: 1    | D: -0.3663 | CE:  0.0173 | W_OoD:  0.3839 | W_z:  0.3907 | G: -0.0004 | W_z:  0.3899 | dist: 0.0189
+Step: 2    | D: -0.3675 | CE:  0.0144 | W_OoD:  0.3823 | W_z:  0.3835 | G: -0.0004 | W_z:  0.3844 | dist: 0.0319
+Step: 3    | D: -0.3679 | CE:  0.0149 | W_OoD:  0.3832 | W_z:  0.3857 | G: -0.0004 | W_z:  0.3850 | dist: 0.0098
+Step: 4    | D: -0.3710 | CE:  0.0122 | W_OoD:  0.3836 | W_z:  0.3874 | G: -0.0004 | W_z:  0.3869 | dist: 0.0321
+Step: 5    | D: -0.3684 | CE:  0.0146 | W_OoD:  0.3834 | W_z:  0.3839 | G: -0.0004 | W_z:  0.3850 | dist: 0.0074
+Epoch  # 111 | Val accuracy: 1.0
+Step: 6    | D: -0.3708 | CE:  0.0118 | W_OoD:  0.3829 | W_z:  0.3869 | G: -0.0004 | W_z:  0.3875 | dist: 0.0045
+Step: 7    | D: -0.3698 | CE:  0.0135 | W_OoD:  0.3837 | W_z:  0.3875 | G: -0.0004 | W_z:  0.3894 | dist: 0.0158
+Step: 8    | D: -0.3726 | CE:  0.0117 | W_OoD:  0.3847 | W_z:  0.3904 | G: -0.0004 | W_z:  0.3899 | dist: 0.0066
+Step: 9    | D: -0.3730 | CE:  0.0116 | W_OoD:  0.3850 | W_z:  0.3913 | G: -0.0004 | W_z:  0.3915 | dist: 0.0149
+Step: 10   | D: -0.3709 | CE:  0.0108 | W_OoD:  0.3821 | W_z:  0.3832 | G: -0.0004 | W_z:  0.3852 | dist: 0.0251
+Epoch  # 121 | Val accuracy: 1.0
+Step: 11   | D: -0.3720 | CE:  0.0124 | W_OoD:  0.3848 | W_z:  0.3873 | G: -0.0004 | W_z:  0.3862 | dist: 0.0042
+Step: 0    | D: -0.3746 | CE:  0.0095 | W_OoD:  0.3844 | W_z:  0.3891 | G: -0.0004 | W_z:  0.3885 | dist: 0.0023
+Step: 1    | D: -0.3737 | CE:  0.0116 | W_OoD:  0.3857 | W_z:  0.3913 | G: -0.0004 | W_z:  0.3903 | dist: 0.0058
+Step: 2    | D: -0.3739 | CE:  0.0083 | W_OoD:  0.3826 | W_z:  0.3861 | G: -0.0004 | W_z:  0.3862 | dist: 0.0014
+Epoch  # 131 | Val accuracy: 1.0
+Step: 3    | D: -0.3760 | CE:  0.0094 | W_OoD:  0.3859 | W_z:  0.3900 | G: -0.0004 | W_z:  0.3887 | dist: 0.0104
+Step: 4    | D: -0.3758 | CE:  0.0091 | W_OoD:  0.3852 | W_z:  0.3890 | G: -0.0004 | W_z:  0.3880 | dist: 0.0076
+Step: 5    | D: -0.3742 | CE:  0.0091 | W_OoD:  0.3837 | W_z:  0.3884 | G: -0.0004 | W_z:  0.3906 | dist: 0.0025
+Step: 6    | D: -0.3756 | CE:  0.0091 | W_OoD:  0.3851 | W_z:  0.3851 | G: -0.0004 | W_z:  0.3869 | dist: 0.0092
+Step: 7    | D: -0.3774 | CE:  0.0083 | W_OoD:  0.3860 | W_z:  0.3925 | G: -0.0004 | W_z:  0.3912 | dist: 0.0127
+Epoch  # 141 | Val accuracy: 1.0
+Step: 8    | D: -0.3783 | CE:  0.0063 | W_OoD:  0.3850 | W_z:  0.3891 | G: -0.0004 | W_z:  0.3896 | dist: 0.0018
+Step: 9    | D: -0.3800 | CE:  0.0073 | W_OoD:  0.3877 | W_z:  0.3925 | G: -0.0004 | W_z:  0.3921 | dist: 0.0047
+Step: 10   | D: -0.3779 | CE:  0.0083 | W_OoD:  0.3865 | W_z:  0.3889 | G: -0.0004 | W_z:  0.3893 | dist: 0.0017
+Step: 11   | D: -0.3796 | CE:  0.0074 | W_OoD:  0.3874 | W_z:  0.3905 | G: -0.0004 | W_z:  0.3881 | dist: 0.0152
+Step: 0    | D: -0.3777 | CE:  0.0096 | W_OoD:  0.3877 | W_z:  0.3912 | G: -0.0004 | W_z:  0.3912 | dist: 0.0155
+Epoch  # 151 | Val accuracy: 1.0
+Step: 1    | D: -0.3772 | CE:  0.0092 | W_OoD:  0.3869 | W_z:  0.3881 | G: -0.0004 | W_z:  0.3870 | dist: 0.0099
+Step: 2    | D: -0.3807 | CE:  0.0072 | W_OoD:  0.3883 | W_z:  0.3917 | G: -0.0004 | W_z:  0.3922 | dist: 0.0005
+Step: 3    | D: -0.3813 | CE:  0.0058 | W_OoD:  0.3875 | W_z:  0.3904 | G: -0.0004 | W_z:  0.3893 | dist: 0.0023
+Step: 4    | D: -0.3811 | CE:  0.0066 | W_OoD:  0.3882 | W_z:  0.3909 | G: -0.0004 | W_z:  0.3891 | dist: 0.0069
+Step: 5    | D: -0.3803 | CE:  0.0061 | W_OoD:  0.3867 | W_z:  0.3876 | G: -0.0004 | W_z:  0.3902 | dist: 0.0177
+Epoch  # 161 | Val accuracy: 1.0
+Step: 6    | D: -0.3799 | CE:  0.0079 | W_OoD:  0.3882 | W_z:  0.3904 | G: -0.0004 | W_z:  0.3923 | dist: 0.0113
+Step: 7    | D: -0.3803 | CE:  0.0080 | W_OoD:  0.3887 | W_z:  0.3916 | G: -0.0004 | W_z:  0.3913 | dist: 0.0038
+Step: 8    | D: -0.3813 | CE:  0.0075 | W_OoD:  0.3892 | W_z:  0.3920 | G: -0.0004 | W_z:  0.3907 | dist: 0.0061
+Step: 9    | D: -0.3802 | CE:  0.0080 | W_OoD:  0.3886 | W_z:  0.3895 | G: -0.0004 | W_z:  0.3880 | dist: 0.0081
+Step: 10   | D: -0.3840 | CE:  0.0056 | W_OoD:  0.3900 | W_z:  0.3913 | G: -0.0004 | W_z:  0.3911 | dist: 0.0089
+Epoch  # 171 | Val accuracy: 1.0
+Step: 11   | D: -0.3837 | CE:  0.0051 | W_OoD:  0.3892 | W_z:  0.3904 | G: -0.0004 | W_z:  0.3890 | dist: 0.0007
+Step: 0    | D: -0.3843 | CE:  0.0058 | W_OoD:  0.3904 | W_z:  0.3910 | G: -0.0004 | W_z:  0.3908 | dist: 0.0042
+Step: 1    | D: -0.3835 | CE:  0.0045 | W_OoD:  0.3884 | W_z:  0.3887 | G: -0.0004 | W_z:  0.3899 | dist: 0.0164
+Step: 2    | D: -0.3848 | CE:  0.0047 | W_OoD:  0.3899 | W_z:  0.3910 | G: -0.0004 | W_z:  0.3907 | dist: 0.0139
+Epoch  # 181 | Val accuracy: 1.0
+Step: 3    | D: -0.3842 | CE:  0.0045 | W_OoD:  0.3891 | W_z:  0.3903 | G: -0.0004 | W_z:  0.3904 | dist: 0.0048
+Step: 4    | D: -0.3864 | CE:  0.0034 | W_OoD:  0.3902 | W_z:  0.3914 | G: -0.0004 | W_z:  0.3913 | dist: 0.0060
+Step: 5    | D: -0.3860 | CE:  0.0049 | W_OoD:  0.3913 | W_z:  0.3918 | G: -0.0004 | W_z:  0.3912 | dist: 0.0017
+Step: 6    | D: -0.3841 | CE:  0.0042 | W_OoD:  0.3887 | W_z:  0.3895 | G: -0.0004 | W_z:  0.3895 | dist: 0.0039
+Step: 7    | D: -0.3857 | CE:  0.0045 | W_OoD:  0.3906 | W_z:  0.3926 | G: -0.0004 | W_z:  0.3911 | dist: 0.0096
+Epoch  # 191 | Val accuracy: 1.0
+Step: 8    | D: -0.3849 | CE:  0.0060 | W_OoD:  0.3913 | W_z:  0.3908 | G: -0.0004 | W_z:  0.3892 | dist: 0.0017
+Step: 9    | D: -0.3833 | CE:  0.0049 | W_OoD:  0.3886 | W_z:  0.3881 | G: -0.0004 | W_z:  0.3864 | dist: 0.0014
+Step: 10   | D: -0.3870 | CE:  0.0037 | W_OoD:  0.3911 | W_z:  0.3914 | G: -0.0004 | W_z:  0.3908 | dist: 0.0092
+Step: 11   | D: -0.3864 | CE:  0.0044 | W_OoD:  0.3912 | W_z:  0.3911 | G: -0.0004 | W_z:  0.3920 | dist: 0.0093
+Step: 0    | D: -0.3840 | CE:  0.0069 | W_OoD:  0.3912 | W_z:  0.3915 | G: -0.0004 | W_z:  0.3893 | dist: 0.0084
+Epoch  # 201 | Val accuracy: 1.0
+Step: 1    | D: -0.3884 | CE:  0.0029 | W_OoD:  0.3917 | W_z:  0.3907 | G: -0.0004 | W_z:  0.3914 | dist: 0.0010
+Step: 2    | D: -0.3862 | CE:  0.0037 | W_OoD:  0.3902 | W_z:  0.3905 | G: -0.0004 | W_z:  0.3906 | dist: 0.0084
+Step: 3    | D: -0.3870 | CE:  0.0033 | W_OoD:  0.3907 | W_z:  0.3909 | G: -0.0004 | W_z:  0.3894 | dist: 0.0033
+Step: 4    | D: -0.3868 | CE:  0.0035 | W_OoD:  0.3907 | W_z:  0.3908 | G: -0.0004 | W_z:  0.3915 | dist: 0.0007
+Step: 5    | D: -0.3868 | CE:  0.0036 | W_OoD:  0.3908 | W_z:  0.3915 | G: -0.0004 | W_z:  0.3915 | dist: 0.0023
+Epoch  # 211 | Val accuracy: 1.0
+Step: 6    | D: -0.3877 | CE:  0.0026 | W_OoD:  0.3907 | W_z:  0.3905 | G: -0.0004 | W_z:  0.3906 | dist: 0.0062
+Step: 7    | D: -0.3897 | CE:  0.0024 | W_OoD:  0.3925 | W_z:  0.3923 | G: -0.0004 | W_z:  0.3912 | dist: 0.0102
+Step: 8    | D: -0.3841 | CE:  0.0043 | W_OoD:  0.3888 | W_z:  0.3881 | G: -0.0004 | W_z:  0.3879 | dist: 0.0032
+Step: 9    | D: -0.3890 | CE:  0.0024 | W_OoD:  0.3918 | W_z:  0.3917 | G: -0.0004 | W_z:  0.3913 | dist: 0.0074
+Step: 10   | D: -0.3862 | CE:  0.0029 | W_OoD:  0.3894 | W_z:  0.3893 | G: -0.0004 | W_z:  0.3908 | dist: 0.0078
+Epoch  # 221 | Val accuracy: 1.0
+Step: 11   | D: -0.3849 | CE:  0.0033 | W_OoD:  0.3886 | W_z:  0.3887 | G: -0.0004 | W_z:  0.3905 | dist: 0.0051
+Step: 0    | D: -0.3832 | CE:  0.0024 | W_OoD:  0.3860 | W_z:  0.3852 | G: -0.0004 | W_z:  0.3863 | dist: 0.0026
+Step: 1    | D: -0.3873 | CE:  0.0020 | W_OoD:  0.3897 | W_z:  0.3895 | G: -0.0004 | W_z:  0.3906 | dist: 0.0093
+Step: 2    | D: -0.3890 | CE:  0.0028 | W_OoD:  0.3922 | W_z:  0.3920 | G: -0.0004 | W_z:  0.3926 | dist: 0.0081
+Epoch  # 231 | Val accuracy: 1.0
+Step: 3    | D: -0.3907 | CE:  0.0017 | W_OoD:  0.3927 | W_z:  0.3922 | G: -0.0004 | W_z:  0.3925 | dist: 0.0043
+Step: 4    | D: -0.3864 | CE:  0.0018 | W_OoD:  0.3886 | W_z:  0.3873 | G: -0.0004 | W_z:  0.3872 | dist: 0.0026
+Step: 5    | D: -0.3873 | CE:  0.0027 | W_OoD:  0.3905 | W_z:  0.3917 | G: -0.0004 | W_z:  0.3918 | dist: 0.0019
+Step: 6    | D: -0.3851 | CE:  0.0021 | W_OoD:  0.3877 | W_z:  0.3858 | G: -0.0004 | W_z:  0.3869 | dist: 0.0005
+Step: 7    | D: -0.3856 | CE:  0.0023 | W_OoD:  0.3883 | W_z:  0.3880 | G: -0.0004 | W_z:  0.3876 | dist: 0.0094
+Epoch  # 241 | Val accuracy: 1.0
+Step: 8    | D: -0.3888 | CE:  0.0019 | W_OoD:  0.3911 | W_z:  0.3909 | G: -0.0004 | W_z:  0.3921 | dist: 0.0118
+Step: 9    | D: -0.3884 | CE:  0.0022 | W_OoD:  0.3910 | W_z:  0.3912 | G: -0.0004 | W_z:  0.3897 | dist: 0.0063
+Step: 10   | D: -0.3827 | CE:  0.0024 | W_OoD:  0.3855 | W_z:  0.3849 | G: -0.0004 | W_z:  0.3855 | dist: 0.0165
+Step: 11   | D: -0.3896 | CE:  0.0013 | W_OoD:  0.3913 | W_z:  0.3913 | G: -0.0004 | W_z:  0.3912 | dist: 0.0044
+Step: 0    | D: -0.3881 | CE:  0.0017 | W_OoD:  0.3902 | W_z:  0.3897 | G: -0.0004 | W_z:  0.3922 | dist: 0.0157
+Epoch  # 251 | Val accuracy: 1.0
+Step: 1    | D: -0.3889 | CE:  0.0023 | W_OoD:  0.3916 | W_z:  0.3904 | G: -0.0004 | W_z:  0.3902 | dist: 0.0180
+Step: 2    | D: -0.3904 | CE:  0.0013 | W_OoD:  0.3921 | W_z:  0.3924 | G: -0.0004 | W_z:  0.3919 | dist: 0.0022
+
+OoD GAN Performance
+TPR at 95.0% TNR: 1.0000 | Threshold at 95.0% TNR: 0.00011651954846456646
+TPR at 99.0% TNR: 0.9980 | Threshold at 95.0% TNR: 0.0014752620691433295
+TPR at 99.9% TNR: 0.9570 | Threshold at 95.0% TNR: 0.019641694990918994
+Rejection Threshold: 0.0014752620691433295
+Rejection Region Proportion: 38.14%
+OoD GAN Training time: 23091.51 s | About 384.86 mins | About 6.41 hrs
+
+------------- Out-of-Distribution GANs Training (With WOOD Pretraining) -------------
+Step: 0    | D: -0.3845 | CE:  0.0003 | W_OoD:  0.3848 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7451
+Epoch  # 1 | Val accuracy: 1.0
+Step: 1    | D: -0.3919 | CE:  0.0007 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7469
+Step: 2    | D: -0.3923 | CE:  0.0001 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7471
+Step: 3    | D: -0.3927 | CE:  0.0001 | W_OoD:  0.3928 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7450
+Step: 4    | D: -0.3920 | CE:  0.0006 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7445
+Step: 5    | D: -0.3926 | CE:  0.0001 | W_OoD:  0.3927 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7465
+Epoch  # 11 | Val accuracy: 1.0
+Step: 6    | D: -0.3927 | CE:  0.0001 | W_OoD:  0.3929 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7459
+Step: 7    | D: -0.3912 | CE:  0.0004 | W_OoD:  0.3916 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7462
+Step: 8    | D: -0.3925 | CE:  0.0001 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7465
+Step: 9    | D: -0.3924 | CE:  0.0001 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7453
+Step: 10   | D: -0.3921 | CE:  0.0002 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7453
+Epoch  # 21 | Val accuracy: 1.0
+Step: 11   | D: -0.3921 | CE:  0.0001 | W_OoD:  0.3922 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7471
+Step: 0    | D: -0.3908 | CE:  0.0001 | W_OoD:  0.3909 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7483
+Step: 1    | D: -0.3925 | CE:  0.0001 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7464
+Step: 2    | D: -0.3913 | CE:  0.0005 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7466
+Epoch  # 31 | Val accuracy: 1.0
+Step: 3    | D: -0.3917 | CE:  0.0001 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7438
+Step: 4    | D: -0.3908 | CE:  0.0000 | W_OoD:  0.3908 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7466
+Step: 5    | D: -0.3924 | CE:  0.0001 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7451
+Step: 6    | D: -0.3910 | CE:  0.0001 | W_OoD:  0.3911 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7458
+Step: 7    | D: -0.3918 | CE:  0.0000 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7466
+Epoch  # 41 | Val accuracy: 1.0
+Step: 8    | D: -0.3923 | CE:  0.0001 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7437
+Step: 9    | D: -0.3914 | CE:  0.0001 | W_OoD:  0.3915 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7455
+Step: 10   | D: -0.3918 | CE:  0.0000 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7450
+Step: 11   | D: -0.3921 | CE:  0.0001 | W_OoD:  0.3922 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7446
+Step: 0    | D: -0.3910 | CE:  0.0001 | W_OoD:  0.3911 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7452
+Epoch  # 51 | Val accuracy: 1.0
+Step: 1    | D: -0.3923 | CE:  0.0006 | W_OoD:  0.3928 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7442
+Step: 2    | D: -0.3926 | CE:  0.0000 | W_OoD:  0.3927 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7454
+Step: 3    | D: -0.3919 | CE:  0.0000 | W_OoD:  0.3920 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7498
+Step: 4    | D: -0.3914 | CE:  0.0001 | W_OoD:  0.3914 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7441
+Step: 5    | D: -0.3921 | CE:  0.0000 | W_OoD:  0.3922 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7454
+Epoch  # 61 | Val accuracy: 1.0
+Step: 6    | D: -0.3914 | CE:  0.0000 | W_OoD:  0.3915 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7456
+Step: 7    | D: -0.3920 | CE:  0.0000 | W_OoD:  0.3920 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7448
+Step: 8    | D: -0.3912 | CE:  0.0000 | W_OoD:  0.3912 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7472
+Step: 9    | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7467
+Step: 10   | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7456
+Epoch  # 71 | Val accuracy: 1.0
+Step: 11   | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7443
+Step: 0    | D: -0.3917 | CE:  0.0001 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7461
+Step: 1    | D: -0.3920 | CE:  0.0000 | W_OoD:  0.3920 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7456
+Step: 2    | D: -0.3927 | CE:  0.0001 | W_OoD:  0.3927 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7450
+Epoch  # 81 | Val accuracy: 1.0
+Step: 3    | D: -0.3923 | CE:  0.0001 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7464
+Step: 4    | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7467
+Step: 5    | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7467
+Step: 6    | D: -0.3925 | CE:  0.0001 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7454
+Step: 7    | D: -0.3926 | CE:  0.0000 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7450
+Epoch  # 91 | Val accuracy: 1.0
+Step: 8    | D: -0.3919 | CE:  0.0004 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7456
+Step: 9    | D: -0.3919 | CE:  0.0002 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7451
+Step: 10   | D: -0.3922 | CE:  0.0000 | W_OoD:  0.3922 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7469
+Step: 11   | D: -0.3924 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7454
+Step: 0    | D: -0.3924 | CE:  0.0000 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7454
+Epoch  # 101 | Val accuracy: 1.0
+Step: 1    | D: -0.3922 | CE:  0.0000 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7439
+Step: 2    | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7449
+Step: 3    | D: -0.3924 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7469
+Step: 4    | D: -0.3922 | CE:  0.0000 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7463
+Step: 5    | D: -0.3930 | CE:  0.0000 | W_OoD:  0.3931 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7447
+Epoch  # 111 | Val accuracy: 1.0
+Step: 6    | D: -0.3922 | CE:  0.0001 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7458
+Step: 7    | D: -0.3926 | CE:  0.0000 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7470
+Step: 8    | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7476
+Step: 9    | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7436
+Step: 10   | D: -0.3928 | CE:  0.0000 | W_OoD:  0.3928 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7478
+Epoch  # 121 | Val accuracy: 1.0
+Step: 11   | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7475
+Step: 0    | D: -0.3915 | CE:  0.0003 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7455
+Step: 1    | D: -0.3919 | CE:  0.0004 | W_OoD:  0.3923 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7457
+Step: 2    | D: -0.3909 | CE:  0.0000 | W_OoD:  0.3909 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7460
+Epoch  # 131 | Val accuracy: 1.0
+Step: 3    | D: -0.3916 | CE:  0.0000 | W_OoD:  0.3916 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7471
+Step: 4    | D: -0.3924 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7453
+Step: 5    | D: -0.3920 | CE:  0.0000 | W_OoD:  0.3920 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7447
+Step: 6    | D: -0.3912 | CE:  0.0004 | W_OoD:  0.3916 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7462
+Step: 7    | D: -0.3918 | CE:  0.0001 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7461
+Epoch  # 141 | Val accuracy: 1.0
+Step: 8    | D: -0.3926 | CE:  0.0001 | W_OoD:  0.3927 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7446
+Step: 9    | D: -0.3926 | CE:  0.0002 | W_OoD:  0.3928 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7442
+Step: 10   | D: -0.3912 | CE:  0.0000 | W_OoD:  0.3912 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7445
+Step: 11   | D: -0.3914 | CE:  0.0006 | W_OoD:  0.3919 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7467
+Step: 0    | D: -0.3919 | CE:  0.0000 | W_OoD:  0.3920 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7465
+Epoch  # 151 | Val accuracy: 1.0
+Step: 1    | D: -0.3929 | CE:  0.0000 | W_OoD:  0.3929 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7445
+Step: 2    | D: -0.3924 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7434
+Step: 3    | D: -0.3921 | CE:  0.0000 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7448
+Step: 4    | D: -0.3926 | CE:  0.0002 | W_OoD:  0.3927 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7463
+Step: 5    | D: -0.3929 | CE:  0.0001 | W_OoD:  0.3930 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7482
+Epoch  # 161 | Val accuracy: 1.0
+Step: 6    | D: -0.3920 | CE:  0.0000 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7453
+Step: 7    | D: -0.3920 | CE:  0.0001 | W_OoD:  0.3922 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7432
+Step: 8    | D: -0.3912 | CE:  0.0000 | W_OoD:  0.3912 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7459
+Step: 9    | D: -0.3918 | CE:  0.0000 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7482
+Step: 10   | D: -0.3919 | CE:  0.0001 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7460
+Epoch  # 171 | Val accuracy: 1.0
+Step: 11   | D: -0.3921 | CE:  0.0002 | W_OoD:  0.3922 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7471
+Step: 0    | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7455
+Step: 1    | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7446
+Step: 2    | D: -0.3923 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7462
+Epoch  # 181 | Val accuracy: 1.0
+Step: 3    | D: -0.3917 | CE:  0.0001 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7469
+Step: 4    | D: -0.3914 | CE:  0.0000 | W_OoD:  0.3915 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7473
+Step: 5    | D: -0.3926 | CE:  0.0000 | W_OoD:  0.3927 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7469
+Step: 6    | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7487
+Step: 7    | D: -0.3914 | CE:  0.0000 | W_OoD:  0.3914 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7458
+Epoch  # 191 | Val accuracy: 1.0
+Step: 8    | D: -0.3926 | CE:  0.0000 | W_OoD:  0.3926 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7454
+Step: 9    | D: -0.3920 | CE:  0.0000 | W_OoD:  0.3920 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7460
+Step: 10   | D: -0.3914 | CE:  0.0001 | W_OoD:  0.3915 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7476
+Step: 11   | D: -0.3917 | CE:  0.0000 | W_OoD:  0.3917 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7455
+Step: 0    | D: -0.3911 | CE:  0.0000 | W_OoD:  0.3911 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7439
+Epoch  # 201 | Val accuracy: 1.0
+Step: 1    | D: -0.3912 | CE:  0.0000 | W_OoD:  0.3912 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7464
+Step: 2    | D: -0.3928 | CE:  0.0000 | W_OoD:  0.3928 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7443
+Step: 3    | D: -0.3917 | CE:  0.0000 | W_OoD:  0.3917 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7464
+Step: 4    | D: -0.3918 | CE:  0.0001 | W_OoD:  0.3919 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7435
+Step: 5    | D: -0.3924 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7459
+Epoch  # 211 | Val accuracy: 1.0
+Step: 6    | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7466
+Step: 7    | D: -0.3929 | CE:  0.0000 | W_OoD:  0.3929 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7454
+Step: 8    | D: -0.3917 | CE:  0.0003 | W_OoD:  0.3920 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7463
+Step: 9    | D: -0.3915 | CE:  0.0001 | W_OoD:  0.3916 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7459
+Step: 10   | D: -0.3915 | CE:  0.0000 | W_OoD:  0.3915 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7442
+Epoch  # 221 | Val accuracy: 1.0
+Step: 11   | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7469
+Step: 0    | D: -0.3920 | CE:  0.0000 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7455
+Step: 1    | D: -0.3918 | CE:  0.0003 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7441
+Step: 2    | D: -0.3921 | CE:  0.0000 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7464
+Epoch  # 231 | Val accuracy: 1.0
+Step: 3    | D: -0.3921 | CE:  0.0000 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7482
+Step: 4    | D: -0.3928 | CE:  0.0000 | W_OoD:  0.3928 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7469
+Step: 5    | D: -0.3915 | CE:  0.0000 | W_OoD:  0.3915 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7450
+Step: 6    | D: -0.3925 | CE:  0.0000 | W_OoD:  0.3925 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7483
+Step: 7    | D: -0.3918 | CE:  0.0000 | W_OoD:  0.3918 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7479
+Epoch  # 241 | Val accuracy: 1.0
+Step: 8    | D: -0.3912 | CE:  0.0000 | W_OoD:  0.3912 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7435
+Step: 9    | D: -0.3916 | CE:  0.0001 | W_OoD:  0.3917 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7455
+Step: 10   | D: -0.3910 | CE:  0.0000 | W_OoD:  0.3910 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7463
+Step: 11   | D: -0.3921 | CE:  0.0000 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7479
+Step: 0    | D: -0.3920 | CE:  0.0002 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7465
+Epoch  # 251 | Val accuracy: 1.0
+Step: 1    | D: -0.3924 | CE:  0.0000 | W_OoD:  0.3924 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7443
+Step: 2    | D: -0.3920 | CE:  0.0000 | W_OoD:  0.3921 | W_z:  0.0000 | G: -0.0000 | W_z:  0.0000 | dist: 3.7444
+
+OoD GAN w/ Pretraining Performance
+TPR at 95.0% TNR: 1.0000 | Threshold at 95.0% TNR: 3.260993253206797e-09
+TPR at 99.0% TNR: 1.0000 | Threshold at 95.0% TNR: 1.0974748875014371e-07
+TPR at 99.9% TNR: 0.9710 | Threshold at 95.0% TNR: 0.00013755218498414336
+Rejection Threshold: 1.0974748875014371e-07
+Rejection Region Proportion: 36.62%
+OoD GAN (w/ pretraining) Training time: 22526.68 s | About 375.44 mins | About 6.26 hrs
+Total time: 46549.68 s | About 775.83 mins | About 12.93 hrs
