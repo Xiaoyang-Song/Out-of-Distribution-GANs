@@ -23,6 +23,11 @@ parser.add_argument('--setting', type=str, default=None)
 # InD sensitivity analysis
 # python get_results.py --ind_sa
 parser.add_argument('--ind_sa', action='store_true', default=False)
+
+# Case study
+# python get_results.py --case --name=3DPC-R1
+# python get_results.py --case --name=3DPC-R2
+parser.add_argument('--case', action='store_true', default=False)
 args = parser.parse_args()
 
 
@@ -56,11 +61,12 @@ if args.sim:
 
 if args.ind_sa:
     print(f"Compiling results for InD sample size sensitivity analysis...")
+    assert args.name in ['FashionMNIST', 'FashionMNIST-R2']
     N = [1000, 2000, 5000, 10000, 20000, 40000, 48000]
     labels = ["1K", '2K', '5K', '10K', '20K', '40K', '48K']
     AUCs, TPR95, TPR99, ACCs = [], [], [], []
     for n in N:
-        file_path = os.path.join('checkpoint', 'log', 'FashionMNIST-InD-SA', f'log-64-{n}.txt')
+        file_path = os.path.join('checkpoint', 'log', f'{args.name}-InD-SA', f'log-64-{n}.txt')
         with open(file_path, 'r') as f:
                 lines = f.readlines()
                 # print(lines[index])
@@ -76,10 +82,10 @@ if args.ind_sa:
     
     print(f"InD sample size sensitivity analysis results.")
     print(f"N: {N}")
-    print(f"AUCs: {', '.join(f'{f*100:.4f}' for f in AUCs)}")
-    print(f"ACCs: {', '.join(f'{f*100:.4f}' for f in ACCs)}")
-    print(f"TPR95: {', '.join(f'{f*100:.4f}' for f in TPR95)}")
-    print(f"TPR99: {', '.join(f'{f*100:.4f}' for f in TPR99)}\n\n")
+    print(f"AUCs: {', '.join(f'{f:.4f}' for f in AUCs)}")
+    print(f"ACCs: {', '.join(f'{f:.4f}' for f in ACCs)}")
+    print(f"TPR95: {', '.join(f'{f:.4f}' for f in TPR95)}")
+    print(f"TPR99: {', '.join(f'{f:.4f}' for f in TPR99)}\n\n")
     # plot
     mksz, lw = 6, 1.8
     N = np.arange(len(N))
@@ -92,10 +98,55 @@ if args.ind_sa:
     plt.grid(axis='y', linestyle='--', alpha=0.7) 
     plt.xlabel("Number of InD Training samples", fontdict={'fontsize': 14})
     plt.ylabel("%", fontdict={'fontsize': 13})
-    plt.title(f"FashionMNIST sensitivity analysis on InD sample size", fontdict={'fontsize': 16})
-    plt.savefig(f"Document/InD-SA/InD-SA.jpg", dpi=200)
+    plt.title(f"{args.name} sensitivity analysis on InD sample size", fontdict={'fontsize': 16})
+    plt.savefig(f"Document/InD-SA/InD-SA-{args.name}.jpg", dpi=200)
     exit()
 
+
+if args.case:
+    print(f"Compiling case study results...")
+    assert args.name in ['3DPC-R1', '3DPC-R2']
+    N = [10, 20, 50, 100, 200, 500, 1000, 1500, 2000]
+    labels = ["0.01K", '0.02K', '0.05K', '0.1K', '0.2K', '0.5K', '1K', '1.5K', '2K']
+    AUCs, TPR95, TPR99, ACCs = [], [], [], []
+    for n in N:
+        file_path = os.path.join('checkpoint', 'log', args.name, f'log-{n}.txt')
+        with open(file_path, 'r') as f:
+                lines = f.readlines()
+                # print(lines[index])
+                ind_acc = float(lines[-20].split(" ")[-1].strip())
+                tpr95 = float(lines[-13].split(" ")[1].strip())
+                tpr99 = float(lines[-9].split(" ")[1].strip())
+                auc = float(lines[-5].split(" ")[1].strip())
+                # print(tpr95, tpr99, auc)
+        AUCs.append(auc*100)
+        TPR95.append(tpr95*100)
+        TPR99.append(tpr99*100)
+        ACCs.append(ind_acc*100)
+    
+    print(f"Case study results:")
+    print(f"N: {N}")
+    print(f"AUCs: {', '.join(f'{f:.4f}' for f in AUCs)}")
+    print(f"ACCs: {', '.join(f'{f:.4f}' for f in ACCs)}")
+    print(f"TPR95: {', '.join(f'{f:.4f}' for f in TPR95)}")
+    print(f"TPR99: {', '.join(f'{f:.4f}' for f in TPR99)}\n\n")
+    # plot
+    mksz, lw = 6, 1.8
+    N = np.arange(len(N))
+    plt.plot(N, TPR95, label="TPR@95TNR", linestyle='solid', marker='s',  color="blue", linewidth=lw, markersize=mksz, alpha=1)
+    plt.plot(N, TPR99, label="TPR@99TNR", linestyle='solid', marker='s', color='lightblue' ,linewidth=lw, markersize=mksz, alpha=1)
+    plt.plot(N, AUCs, label="AUROC", linestyle='solid', marker='s',  color='red',linewidth=lw, markersize=mksz, alpha=1)
+    plt.plot(N, ACCs, label="InD Accuracy", linestyle='-', marker='x', color='black',linewidth=lw, markersize=mksz, alpha=1)
+    plt.legend(loc=4)
+    plt.xticks(N, labels,fontdict={'fontsize': 9})
+    plt.grid(axis='y', linestyle='--', alpha=0.7) 
+    plt.xlabel("Number of Observed OoD Samples", fontdict={'fontsize': 14})
+    plt.ylabel("%", fontdict={'fontsize': 13})
+    regime = "I" if args.name == '3DPC-R1' else "II"
+    plt.title(f"Case Study Results - Regime {regime}", fontdict={'fontsize': 16})
+    os.makedirs("Document/Case-Study/", exist_ok=True)
+    plt.savefig(f"Document/Case-Study/{args.name}.jpg", dpi=200)
+    exit()
 
 
 
@@ -103,9 +154,15 @@ if args.ind_sa:
 # FOR Baselines
 save_dir = os.path.join('Document', args.name)
 os.makedirs(save_dir, exist_ok=True)
-# method_list = ['SEE-OOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha']
-# method_list = ['SEE-OOD', 'WOOD','Energy-FT', 'OE', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha']
-method_list = ['SEE-OOD', 'WOOD', 'Energy-FT', 'OE']
+
+if args.type == 'SEE-OOD':
+    method_list = ['SEE-OOD']
+elif args.type == 'full':
+    method_list = ['SEE-OOD', 'WOOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha', 'MSP']
+    if args.regime == 'II':
+        method_list = ['SEE-OOD', 'WOOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD']
+elif args.type == 'short':
+    method_list = ['SEE-OOD', 'WOOD', 'Energy-FT', 'OE']
 
 N = np.arange(4, 13, 1)
 
@@ -226,7 +283,7 @@ NEXP = [r'$\mathregular{2^4}$',
         r'$\mathregular{2^{12}}$']
 
 for i, method in enumerate(method_list):
-    print(RESULTS['TPR95'][method][1:])
+    # print(RESULTS['TPR95'][method][1:])
     if method in UNSUPERVISED_LIST:
         plt.plot(N, RESULTS['TPR95'][method], label=method, linestyle='solid', marker=markers[i], linewidth=lw, markersize=mksz, alpha=1)
     else:
@@ -238,9 +295,11 @@ if args.name not in ['FashionMNIST-R2', 'SVHN-R2']:
     plt.xlabel("Number of OoD samples for EACH class", fontdict={'fontsize': 14})
 else:
     plt.xlabel("Number of OoD samples for SELECTED class", fontdict={'fontsize': 14})
+if args.type == 'short':
+    plt.grid(axis='y', linestyle='--', alpha=0.7) 
 plt.ylabel("TPR (%)", fontdict={'fontsize': 13})
 plt.title(f"Regime {args.regime} - {args.name} - TPR at 95 TNR", fontdict={'fontsize': 16})
-plt.savefig(f"{save_dir}/{args.name}-Regime-{args.regime}-95.jpg", dpi=500)
+plt.savefig(f"{save_dir}/{args.name}-Regime-{args.regime}-95-{args.type}.jpg", dpi=500)
 # plt.show()
 plt.close()
 
@@ -257,8 +316,10 @@ if args.name not in ['FashionMNIST-R2', 'SVHN-R2']:
     plt.xlabel("Number of OoD samples for EACH class", fontdict={'fontsize': 14})
 else:
     plt.xlabel("Number of OoD samples for SELECTED class", fontdict={'fontsize': 14})
+if args.type == 'short':
+    plt.grid(axis='y', linestyle='--', alpha=0.7) 
 plt.ylabel("TPR (%)", fontdict={'fontsize': 13})
 plt.title(f"Regime {args.regime} - {args.name} - TPR at 99 TNR", fontdict={'fontsize': 16})
-plt.savefig(f"{save_dir}/{args.name}-Regime-{args.regime}-99.jpg", dpi=500)
+plt.savefig(f"{save_dir}/{args.name}-Regime-{args.regime}-99-{args.type}.jpg", dpi=500)
 # plt.show()
 plt.close()
