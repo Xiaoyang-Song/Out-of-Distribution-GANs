@@ -1,7 +1,6 @@
 from config import *
 from dataset import MNIST, CIFAR10
 from models.hparam import *
-from utils import show_images, DIST_TYPE, get_dist_metric, Logger
 from wass_loss import ood_wass_loss, ind_wass_loss
 from wasserstein import *
 
@@ -207,12 +206,12 @@ def gan_trainer(loader_train, D, G, D_solver, G_solver, discriminator_loss,
                 print('Iter: {}, D: {:.4}, G:{:.4}'.format(
                     iter_count, d_total_error.item(), g_total_error.item()))
                 imgs_numpy = fake_images.data.cpu()  # .numpy()
-                show_images(imgs_numpy[0:16])
+                # show_images(imgs_numpy[0:16])
                 plt.show()
                 print()
             iter_count += 1
         if epoch == num_epochs - 1:
-            show_images(imgs_numpy[0:16])
+            # show_images(imgs_numpy[0:16])
             if save_filename is not None:
                 plt.savefig(os.path.join(GAN_SAVE_PATH, save_filename))
 

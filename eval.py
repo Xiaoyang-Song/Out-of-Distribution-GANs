@@ -254,10 +254,94 @@ def evaluate(D, ind_val, ood_val, loss_type='Dynamic_Wasserstein'):
         return tpr_95, tpr_99, auc
 
 
-if __name__ == "__main__":
-    # pass
+def plot_loss_curve(d_loss, g_loss, path):
+    ce, w_ood, w_d = d_loss[:,0], d_loss[:,1], d_loss[:,2]
+    w_g = g_loss
+    iters = range(0, len(d_loss), 1)
+    fig, axs = plt.subplots(2, sharex=True)
+    fig.tight_layout(pad=2.0)
+    # fig.suptitle('Training Loss Curves')
+    # Discriminator Loss
+    axs[0].plot(iters, ce, label='CE', marker='^', markersize=3)
+    axs[0].plot(iters, w_ood, label=r'$W_{OoD}$', marker='o', markersize=3)
+    axs[0].plot(iters, w_d, label=r'$W_{Z}$', marker='x', markersize=3)
+    # axs[0].set_xlabel('Training Epochs')
+    axs[0].set_ylabel('Loss Value')
+    axs[0].set_title("Discriminator Loss Curve")
+    axs[0].legend()
+    # Generator Loss
+    axs[1].plot(iters, w_g, label=r'$W_{Z}$', marker='o', markersize=3)
+    # axs[1].set_xlabel('Training Epochs')
+    axs[1].set_ylabel('Loss Value')
+    axs[1].set_title("Generator Loss Curve")
+    axs[1].legend()
+    fig.savefig(path, dpi=1500)
+    plt.close()
 
-    winv = torch.zeros((2044))
-    woutv = torch.ones((1832))
-    # print(auroc_log(winv, woutv))
-    print(naive_auroc(winv, woutv, step=100))
+def plot_loss_curve_from_log(filename, length, path):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+        n=0
+        dloss, gloss = [], []
+        for line in lines:
+            if "Step" in line:
+                ce, w_ood, w_z = float(line[31:37]), float(line[48:54]), float(line[63:69])
+                g_w_z = float(line[91:97])
+                dloss.append([ce, w_ood, w_z])
+                gloss.append(g_w_z)
+                # print(ce, w_ood, w_z, g_w_z)
+                n += 1
+            
+            if n >= length: break
+        
+        dloss = np.array(dloss)
+        gloss = np.array(gloss)
+        
+        # plot
+        ce, w_ood, w_d = dloss[:,0], dloss[:,1], dloss[:,2]
+        w_g = gloss
+        iters = np.arange(0, n, 1) * 20
+        fig, axs = plt.subplots(2, sharex=True)
+        fig.tight_layout(pad=2.0)
+        # fig.suptitle('Training Loss Curves')
+        # Discriminator Loss
+        axs[0].plot(iters, ce, label='CE', marker='^', markersize=3)
+        axs[0].plot(iters, w_ood, label=r'$S_{OoD}$', marker='o', markersize=3)
+        axs[0].plot(iters, w_d, label=r'$S_{G(Z)}$', marker='x', markersize=3)
+        # axs[0].set_xlabel('Training Epochs')
+        axs[0].set_yticks([0, 1, 2])
+        axs[0].set_ylabel('Value of Key Terms')
+        axs[0].set_title("Discriminator")
+        axs[0].legend()
+        # Generator Loss
+        axs[1].plot(iters, w_g, label=r'$S_{G(Z)}$', marker='x', markersize=3, color="green")
+        axs[1].set_xlabel('Number of updates')
+        axs[1].set_yticks([0, 1, 2])
+        axs[1].set_ylabel('Value of Key Terms')
+        axs[1].set_title("Generator")
+        axs[1].legend()
+        fig.savefig(path, dpi=1500)
+        plt.close()
+
+
+if __name__ == "__main__":
+
+    # pass
+    # filename = os.path.join('checkpoint', 'log', 'FashionMNIST', 'log-32.txt')
+    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-32.png')
+
+    # filename = os.path.join('checkpoint', 'log', 'SVHN', 'log-32.txt')
+    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/SVHN-32.png')
+
+    # filename = os.path.join('checkpoint', 'log', '3DPC-R2', 'log-200.txt')
+    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/3DPC-R2-200.png')
+
+    # filename = os.path.join('checkpoint', 'log', 'CIFAR10-SVHN', 'log-32.txt')
+    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/CIFAR10-SVHN-32.png')
+
+    # filename = os.path.join('checkpoint', 'log', 'MNIST', 'log-32.txt')
+    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/MNIST-32.png')
+
+    filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence.txt')
+    plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-64-bad.png')
+
