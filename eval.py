@@ -342,6 +342,8 @@ if __name__ == "__main__":
     # filename = os.path.join('checkpoint', 'log', 'MNIST', 'log-32.txt')
     # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/MNIST-32.png')
 
-    filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence.txt')
-    plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-64-bad.png')
+    # filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence-2.txt')
+    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-64-bad.png')
 
+    filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence-3.txt')
+    plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-64-bad-3.png')

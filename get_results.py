@@ -158,7 +158,7 @@ os.makedirs(save_dir, exist_ok=True)
 if args.type == 'SEE-OOD':
     method_list = ['SEE-OOD']
 elif args.type == 'full':
-    method_list = ['SEE-OOD', 'WOOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha', 'MSP']
+    method_list = ['SEE-OOD', 'WOOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD', 'Energy', 'VOS', 'ODIN', 'Maha', 'MSP', 'GAN-SYN']
     if args.regime == 'II':
         method_list = ['SEE-OOD', 'WOOD', 'Energy-FT', 'OE', 'DeepSAD', 'ATD']
 elif args.type == 'short':
@@ -185,10 +185,11 @@ LOGS = {
     'VOS': os.path.join('..', 'vos', 'classification', 'CIFAR', 'jobs', 'SEEOOD_baselines', 'summary.txt'),
     'ODIN': os.path.join('..', 'deep_Mahalanobis_detector', 'jobs', 'SEEOOD_Baselines', 'summary.txt'),
     'Maha': os.path.join('..', 'deep_Mahalanobis_detector', 'jobs', 'SEEOOD_Baselines', 'summary.txt'),
-    'MSP': os.path.join('..', 'deep_Mahalanobis_detector', 'jobs', 'SEEOOD_Baselines', 'summary.txt') 
+    'MSP': os.path.join('..', 'deep_Mahalanobis_detector', 'jobs', 'SEEOOD_Baselines', 'summary.txt'),
+    'GAN-SYN': os.path.join('..', 'Confident_classifier', 'summary.txt')
 }
 
-UNSUPERVISED_LIST = ['Energy', 'VOS', 'ODIN', 'Maha', 'MSP']
+UNSUPERVISED_LIST = ['Energy', 'VOS', 'ODIN', 'Maha', 'MSP', 'GAN-SYN']
 
 UNSUPERVISED_INDEX = {
     'MSP': {
@@ -225,6 +226,13 @@ UNSUPERVISED_INDEX = {
     'MNIST-FashionMNIST': 12,
     'SVHN': 18,
     'CIFAR10-SVHN': 24
+    },
+    'GAN-SYN': {
+    'MNIST': 0,
+    'FashionMNIST': 6,
+    'MNIST-FashionMNIST': 12,
+    'SVHN': 18,
+    'CIFAR10-SVHN': 24
     }
 }
 
@@ -243,7 +251,7 @@ for method in method_list:
         with open(LOGS[method], 'r') as f:
             lines = f.readlines()
             target = UNSUPERVISED_INDEX[method][args.name]
-            if method in ['VOS', 'Energy']:
+            if method in ['VOS', 'Energy', 'GAN-SYN']:
                 auc_list = [float(lines[target+1][4:].strip())] * len(N)
                 tpr95_list = [float(lines[target+2][6:].strip())] * len(N)
                 tpr99_list = [float(lines[target+3][6:].strip())] * len(N)
