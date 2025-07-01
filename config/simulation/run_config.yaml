@@ -8,5 +8,5 @@ path:
 # more configurations go here...
 
 # Some fixed training config
-max_epochs: 100
+max_epochs: 300
 n_epochs_log: 10

@@ -59,5 +59,5 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 
 # sbatch jobs/simulation/setting-i.sh
 # sbatch jobs/simulation/setting-ii.sh
-# sbatch jobs/simulation/setting-i-cpu.sh
+sbatch jobs/simulation/setting-i-cpu.sh
 sbatch jobs/simulation/setting-ii-cpu.sh

@@ -11,10 +11,6 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/j28.log
 
-module purge
-conda init bash
-conda activate OoD
-
 # Run Simulation experiments
 # Step 1: Generate Settings
 # python3 simulation.py --mode=G --config=config/simulation/setting_1_config.yaml

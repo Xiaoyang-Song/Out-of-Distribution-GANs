@@ -11,9 +11,6 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=/home/xysong/Out-of-Distribution-GANs/slurm-jobs/j6.log
 
-module purge
-conda init bash
-conda activate OoD
 
 # Run Simulation experiments
 # Step 1: Generate Settings

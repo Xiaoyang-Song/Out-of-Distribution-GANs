@@ -98,7 +98,8 @@ if args.ind_sa:
     plt.grid(axis='y', linestyle='--', alpha=0.7) 
     plt.xlabel("Number of InD Training samples", fontdict={'fontsize': 14})
     plt.ylabel("%", fontdict={'fontsize': 13})
-    plt.title(f"{args.name} sensitivity analysis on InD sample size", fontdict={'fontsize': 16})
+    regime = "I" if args.name =='FashionMNIST' else "II"
+    plt.title(f"FashionMNIST InD sensitivity analysis - Regime {regime}", fontdict={'fontsize': 16})
     plt.savefig(f"Document/InD-SA/InD-SA-{args.name}.jpg", dpi=200)
     exit()
 

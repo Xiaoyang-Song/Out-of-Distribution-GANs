@@ -278,7 +278,7 @@ def plot_loss_curve(d_loss, g_loss, path):
     fig.savefig(path, dpi=1500)
     plt.close()
 
-def plot_loss_curve_from_log(filename, length, path):
+def plot_loss_curve_from_log(filename, length, path, both=True):
     with open(filename, 'r') as f:
         lines = f.readlines()
         n=0
@@ -301,40 +301,56 @@ def plot_loss_curve_from_log(filename, length, path):
         ce, w_ood, w_d = dloss[:,0], dloss[:,1], dloss[:,2]
         w_g = gloss
         iters = np.arange(0, n, 1) * 20
-        fig, axs = plt.subplots(2, sharex=True)
-        fig.tight_layout(pad=2.0)
-        # fig.suptitle('Training Loss Curves')
-        # Discriminator Loss
-        axs[0].plot(iters, ce, label='CE', marker='^', markersize=3)
-        axs[0].plot(iters, w_ood, label=r'$S_{OoD}$', marker='o', markersize=3)
-        axs[0].plot(iters, w_d, label=r'$S_{G(Z)}$', marker='x', markersize=3)
-        # axs[0].set_xlabel('Training Epochs')
-        axs[0].set_yticks([0, 1, 2])
-        axs[0].set_ylabel('Value of Key Terms')
-        axs[0].set_title("Discriminator")
-        axs[0].legend()
-        # Generator Loss
-        axs[1].plot(iters, w_g, label=r'$S_{G(Z)}$', marker='x', markersize=3, color="green")
-        axs[1].set_xlabel('Number of updates')
-        axs[1].set_yticks([0, 1, 2])
-        axs[1].set_ylabel('Value of Key Terms')
-        axs[1].set_title("Generator")
-        axs[1].legend()
-        fig.savefig(path, dpi=1500)
-        plt.close()
+        if both:
+            fig, axs = plt.subplots(2, sharex=True)
+            fig.tight_layout(pad=2.0)
+            # fig.suptitle('Training Loss Curves')
+            # Discriminator Loss
+            axs[0].plot(iters, ce, label='CE', marker='^', markersize=3)
+            axs[0].plot(iters, w_ood, label=r'$S_{OoD}$', marker='o', markersize=3)
+            axs[0].plot(iters, w_d, label=r'$S_{G(Z)}$', marker='x', markersize=3)
+            # axs[0].set_xlabel('Training Epochs')
+            axs[0].set_yticks([0, 1, 2])
+            axs[0].set_ylabel('Value of Key Terms')
+            axs[0].set_title("Discriminator")
+            axs[0].legend()
+            axs[0].grid(axis='y', linestyle='--', alpha=0.7) 
+            # Generator Loss
+            axs[1].plot(iters, w_g, label=r'$S_{G(Z)}$', marker='x', markersize=3, color="green")
+            axs[1].set_xlabel('Number of updates')
+            axs[1].set_yticks([0, 1, 2])
+            axs[1].set_ylabel('Value of Key Terms')
+            axs[1].set_title("Generator")
+            axs[1].legend()
+            axs[1].grid(axis='y', linestyle='--', alpha=0.7) 
+            fig.savefig(path, dpi=1500)
+            plt.close()
+        else:
+            plt.plot(iters, ce, label='CE', marker='^', markersize=3)
+            plt.plot(iters, w_ood, label=r'$S_{OoD}$', marker='o', markersize=3)
+            plt.plot(iters, w_d, label=r'$S_{G(Z)}$', marker='x', markersize=3)
+            plt.ylabel("Values")
+            plt.xlabel("Number of iterations")
+            plt.title("Trajectory of Key Terms")
+            plt.legend()
+            plt.grid(axis='y', linestyle='--', alpha=0.7) 
+            plt.savefig(path, dpi=200)
+            plt.close()
 
 
 if __name__ == "__main__":
 
-    # pass
-    # filename = os.path.join('checkpoint', 'log', 'FashionMNIST', 'log-32.txt')
-    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-32.png')
+    pass
+    n=150
+    both=False
+    filename = os.path.join('checkpoint', 'log', 'FashionMNIST', 'log-64.txt')
+    plot_loss_curve_from_log(filename, n, 'Document/Loss/FashionMNIST-64-0.png', both)
 
     # filename = os.path.join('checkpoint', 'log', 'SVHN', 'log-32.txt')
     # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/SVHN-32.png')
 
-    # filename = os.path.join('checkpoint', 'log', '3DPC-R2', 'log-200.txt')
-    # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/3DPC-R2-200.png')
+    filename = os.path.join('checkpoint', 'log', '3DPC-R2', 'log-200.txt')
+    plot_loss_curve_from_log(filename, n, 'Document/Loss/3DPC-R2-200-0.png', both)
 
     # filename = os.path.join('checkpoint', 'log', 'CIFAR10-SVHN', 'log-32.txt')
     # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/CIFAR10-SVHN-32.png')
@@ -346,4 +362,4 @@ if __name__ == "__main__":
     # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-64-bad.png')
 
     filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence-3.txt')
-    plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-64-bad-3.png')
+    plot_loss_curve_from_log(filename, n, 'Document/Loss/FashionMNIST-64-bad-3-0.png', both)

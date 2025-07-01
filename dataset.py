@@ -365,6 +365,13 @@ def sample_large_ood_dataset(ood_name, exp_name, sizes):
 if __name__ == '__main__':
     print('Dataset preparing')
     # sizes = [100, 200, 500, 1000, 1500, 2000]
-    sizes = [10, 20, 50]
-    sample_3DPC(sizes, 'Balanced')
-    sample_3DPC(sizes, 'Imbalanced')
+    # sizes = [10, 20, 50]
+    # sample_3DPC(sizes, 'Balanced')
+    # sample_3DPC(sizes, 'Imbalanced')
+
+    # dset = DSET('MNIST', True, 128, 128, [0, 1, 2, 3, 4, 5, 6, 7], [8, 9])
+    # print(len(dset.ind_train))
+    # print(len(dset.ind_val))
+    # print(len(dset.ood_val))
+
+
