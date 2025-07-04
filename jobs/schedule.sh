@@ -125,23 +125,31 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/3DPC-R2/all.sh
 
 # HParam SA
-sbatch jobs/Param-SA/1-1.sh
-sbatch jobs/Param-SA/1-0.1.sh
-sbatch jobs/Param-SA/1-0.01.sh
-sbatch jobs/Param-SA/1-0.001.sh
-sbatch jobs/Param-SA/0.1-1.sh
-sbatch jobs/Param-SA/0.1-0.1.sh
-sbatch jobs/Param-SA/0.1-0.01.sh
-sbatch jobs/Param-SA/0.1-0.001.sh
-sbatch jobs/Param-SA/0.01-1.sh
-sbatch jobs/Param-SA/0.01-0.1.sh
-sbatch jobs/Param-SA/0.01-0.01.sh
-sbatch jobs/Param-SA/0.01-0.001.sh
-sbatch jobs/Param-SA/0.001-1.sh
-sbatch jobs/Param-SA/0.001-0.1.sh
-sbatch jobs/Param-SA/0.001-0.01.sh
-sbatch jobs/Param-SA/0.001-0.001.sh
-
+sbatch jobs/Param-SA/10-10.sh
+sbatch jobs/Param-SA/10-1.sh
+sbatch jobs/Param-SA/10-0.1.sh
+sbatch jobs/Param-SA/10-0.01.sh
+sbatch jobs/Param-SA/10-0.001.sh
+sbatch jobs/Param-SA/1-10.sh
+# sbatch jobs/Param-SA/1-1.sh
+# sbatch jobs/Param-SA/1-0.1.sh
+# sbatch jobs/Param-SA/1-0.01.sh
+# sbatch jobs/Param-SA/1-0.001.sh
+sbatch jobs/Param-SA/0.1-10.sh
+# sbatch jobs/Param-SA/0.1-1.sh
+# sbatch jobs/Param-SA/0.1-0.1.sh
+# sbatch jobs/Param-SA/0.1-0.01.sh
+# sbatch jobs/Param-SA/0.1-0.001.sh
+sbatch jobs/Param-SA/0.01-10.sh
+# sbatch jobs/Param-SA/0.01-1.sh
+# sbatch jobs/Param-SA/0.01-0.1.sh
+# sbatch jobs/Param-SA/0.01-0.01.sh
+# sbatch jobs/Param-SA/0.01-0.001.sh
+sbatch jobs/Param-SA/0.001-10.sh
+# sbatch jobs/Param-SA/0.001-1.sh
+# sbatch jobs/Param-SA/0.001-0.1.sh
+# sbatch jobs/Param-SA/0.001-0.01.sh
+# sbatch jobs/Param-SA/0.001-0.001.sh
 # Other jobs
 # sbatch jobs/other/test.sh
 

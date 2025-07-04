@@ -1,0 +1,129 @@
+
+[KeOps] Warning : There were warnings or errors compiling formula :
+<stdin>:1:10: fatal error: cuda.h: No such file or directory
+compilation terminated.
+
+[KeOps] Warning : 
+    The location of Cuda header files cuda.h and nvrtc.h could not be detected on your system.
+    You must determine their location and then define the environment variable CUDA_PATH,
+    either before launching Python or using os.environ before importing keops. For example
+    if these files are in /vol/cuda/10.2.89-cudnn7.6.4.38/include you can do :
+      import os
+      os.environ['CUDA_PATH'] = '/vol/cuda/10.2.89-cudnn7.6.4.38'
+    
+[KeOps] Compiling cuda jit compiler engine ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/nvrtc_jit.cpp:5:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+[pyKeOps] Compiling nvrtc binder for python ... 
+[KeOps] Warning : There were warnings or errors compiling formula :
+In file included from /home/xysong/.local/lib/python3.9/site-packages/pykeops/common/keops_io/pykeops_nvrtc.cpp:4:
+/home/xysong/.local/lib/python3.9/site-packages/keopscore/binders/nvrtc/keops_nvrtc.cpp:6:10: fatal error: nvrtc.h: No such file or directory
+ #include <nvrtc.h>
+          ^~~~~~~~~
+compilation terminated.
+
+OK
+Experiment: FashionMNIST
+Experiment regime: Balanced
+Method: OOD-GAN
+================================================================================
+Number of observed OoD samples (class-level): 64
+Input Dimension: 28 x 28 x 1
+Number of InD classes: 8
+Number of Epochs: 16.
+Hyperparameters: lambda_ce=1 & lambda_w=10 & scaling=0.001 & d_lr=0.001 & g_lr=0.001 & B_InD: 64 & B_OoD: 32 & n_d: 1 & n_g: 1
+Score Function: Wasserstein
+Finished Processing Input Arguments.
+-- Current Device: Tesla V100-PCIE-16GB
+-- Device Total Memory: 15.77 GB
+-- Let's use 1 GPUs!
+Verifying OOD set labels: tensor([8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+        9, 9, 9, 9, 9, 9, 9, 9])
+Verifying OOD class distribution: Counter({8: 64, 9: 64})
+Monte Carlo Iteration 0
+DenseNet
+Deep_G
+OoD sample shape: torch.Size([128, 1, 28, 28])
+Step: 0    | D: -5.9448 | CE:  2.1043 | S_OoD:  0.8057 | S_z:  0.8016 | G: -0.0084 | S_z:  0.8424 | dist: 0.0906
+Step: 20   | D: -6.9551 | CE:  1.6346 | S_OoD:  0.8598 | S_z:  0.8602 | G: -0.0086 | S_z:  0.8608 | dist: 0.0843
+Step: 40   | D: -7.2207 | CE:  1.3060 | S_OoD:  0.8535 | S_z:  0.8546 | G: -0.0085 | S_z:  0.8533 | dist: 0.0994
+Step: 60   | D: -7.1889 | CE:  1.2943 | S_OoD:  0.8492 | S_z:  0.8474 | G: -0.0084 | S_z:  0.8444 | dist: 0.1018
+Step: 80   | D: -7.5807 | CE:  0.9584 | S_OoD:  0.8547 | S_z:  0.8338 | G: -0.0084 | S_z:  0.8350 | dist: 0.0592
+Step: 100  | D: -7.4842 | CE:  1.0387 | S_OoD:  0.8531 | S_z:  0.8345 | G: -0.0083 | S_z:  0.8344 | dist: 0.0763
+Step: 120  | D: -7.6240 | CE:  0.9591 | S_OoD:  0.8591 | S_z:  0.8321 | G: -0.0083 | S_z:  0.8321 | dist: 0.0771
+Step: 140  | D: -7.7975 | CE:  0.7762 | S_OoD:  0.8582 | S_z:  0.8282 | G: -0.0083 | S_z:  0.8279 | dist: 0.0891
+Step: 160  | D: -7.8569 | CE:  0.7214 | S_OoD:  0.8587 | S_z:  0.8201 | G: -0.0082 | S_z:  0.8194 | dist: 0.0852
+Step: 180  | D: -7.9671 | CE:  0.6145 | S_OoD:  0.8590 | S_z:  0.8143 | G: -0.0081 | S_z:  0.8119 | dist: 0.0997
+Step: 200  | D: -7.9744 | CE:  0.6019 | S_OoD:  0.8584 | S_z:  0.8042 | G: -0.0080 | S_z:  0.8015 | dist: 0.1130
+Step: 220  | D: -8.0780 | CE:  0.5285 | S_OoD:  0.8615 | S_z:  0.8035 | G: -0.0080 | S_z:  0.7999 | dist: 0.1073
+Step: 240  | D: -7.6941 | CE:  0.8420 | S_OoD:  0.8544 | S_z:  0.8256 | G: -0.0083 | S_z:  0.8252 | dist: 0.0949
+Step: 260  | D: -7.9417 | CE:  0.6426 | S_OoD:  0.8593 | S_z:  0.8178 | G: -0.0081 | S_z:  0.8143 | dist: 0.0827
+Step: 280  | D: -7.8499 | CE:  0.7793 | S_OoD:  0.8637 | S_z:  0.8076 | G: -0.0081 | S_z:  0.8058 | dist: 0.0736
+Step: 300  | D: -7.9912 | CE:  0.6558 | S_OoD:  0.8655 | S_z:  0.8128 | G: -0.0081 | S_z:  0.8143 | dist: 0.0953
+Step: 320  | D: -7.9174 | CE:  0.6298 | S_OoD:  0.8555 | S_z:  0.7948 | G: -0.0080 | S_z:  0.7979 | dist: 0.0870
+Step: 340  | D: -7.9495 | CE:  0.6434 | S_OoD:  0.8601 | S_z:  0.7869 | G: -0.0079 | S_z:  0.7885 | dist: 0.0945
+Step: 360  | D: -8.1192 | CE:  0.4407 | S_OoD:  0.8568 | S_z:  0.7849 | G: -0.0079 | S_z:  0.7865 | dist: 0.0723
+Step: 380  | D: -7.9283 | CE:  0.6526 | S_OoD:  0.8589 | S_z:  0.7990 | G: -0.0079 | S_z:  0.7922 | dist: 0.1227
+Step: 400  | D: -8.0231 | CE:  0.6369 | S_OoD:  0.8668 | S_z:  0.7824 | G: -0.0078 | S_z:  0.7832 | dist: 0.0969
+Step: 420  | D: -8.1730 | CE:  0.4452 | S_OoD:  0.8626 | S_z:  0.7580 | G: -0.0076 | S_z:  0.7572 | dist: 0.0895
+Step: 440  | D: -8.0924 | CE:  0.5389 | S_OoD:  0.8639 | S_z:  0.7728 | G: -0.0078 | S_z:  0.7752 | dist: 0.0694
+Step: 460  | D: -8.1385 | CE:  0.4762 | S_OoD:  0.8622 | S_z:  0.7447 | G: -0.0074 | S_z:  0.7377 | dist: 0.0863
+Step: 480  | D: -8.1624 | CE:  0.4366 | S_OoD:  0.8606 | S_z:  0.7427 | G: -0.0074 | S_z:  0.7436 | dist: 0.0969
+Step: 500  | D: -8.1610 | CE:  0.4880 | S_OoD:  0.8656 | S_z:  0.7501 | G: -0.0074 | S_z:  0.7432 | dist: 0.0722
+Step: 520  | D: -8.1912 | CE:  0.4551 | S_OoD:  0.8654 | S_z:  0.7321 | G: -0.0073 | S_z:  0.7263 | dist: 0.0931
+Step: 540  | D: -8.1955 | CE:  0.4510 | S_OoD:  0.8654 | S_z:  0.7275 | G: -0.0073 | S_z:  0.7258 | dist: 0.0850
+Step: 560  | D: -8.1090 | CE:  0.4561 | S_OoD:  0.8572 | S_z:  0.7045 | G: -0.0070 | S_z:  0.7037 | dist: 0.0886
+Step: 580  | D: -8.2299 | CE:  0.3746 | S_OoD:  0.8612 | S_z:  0.7175 | G: -0.0071 | S_z:  0.7118 | dist: 0.0975
+Step: 600  | D: -8.2331 | CE:  0.3839 | S_OoD:  0.8624 | S_z:  0.7101 | G: -0.0071 | S_z:  0.7088 | dist: 0.0673
+Step: 620  | D: -8.1514 | CE:  0.4285 | S_OoD:  0.8587 | S_z:  0.7076 | G: -0.0070 | S_z:  0.7041 | dist: 0.0936
+Step: 640  | D: -8.0197 | CE:  0.6001 | S_OoD:  0.8626 | S_z:  0.6679 | G: -0.0067 | S_z:  0.6732 | dist: 0.1096
+Step: 660  | D: -8.3860 | CE:  0.2577 | S_OoD:  0.8650 | S_z:  0.6567 | G: -0.0066 | S_z:  0.6574 | dist: 0.0686
+Step: 680  | D: -8.1973 | CE:  0.4623 | S_OoD:  0.8667 | S_z:  0.6912 | G: -0.0069 | S_z:  0.6850 | dist: 0.0823
+Step: 700  | D: -7.9261 | CE:  0.7099 | S_OoD:  0.8643 | S_z:  0.6830 | G: -0.0068 | S_z:  0.6793 | dist: 0.0772
+Step: 720  | D: -8.3440 | CE:  0.3080 | S_OoD:  0.8659 | S_z:  0.6607 | G: -0.0066 | S_z:  0.6571 | dist: 0.0827
+Step: 740  | D: -8.2392 | CE:  0.4045 | S_OoD:  0.8650 | S_z:  0.6499 | G: -0.0064 | S_z:  0.6395 | dist: 0.0949
+Computing evaluation statistics...
+> Evaluating InD Wasserstein distances...
+> Evaluating OoD Wasserstein distances...
+
+Overall Statistics
+TPR@95TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@95TNR-Threshold: 0.5371858328580856
+mean: 0.53719 | std: 0.0 | MAD: 0.0
+TPR@99TNR: 1.0
+mean: 1.0 | std: 0.0 | MAD: 0.0
+TPR@99TNR-Threshold
+: 0.6608589202165606
+mean: 0.66086 | std: 0.0 | MAD: 0.0
+AUROC: 1.0
+
+Validation Accuracy: 0.86225
+Validation Classification Loss: 0.391260764837265

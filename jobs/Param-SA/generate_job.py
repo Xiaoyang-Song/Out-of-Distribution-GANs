@@ -12,8 +12,8 @@ TIME = "2:00:00"
 EXP_DSET = 'Param-SA'
 
 n=64
-beta_ood_list = [1, 0.1, 0.01, 0.001]
-beta_z_list = [1, 0.1, 0.01, 0.001]
+beta_ood_list = [10, 1, 0.1, 0.01, 0.001]
+beta_z_list = [10, 1, 0.1, 0.01, 0.001]
 
 config_dir = os.path.join('config', 'GAN', 'SA')
 
