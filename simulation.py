@@ -364,7 +364,7 @@ def plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, 
             lb = min(lb_g, lb)
             ub = max(ub_g, ub)
         
-        m=100
+        # m=100
         xi = np.linspace(lb, ub, m, endpoint=True)
         yi = np.linspace(lb, ub, m, endpoint=True)
         xy_pos = np.array(list(product(xi, yi)))
@@ -509,6 +509,9 @@ def simulate(args, config):
     dir_name = f"Eg_{args.n_ood}_[{args.h}]_[{args.beta}]_[{args.w_ce}|{args.w_ood}|{args.w_z}]_[{args.wood_lr}|{args.d_lr}|{args.g_lr}|{args.bsz_tri}|{args.bsz_val}|{args.bsz_ood}]_[{args.n_d}|{args.n_g}]"
     if args.JID is not None:
         dir_name = f"[{args.JID}]_" + dir_name
+
+    if args.seed is not None:
+        dir_name = f"[{args.seed}]_" + dir_name
     os.makedirs(os.path.join(ckpt_dir, setting, dir_name), exist_ok=True)
 
     f = open(os.path.join(ckpt_dir, setting, dir_name, "log.txt"), "w")
@@ -564,7 +567,7 @@ def simulate(args, config):
         plt_path = os.path.join(ckpt_dir, setting, dir_name, "WOOD_Heatmap.jpg")
         plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
                     IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-                    path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
+                    path=plt_path, tnr=0.95, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'],f=f)
         wood_stop = time.time()
         f.write(f"WOOD Training time: {np.round(wood_stop - wood_start, 2)} s | About {np.round((wood_stop - wood_start)/60, 1)} mins\n")
     
@@ -623,7 +626,7 @@ def simulate(args, config):
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_Heatmap.jpg")
     plot_heatmap(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'OoD GAN', 
                  IND_CLS, OOD_CLS, pltargs['ind_idx'], pltargs['ood_idx'], 
-                 path=plt_path, tnr=0.99, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
+                 path=plt_path, tnr=0.95, lb=pltargs['lb'], ub=pltargs['ub'], m=pltargs['m'], f=f)
 
     # Plot Gz trajectory plots
     plt_path = os.path.join(ckpt_dir, setting, dir_name, "OoD_GAN_G_Trajectory.jpg")
@@ -858,8 +861,6 @@ def plot_heatmap_v2(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATC
 # --g_lr=0.0001 --bsz_tri=256 --bsz_val=256 --bsz_ood=4 --n_d=1 --n_g=1
 
 if __name__ == '__main__':
-    # torch.manual_seed(0)
-    # np.random.seed(0)
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode', help='G - Generation | R - Run')
     parser.add_argument('--config', help='Configuration file')
@@ -871,6 +872,7 @@ if __name__ == '__main__':
     parser.add_argument('--w_ood', help="OoD term weight", type=float)
     parser.add_argument('--w_z', help="Adversarial term weight", type=float)
     # Training parameters
+    parser.add_argument('--seed', help="seed", type=int, default=None)
     parser.add_argument('--n_ood', help="Number of OoD samples", type=int)
     parser.add_argument('--wood_lr', help="WOOD learning rate", type=float)
     parser.add_argument('--d_lr', help="OoD GAN Discriminator learning rate", type=float)
@@ -882,12 +884,20 @@ if __name__ == '__main__':
     parser.add_argument('--n_g', help='g_step_ratio', type=int)
 
     # Productivity
-    parser.add_argument('--JID', help='GL Job ID', type=int)
-
+    parser.add_argument('--JID', help='GL Job ID', type=str)
     
     args = parser.parse_args()
     assert args.config is not None, 'Please specify the config .yml file to proceed.'
     config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
+
+    if args.seed is not None:
+        torch.manual_seed(args.seed)
+        np.random.seed(args.seed)
+        print(f"SEED: {args.seed}")
+    else:
+        print("Setting seed for reproducibility.")
+        torch.manual_seed(1)
+        np.random.seed(1)
 
     if args.mode == "G":
         generate_ind_ood_settings(config)

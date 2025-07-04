@@ -61,3 +61,10 @@ export PYTHONPATH=$PYTHONPATH$:`pwd`
 # sbatch jobs/simulation/setting-ii.sh
 sbatch jobs/simulation/setting-i-cpu.sh
 sbatch jobs/simulation/setting-ii-cpu.sh
+
+# sbatch jobs/simulation/jobs/j1.sh
+# sbatch jobs/simulation/jobs/j2.sh
+# sbatch jobs/simulation/jobs/j3.sh
+# sbatch jobs/simulation/jobs/j4.sh
+# sbatch jobs/simulation/jobs/j5.sh
+# sbatch jobs/simulation/jobs/j6.sh

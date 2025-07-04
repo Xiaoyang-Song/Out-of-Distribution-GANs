@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/gpfs/accounts/sunwbgt_root/sunwbgt98/xysong/Out-of-Distribution-GANs/main/main_ood.py", line 21, in <module>
+    config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
+FileNotFoundError: [Errno 2] No such file or directory: 'config/GAN/OOD-GAN-FashionMNIST-0.01-0.01.yaml'
