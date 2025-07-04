@@ -337,20 +337,57 @@ def plot_loss_curve_from_log(filename, length, path, both=True):
             plt.savefig(path, dpi=200)
             plt.close()
 
+def plot_loss_curve_from_log_hparam(dir_name, length, path, beta_ood, beta_z):
+    filename = os.path.join(dir_name, f"log-{beta_ood}-{beta_z}.txt")
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+        n=0
+        dloss, gloss = [], []
+        for line in lines:
+            if "Step" in line:
+                ce, w_ood, w_z = float(line[31:37]), float(line[48:54]), float(line[63:69])
+                g_w_z = float(line[91:97])
+                dloss.append([ce, w_ood, w_z])
+                gloss.append(g_w_z)
+                n += 1
+            
+            if n >= length: break
+        
+        dloss = np.array(dloss)
+        gloss = np.array(gloss)
+        
+        # plot
+        ce, w_ood, w_d = dloss[:,0], dloss[:,1], dloss[:,2]
+        w_g = gloss
+        iters = np.arange(0, n, 1) * 20
+
+        plt.plot(iters, ce, label='CE', marker='^', markersize=3)
+        plt.plot(iters, w_ood, label=r'$S_{OoD}$', marker='o', markersize=3)
+        plt.plot(iters, w_d, label=r'$S_{G(Z)}$', marker='x', markersize=3)
+        plt.ylabel("Values")
+        plt.xlabel("Number of iterations")
+        plt.title(rf"Trajectory of Key Terms ($\beta_{{OoD}}$={beta_ood}, $\beta_{{z}}$={beta_z})")
+        plt.legend()
+        plt.grid(axis='y', linestyle='--', alpha=0.7) 
+        os.makedirs(path, exist_ok=True)
+        savepath = os.path.join(path, f"{beta_ood}-{beta_z}.png")
+        plt.savefig(savepath, dpi=200)
+        plt.close()
+
 
 if __name__ == "__main__":
 
     pass
     n=150
     both=False
-    filename = os.path.join('checkpoint', 'log', 'FashionMNIST', 'log-64.txt')
-    plot_loss_curve_from_log(filename, n, 'Document/Loss/FashionMNIST-64-0.png', both)
+    # filename = os.path.join('checkpoint', 'log', 'FashionMNIST', 'log-64.txt')
+    # plot_loss_curve_from_log(filename, n, 'Document/Loss/FashionMNIST-64-0.png', both)
 
     # filename = os.path.join('checkpoint', 'log', 'SVHN', 'log-32.txt')
     # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/SVHN-32.png')
 
-    filename = os.path.join('checkpoint', 'log', '3DPC-R2', 'log-200.txt')
-    plot_loss_curve_from_log(filename, n, 'Document/Loss/3DPC-R2-200-0.png', both)
+    # filename = os.path.join('checkpoint', 'log', '3DPC-R2', 'log-200.txt')
+    # plot_loss_curve_from_log(filename, n, 'Document/Loss/3DPC-R2-200-0.png', both)
 
     # filename = os.path.join('checkpoint', 'log', 'CIFAR10-SVHN', 'log-32.txt')
     # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/CIFAR10-SVHN-32.png')
@@ -361,5 +398,11 @@ if __name__ == "__main__":
     # filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence-2.txt')
     # plot_loss_curve_from_log(filename, 1000, 'Document/Loss/FashionMNIST-64-bad.png')
 
-    filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence-3.txt')
-    plot_loss_curve_from_log(filename, n, 'Document/Loss/FashionMNIST-64-bad-3-0.png', both)
+    # filename = os.path.join('checkpoint', 'log', 'other', 'bad-convergence-3.txt')
+    # plot_loss_curve_from_log(filename, n, 'Document/Loss/FashionMNIST-64-bad-3-0.png', both)
+
+    for beta_ood in [0.001, 0.01, 0.1, 1, 10]:
+        for beta_z in [0.001, 0.01, 0.1, 1, 10]:
+            dir_name = os.path.join('checkpoint', 'log', 'Param-SA')
+            save_dir = os.path.join('Document', 'Loss', 'Param-SA')
+            plot_loss_curve_from_log_hparam(dir_name, n, save_dir, beta_ood, beta_z)
