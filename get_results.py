@@ -51,12 +51,13 @@ if args.sim:
     print(f"Testing and getting results for simulation setting {setting}...")
     save_dir = os.path.join('Document', 'Simulation')
     os.makedirs(save_dir, exist_ok=True)
+    TNR=0.99
     plot_heatmap_v2(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_WOOD, None, 'WOOD', 
             IND_CLS, OOD_CLS, [0, 1, 2], [3], title="WOOD Wasserstein Score Heatmap",
-            path=os.path.join(save_dir, 'WOOD.jpg'), tnr=0.95, lb=-1, ub=7, m=300)
+            path=os.path.join(save_dir, 'WOOD.jpg'), tnr=TNR, lb=-1, ub=7, m=300)
     plot_heatmap_v2(IND_X, IND_Y, IND_X_TEST, IND_Y_TEST, OOD_X, OOD_Y, OOD_BATCH, D_GAN, G_GAN, 'SEE-OOD', 
             IND_CLS, OOD_CLS, [0, 1, 2], [3], title=f"SEE-OoD Wasserstein Score Heatmap - Setting {setting}",
-            path=os.path.join(save_dir, f'{setting}.jpg'), tnr=0.95, lb=-1, ub=7, m=300)
+            path=os.path.join(save_dir, f'{setting}.jpg'), tnr=TNR, lb=-1, ub=7, m=300)
     exit()
 
 if args.ind_sa:
