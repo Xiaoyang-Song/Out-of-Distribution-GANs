@@ -872,7 +872,7 @@ if __name__ == '__main__':
     parser.add_argument('--w_ood', help="OoD term weight", type=float)
     parser.add_argument('--w_z', help="Adversarial term weight", type=float)
     # Training parameters
-    parser.add_argument('--seed', help="seed", type=int, default=None)
+    parser.add_argument('--seed', help="seed", type=int, default=1)
     parser.add_argument('--n_ood', help="Number of OoD samples", type=int)
     parser.add_argument('--wood_lr', help="WOOD learning rate", type=float)
     parser.add_argument('--d_lr', help="OoD GAN Discriminator learning rate", type=float)
@@ -890,14 +890,14 @@ if __name__ == '__main__':
     assert args.config is not None, 'Please specify the config .yml file to proceed.'
     config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
 
-    if args.seed is not None:
-        torch.manual_seed(args.seed)
-        np.random.seed(args.seed)
-        print(f"SEED: {args.seed}")
-    else:
-        print("Setting seed for reproducibility.")
-        torch.manual_seed(1)
-        np.random.seed(1)
+    # if args.seed is not None:
+    #     torch.manual_seed(args.seed)
+    #     np.random.seed(args.seed)
+    #     print(f"SEED: {args.seed}")
+    # else:
+    #     print("Setting seed for reproducibility.")
+    #     torch.manual_seed(1)
+    #     np.random.seed(1)
 
     if args.mode == "G":
         generate_ind_ood_settings(config)
